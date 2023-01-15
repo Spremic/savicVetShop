@@ -1,0 +1,129 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* body {
+  height: 100%;
+  width: 100%;
+} */
+.desingNavigation {
+  position: relative;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, 0%);
+  width: 50%;
+}
+.navigacija {
+  height: 50px;
+}
+
+.navigacija nav ul {
+  display: flex;
+  justify-content: space-evenly;
+
+  list-style-type: none;
+}
+
+.navigacija nav ul li {
+  margin-top: 10px;
+  background-image: linear-gradient(
+    to right,
+    #76b852 0%,
+    #8dc26f 51%,
+    #76b852 100%
+  );
+  width: 100vh;
+  width: 80px;
+  height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.navigacija nav ul li span {
+  display: grid;
+  place-items: center;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+#naslovna img {
+  width: 100%;
+}
+#about {
+  display: flex;
+  justify-content: center;
+  margin-top: 70px;
+}
+.sectionAbout {
+  /* background-color: rgb(207, 205, 205); */
+  background-color: rgb(248, 246, 246);
+  width: 400px;
+  height: 250px;
+  border: 1px solid rgb(17, 59, 8);
+  border-radius: 10px;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.sectionAbout:hover {
+  transform: scale(1.1);
+}
+.sectionAbout2 {
+  margin-left: 10px;
+}
+.divAbout h2 {
+  color: black;
+  margin-bottom: 10px;
+}
+.divAbout {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.692);
+}
+#oNama {
+  margin-top: 70px;
+  height: 60vw;
+  /* background-color: #85ffbd;
+  background-image: linear-gradient(45deg, #85ffbd 0%, #fffb7d 100%); */
+  background-image: linear-gradient(135deg, #81fbb8 10%, #28c76f 100%);
+}
+#sectionOnama {
+  display: flex;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.imgOnama img {
+  width: 50%;
+  position: relative;
+  top: 50%;
+  left: 0%;
+  transform: translate(5%, -50%);
+}
+.txtOnama {
+  width: 170%;
+}
+.txtOnama p {
+  position: relative;
+  top: 50%;
+  left: -50%;
+  transform: translate(0%, -50%);
+}
+
+.txtOnama p span {
+  font-size: 30px;
+}
+#oNama h1 {
+  display: grid;
+  place-content: center;
+}
+
+/* na onom o nama dodaj procitaj vise kako ne bi kvario estetisku sajta */
