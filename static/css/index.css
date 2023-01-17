@@ -3,10 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
-/* body {
-  height: 100%;
-  width: 100%;
-} */
+
 .desingNavigation {
   position: relative;
   left: 50%;
@@ -91,9 +88,13 @@
 #oNama {
   margin-top: 70px;
   height: 60vw;
-  /* background-color: #85ffbd;
-  background-image: linear-gradient(45deg, #85ffbd 0%, #fffb7d 100%); */
-  background-image: linear-gradient(135deg, #81fbb8 10%, #28c76f 100%);
+  /* background-color: #85ffbd; */
+  background-image: linear-gradient(45deg, #85ffbd 0%, #fffb7d 100%);
+  /* background-image: linear-gradient(135deg, #81fbb8 10%, #28c76f 100%); */
+}
+#about {
+  display: flex;
+  justify-content: center;
 }
 #sectionOnama {
   display: flex;
@@ -116,6 +117,7 @@
   top: 50%;
   left: -50%;
   transform: translate(0%, -50%);
+  /* font-size: 20px; */
 }
 
 .txtOnama p span {
@@ -124,6 +126,207 @@
 #oNama h1 {
   display: grid;
   place-content: center;
+  /* margin-bottom: 50px; */
+}
+#rec {
+  display: flex;
+  justify-content: center;
+}
+.comment-card {
+  width: 50%;
+  background-color: rgb(243, 235, 235);
+  /* border: 1px solid rgba(0, 128, 0, 0.329); */
+  padding: 20px;
+  margin: 50px;
+  border-radius: 25px;
 }
 
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info img {
+  /* width: 30%; */
+  width: 170px;
+  height: 170px;
+  /* border-radius: 50%; */
+  margin-right: 20px;
+}
+
+.comment-text {
+  margin-top: 10px;
+}
+.block {
+  display: block;
+}
+.container {
+  margin-left: 15px;
+}
+footer {
+  background-color: #333333;
+  color: #fff;
+  padding-top: 50px;
+}
+
+footer h4 {
+  margin-bottom: 10px;
+}
+footer .h4 {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+footer ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+footer .social-icons {
+  display: flex;
+}
+footer .col-sm-4 ul li {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+footer .social-icons li {
+  margin-right: 10px;
+}
+
+footer .social-icons li a {
+  color: #fff;
+  font-size: 24px;
+}
+
+#map {
+  width: 100%;
+  height: 300px;
+}
+#map iframe {
+  height: 250px;
+}
+footer .rowCC {
+  margin: 0;
+  display: grid;
+  place-content: center;
+}
+.footerContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: auto;
+}
+
+#contact {
+  margin-top: 90px;
+  margin-right: 80px;
+}
+#contact button {
+  width: 80px;
+  height: 30px;
+  margin-top: 5px;
+  background-color: #256403;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#contactHome div {
+  margin-top: 15px;
+}
+#contactHome label {
+  display: block;
+  padding-bottom: 3px;
+}
+
+#contactHome input {
+  height: 50px;
+  width: 240px;
+  border-radius: 5px;
+  border: none;
+  background-color: white;
+}
+
+#contactHome textarea {
+  border: none;
+  border-radius: 5px;
+}
+#contactHome h2 {
+  margin-bottom: 30px;
+}
 /* na onom o nama dodaj procitaj vise kako ne bi kvario estetisku sajta */
+
+@media only screen and (min-width: 1200px) {
+  /* #sectionOnama {
+    width: 140%;
+  }
+  .txtOnama {
+    width: 120%;
+  }
+  /* .txtOnama p {
+    position: relative;
+    top: 50%;
+    left: -110%;
+    transform: translate(0%, -50%);
+  } */
+  .imgOnama img {
+    width: 50%;
+    margin-left: 10%;
+  }
+  .comment-card {
+    width: 40%;
+  }
+
+}
+
+@media only screen and (min-width: 1342px) {
+  .imgOnama img {
+    width: 50%;
+    margin-left: 15%;
+  }
+  .txtOnama p {
+    position: relative;
+    top: 50%;
+    left: -20%;
+    transform: translate(0%, -50%);
+  }
+  .comment-card {
+    width: 35%;
+  }
+}
+
+@media only screen and (min-width: 1511px) {
+  .imgOnama img {
+    width: 50%;
+    margin-left: 8%;
+  }
+  .txtOnama {
+    width: 110%;
+  }
+  .txtOnama p {
+    position: relative;
+    top: 50%;
+    left: -53%;
+    transform: translate(0%, -50%);
+    font-size: 20px;
+  }
+  .comment-card {
+    width: 30%;
+  }
+}
+
+@media only screen and (min-width: 1800px) {
+  .txtOnama {
+    width: 90%;
+  }
+  .imgOnama img {
+    width: 45%;
+  }
+  .footerContainer {
+    width: 50%;
+  }
+}
+
+@media only screen and (min-width: 2000px) {
+  .txtOnama {
+    width: 80%;
+  }
+}
