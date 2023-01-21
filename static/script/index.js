@@ -6,6 +6,6 @@ openHamburger.addEventListener("click", () => {
     hamburgerData.style.display = "none";
   } else {
     hamburgerData.style.display = "block";
-    hamburgerData.style.margin = "0px 0px 100px 0px";
+    hamburgerData.style.margin = "0px 0px 120px 0px";
   }
 });
