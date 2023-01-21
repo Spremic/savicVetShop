@@ -400,7 +400,7 @@ footer .rowCC {
   }
   .comment-card {
     width: 95%;
-    background-color: rgb(243, 235, 235);
+    background-color: rgba(255, 255, 255, 0.836);
     /* border: 1px solid rgba(0, 128, 0, 0.329); */
     padding: 20px;
     margin: 50px;
