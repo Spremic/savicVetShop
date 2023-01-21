@@ -3,7 +3,15 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+p,
+a,
+span {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+html,
+body {
+  overflow-x: hidden;
+}
 .desingNavigation {
   position: relative;
   left: 50%;
@@ -84,7 +92,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 250px;
-  font-size: 20px;
+  font-size: 18px;
   color: rgba(0, 0, 0, 0.692);
 }
 #oNama {
@@ -119,7 +127,6 @@
   top: 50%;
   left: -50%;
   transform: translate(0%, -50%);
-  /* font-size: 20px; */
 }
 
 .txtOnama .naslovnaOnama {
@@ -266,7 +273,7 @@ footer .rowCC {
   .txtOnama {
     width: 120%;
   }
-  /* .txtOnama p {
+   .txtOnama p {
     position: relative;
     top: 50%;
     left: -110%;
@@ -334,11 +341,78 @@ footer .rowCC {
     width: 80%;
   }
 }
+@media only screen and (min-width: 1201px) {
+  .sectionAbout {
+    width: 373px;
+  }
+  .txtOnama p {
+    line-height: 23.5px;
+  }
+}
+@media only screen and (min-width: 901px) and (max-width: 1200px) {
+  /* 989 */
 
-@media only screen and (max-width: 425px) {
+  .sectionAbout {
+    width: 273.6px;
+  }
+  .txtOnama p {
+    position: relative;
+    top: 50%;
+    left: 30%;
+    transform: translate(-75%, -50%);
+    line-height: 23.5px;
+    width: 150%;
+  }
+  .txtMore {
+    display: none;
+  }
+}
+@media only screen and (min-width: 651px) and (max-width: 900px) {
+  .sectionAbout {
+    width: 280px;
+    height: 200px;
+  }
+  .sectionAbout3 {
+    margin-top: 20px;
+  }
+  #oNama {
+    height: 90vw;
+  }
+  .txtMore {
+    display: none;
+  }
+
+  .txtOnama p {
+    position: relative;
+    top: 50%;
+    left: 30%;
+    transform: translate(-75%, -50%);
+    line-height: 23.5px;
+    width: 250%;
+  }
+
+  footer .footerContainer {
+    margin-left: 10px;
+  }
+  .footerContainer {
+    width: 100%;
+  }
+
+  #contact {
+    margin-left: 12%;
+  }
+  .txtMore {
+    display: none;
+  }
+  .desingNavigation {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 650px) {
   #about {
     margin-top: 0px;
   }
+
   .sectionAbout {
     width: 300px;
     height: 200px;
@@ -367,7 +441,7 @@ footer .rowCC {
   }
 
   .imgOnama img {
-    width: 90%;
+    width: 300px;
     position: relative;
     top: 55%;
     left: 50%;
@@ -421,5 +495,7 @@ footer .rowCC {
   #contact {
     display: none;
   }
-
+  .desingNavigation {
+    width: 100%;
+  }
 }
