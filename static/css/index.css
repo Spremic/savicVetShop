@@ -12,6 +12,12 @@ html,
 body {
   overflow-x: hidden;
 }
+#hamburger {
+  font-size: 30px;
+  margin-left: 10px;
+  cursor: pointer;
+  display: none;
+}
 .desingNavigation {
   position: relative;
   left: 50%;
@@ -495,7 +501,50 @@ footer .rowCC {
   #contact {
     display: none;
   }
+
   .desingNavigation {
+    display: none;
+    position: relative;
+    left: 50%;
+    top: 0;
+    background-color: black;
+    transform: translate(-50%, 0%);
     width: 100%;
+  }
+  .navigacija {
+    height: 50px;
+  }
+
+  .navigacija nav ul {
+    display: grid;
+    background-color: black;
+
+    list-style-type: none;
+  }
+
+  .navigacija nav ul li {
+    margin-bottom: 30px;
+    cursor: pointer;
+    background-image: linear-gradient(
+      to right,
+      black 0%,
+      black 51%,
+      black 100%
+    );
+
+  }
+
+  .navigacija nav ul li span {
+    display: grid;
+    place-items: center;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+  }
+
+  #hamburger {
+    display: block;
   }
 }
