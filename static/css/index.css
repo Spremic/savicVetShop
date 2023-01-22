@@ -50,7 +50,9 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
-
+a:link {
+  text-decoration: none;
+}
 .navigacija nav ul li span {
   display: grid;
   place-items: center;
@@ -531,7 +533,6 @@ footer .rowCC {
       black 51%,
       black 100%
     );
-
   }
 
   .navigacija nav ul li span {
