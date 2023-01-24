@@ -8,6 +8,11 @@ a,
 span {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
+
+html,
+body {
+  overflow-x: hidden;
+}
 .resolution {
   max-width: 1263px;
   margin-left: auto;
@@ -359,7 +364,7 @@ footer .rowCC {
   }
 }
 
-@media only screen and (min-width: 0px) and (max-width: 650px) {
+@media only screen and (min-width: 0px) and (max-width: 425px) {
   .desingNavigation {
     display: none;
     position: relative;
@@ -403,5 +408,81 @@ footer .rowCC {
 
   #hamburger {
     display: block;
+  }
+  .sectionDesing {
+    display: grid;
+  }
+  .textDesing {
+    width: 50%;
+  }
+  .pAboutDesing {
+    left: 100%;
+  }
+  .pAboutDesing p {
+    text-align: center;
+  }
+  .aboutImgDesing img {
+    width: 300px;
+    position: relative;
+    left: 0%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+  }
+  .pAboutDesing h2 {
+    margin-left: 98px;
+  }
+
+  #centerPonuda img {
+    margin-left: 620px;
+  }
+
+  #centerPonuda .aboutImg {
+    margin-bottom: 50px;
+  }
+
+  .numberFlex {
+    display: grid;
+    place-items: center;
+    margin-top: 50px;
+    margin-bottom: 30px;
+  }
+
+  .numberFlex div span {
+    display: grid;
+    margin-left: 0%;
+    display: grid;
+    place-items: center;
+  }
+  .numberFlex div {
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+  footer #contact {
+    display: none;
+  }
+
+  footer .row {
+    margin-left: 140px;
+  }
+
+  footer iframe {
+    width: 103%;
+  }
+  /* #centerAbout {
+    display: none;
+  } */
+
+  #sponsored .imgSponsored img {
+    margin-left: 0px;
+  }
+
+  #mongeLogo {
+    margin-right: 50px;
+  }
+  #viskasLogo {
+    margin-right: 50px;
+  }
+  #purinaLogo {
+    margin-right: 50px;
   }
 }
