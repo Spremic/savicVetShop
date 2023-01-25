@@ -106,7 +106,8 @@ a:link {
   border-radius: 10px;
 }
 #sponsoredDesing {
-  background-color: #91f5ad;
+  /* background-color: #91f5ad; */
+  background-color: #620783a8;
   width: 100%;
   height: 100%;
   margin-top: 50px;
@@ -364,7 +365,7 @@ footer .rowCC {
   }
 }
 
-@media only screen and (min-width: 0px) and (max-width: 425px) {
+@media only screen and (min-width: 0px) and (max-width: 601px) {
   .desingNavigation {
     display: none;
     position: relative;
@@ -484,5 +485,63 @@ footer .rowCC {
   }
   #purinaLogo {
     margin-right: 50px;
+  }
+}
+
+
+
+@media only screen and (min-width:770px) and (max-width: 200000px) {
+  #mongeLogo {
+    margin-right: 0px;
+  }
+  #viskasLogo {
+    margin-right: 0px;
+  }
+  #purinaLogo {
+    margin-right: 0px;
+  }
+  #royalLogo {
+    margin-right: 0px;
+  }
+  #josiLogo {
+    margin-right: 0px;
+  }
+}
+
+
+@media only screen  and (min-width:460px) and (max-width:769px){
+  #mongeLogo {
+    margin-right: 50px;
+  }
+  #viskasLogo {
+    margin-right: 0px;
+  }
+  #purinaLogo {
+    margin-right: 50px;
+  }
+  #royalLogo {
+    margin-right: 50px;
+  }
+  #josiLogo {
+    margin-right: 50px;
+  }
+}
+
+
+@media only screen and (min-width:0px) and (max-width:289px) {
+  #mongeLogo {
+    margin-right: 30px;
+  }
+  #viskasLogo {
+    margin-right: 30px;
+  }
+  #purinaLogo {
+    margin-right: 30px;
+  }
+  #royalLogo {
+    margin-right: 0px;
+  }
+  #josiLogo {
+    margin-right: 0px;
   }
 }
