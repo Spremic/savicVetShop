@@ -119,7 +119,7 @@ a:link {
 }
 #sponsoredDesing {
   /* background-color: #91f5ad; */
-  background-color: rgba(3, 2, 51, 0.897);
+  background-color: #87cefa;
   width: 100%;
   height: 100%;
   margin-top: 50px;
@@ -143,8 +143,8 @@ a:link {
   margin-right: 50px;
   margin-top: 50px;
   margin-bottom: 50px;
-  width: 100px;
-  height: 100px;
+  width: 152px;
+  height: 110px;
   cursor: pointer;
 }
 .aboutImgDesing2 {
@@ -157,10 +157,7 @@ a:link {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-/* #numberH2 {
-  display: grid;
-  place-items: center;
-} */
+
 #numberDesing {
   background-color: #87ceeb;
   height: 100%;
@@ -245,41 +242,6 @@ a:link {
   color: #8e44ad;
   margin-bottom: 5px;
 }
-/* .btns {
-  margin-top: 20px;
-  margin-bottom: 5px;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-.btns button {
-  background: #8e44ad;
-  width: 100%;
-  padding: 9px 0px;
-  outline: none;
-  border: 2px solid #8e44ad;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: 400;
-  color: #8e44ad;
-  transition: all 0.3s linear;
-}
-.btns button:first-child {
-  background: none;
-  margin-right: 5px;
-}
-.btns button:last-child {
-  color: #fff;
-  margin-left: 5px;
-}
-.btns button:first-child:hover {
-  background: #8e44ad;
-  color: #fff;
-}
-.btns button:hover {
-  color: #fff;
-} */
 
 footer {
   background-color: #333333;
@@ -680,72 +642,5 @@ footer .rowCC {
   .sponsoredh2 h2 {
     margin-top: 10px;
     margin-bottom: 10px;
-  }
-  #sponsored .imgSponsored img {
-    margin-left: 0px;
-  }
-
-  #mongeLogo {
-    margin-right: 50px;
-  }
-  #viskasLogo {
-    margin-right: 50px;
-  }
-  #purinaLogo {
-    margin-right: 50px;
-  }
-}
-
-@media only screen and (min-width: 770px) and (max-width: 200000px) {
-  #mongeLogo {
-    margin-right: 0px;
-  }
-  #viskasLogo {
-    margin-right: 0px;
-  }
-  #purinaLogo {
-    margin-right: 0px;
-  }
-  #royalLogo {
-    margin-right: 0px;
-  }
-  #josiLogo {
-    margin-right: 0px;
-  }
-}
-
-@media only screen and (min-width: 460px) and (max-width: 769px) {
-  #mongeLogo {
-    margin-right: 50px;
-  }
-  #viskasLogo {
-    margin-right: 0px;
-  }
-  #purinaLogo {
-    margin-right: 50px;
-  }
-  #royalLogo {
-    margin-right: 50px;
-  }
-  #josiLogo {
-    margin-right: 50px;
-  }
-}
-
-@media only screen and (min-width: 0px) and (max-width: 289px) {
-  #mongeLogo {
-    margin-right: 30px;
-  }
-  #viskasLogo {
-    margin-right: 30px;
-  }
-  #purinaLogo {
-    margin-right: 30px;
-  }
-  #royalLogo {
-    margin-right: 0px;
-  }
-  #josiLogo {
-    margin-right: 0px;
   }
 }
