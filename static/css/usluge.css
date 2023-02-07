@@ -87,7 +87,6 @@ a:link {
 #aboutContainer {
   width: 100%;
   margin-left: 5px;
-  display: grid;
 }
 
 .aboutFlexDesing {
@@ -100,14 +99,16 @@ a:link {
   border-radius: 10px;
   margin-left: 8%;
 }
-.aboutTX {
+.aboutMeTxt {
   font-family: Arial, sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.5;
   color: #333;
   /* text-align: justify; */
   margin: 20px 0;
   max-width: 600px;
+  text-align: justify;
+  hyphens: auto;
 }
 
 .aboutTX h2 {
@@ -117,8 +118,10 @@ a:link {
 
 .aboutTrue {
   margin-top: 8px;
-  font-size: 13.5px;
+  font-size: 15px;
   font-weight: bold;
+  margin: 20px 0;
+  line-height: 1.5;
   color: rgb(96, 100, 96);
 }
 .firsTrue {
@@ -129,7 +132,7 @@ a:link {
   margin-right: 5px;
 }
 #servicesContainer .firstBorder {
-  margin-top: 5px;
+  margin-top: 20px;
 }
 #servicesContainer .border {
   border: 1px solid olive;
@@ -137,7 +140,6 @@ a:link {
 
 #servicesContainer section {
   display: flex;
-
   justify-content: space-between;
 }
 .services {
@@ -159,6 +161,71 @@ a:link {
 .services p {
   margin-bottom: 30px;
 }
+
+.teamContainer {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  margin-top: 20px;
+}
+.aco {
+  display: flex;
+}
+.left {
+  background-color: #e9e34d;
+  height: 900px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.center-img {
+  max-width: 70%;
+  max-height: 100%;
+}
+.right {
+  background-color: #8fd8f3;
+  color: white;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-text {
+  max-width: 550px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  text-align: justify;
+}
+.fa.fa-arrow-right {
+  font-size: 36px;
+  color: black;
+  cursor: pointer;
+  position: absolute;
+  margin-top: 350px;
+}
+
+/* Vesna Savic Desing */
+
+.vesna {
+  display: none;
+}
+.fa.fa-arrow-left.center-text.pc0 {
+  display: none;
+}
+
+.fa.fa-arrow-left {
+  font-size: 36px;
+  color: black;
+  cursor: pointer;
+  position: absolute;
+  margin-top: 550px;
+}
+
 .slider-container {
   margin-top: 20px;
   margin-left: 10px;
@@ -177,7 +244,7 @@ a:link {
 
 .slider-container::-webkit-scrollbar {
   height: 15px;
-  background-color: #f5f5f5;
+  background-color: none;
 }
 .slider-container::-webkit-scrollbar-thumb {
   background-color: #40e0d0;
@@ -211,15 +278,252 @@ a:link {
   justify-content: space-between;
 }
 
-.faqDivContainer p {
+.answer {
   display: none;
 }
+.answer p {
+  max-width: 450px;
+  margin-left: 16px;
+  margin-top: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #333;
+  /* text-align: justify; */
+}
+
 .question li {
   margin-right: 20px;
   font-size: 20px;
   cursor: pointer;
 }
 .question h4 {
-    margin-left: 15px;
-    font-size: 20px;
+  margin-left: 15px;
+  font-size: 20px;
+}
+
+footer {
+  background-color: #333333;
+  color: #fff;
+  padding-top: 50px;
+  margin-top: 20px;
+}
+
+footer h4 {
+  margin-bottom: 10px;
+}
+footer .h4 {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+footer ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+footer .social-icons {
+  display: flex;
+}
+footer .col-sm-4 ul li {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+footer .social-icons li {
+  margin-right: 10px;
+}
+
+footer .social-icons li a {
+  color: #fff;
+  font-size: 24px;
+}
+
+#map {
+  width: 100%;
+  height: 300px;
+}
+#map iframe {
+  height: 250px;
+}
+footer .rowCC {
+  margin: 0;
+  display: grid;
+  place-content: center;
+}
+.footerContainer {
+  display: flex;
+  margin-left: 4%;
+  justify-content: space-between;
+}
+
+#contact {
+  margin-top: 94px;
+  margin-right: 80px;
+}
+#contact button {
+  width: 80px;
+  height: 30px;
+  margin-top: 5px;
+  background-color: #256403;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#contactHome div {
+  margin-top: 15px;
+}
+#contactHome label {
+  display: block;
+  padding-bottom: 3px;
+}
+
+#contactHome input {
+  height: 50px;
+  width: 240px;
+  border-radius: 5px;
+  border: none;
+  background-color: white;
+}
+
+#contactHome textarea {
+  border: none;
+  border-radius: 5px;
+}
+#contactHome h2 {
+  margin-bottom: 30px;
+}
+@media (max-width: 600px) {
+  .desingNavigation {
+    display: none;
+    position: relative;
+    left: 50%;
+    top: 0;
+    background-color: black;
+    transform: translate(-50%, 0%);
+    width: 100%;
+  }
+  .navigacija {
+    height: 50px;
+  }
+
+  .navigacija nav ul {
+    display: grid;
+    background-color: black;
+
+    list-style-type: none;
+  }
+
+  .navigacija nav ul li {
+    margin-bottom: 30px;
+    cursor: pointer;
+    background-image: linear-gradient(
+      to right,
+      black 0%,
+      black 51%,
+      black 100%
+    );
+  }
+
+  .navigacija nav ul li span {
+    display: grid;
+    place-items: center;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+  }
+
+  #hamburger {
+    display: block;
+  }
+
+  .aboutFlexDesing {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .aboutMeTxt {
+    font-size: 0.96rem;
+    text-align: left;
+  }
+  .aboutTrue {
+    font-size: 0.9rem;
+  }
+  .aboutFlexDesing img {
+    width: 99%;
+    border-radius: 10px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-56.8%, -50%);
+  }
+
+  #servicesContainer section {
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .services {
+    position: relative;
+    left: 50%;
+    top: 0%;
+    transform: translate(-50%, 0%);
+    color: #333;
+    line-height: 1.5;
+    font-size: 0.9rem;
+    font-family: Arial, sans-serif;
+  }
+
+  .services3 {
+    margin-top: 40px;
+  }
+  .services4 {
+    margin-top: 40px;
+    margin-bottom: 30px;
+  }
+  .container {
+    flex-direction: column;
+  }
+  .left,
+  .right {
+    height: auto;
+    flex-basis: 100%;
+  }
+  .fa.fa-arrow-left.pc0 {
+    display: none;
+    margin-top: 355px;
+  }
+  .fa.fa-arrow-left.mobile0 {
+    display: none;
+  }
+  .left img {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+  .faqDivContainer {
+    width: 90%;
+  }
+  .answer p {
+    font-size: 0.9rem;
+  }
+  .center-text {
+    text-align: left;
+    margin-left: 6px;
+    font-size: 0.96rem;
+  }
+  .right {
+    height: 400px;
+  }
+
+  .slider img {
+    width: 250px;
+    height: 250px;
+  }
+  #faqContainer section {
+    flex-direction: column;
+  }
+
+  #contact {
+    display: none;
+  }
 }

@@ -638,6 +638,10 @@ footer .rowCC {
     margin-top: 70px;
     margin-bottom: 50px;
   }
+  #sponsored .imgSponsored img {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
 
   .sponsoredh2 h2 {
     margin-top: 10px;
