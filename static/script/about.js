@@ -33,14 +33,26 @@ let hamburgerData = document.querySelector(".desingNavigation");
 openHamburger.addEventListener("click", () => {
   if (hamburgerData.style.display === "block") {
     hamburgerData.style.display = "none";
+    openHamburger.innerHTML = "☰";
   } else {
     hamburgerData.style.display = "block";
     hamburgerData.style.margin = "0px 0px 120px 0px";
+    openHamburger.innerHTML = "X";
   }
 });
 
-// if (putanjaOnama) {
-//   putanjaOnama.addEventListener("click", () => {
-//     location.href = "/static/about.html";
-//   });
-// }
+//readmor
+let readMore = document.querySelector(".readMore");
+let showReadMore = document.querySelector(".txtMore");
+
+readMore.addEventListener("click", () => {
+  if (readMore.innerHTML === "Procitaj vise") {
+    showReadMore.style.display = "block";
+    readMore.innerHTML = "Smanji";
+    readMore.style.color = "rgb(238, 71, 71)";
+  } else {
+    showReadMore.style.display = "none";
+    readMore.innerHTML = "Procitaj vise";
+    readMore.style.color = "rgba(36, 36, 209, 0.726)";
+  }
+});

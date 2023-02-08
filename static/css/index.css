@@ -110,6 +110,15 @@ a:link {
   background-image: linear-gradient(45deg, #85ffbd 0%, #fffb7d 100%);
   /* background-image: linear-gradient(135deg, #81fbb8 10%, #28c76f 100%); */
 }
+.readMore {
+  font-size: 1.1rem;
+  color: rgba(36, 36, 209, 0.726);
+  /* color: rgb(238, 71, 71); */
+  cursor: pointer;
+}
+.txtMore {
+  display: none;
+}
 #about {
   display: flex;
   justify-content: center;
@@ -137,6 +146,7 @@ a:link {
   top: 50%;
   left: -50%;
   transform: translate(0%, -50%);
+  color: rgb(31, 30, 30);
 }
 
 .txtOnama .naslovnaOnama {
@@ -144,6 +154,20 @@ a:link {
   display: grid;
   margin-top: 3px;
   margin-bottom: 15px;
+}
+.toOnama {
+  display: block;
+  margin-top: 20px;
+  width: 100px;
+  height: 30px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  margin-left: -5px;
+  background-color: #00ff7f;
+}
+.toOnama a {
+  color: #333;
 }
 #oNama h1 {
   display: grid;
@@ -161,6 +185,10 @@ a:link {
   border-radius: 25px;
 }
 
+.comment-card p {
+  color: #333;
+  line-height: 23px;
+}
 .user-info {
   display: flex;
   align-items: center;
@@ -271,9 +299,7 @@ footer .rowCC {
   margin-bottom: 30px;
 }
 
-
 @media only screen and (min-width: 1200px) {
-
   .imgOnama img {
     width: 175%;
     height: 80%;
@@ -299,11 +325,10 @@ footer .rowCC {
 
 @media only screen and (min-width: 1342px) {
   .imgOnama img {
-    width: 185%;
     height: 90%;
     position: relative;
     top: 50%;
-    left: 0%;
+    left: -5%;
     transform: translate(5%, -50%);
     border-radius: 50%;
   }
@@ -312,21 +337,20 @@ footer .rowCC {
     top: 50%;
     left: 65%;
     transform: translate(-50%, -50%);
+    width: 40%;
   }
   .comment-card {
     width: 35%;
   }
 }
 
-
-
 @media only screen and (min-width: 1201px) {
   .imgOnama img {
-    width: 175%;
-    height: 80%;
+    width: 165%;
+    height: 70%;
     position: relative;
     top: 50%;
-    left: 0%;
+    left: -6%;
     transform: translate(5%, -50%);
     border-radius: 50%;
   }
@@ -339,6 +363,10 @@ footer .rowCC {
 }
 @media only screen and (min-width: 901px) and (max-width: 1200px) {
   /* 989 */
+  .divAbout {
+    font-size: 0.97rem;
+    left: 58%;
+  }
   .imgOnama img {
     width: 175%;
     height: 80%;
@@ -364,6 +392,10 @@ footer .rowCC {
   }
 }
 @media only screen and (min-width: 651px) and (max-width: 900px) {
+  .divAbout {
+    font-size: 0.97rem;
+    left: 57%;
+  }
   .imgOnama img {
     width: 160%;
     height: 50%;
@@ -373,6 +405,7 @@ footer .rowCC {
     transform: translate(5%, -50%);
     border-radius: 50%;
   }
+
   .sectionAbout {
     width: 280px;
     height: 200px;
@@ -395,7 +428,10 @@ footer .rowCC {
     line-height: 23.5px;
     width: 60%;
   }
-
+  .comment-card p {
+    font-size: 0.99rem;
+    line-height: 23px;
+  }
   footer .footerContainer {
     margin-left: 10px;
   }
@@ -429,7 +465,7 @@ footer .rowCC {
     left: 56%;
     transform: translate(-50%, -50%);
     width: 250px;
-    font-size: 15.5px;
+    font-size: 0.97rem;
     line-height: 1.3;
   }
   .sectionAbout2 {
@@ -464,7 +500,9 @@ footer .rowCC {
     left: 50%;
     transform: translate(-50%, -50%);
     line-height: 23.5px;
+    color: rgb(31, 30, 30);
     width: 92%;
+    font-size: 0.98rem;
   }
 
   .txtOnama .naslovnaOnama {
@@ -487,6 +525,10 @@ footer .rowCC {
     margin: 50px;
     border-radius: 25px;
   }
+  .comment-card p {
+    font-size: 0.99rem;
+    line-height: 23px;
+  }
   .user-info {
     display: grid;
     margin: auto;
@@ -498,7 +540,9 @@ footer .rowCC {
   .footerContainer {
     margin-left: 10px;
   }
-
+  footer li {
+    font-size: 0.95rem;
+  }
   #contact {
     display: none;
   }

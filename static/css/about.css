@@ -3,11 +3,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-p,
-a,
-span {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-}
 
 html,
 body {
@@ -96,8 +91,10 @@ a:link {
   margin-bottom: 30px;
 }
 .pAboutDesing p {
-  font-size: 20px;
-  color: rgba(0, 0, 0, 0.76);
+  font-size: 17px;
+  color: #333;
+  font-family: Arial, sans-serif;
+  line-height: 30px;
 }
 .aboutImgDesing {
   display: flex;
@@ -115,6 +112,16 @@ a:link {
   width: 550px;
   margin-left: 300px;
   border-radius: 10px;
+  display: none;
+}
+
+.readMore {
+  font-size: 1.1rem;
+  color: rgba(36, 36, 209, 0.726);
+  /* color: rgb(238, 71, 71); */
+  cursor: pointer;
+}
+.txtMore {
   display: none;
 }
 #sponsoredDesing {
@@ -156,6 +163,20 @@ a:link {
   left: 100%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+.pAboutDesing2 p {
+  color: #333;
+}
+.otherBTN {
+  display: block;
+  margin-top: 30px;
+  width: 200px;
+  height: 30px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  background-color: #00bfff;
+  color: #333;
 }
 
 #numberDesing {
@@ -230,6 +251,7 @@ a:link {
   margin-top: 8px;
   font-size: 16px;
   font-weight: 400;
+  line-height: 23px;
 }
 .box .name_job {
   margin: 10px 0 3px 0;
@@ -456,7 +478,7 @@ footer .rowCC {
     text-align: center;
   }
   #about .pAboutDesing h2 {
-    margin-left: -17px;
+    margin-left: 15px;
   }
   .aboutImgDesing {
     display: grid;
@@ -487,6 +509,13 @@ footer .rowCC {
     place-items: center;
   }
 
+  .pAboutDesing2 h2 {
+    margin-left: 15px;
+  }
+  .otherBTN {
+    margin-left: auto;
+    margin-right: auto;
+  }
   .numberFlex {
     display: grid;
     place-items: center;
@@ -574,7 +603,8 @@ footer .rowCC {
   }
   .pAboutDesing p {
     text-align: center;
-    font-size: 19px;
+    font-size: 1.08rem;
+    line-height: 28px;
   }
   .aboutImgDesing {
     display: block;
@@ -588,19 +618,23 @@ footer .rowCC {
   }
 
   .pAboutDesing h2 {
-    margin-left: 100px;
+    margin-left: 117px;
   }
 
   #centerPonuda img {
     margin-left: 620px;
   }
   .pAboutDesing2 h2 {
-    margin-left: 88.5px;
+    margin-left: 96px;
   }
   #centerPonuda .aboutImg img {
     margin-top: -30px;
     margin-bottom: 50px;
     height: 300px;
+  }
+  .otherBTN {
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .numberFlex {
@@ -630,6 +664,9 @@ footer .rowCC {
 
   footer iframe {
     width: 103%;
+  }
+  footer li {
+    font-size: 0.95rem;
   }
   /* #centerAbout {
     display: none;

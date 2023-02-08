@@ -3,22 +3,6 @@
   padding: 0%;
   box-sizing: border-box;
 }
-/* font-family: Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #333;
-  text-align: justify;
-  margin: 20px 0;
-  max-width: 600px; */
-
-p,
-a,
-span {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  /* font-size: 16px; */
-  font-size: 1rem;
-  /* line-height: 1.5em; */
-}
 
 html,
 body {
@@ -107,7 +91,7 @@ a:link {
   /* text-align: justify; */
   margin: 20px 0;
   max-width: 600px;
-  text-align: justify;
+
   hyphens: auto;
 }
 
@@ -143,9 +127,13 @@ a:link {
   justify-content: space-between;
 }
 .services {
+  font-family: Arial, sans-serif;
   width: 250px;
   text-align: center;
   /* margin-right: 50px; */
+  line-height: 24px;
+  color: #333;
+  font-size: 0.95rem;
 }
 
 .services i {
@@ -199,7 +187,6 @@ a:link {
   font-size: 16px;
   line-height: 1.5;
   color: #333;
-  text-align: justify;
 }
 .fa.fa-arrow-right {
   font-size: 36px;
@@ -391,6 +378,38 @@ footer .rowCC {
 #contactHome h2 {
   margin-bottom: 30px;
 }
+@media only screen and (min-width: 601px) and (max-width: 969px) {
+  .aboutFlexDesing {
+    display: flex;
+    flex-wrap: wrap;
+  }
+.aboutTX {
+  position: relative;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%,-10%);
+}
+  .aboutMeTxt {
+    font-size: 0.96rem;
+    text-align: left; 
+  }
+  .aboutTrue {
+    font-size: 0.9rem;
+  }
+  .aboutFlexDesing img {
+    width: 70%;
+    border-radius: 10px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-56.8%, -50%);
+  }
+
+  #contact {
+    display: none;
+  }
+}
+
 @media (max-width: 600px) {
   .desingNavigation {
     display: none;
@@ -468,10 +487,9 @@ footer .rowCC {
     left: 50%;
     top: 0%;
     transform: translate(-50%, 0%);
-    color: #333;
-    line-height: 1.5;
+
+    line-height: 25px;
     font-size: 0.9rem;
-    font-family: Arial, sans-serif;
   }
 
   .services3 {
@@ -525,5 +543,8 @@ footer .rowCC {
 
   #contact {
     display: none;
+  }
+  footer li {
+    font-size: 0.95rem;
   }
 }
