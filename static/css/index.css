@@ -1,594 +1,805 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 * {
   margin: 0;
+  font-family: "Roboto", sans-serif;
   padding: 0;
   box-sizing: border-box;
-}
-p,
-a,
-span {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-}
-html,
-body {
-  overflow-x: hidden;
-}
-#hamburger {
-  font-size: 30px;
-  margin-left: 10px;
-  cursor: pointer;
-  display: none;
-}
-.desingNavigation {
-  position: relative;
-  left: 50%;
-  top: 0;
-  transform: translate(-50%, 0%);
-  width: 50%;
-}
-.navigacija {
-  height: 50px;
-}
-
-.navigacija nav ul {
-  display: flex;
-  justify-content: space-evenly;
-
-  list-style-type: none;
-}
-
-.navigacija nav ul li {
-  margin-top: 10px;
-  background-image: linear-gradient(
-    to right,
-    #76b852 0%,
-    #8dc26f 51%,
-    #76b852 100%
-  );
-  width: 100vh;
-  width: 80px;
-  height: 30px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-a:link {
-  text-decoration: none;
-}
-.navigacija nav ul li span {
-  display: grid;
-  place-items: center;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   color: white;
 }
 
-#naslovna img {
+#html,
+#body {
+  background-color: #131111;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 12px; /* Širina skrol trake */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #009900; /* Boja trake skrola */
+  border-radius: 5px; /* Zaobljenost ivica trake skrola */
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #009900;
+}
+
+#openNavModal:focus {
+  box-shadow: none;
+}
+
+#navMenu nav {
+  padding-inline: 30px;
+}
+#backgroundWallper img {
   width: 100%;
+  height: 90vh;
+  object-fit: contain;
 }
-#about {
+#firstSection {
+  margin-top: 50px;
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.topFlex,
+.bottomFlex {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 70px;
-  padding: 30px;
 }
-.sectionAbout {
-  /* background-color: rgb(207, 205, 205); */
-  background-color: rgb(248, 246, 246);
+
+.firstSectionDivDesing {
   width: 400px;
   height: 250px;
-  border: 1px solid rgb(17, 59, 8);
-  border-radius: 10px;
-  transition: transform 0.2s;
-  cursor: pointer;
 }
 
-.sectionAbout:hover {
-  transform: scale(1.1);
-}
-.sectionAbout2 {
-  margin-left: 10px;
-}
-.divAbout h2 {
-  color: black;
-  margin-bottom: 10px;
-}
-.divAbout {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 250px;
-  font-size: 18px;
-  color: rgba(0, 0, 0, 0.692);
-}
-#oNama {
-  margin-top: 70px;
-  height: 60vw;
-  /* background-color: #85ffbd; */
-  background-image: linear-gradient(45deg, #85ffbd 0%, #fffb7d 100%);
-  /* background-image: linear-gradient(135deg, #81fbb8 10%, #28c76f 100%); */
-}
-.readMore {
-  font-size: 1.1rem;
-  color: rgba(36, 36, 209, 0.726);
-  /* color: rgb(238, 71, 71); */
-  cursor: pointer;
-}
-.txtMore {
-  display: none;
-}
-#about {
-  display: flex;
-  justify-content: center;
-}
-#sectionOnama {
-  display: flex;
-  justify-content: flex-end;
-  height: 100%;
-}
-
-.imgOnama img {
-  width: 50%;
-
-  position: relative;
-  top: 50%;
-  left: 0%;
-  transform: translate(5%, -50%);
-  border-radius: 20px;
-}
-.txtOnama {
-  width: 170%;
-}
-.txtOnama p {
-  position: relative;
-  top: 50%;
-  left: -50%;
-  transform: translate(0%, -50%);
-  color: rgb(31, 30, 30);
-}
-
-.txtOnama .naslovnaOnama {
-  font-size: 30px;
-  display: grid;
-  margin-top: 3px;
-  margin-bottom: 15px;
-}
-.toOnama {
-  display: block;
-  margin-top: 20px;
-  width: 100px;
-  height: 30px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  margin-left: -5px;
-  background-color: #00ff7f;
-}
-.toOnama a {
-  color: #333;
-}
-#oNama h1 {
+.textCard {
+  text-align: center;
   display: grid;
   place-content: center;
-  /* margin-bottom: 50px; */
-}
-#rec {
-  display: flex;
-  justify-content: center;
-}
-.comment-card {
-  width: 50%;
-  padding: 20px;
-  margin: 50px;
-  border-radius: 25px;
+  background-color: #33333333;
 }
 
-.comment-card p {
-  color: #333;
-  line-height: 23px;
+.textCard span {
+  transform: scale(2.2);
+  color: #009900;
 }
-.user-info {
+
+.textCard p {
+  font-size: 1.1rem;
+  margin-top: 20px;
+}
+.imgCard img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.welcomeTitle h3 {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 3rem;
+}
+#welcomeSection {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#welcomeSection div {
+  text-align: center;
+  margin-top: 100px;
+  margin-inline: 45px;
+
+  width: 450px;
+}
+
+#welcomeSection div h5 {
+  font-size: 2.5rem;
+  color: #009900;
+}
+
+#welcomeSection div p {
+  font-size: 0.9rem;
+  line-height: 25px;
+}
+
+#welcomeSection div a {
+  color: #009900;
+}
+
+#about {
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+  background-color: #010101;
+  margin-top: 100px;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.aboutFlex {
+  display: flex;
+  align-items: center;
+}
+.aboutLeft {
+  width: 55%;
+}
+
+.aboutLeft div {
+  width: 100%;
+}
+.aboutLeft div img {
+  width: 100%;
+}
+.aboutRight {
+  width: 45%;
+}
+.aboutRightContainer {
+  width: 90%;
+}
+
+.aboutRight .aboutRightContainer h2 {
+  font-size: 3.2rem;
+}
+.aboutRightBorder {
+  border: 3px solid #009900;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+.aboutRightContainer p {
+  font-size: 1.1rem;
+  line-height: 30px;
+}
+
+.aboutRightContainer button {
+  width: 200px;
+  height: 50px;
+  color: whitesmoke;
+  font-size: 1.1rem;
+  background-color: #009900;
+  border: none;
+  margin-top: 10px;
+}
+.aboutRightContainer button:hover {
+  background-color: #010101;
+  border: 2px solid #009900;
+  color: white;
+}
+
+#product {
+  margin-top: 100px;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #00ec0067;
+}
+
+.productFlex {
+  display: flex;
+  align-items: center;
+}
+.productLeft {
+  width: 55%;
+}
+.productItemContainer {
+  display: flex;
+  align-items: center;
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 4px solid white;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-radius: 10px;
+  height: 140px;
+  padding-right: 5px;
+}
+
+.productItemIcon span {
+  transform: scale(2);
+  margin-right: 40px;
+  color: white;
+  margin-left: 40px;
+  margin-top: -10px;
+}
+
+.productItemTXT h5 {
+  font-size: 1.4rem;
+}
+.productItemTXT p {
+  color: #ffffffaf;
+  font-size: 1rem;
+}
+
+.productRight {
+  width: 45%;
+}
+
+.productRight div {
+  width: 100%;
+  text-align: center;
+}
+.productRight div img {
+  width: 65%;
+}
+
+#cooperation {
+  width: 80%;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cooperationFlex {
   display: flex;
   align-items: center;
 }
 
-.user-info img {
-  width: 170px;
-  height: 170px;
-  margin-right: 20px;
+.cooperationLeft,
+.cooperationRight {
+  width: 50%;
+  margin-inline: 20px;
 }
 
-.comment-text {
-  margin-top: 10px;
+.cooperationLeftTXT h4 {
+  font-size: 3rem;
+  color: #009900;
 }
-.block {
-  display: block;
+.cooperationLeftTXT p {
+  color: #ffffffc4;
+  font-size: 0.95rem;
+  line-height: 25px;
 }
-.container {
-  margin-left: 15px;
-}
-footer {
-  background-color: #333333;
-  color: #fff;
-  padding-top: 50px;
-}
-
-footer h4 {
-  margin-bottom: 10px;
-}
-footer .h4 {
-  margin-top: 20px;
-  margin-bottom: 30px;
-}
-footer ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-footer .social-icons {
-  display: flex;
-}
-footer .col-sm-4 ul li {
-  margin-bottom: 12px;
-  font-size: 18px;
-}
-footer .social-icons li {
-  margin-right: 10px;
-}
-
-footer .social-icons li a {
-  color: #fff;
-  font-size: 24px;
-}
-
-#map {
+.cooperationLeftIMG {
   width: 100%;
-  height: 300px;
 }
-#map iframe {
-  height: 250px;
+
+.cooperationLeftIMG img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  -webkit-filter: grayscale(30%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(30%);
 }
-footer .rowCC {
-  margin: 0;
+
+.cooperationCard {
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  padding-inline: 10px;
+  height: 170px;
+  padding-top: 5px;
+}
+
+.cooperationNumber p {
+  font-size: 3rem;
+  margin-right: 20px;
+  background-color: #009900;
+  padding-inline: 10px;
+  border-radius: 50%;
+}
+
+.cooperationCardTXT {
+  padding-top: 10px;
+}
+.cooperationCardTXT h5 {
+  font-size: 1.5rem;
+}
+
+.cooperationCardTXT p {
+  font-size: 0.9rem;
+  color: #ffffffcf;
+  line-height: 25px;
+}
+.cooperationGray {
+  border-radius: 10px;
+  background-color: #3333339f;
+}
+
+#object {
+  margin-top: 100px;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+  background-color: #3333339f;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.objectFlex {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.objectRightFlexTop,
+.objectRightFlexBottom {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.objectLeft {
+  width: 80%;
+}
+
+.objectLeft h2 {
+  font-size: 3.5rem;
+  color: #009900;
+}
+
+.objectLeft p {
+  margin-top: 30px;
+  font-size: 1rem;
+  line-height: 30px;
+}
+
+.objectLeft button {
+  text-decoration: none;
+  color: whitesmoke;
+  background-color: #009900;
+  border: none;
+  cursor: pointer;
+  width: 230px;
+  height: 55px;
+  margin-top: 20px;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  transition: ease-in-out 0.3s;
+}
+
+.objectLeft button:hover {
+  background-color: #009900a9;
+}
+
+.objectRight {
+  width: 20%;
+}
+
+.objectRight {
+  width: 100%;
+}
+
+.objectIMG {
+  width: 35%;
+  margin: 5px;
+}
+
+.objectIMG img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  -webkit-filter: grayscale(10%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(10%);
+}
+#contact {
+  text-align: center;
+  margin-top: 100px;
+}
+.contactText {
+  width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.contactText h3 {
+  font-size: 3rem;
+  color: #009900;
+}
+.contactText p {
+  font-size: 1rem;
+  line-height: 28px;
+}
+.contactFlex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contactCard {
   display: grid;
   place-content: center;
-}
-.footerContainer {
-  display: flex;
-  justify-content: space-between;
-  width: 80%;
-  margin: auto;
-}
-
-#contact {
-  margin-top: 90px;
-  margin-right: 80px;
-}
-#contact button {
-  width: 80px;
-  height: 30px;
-  margin-top: 5px;
-  background-color: #256403;
-  border: none;
-  border-radius: 5px;
+  margin-inline: 20px;
+  width: 300px;
+  height: 250px;
+  background-color: whitesmoke;
   cursor: pointer;
-}
-#contactHome div {
-  margin-top: 15px;
-}
-#contactHome label {
-  display: block;
-  padding-bottom: 3px;
+  margin-bottom: 50px;
+  border-radius: 60px;
+  margin-top: 30px;
 }
 
-#contactHome input {
-  height: 50px;
-  width: 240px;
-  border-radius: 5px;
-  border: none;
+.contactFlex a {
+  text-decoration: none;
+}
+
+.contactCard span {
+  transform: scale(3);
+  color: white;
+  background-color: #009900;
+  padding: 10px;
+  border-radius: 50%;
+}
+footer {
+  margin-top: 100px;
+  border-top: 2px solid white;
+}
+
+.footerTopContent {
+  background-color: #00ec0067;
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.footerTopContent h4 {
+  font-size: 2.5rem;
+}
+
+.fb,
+.ig {
+  margin-top: 10px;
+  font-size: 2rem;
+  margin-inline: 20px;
+  cursor: pointer;
   background-color: white;
+  padding: 15px;
+  border-radius: 20px;
+  color: black;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+#scrollToTop {
+  margin-top: 10px;
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+}
+#scrollToTop i {
+  font-size: 0.9rem;
 }
 
-#contactHome textarea {
-  border: none;
-  border-radius: 5px;
-}
-#contactHome h2 {
-  margin-bottom: 30px;
-}
-
-@media only screen and (min-width: 1200px) {
-  .imgOnama img {
-    width: 175%;
-    height: 80%;
-    position: relative;
-    top: 50%;
-    left: 0%;
-    transform: translate(5%, -50%);
-    border-radius: 50%;
-  }
-
-  .txtOnama p {
-    position: relative;
-    top: 50%;
-    left: 67%;
-    transform: translate(-50%, -50%);
-    width: 60%;
-  }
-
-  .comment-card {
-    width: 40%;
-  }
+.footerBottomContent {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 15px;
+  background-color: #3333339f;
 }
 
-@media only screen and (min-width: 1342px) {
-  .imgOnama img {
-    height: 90%;
-    position: relative;
-    top: 50%;
-    left: -5%;
-    transform: translate(5%, -50%);
-    border-radius: 50%;
+.footerBottomContent a {
+  margin-inline: 20px;
+  text-decoration: none;
+  color: white;
+  font-size: 1.2rem;
+}
+
+@media only screen and (max-width: 1279px) {
+  #firstSection {
+    width: 1010px;
   }
-  .txtOnama p {
-    position: relative;
-    top: 50%;
-    left: 65%;
-    transform: translate(-50%, -50%);
-    width: 40%;
+  #welcomeSection div {
+    width: 420px;
   }
-  .comment-card {
-    width: 35%;
+  #cooperation {
+    width: 100%;
+  }
+
+  .objectFlex {
+    width: 100%;
+  }
+
+  .objectLeft {
+    margin-left: 20px;
   }
 }
 
-@media only screen and (min-width: 1201px) {
-  .imgOnama img {
-    width: 165%;
-    height: 70%;
-    position: relative;
-    top: 50%;
-    left: -6%;
-    transform: translate(5%, -50%);
-    border-radius: 50%;
+@media only screen and (max-width: 1023px) {
+  #firstSection {
+    margin-top: 0px;
+    width: 760px;
   }
-  .sectionAbout {
-    width: 373px;
-  }
-  .txtOnama p {
-    line-height: 23.5px;
-  }
-}
-@media only screen and (min-width: 901px) and (max-width: 1200px) {
-  /* 989 */
-  .divAbout {
-    font-size: 0.97rem;
-    left: 58%;
-  }
-  .imgOnama img {
-    width: 175%;
-    height: 80%;
-    position: relative;
-    top: 50%;
-    left: 0%;
-    transform: translate(5%, -50%);
-    border-radius: 50%;
-  }
-  .sectionAbout {
-    width: 273.6px;
-  }
-  .txtOnama p {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-10%, -50%);
-    line-height: 23.5px;
-    width: 50%;
-  }
-  .txtMore {
-    display: none;
-  }
-}
-@media only screen and (min-width: 651px) and (max-width: 900px) {
-  .divAbout {
-    font-size: 0.97rem;
-    left: 57%;
-  }
-  .imgOnama img {
-    width: 160%;
-    height: 50%;
-    position: relative;
-    top: 50%;
-    left: 0%;
-    transform: translate(5%, -50%);
-    border-radius: 50%;
-  }
-
-  .sectionAbout {
-    width: 280px;
+  .firstSectionDivDesing {
     height: 200px;
   }
-  .sectionAbout3 {
+  .textCard span {
     margin-top: 20px;
-  }
-  #oNama {
-    height: 90vw;
-  }
-  .txtMore {
-    display: none;
+    transform: scale(1.5);
   }
 
-  .txtOnama p {
-    position: relative;
-    top: 50%;
-    left: 80%;
-    transform: translate(-75%, -50%);
-    line-height: 23.5px;
-    width: 60%;
-  }
-  .comment-card p {
-    font-size: 0.99rem;
-    line-height: 23px;
-  }
-  footer .footerContainer {
-    margin-left: 10px;
-  }
-  .footerContainer {
-    width: 100%;
+  .textCard p {
+    font-size: 0.9rem;
   }
 
-  #contact {
-    margin-left: 12%;
+  .imgCard img {
+    height: 200px;
   }
-  .txtMore {
-    display: none;
+
+  .aboutLeft,
+  .aboutRight {
+    width: 50%;
   }
-  .desingNavigation {
+  .aboutRightBorder {
+    border: 2px solid #009900;
+    margin-bottom: 15px;
+  }
+  .aboutRight .aboutRightContainer h2 {
+    font-size: 1.5rem;
+  }
+
+  .aboutRightContainer p {
+    font-size: 0.9rem;
+    line-height: 26px;
+  }
+
+  .aboutRightContainer button {
+    width: 140px;
+    height: 42px;
+    font-size: 1rem;
+  }
+  #welcomeSection div {
+    width: 43%;
+    margin-inline: 25px;
+  }
+  #welcomeSection div h5 {
+    font-size: 2.2rem;
+  }
+  .productItemContainer {
+    margin-left: 20px;
+    height: 150px;
+  }
+  .productItemIcon span {
+    margin-left: 20px;
+    transform: scale(1.7);
+  }
+
+  .productItemTXT h5 {
+    font-size: 1.3rem;
+  }
+
+  .productItemTXT p {
+    font-size: 0.9rem;
+  }
+
+  .productRight div img {
+    width: 90%;
+  }
+  .cooperationFlex {
+    flex-direction: column;
+  }
+
+  .cooperationLeft,
+  .cooperationRight {
+    width: 90%;
+  }
+  .cooperationLeftTXT h4 {
+    font-size: 2rem;
+  }
+  .cooperationLeftTXT p {
+    font-size: 0.9rem;
+    line-height: 24px;
+  }
+
+  .cooperationLeftIMG img {
+    height: 320px;
+  }
+
+  .cooperationCardTXT h5 {
+    font-size: 1.3rem;
+  }
+  .cooperationNumber p {
+    font-size: 2.5rem;
+    padding-inline: 8px;
+  }
+  .objectFlex {
+    width: 98.5%;
+  }
+  .objectLeft,
+  .objectRight {
+    width: 50%;
+  }
+
+  .objectLeft {
+    margin-right: 5px;
+  }
+
+  .objectLeft h2 {
+    font-size: 2.5rem;
+  }
+  .objectLeft p {
+    font-size: 0.9rem;
+    line-height: 27px;
+    margin-top: 10px;
+    margin-bottom: 0px;
+  }
+
+  .objectLeft button {
+    font-size: 1rem;
+    width: 170px;
+    height: 47px;
+  }
+
+  .objectIMG {
     width: 100%;
+  }
+  .objectIMG img {
+    height: 200px;
+  }
+  .contactText {
+    width: 75%;
+  }
+
+  .contactText h3 {
+    font-size: 2rem;
+  }
+
+  .contactText p {
+    font-size: 0.95rem;
+  }
+
+  .contactCard {
+    width: 170px;
+    height: 150px;
+    border-radius: 25px;
+  }
+
+  .contactCard span {
+    transform: scale(2);
+  }
+
+  .footerTopContent h4 {
+    font-size: 2rem;
   }
 }
-@media only screen and (max-width: 650px) {
-  #about {
+@media only screen and (max-width: 767px) {
+  #firstSection {
+    width: 90%;
+  }
+  .topFlex,
+  .bottomFlex {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .firstSectionDivDesing {
+    width: 100%;
+  }
+
+  .textCard p {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+  }
+  .aboutLeft,
+  .aboutRight {
+    width: 100%;
+  }
+
+  .aboutRightContainer {
+    margin-top: 50px;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #welcomeSection div {
+    margin-inline: 0px;
+    flex-direction: column;
+    width: 90%;
+    margin-top: 100px;
+  }
+
+  .aboutFlex {
+    flex-direction: column;
+  }
+  .productLeft,
+  .productRight {
+    width: 100%;
+  }
+
+  .productFlex {
+    flex-direction: column;
+  }
+  .productItemContainer {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .productRight div {
+    margin-top: 20px;
+  }
+
+  .productRight div img {
+    width: 60%;
+  }
+
+  .objectFlex {
+    width: 96%;
+    flex-direction: column;
+  }
+
+  .objectLeft,
+  .objectRight {
+    width: 100%;
+  }
+
+  .objectLeft {
+    margin-bottom: 50px;
+  }
+
+  .contactText {
+    width: 95%;
+  }
+
+  .contactCard {
+    width: 170px;
+    height: 130px;
+    border-radius: 20px;
+    margin-inline: 10px;
+  }
+  .contactCard span {
+    transform: scale(1.7);
+  }
+
+  .footerBottomContent a {
+    font-size: 1rem;
+  }
+}
+@media only screen and (max-width: 499px) {
+  #firstSection {
+    width: 95.5%;
+  }
+
+  .textCard p {
+    width: 95%;
+  }
+  #welcomeSection div {
+    width: 98%;
+    margin-top: 70px;
+  }
+
+  .productItemContainer {
+    width: 98%;
+    height: 200px;
+  }
+
+  .productItemIcon span {
+    margin-right: 19px;
+  }
+
+  .cooperationLeft,
+  .cooperationRight {
+    width: 98%;
+  }
+
+  .cooperationCard {
+    padding-inline: 5px;
+    height: initial;
+  }
+  .objectIMG img {
+    height: 150px;
+  }
+
+  .contactText {
+    width: 98%;
+    margin-bottom: 40px;
+  }
+  .contactFlex {
+    flex-wrap: wrap;
+  }
+  .contactCard {
+    width: 140px;
     margin-top: 0px;
   }
 
-  .sectionAbout {
-    width: 300px;
-    height: 200px;
+  .footerBottomContent {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
   }
-
-  .divAbout {
-    position: relative;
-    top: 50%;
-    left: 56%;
-    transform: translate(-50%, -50%);
-    width: 250px;
-    font-size: 0.97rem;
-    line-height: 1.3;
-  }
-  .sectionAbout2 {
-    margin-left: 0px;
-    margin-top: 20px;
-  }
-  #oNama {
-    /* height: 250vw; */
-    height: 100%;
-    margin-top: -5px;
-  }
-  #sectionOnama {
-    display: grid;
-  }
-
-  .imgOnama img {
-    width: 90%;
-    position: relative;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .txtOnama {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    width: 100%;
-  }
-
-  .txtOnama p {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    line-height: 23.5px;
-    color: rgb(31, 30, 30);
-    width: 92%;
-    font-size: 0.98rem;
-  }
-
-  .txtOnama .naslovnaOnama {
-    font-size: 30px;
-  }
-  .txtMore {
-    display: none;
-  }
-
-  #rec {
-    display: grid;
-    place-items: center;
-    margin-top: -30px;
-  }
-  .comment-card {
-    width: 95%;
-    background-color: rgba(255, 255, 255, 0.836);
-    /* border: 1px solid rgba(0, 128, 0, 0.329); */
-    padding: 20px;
-    margin: 50px;
-    border-radius: 25px;
-  }
-  .comment-card p {
-    font-size: 0.99rem;
-    line-height: 23px;
-  }
-  .user-info {
-    display: grid;
-    margin: auto;
-  }
-  .user-info img {
-    margin: auto;
-  }
-
-  .footerContainer {
-    margin-left: 10px;
-  }
-  footer li {
-    font-size: 0.95rem;
-  }
-  #contact {
-    display: none;
-  }
-
-  .desingNavigation {
-    display: none;
-    position: relative;
-    left: 50%;
-    top: 0;
-    background-color: black;
-    transform: translate(-50%, 0%);
-    width: 100%;
-  }
-  .navigacija {
-    height: 50px;
-  }
-
-  .navigacija nav ul {
-    display: grid;
-    background-color: black;
-
-    list-style-type: none;
-  }
-
-  .navigacija nav ul li {
-    margin-bottom: 30px;
-    cursor: pointer;
-    background-image: linear-gradient(
-      to right,
-      black 0%,
-      black 51%,
-      black 100%
-    );
-  }
-
-  .navigacija nav ul li span {
-    display: grid;
-    place-items: center;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-  }
-
-  #hamburger {
-    display: block;
+  .footerBottomContent a {
+    font-size: 0.9rem;
+    margin-inline: 7px;
+    margin-top: 10px;
   }
 }

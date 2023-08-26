@@ -1,421 +1,310 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Savic vet shop</title>
+    <title>O nama</title>
+    <link rel="stylesheet" href="./css/about.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <link rel="stylesheet" href="/about.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
-  <body>
+  <body id="body">
     <header>
-      <p id="hamburger">☰</p>
-      <div class="desingNavigation">
-        <div class="navigacija">
-          <nav>
-            <ul>
-              <a href="/index.html">
-                <li><span>Home</span></li></a
+      <div id="navMenu">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" id="a">
+          <a class="navbar-brand" href="#">SAVIC VET SHOP</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            id="openNavModal"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-item nav-link" href="/index.html"
+                >Pocetna <span class="sr-only">(current)</span></a
               >
-
-              <li><span>O nama</span></li>
-
-              <a href="/usluge.html">
-                <li><span>Usluge</span></li>
-              </a>
-              <li><span>Galerija</span></li>
-              <li><span>Forum</span></li>
-            </ul>
-          </nav>
-        </div>
+              <a class="nav-item nav-link active" href="#">O nama</a>
+              <a class="nav-item nav-link" href="/static/galery.html"
+                >Galerija</a
+              >
+            </div>
+          </div>
+        </nav>
       </div>
     </header>
-    <div id="naslovna">
-      <img src="/background.jpg" alt="background" />
-    </div>
 
-    <div id="centerOnama" class="centerDivDesing">
-      <div class="resolution">
-        <section id="about" class="sectionDesing">
-          <div class="aboutText textDesing">
-            <div class="pAbout pAboutDesing">
-              <h2>O nama</h2>
-              <p>
-                Vet Shop Savic je mesto gde mozete pronaci sve sto vas ljubimac
-                moze pozeleti. <br />
-                Vec nekoliko godina poslujemo i sa ponosom mozemo reci da smo
-                najveci vet shop u Cupriji i sire.
-                <br />
-                Nas tim, sastavljen od ljubaznog i strucnog osoblja, uvek je tu
-                da vam pomogne i da vas savjetuje. <br />
-                <br />
-
-                <span class="txtMore">
-                  U nasem sirokom asortimanu proizvoda, pronaci cete sve sto je
-                  potrebno za zdravlje, higijenu i zabavu vaseg ljubimca. <br />
-                  <br />
-                  Od kvalitetne hrane, preko igracaka i opreme za setanje.
-                  <br />
-                  U Vet Shopu Savic, mi verujemo da je zadovoljstvo nase
-                  musterije uvek na prvom mestu. Zato smo posveceni pruzanju
-                  najviseg kvaliteta usluga i proizvoda, kao i ljubaznom i
-                  profesionalnom odnosu prema nasim klijentima. Pridruzite se
-                  zadovoljnim kupcima i osigurajte najbolje za svojeg najboljeg
-                  prijatelja! Kod nas, vas ljubimac uvijek dolazi na prvo
-                  mjesto! <br />
-                  <br />
-                </span>
-                <span class="readMore">Procitaj vise</span>
-              </p>
-            </div>
-          </div>
-          <div class="aboutImg aboutImgDesing">
-            <img
-              src="/slikeLokala/IMG-1204.jpg"
-              alt="aboutSlika1"
-              class="slider"
-            />
-            <img
-              src="/slikeLokala/IMG-1192.jpg"
-              alt="aboutSlika2"
-              class="slider"
-            />
-            <img
-              src="/slikeLokala/IMG-1193.jpg"
-              alt="aboutSlika3"
-              class="slider"
-            />
-            <img
-              src="/slikeLokala/IMG-1195.jpg"
-              alt="aboutSlika4"
-              class="slider"
-            />
-          </div>
-        </section>
-      </div>
-    </div>
-
-    <div id="sponsoredDesing">
-      <div class="resolution">
-        <section id="sponsored">
-          <div class="sponsoredh2">
-            <h2>Saradjujemo sa:</h2>
-          </div>
-          <div class="imgSponsored">
-            <a href="https://www.monge.it/?lang=en#" target="_blank">
-              <img
-                src="/slikeLogo/monge-monge_5efe09b75a121.png"
-                alt="Monge logo"
-                id="mongeLogo"
-              />
-            </a>
-            <a href="https://www.royalcanin.com/rs" target="_blank">
-              <img
-                src="/slikeLogo/Royal-Canin-Logo.svg.png"
-                alt="Rojal kanin logo"
-                id="royalLogo"
-              />
-            </a>
-            <a href="https://www.farmina.com/rs" target="_blank">
-              <img
-                src="/slikeLogo/logoFarmina-footer.png"
-                alt="Farmina logo"
-                id="farminaLogo"
-              />
-            </a>
-            <a href="">
-              <img
-                src="/slikeLogo/logo_generic.png"
-                alt="Natural Trainer logo"
-                id="naturalLogo"
-              />
-            </a>
-            <a href="https://www.purina.com/" target="_blank">
-              <img
-                src="/slikeLogo/Purina-Logo.png"
-                alt="Purina logo"
-                id="purinaLogo"
-              />
-            </a>
-            <a href="https://www.tasteofthewildpetfood.com/" target="_blank">
-              <img
-                src="/slikeLogo/totw-logo-stacked.png"
-                alt="Totw logo"
-                id="totwLogo"
-              />
-            </a>
-            <a href="https://www.premil.rs/" target="_blank">
-              <img
-                src="/slikeLogo/header-logo.png"
-                alt="Premil logo"
-                id="premilLogo"
-              />
-            </a>
-            <a href="https://biogance.com/en/" target="_blank"></a>
-            <img
-              src="/slikeLogo/biogance-logo.png"
-              alt="biogance-logo"
-              id="bioganceLogo"
-            />
-            <a href="https://camon.it/en/home" target="_blank">
-              <img
-                src="/slikeLogo/logo-camon.png"
-                alt="logo camon"
-                id="camonLogo"
-              />
-            </a>
-            <a href="https://rogz.com/" target="_blank">
-              <img
-                src="/slikeLogo/download.png"
-                alt="Rongz logo"
-                id="rongzLogo"
-              />
-            </a>
-          </div>
-        </section>
-      </div>
-    </div>
-
-    <div id="centerPonuda" class="centerDivDesing test">
-      <div class="resolution">
-        <section id="ponuda" class="sectionDesing">
-          <div class="aboutImg aboutImgDesing aboutImgDesing2 slide2">
-            <img
-              src="/slikeProizvoda/4822_24588-whiskas-granule-sterile-s-kurecim-masem-14-kg.jpg"
-              alt="aboutSlika1"
-              class="slider2"
-            />
-            <img
-              src="/slikeProizvoda/am-za-psa-15041.jpg"
-              alt="aboutSlika1"
-              class="slider2"
-            />
-            <img
-              src="/slikeProizvoda/monge-hrana-za-pse-special-dog-classic.png"
-              alt="aboutSlika1"
-              class="slider2"
-            />
-          </div>
-          <div class="aboutText textDesing">
-            <div class="pAbout pAboutDesing pAboutDesing2">
-              <h2>Sta nudimo?</h2>
-              <p>
-                U nasem vet shopu smo pocasceni sto mozemo da ponudimo nasim
-                klijentima samo najbolje proizvode. <br />
-                Svi proizvodi koje biramo su vrhunske kvalitete i dizajnirani
-                tako da zadovolje potrebe i zelje svih vrsta ljubimaca. <br />
-                Uvek pazljivo biramo proizvode koji ce doneti radost i lepotu u
-                zivot svakog kućnog ljubimca, od hrane, preko povodaca, do
-                kucica i transportera. Sve sto ponudimo je izabrano sa ljubavlju
-                i namernoscu da ucini zivot svakog ljubimca sto boljim i
-                srecnijim.
-                <a href="/usluge.html"
-                  ><button class="otherBTN">Pogledajte ostale usluge</button></a
-                >
-              </p>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-
-    <div id="numberDesing">
-      <div class="resolution">
-        <!-- <div id="numberH2">
-          <h2>Brojevi govore svoje</h2>
-        </div> -->
-        <section id="number">
-          <div class="numberFlex">
-            <div>
-              <p>Ukupan broj prodaja za 2022.</p>
-              <span>999+</span>
-            </div>
-            <div>
-              <p>Broj zadovoljnih musterija</p>
-              <span>999+</span>
-            </div>
-            <div>
-              <p>Procentualni rast prodaje</p>
-              <span>30% / Y</span>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="box">
-        <div class="image">
-          <img src="/585e4beacb11b227491c3399.png" alt="boxIMG1" />
-        </div>
-        <div class="name_job">David Krsmanovic</div>
-        <div class="rating">
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-        </div>
+    <div class="welcomeMessages">
+      <div class="welcomeMessagesTXT animate__animated animate__fadeInLeft">
+        <h2>Pogledajte nasu pricu</h2>
         <p>
-          Odlican pet shop. Osoblje je toliko ljubazno i spremno da pomogne,
-          uvek idem tamo i osecam se kao kod kuce. Imaju sirok izbor kvalitetnih
-          proizvoda, sve u svemu savrseno iskustvo svaki put.
+          Upoznajte se sa nama, sa nasim pocecima, sa nasim prozivodima i radom.
         </p>
-        <!-- <div class="btns">
-          <button>Read More</button>
-          <button>Subscribe</button>
-        </div> -->
-      </div>
-      <div class="box">
-        <div class="image">
-          <img src="/585e4beacb11b227491c3399.png" alt="boxIMG2" />
-        </div>
-        <div class="name_job">Kristijan Jovic</div>
-        <div class="rating">
-          <i class="fa fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-        </div>
-        <p>
-          Uvek sam impresioniran kvalitetom i raznovrsnoscu proizvoda koje nude.
-          Posebno mi se svidelo kako su pazljivo odabrali samo najbolje
-          brendove. Sve u svemu, jako sam zadovoljan svaki put kad kupujem ovde.
-        </p>
-        <!-- <div class="btns">
-          <button>Read More</button>
-          <button>Subscribe</button>
-        </div> -->
-      </div>
-      <div class="box">
-        <div class="image">
-          <img src="/585e4beacb11b227491c3399.png" alt="boxIMG3" />
-        </div>
-        <div class="name_job">Ana Maksimovic</div>
-        <div class="rating">
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-        </div>
-        <p>
-          Posetila sam ovaj pet shop i bila sam odusevljena svim proizvodima
-          koji su dostupni. Moji kucni ljubimci su bili posebno srecni kada su
-          dobili nove igracke i hranu. Osoblje je bilo neverovatno ljubazno i
-          pomoglo mi da pronadjem sve sto mi je potrebno za moje pse.
-        </p>
-        <!-- <div class="btns">
-              <button>Read More</button>
-              <button>Subscribe</button>
-            </div> -->
+        <a href="#story"><button>Nastavi</button></a>
       </div>
     </div>
-
-    <footer>
-      <div class="resolution">
-        <div class="footerContainer">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-4">
-                <h4>Kontaktirajte nas:</h4>
-                <ul>
-                  <li>Adresa: Ive Lole Ribara 6, Cuprija</li>
-                  <li>Telefon: 063 482394</li>
-                  <li>Email: acatramvaj@yahoo.com</li>
-                </ul>
-              </div>
-              <div class="col-sm-4">
-                <h4>Pratite nas:</h4>
-                <ul class="social-icons">
-                  <li>
-                    <a
-                      href="https://www.facebook.com/profile.php?id=100017595854060"
-                      target="_blank"
-                      ><i class="fa fa-facebook"></i
-                    ></a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://www.instagram.com/savic_vet_shop_cuprija/?next=%2F"
-                      target="_blank"
-                      ><i class="fa fa-instagram"></i
-                    ></a>
-                  </li>
-                  <li>
-                    <a href="mailto:acatramvaj@yahoo.com"
-                      ><i class="fa fa fa-envelope"></i
-                    ></a>
-                  </li>
-                </ul>
-              </div>
-              <div class="col-sm-4">
-                <h4 class="h4">Lokacija</h4>
-                <div id="map">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2873.378796397412!2d21.371500515686428!3d43.93083364245102!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4756bf5069d7a29d%3A0x83f41436febb6d05!2z0JjQstC1INCb0L7Qu9C1INCg0LjQsdCw0YDQsCA2LCDQi9GD0L_RgNC40ZjQsCAzNTIzMA!5e0!3m2!1ssr!2srs!4v1673978417489!5m2!1ssr!2srs"
-                    style="border: 0"
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"
-                  ></iframe>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div id="contact">
-            <form id="contactHome">
-              <h2>Kontaktirajte nas</h2>
-              <div>
-                <label for="nameLastname"> Ime i prezime*</label>
-                <input
-                  type="text"
-                  id="nameLastname"
-                  name="nameLastname"
-                  placeholder="Unesite ime i prezime"
-                />
-              </div>
-              <div>
-                <label for="email"> Email adresa*</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="Unesite email"
-                />
-              </div>
-              <div>
-                <label for="textArea">Poruka*</label>
-                <textarea
-                  name="textArea"
-                  id="textArea"
-                  cols="30"
-                  rows="10"
-                  placeholder="Unesite poruku"
-                ></textarea>
-              </div>
-              <button type="submit">Posalji</button>
-            </form>
-          </div>
-        </div>
-        <div class="rowCC">
-          <div class="col-sm-12">
-            <p class="text-center">Copyright &copy; 2022 Savic Vet shop</p>
-            <p>Develop by Djordje Spremic</p>
-          </div>
-        </div>
-      </div>
-    </footer>
-    <script src="/about.js"></script>
   </body>
-</html>
 
-<!-- sta nudimo
-brojke govore svoje
-?Vizija misija kao u sts fazon?
-rekli su o nama  -->
+  <section id="story">
+    <h2>Nasa prica</h2>
+    <div class="storyBorder"></div>
+    <p>
+      Nasa prica je veoma jednostavna. Godine 2018, ljubitelji zivotinja su
+      odlucili da osnuju kvalitetnu pet shop prodavnicu. Iz duboke ljubavi prema
+      zivotinjama, jasno je bilo da niski standardi nisu opcija za ljubimce.
+      Tezimo ka visokokvalitetnim proizvodima. Ovaj pristup je brzo prepoznat od
+      strane ljudi, rezultirajuci time da smo postali jedan od najomiljenijih
+      pet shopova u nasoj okolini. Tokom godina, izgradili smo sada vec odlicno
+      poverenje sa nasim klijentima.
+    </p>
+  </section>
+
+  <section id="sponsored">
+    <div class="sponsoredFlex">
+      <div class="sponsoredLeft">
+        <div class="sponsoredLeftContainer">
+          <img src="/static/img/granule.jpg" alt="granule" />
+        </div>
+      </div>
+
+      <div class="sponsoredRight">
+        <div class="sponsoredRightContainer">
+          <h3>Saradjujemo sa najkvalitetnijim brednovima danasnjice</h3>
+
+          <p class="sponsoredFirstP">
+            Izbor brenda za proizvode za vase ljubimce postaje sve izazovniji u
+            danasnjem vremenu. U moru brendova, vazno je pronaci onaj
+            najkvalitetniji. Svakodnevno pratimo nove proizvode za ishranu i
+            opremu. Pridajemo posebnu paznju sastavu svakog proizvoda,
+            osiguravajuci da se vasem ljubimcu pruzi samo najbolje. Nasa
+            saradnja sa vodecim brendovima u danasnjem svetu potvrdjuje
+            zadovoljstvo svih strana.
+          </p>
+
+          <p class="sponsoredSecondP">
+            Takodje, snazno se trudimo i da obuhvatimo i one brendove koji mozda
+            nisu toliko prepoznatljivi, ali su veoma trazeni od strane nasih
+            klijenata. Isticemo raznovrsnost nase ponude i vrlo je verovatno da
+            cete pronaci sve sto pozelite, bilo da se radi o hrani, opremi ili
+            cak o neobicnim povodcima za jezeve i papagaje.
+          </p>
+
+          <!-- <button>Lista brendova</button> -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="goal">
+    <div class="goalFlex">
+      <div class="goalCard firstGoalCard">
+        <i class="fa fa-star-o" aria-hidden="true"></i>
+        <h6>Strucni tim</h6>
+        <p>
+          Nas iskusni tim uvek ce biti tu da vam pruzi pomoc u slucaju bilo
+          kakvih nedoumica.
+        </p>
+      </div>
+
+      <div class="goalCard secondGoalCard">
+        <i class="fa fa-bookmark-o" aria-hidden="true"></i>
+        <h6>Inovacija</h6>
+        <p>
+          Svakodnevno pracenje novih prozivoda kako bi omogucili najbolji
+          kvalitet.
+        </p>
+      </div>
+
+      <div class="goalCard thirdGoalCard">
+        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+
+        <h6>Poverenje klijenata</h6>
+        <p>Ponosni smo na visoku stopu poverenja od strane nasih klijenata.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="all">
+    <div class="allContainer">
+      <div class="allTop">
+        <div class="allFlex allflexTop">
+          <div class="allTXT">
+            <div>
+              <h3>Rekli ste o nama</h3>
+              <p>
+                Veoma nam je vazno sta mislite. Uvek cemo uzeti u obzir vasu
+                kritiku i sugestiju, jer ipak ste nam vi i vasi ljubimci
+                prioritet. Redovno pratimo sve drustvene mreze i trudimo se da
+                vam udovoljimo. Dosadasnji komentari su uvek bili pozitivni i
+                zahvaljujemo vam na tome. Potrudicemo se da takvi i ostanemo.
+              </p>
+
+              <a href="#comments"> <button>Vidi komentare</button> </a>
+            </div>
+          </div>
+
+          <div class="allImg">
+            <div><img src="/static/img/pansionSlika.jpg" alt="pas lezi" /></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="allBottom">
+        <div class="allFlex">
+          <div class="allTXT">
+            <div>
+              <h3>Gde nas mozete pronaci?</h3>
+              <p>
+                Ako zelite da nas posetite, to mozete uciniti na adresi Ive Lole
+                Ribara 6, Cuprija. Dodjite i sami se uverite zasto privlacimo
+                veliki broj kupaca svake godine i zasto nasi klijenti postaju
+                sve zadovoljniji. Obecavamo da cete biti docekani u veoma
+                prijatnom ambijentu, uz ljubazno osoblje. Vidimo se!
+              </p>
+            </div>
+          </div>
+
+          <div class="allImg">
+            <div><img src="/static/img/zec.jpg" alt="zec slika" /></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="comments">
+    <div class="commentsTitle">
+      <h3>Rekli su o nama</h3>
+      <p>
+        Izvor
+        <a href="https://goo.gl/maps/SxgwSREMNKJdx8bs5" target="_blank"
+          >Google mape</a
+        >
+      </p>
+    </div>
+    <div class="commentsFlex">
+      <div class="commentsCard">
+        <div class="img">
+          <img src="/static/img/user.png" alt="Ocena" />
+        </div>
+
+        <div class="name"><h5>Marjan lazic</h5></div>
+
+        <div class="rate">
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <i class="fa fa-star" aria-hidden="true"></i>
+        </div>
+
+        <div class="txt">
+          <p>
+            Sve što Vam treba za Vaše kućne ljubimce, a i domaće životinje
+            možete naći u Savić Vet šopu. Takođe svaki savet ili konkretnu
+            informaciju, odgovarajuću smešu hrane, možete dobiti od Ace koji je
+            inače veliki stručnjak u ovom poslu...
+          </p>
+        </div>
+      </div>
+
+      <div class="commentsCard">
+        <div class="img">
+          <!-- Image by Mário Santos from Pixabay -->
+          <img src="/static/img/user.png" alt="Ocena" />
+        </div>
+        <div class="name"><h5>Slobodan Veselinovic</h5></div>
+
+        <div class="rate">
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <i class="fa fa-star" aria-hidden="true"></i>
+        </div>
+
+        <div class="txt">
+          <p>
+            Sve na jednom mestu, povoljne cene, veoma ljubazni i korektni
+            vlasnici uvek imaju savet za svako pitanje.
+          </p>
+        </div>
+      </div>
+
+      <div class="commentsCard">
+        <div class="img">
+          <img src="/static/img/user.png" alt="Ocena" />
+        </div>
+        <div class="name"><h5>Goran Stojkovic</h5></div>
+
+        <div class="rate">
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <i class="fa fa-star" aria-hidden="true"></i>
+          <i class="fa fa-star" aria-hidden="true"></i>
+        </div>
+
+        <div class="txt">
+          <p>
+            Sve na jednom mestu za Vase ljubimce, usluga vrhunska, puno korisnih
+            saveta...svaka preporuka
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footerTopContent">
+      <h4>Socijalne mreze:</h4>
+      <div class="footerTopIcons">
+        <a href="https://www.facebook.com/profile.php?id=100017595854060">
+          <i class="fab fa-facebook ig" aria-hidden="true"></i>
+        </a>
+        <a href="https://www.instagram.com/savic_vet_shop_cuprija/">
+          <i class="fab fa-instagram fb" aria-hidden="true"></i>
+        </a>
+      </div>
+      <a href="#body" id="scrollToTop"
+        >Scroll to top <i class="fa fa-arrow-up" aria-hidden="true"></i
+      ></a>
+    </div>
+
+    <div class="footerBottomContent">
+      <a href="/index.html">Pocetna</a>
+      <a href="#">O nama</a>
+      <a href="/static/galery.html">Galerija</a>
+      <a href="/static/legal.html">Legal</a>
+    </div>
+  </footer>
+</html>

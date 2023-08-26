@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+* {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+  color: white;
+}
+
+#html,
+#body {
+  background-color: #131111;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 12px; /* Širina skrol trake */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #009900; /* Boja trake skrola */
+  border-radius: 5px; /* Zaobljenost ivica trake skrola */
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #009900;
+}
+
+#openNavModal:focus {
+  box-shadow: none;
+}
+
+#navMenu nav {
+  padding-inline: 30px;
+}
+
+#margin {
+  margin-top: 30px;
+}
