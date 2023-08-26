@@ -39,7 +39,7 @@
   align-items: center;
   justify-content: center;
   /* <!-- Image by Marek from Pixabay --> */
-  background-image: url("/static/img/pozadinaMacka.jpg");
+  background-image: url("/pozadinaMacka.jpg");
   background-size: cover;
   background-position: center;
 }
