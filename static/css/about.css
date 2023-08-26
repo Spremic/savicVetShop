@@ -115,7 +115,7 @@
   display: flex;
   background-color: #3f3e3eaf;
 }
-.sponsoredLeft,
+.sponsoredLeeft,
 .sponsoredRight {
   width: 50%;
 }
@@ -529,7 +529,7 @@ footer {
     flex-direction: column;
   }
 
-  .sponsoredLeft,
+  .sponsoredLeeft,
   .sponsoredRight {
     width: 100%;
   }
