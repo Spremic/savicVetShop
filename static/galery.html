@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Galerija - Savic Vet Shop</title>
     <link rel="stylesheet" href="/galery.css" />
     <link
       rel="stylesheet"
@@ -35,7 +35,7 @@
     <header>
       <div id="navMenu">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a class="navbar-brand" href="#">SAVIC VET SHOP</a>
+          <a class="navbar-brand" href="/">SAVIC VET SHOP</a>
           <button
             class="navbar-toggler"
             type="button"
@@ -50,61 +50,166 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-item nav-link active" href="#"
-                >Pocetna <span class="sr-only">(current)</span></a
-              >
+              <a class="nav-item nav-link" href="/">Pocetna</a>
               <a class="nav-item nav-link" href="/about">O nama</a>
-              <a class="nav-item nav-link" href="/gallery">Galerija</a>
+              <a class="nav-item nav-link active" href="/gallery">Galerija <span class="sr-only">(current)</span></a>
             </div>
           </div>
         </nav>
       </div>
     </header>
 
-    <div class="row" id="margin">
-      <div
-        class="col-lg-4 col-md-12 mb-4 mb-lg-0 animate__animated animate__fadeInLeft"
-      >
-        <img
-          src="/galerija/lokal1.jpg"
-          class="w-100 shadow-1-strong rounded mb-4"
-          alt="Boat on Calm Water"
-        />
-
-        <img
-          src="/galerija/lokal2.jpg"
-          class="w-100 shadow-1-strong rounded mb-4"
-          alt="Wintry Mountain Landscape"
-        />
+    <main class="gallery-container">
+      <div class="gallery-header">
+        <h1 class="gallery-title animate__animated animate__fadeInDown">Naš Lokal</h1>
+        <p class="gallery-subtitle animate__animated animate__fadeInUp">Pogledajte naš prostor gde se brinemo o vašim ljubimcima</p>
       </div>
 
-      <div class="col-lg-4 mb-4 mb-lg-0 animate__animated animate__fadeInUp">
-        <img
-          src="/galerija/lokal3.jpg"
-          class="w-100 shadow-1-strong rounded mb-4"
-          alt="Mountains in the Clouds"
-        />
+      <div class="gallery-grid">
+        <div class="gallery-item animate__animated animate__fadeIn" data-index="0">
+          <div class="gallery-image-wrapper">
+            <img src="/galerija/lokal1.jpg" alt="Savic Vet Shop - Lokal 1" />
+            <div class="gallery-overlay">
+              <i class="fas fa-search-plus"></i>
+            </div>
+          </div>
+        </div>
 
-        <img
-          src="/galerija/lokal4.jpg"
-          class="w-100 shadow-1-strong rounded mb-4"
-          alt="Boat on Calm Water"
-        />
+        <div class="gallery-item animate__animated animate__fadeIn" data-index="1">
+          <div class="gallery-image-wrapper">
+            <img src="/galerija/lokal2.jpg" alt="Savic Vet Shop - Lokal 2" />
+            <div class="gallery-overlay">
+              <i class="fas fa-search-plus"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item animate__animated animate__fadeIn" data-index="2">
+          <div class="gallery-image-wrapper">
+            <img src="/galerija/lokal3.jpg" alt="Savic Vet Shop - Lokal 3" />
+            <div class="gallery-overlay">
+              <i class="fas fa-search-plus"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item animate__animated animate__fadeIn" data-index="3">
+          <div class="gallery-image-wrapper">
+            <img src="/galerija/lokal4.jpg" alt="Savic Vet Shop - Lokal 4" />
+            <div class="gallery-overlay">
+              <i class="fas fa-search-plus"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item animate__animated animate__fadeIn" data-index="4">
+          <div class="gallery-image-wrapper">
+            <img src="/galerija/lokal5.jpg" alt="Savic Vet Shop - Lokal 5" />
+            <div class="gallery-overlay">
+              <i class="fas fa-search-plus"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item animate__animated animate__fadeIn" data-index="5">
+          <div class="gallery-image-wrapper">
+            <img src="/galerija/lokal6.jpg" alt="Savic Vet Shop - Lokal 6" />
+            <div class="gallery-overlay">
+              <i class="fas fa-search-plus"></i>
+            </div>
+          </div>
+        </div>
       </div>
+    </main>
 
-      <div class="col-lg-4 mb-4 mb-lg-0 animate__animated animate__fadeInRight">
-        <img
-          src="/galerija/lokal5.jpg"
-          class="w-100 shadow-1-strong rounded mb-4"
-          alt="Waves at Sea"
-        />
-
-        <img
-          src="/galerija/lokal6.jpg"
-          class="w-100 shadow-1-strong rounded mb-4"
-          alt="Yosemite National Park"
-        />
-      </div>
+    <!-- Lightbox Modal -->
+    <div id="lightboxModal" class="lightbox-modal">
+      <span class="lightbox-close">&times;</span>
+      <span class="lightbox-prev">&#10094;</span>
+      <span class="lightbox-next">&#10095;</span>
+      <img class="lightbox-content" id="lightboxImage" alt="Gallery Image">
+      <div class="lightbox-counter"></div>
     </div>
+
+    <script>
+      // Gallery Lightbox functionality
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      const lightboxModal = document.getElementById('lightboxModal');
+      const lightboxImage = document.getElementById('lightboxImage');
+      const lightboxClose = document.querySelector('.lightbox-close');
+      const lightboxPrev = document.querySelector('.lightbox-prev');
+      const lightboxNext = document.querySelector('.lightbox-next');
+      const lightboxCounter = document.querySelector('.lightbox-counter');
+      let currentImageIndex = 0;
+
+      const images = [
+        { src: '/galerija/lokal1.jpg', alt: 'Savic Vet Shop - Lokal 1' },
+        { src: '/galerija/lokal2.jpg', alt: 'Savic Vet Shop - Lokal 2' },
+        { src: '/galerija/lokal3.jpg', alt: 'Savic Vet Shop - Lokal 3' },
+        { src: '/galerija/lokal4.jpg', alt: 'Savic Vet Shop - Lokal 4' },
+        { src: '/galerija/lokal5.jpg', alt: 'Savic Vet Shop - Lokal 5' },
+        { src: '/galerija/lokal6.jpg', alt: 'Savic Vet Shop - Lokal 6' }
+      ];
+
+      function openLightbox(index) {
+        currentImageIndex = index;
+        updateLightboxImage();
+        lightboxModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightboxModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+
+      function updateLightboxImage() {
+        lightboxImage.src = images[currentImageIndex].src;
+        lightboxImage.alt = images[currentImageIndex].alt;
+        lightboxCounter.textContent = `${currentImageIndex + 1} / ${images.length}`;
+      }
+
+      function showNextImage() {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        updateLightboxImage();
+      }
+
+      function showPrevImage() {
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        updateLightboxImage();
+      }
+
+      // Event listeners
+      galleryItems.forEach((item) => {
+        item.addEventListener('click', () => {
+          const index = parseInt(item.getAttribute('data-index'));
+          openLightbox(index);
+        });
+      });
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxNext.addEventListener('click', showNextImage);
+      lightboxPrev.addEventListener('click', showPrevImage);
+
+      lightboxModal.addEventListener('click', (e) => {
+        if (e.target === lightboxModal) {
+          closeLightbox();
+        }
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (lightboxModal.style.display === 'flex') {
+          if (e.key === 'Escape') closeLightbox();
+          if (e.key === 'ArrowRight') showNextImage();
+          if (e.key === 'ArrowLeft') showPrevImage();
+        }
+      });
+
+      // Staggered animation for gallery items
+      galleryItems.forEach((item, index) => {
+        item.style.animationDelay = `${index * 0.1}s`;
+      });
+    </script>
   </body>
 </html>
