@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>O nama</title>
+    <link rel="stylesheet" href="/css/clone.css" />
     <link rel="stylesheet" href="/about.css" />
     <link
       rel="stylesheet"
@@ -32,36 +33,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body id="body">
-    <header>
-      <div id="navMenu">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
-          <a class="navbar-brand" href="#">SAVIC VET SHOP</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-            id="openNavModal"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-              <a class="nav-item nav-link active" href="#"
-                >Pocetna <span class="sr-only">(current)</span></a
-              >
-              <a class="nav-item nav-link" href="/about">O nama</a>
-              <a class="nav-item nav-link" href="/gallery"
-                >Galerija</a
-              >
-            </div>
-          </div>
-        </nav>
-      </div>
-    </header>
+    <!-- Header ce biti dinamicki ucitan iz clone.js -->
 
     <div class="welcomeMessages">
       <div class="welcomeMessagesTXT animate__animated animate__fadeInLeft">
@@ -75,9 +47,9 @@
   </body>
 
   <section id="story">
-    <h2>Nasa prica</h2>
-    <div class="storyBorder"></div>
-    <p>
+    <h2 class="animate-on-scroll" data-animation="animate__fadeInDown">Nasa prica</h2>
+    <div class="storyBorder animate-on-scroll" data-animation="animate__zoomIn" data-delay="0.2s"></div>
+    <p class="animate-on-scroll" data-animation="animate__fadeInUp" data-delay="0.4s">
       Nasa prica je veoma jednostavna. Godine 2018, ljubitelji zivotinja su
       odlucili da osnuju kvalitetnu pet shop prodavnicu. Iz duboke ljubavi prema
       zivotinjama, jasno je bilo da niski standardi nisu opcija za ljubimce.
@@ -91,13 +63,13 @@
   <section id="sponsored">
     <div class="sponsoredFlex">
       <div class="sponsoredLeeft">
-        <div class="sponsoredLeftContainer">
+        <div class="sponsoredLeftContainer animate-on-scroll" data-animation="animate__fadeInLeft">
           <img src="/granula.jpg" alt="garanule" />
         </div>
       </div>
 
       <div class="sponsoredRight">
-        <div class="sponsoredRightContainer">
+        <div class="sponsoredRightContainer animate-on-scroll" data-animation="animate__fadeInRight">
           <h3>Saradjujemo sa najkvalitetnijim brednovima danasnjice</h3>
 
           <p class="sponsoredFirstP">
@@ -126,7 +98,7 @@
 
   <section id="goal">
     <div class="goalFlex">
-      <div class="goalCard firstGoalCard">
+      <div class="goalCard firstGoalCard animate-on-scroll" data-animation="animate__fadeInUp" data-delay="0s">
         <i class="fa fa-star-o" aria-hidden="true"></i>
         <h6>Strucni tim</h6>
         <p>
@@ -135,7 +107,7 @@
         </p>
       </div>
 
-      <div class="goalCard secondGoalCard">
+      <div class="goalCard secondGoalCard animate-on-scroll" data-animation="animate__fadeInUp" data-delay="0.2s">
         <i class="fa fa-bookmark-o" aria-hidden="true"></i>
         <h6>Inovacija</h6>
         <p>
@@ -144,7 +116,7 @@
         </p>
       </div>
 
-      <div class="goalCard thirdGoalCard">
+      <div class="goalCard thirdGoalCard animate-on-scroll" data-animation="animate__fadeInUp" data-delay="0.4s">
         <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
 
         <h6>Poverenje klijenata</h6>
@@ -157,7 +129,7 @@
     <div class="allContainer">
       <div class="allTop">
         <div class="allFlex allflexTop">
-          <div class="allTXT">
+          <div class="allTXT animate-on-scroll" data-animation="animate__fadeInLeft">
             <div>
               <h3>Rekli ste o nama</h3>
               <p>
@@ -172,7 +144,7 @@
             </div>
           </div>
 
-          <div class="allImg">
+          <div class="allImg animate-on-scroll" data-animation="animate__fadeInRight">
             <div><img src="/pansionSlika.jpg" alt="pas lezi" /></div>
           </div>
         </div>
@@ -180,7 +152,7 @@
 
       <div class="allBottom">
         <div class="allFlex">
-          <div class="allTXT">
+          <div class="allTXT animate-on-scroll" data-animation="animate__fadeInRight">
             <div>
               <h3>Gde nas mozete pronaci?</h3>
               <p>
@@ -193,7 +165,7 @@
             </div>
           </div>
 
-          <div class="allImg">
+          <div class="allImg animate-on-scroll" data-animation="animate__fadeInLeft">
             <div><img src="/zec.jpg" alt="zec slika" /></div>
           </div>
         </div>
@@ -202,7 +174,7 @@
   </section>
 
   <section id="comments">
-    <div class="commentsTitle">
+    <div class="commentsTitle animate-on-scroll" data-animation="animate__fadeInDown">
       <h3>Rekli su o nama</h3>
       <p>
         Izvor
@@ -212,7 +184,7 @@
       </p>
     </div>
     <div class="commentsFlex">
-      <div class="commentsCard">
+      <div class="commentsCard animate-on-scroll" data-animation="animate__fadeInUp" data-delay="0s">
         <div class="img">
           <img src="/user.png" alt="Ocena" />
         </div>
@@ -237,7 +209,7 @@
         </div>
       </div>
 
-      <div class="commentsCard">
+      <div class="commentsCard animate-on-scroll" data-animation="animate__fadeInUp" data-delay="0.2s">
         <div class="img">
           <!-- Image by Mário Santos from Pixabay -->
           <img src="/user.png" alt="Ocena" />
@@ -260,7 +232,7 @@
         </div>
       </div>
 
-      <div class="commentsCard">
+      <div class="commentsCard animate-on-scroll" data-animation="animate__fadeInUp" data-delay="0.4s">
         <div class="img">
           <img src="/user.png" alt="Ocena" />
         </div>
@@ -284,27 +256,7 @@
     </div>
   </section>
 
-  <footer>
-    <div class="footerTopContent">
-      <h4>Socijalne mreze:</h4>
-      <div class="footerTopIcons">
-        <a href="https://www.facebook.com/profile.php?id=100017595854060">
-          <i class="fab fa-facebook ig" aria-hidden="true"></i>
-        </a>
-        <a href="https://www.instagram.com/savic_vet_shop_cuprija/">
-          <i class="fab fa-instagram fb" aria-hidden="true"></i>
-        </a>
-      </div>
-      <a href="#body" id="scrollToTop"
-        >Scroll to top <i class="fa fa-arrow-up" aria-hidden="true"></i
-      ></a>
-    </div>
-
-    <div class="footerBottomContent">
-      <a href="/index">Pocetna</a>
-      <a href="#">O nama</a>
-      <a href="/gallery">Galerija</a>
-      <a href="/legal">Legal</a>
-    </div>
-  </footer>
+  <!-- Footer ce biti dinamicki ucitan iz clone.js -->
+  <script src="/js/clone.js"></script>
+  <script src="/js/about.js"></script>
 </html>

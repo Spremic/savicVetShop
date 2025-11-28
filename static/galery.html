@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Galerija - Savic Vet Shop</title>
+    <link rel="stylesheet" href="/css/clone.css" />
     <link rel="stylesheet" href="/galery.css" />
     <link
       rel="stylesheet"
@@ -32,32 +33,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body id="body">
-    <header>
-      <div id="navMenu">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a class="navbar-brand" href="/">SAVIC VET SHOP</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-            id="openNavModal"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-              <a class="nav-item nav-link" href="/">Pocetna</a>
-              <a class="nav-item nav-link" href="/about">O nama</a>
-              <a class="nav-item nav-link active" href="/gallery">Galerija <span class="sr-only">(current)</span></a>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </header>
+    <!-- Header ce biti dinamicki ucitan iz clone.js -->
 
     <main class="gallery-container">
       <div class="gallery-header">
@@ -211,5 +187,6 @@
         item.style.animationDelay = `${index * 0.1}s`;
       });
     </script>
+    <script src="/js/clone.js"></script>
   </body>
 </html>

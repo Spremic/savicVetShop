@@ -118,6 +118,9 @@
 .sponsoredLeeft,
 .sponsoredRight {
   width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sponsoredLeftContainer {
@@ -136,10 +139,6 @@
 }
 
 .sponsoredRightContainer {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 90%;
   padding-top: 20px;
   padding-bottom: 20px;

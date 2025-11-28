@@ -125,7 +125,7 @@ style.textContent = `
 document.head.appendChild(style);
 
 // Intersection Observer for Scroll Animations
-document.addEventListener("DOMContentLoaded", function() {
+function initAnimations() {
   const observerOptions = {
     root: null,
     rootMargin: "0px",
@@ -143,7 +143,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
   const revealElements = document.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale");
   revealElements.forEach(el => observer.observe(el));
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAnimations);
+} else {
+  initAnimations();
+}
 
 // Lightbox Functionality
 document.addEventListener('DOMContentLoaded', function() {

@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Savic vet shop</title>
-    <link rel="stylesheet" href="/index.css" />
+    <link rel="stylesheet" href="/css/clone.css" />
+    <link rel="stylesheet" href="/css/index.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -25,101 +26,9 @@
     />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/index.js" defer></script>
   </head>
   <body id="body">
-    <header>
-      <nav>
-        <div class="left">
-          <img src="/img/happy animal.png" alt="" />
-          <h1>Happy Animals</h1>
-        </div>
-
-        <div class="mid">
-          <nav>
-            <ul>
-              <a href="#" class="active"><li>Pocetna</li></a>
-              <a href="#"><li>O nama</li></a>
-              <a href="#"><li>Galerija</li></a>
-              <li class="dropdown">
-                Proizvodi
-                <div class="mega-dropdown">
-                  <div class="mega-dropdown-content">
-                    <div class="mega-column">
-                      <h4>Hrana</h4>
-                      <a href="#">Hrana za pse</a>
-                      <a href="#">Hrana za macke</a>
-                      <a href="#">Hrana za ptice</a>
-                      <a href="#">Hrana za hrcke</a>
-                    </div>
-                    <div class="mega-column">
-                      <h4>Oprema</h4>
-                      <a href="#">Povodci i ogrlice</a>
-                      <a href="#">Transporteri</a>
-                      <a href="#">Kavezi</a>
-                      <a href="#">Posude i pojilice</a>
-                    </div>
-                    <div class="mega-column">
-                      <h4>Higijena</h4>
-                      <a href="#">Samponi</a>
-                      <a href="#">Cetkice</a>
-                      <a href="#">Pijesak za macke</a>
-                      <a href="#">Ostalo</a>
-                    </div>
-                    <div class="mega-column">
-                      <h4>Igracke</h4>
-                      <a href="#">Igracke za pse</a>
-                      <a href="#">Igracke za macke</a>
-                      <a href="#">Interaktivne igracke</a>
-                      <a href="#">Lopte i frizbi</a>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </nav>
-        </div>
-
-        <div class="right">
-          <button id="openCart">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30px"
-              height="30px"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
-                stroke="#000000"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-
-            Moja korpa
-          </button>
-
-          <button id="savedProduct">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30px"
-              height="30px"
-              viewBox="0 0 16 16"
-              fill="none"
-            >
-              <path
-                d="M1.24264 8.24264L8 15L14.7574 8.24264C15.553 7.44699 16 6.36786 16 5.24264V5.05234C16 2.8143 14.1857 1 11.9477 1C10.7166 1 9.55233 1.55959 8.78331 2.52086L8 3.5L7.21669 2.52086C6.44767 1.55959 5.28338 1 4.05234 1C1.8143 1 0 2.8143 0 5.05234V5.24264C0 6.36786 0.44699 7.44699 1.24264 8.24264Z"
-                fill="#000000"
-              />
-            </svg>
-
-            Sacuvani proizvodi
-          </button>
-        </div>
-      </nav>
-    </header>
+    <!-- Header ce biti dinamicki ucitan iz clone.js -->
 
     <section id="welcomeHome">
       <div class="dog-cat">
@@ -154,7 +63,7 @@
       <h3 class="reveal">Recommended Products</h3>
 
       <div class="flex-container">
-        <div class="arrow-l">
+        <div class="arrow-l reveal-left">
           <span class="material-symbols-outlined"> arrow_back_ios_new </span>
         </div>
 
@@ -364,7 +273,7 @@
           </div>
         </div>
 
-        <div class="arrow-r">
+        <div class="arrow-r reveal-right">
           <span class="material-symbols-outlined"> arrow_forward_ios </span>
         </div>
       </div>
@@ -385,11 +294,11 @@
             <img src="/pasPozadina.jpg" alt="pozadina" />
           </div>
         </div>
-        <div class="aboutRight reveal-right">
+        <div class="aboutRight">
           <div class="aboutRightContainer">
-            <h2>O nama</h2>
-            <div class="aboutRightBorder"></div>
-            <p>
+            <h2 class="reveal-right">O nama</h2>
+            <div class="aboutRightBorder reveal-right delay-100"></div>
+            <p class="reveal-right delay-200">
               Vet Shop Savic je mesto gde mozete pronaci sve sto vas ljubimac
               moze pozeleti. Vec vise od nekoliko godina poslujemo i sa ponosom
               mozemo reci da smo najveci vet shop u Cupriji i sire. Nas tim,
@@ -401,7 +310,7 @@
               usluga i proizvoda, kao i ljubaznom i profesionalnom odnosu prema
               nasim klijentima.
             </p>
-            <a href="/about">
+            <a href="/about" class="reveal-right delay-300" style="display: inline-block;">
               <button class="aboutRightBTN">Procitaj vise</button></a
             >
           </div>
@@ -515,10 +424,10 @@
 
     <section id="cooperation">
       <div class="cooperationFlex">
-        <div class="cooperationLeft reveal-left">
+        <div class="cooperationLeft">
           <div class="cooperationLeftTXT">
-            <h4>Sa kim saradjujemo?</h4>
-            <p>
+            <h4 class="reveal-left">Sa kim saradjujemo?</h4>
+            <p class="reveal-left delay-100">
               U nasem pet shopu, neprekidno tezimo saradnji sa proverenim
               brendovima, prateci tu tradiciju od samih pocetaka. Izdvajaju se
               poznata imena poput Royal Canin-a, Monge-a, Premil-a, Purine i
@@ -532,7 +441,7 @@
             </p>
           </div>
 
-          <div class="cooperationLeftIMG">
+          <div class="cooperationLeftIMG reveal-left delay-200">
             <!-- Image by Susann Mielke from Pixabay -->
             <img src="/saradnja.jpg" alt="slika macke" />
           </div>
@@ -593,9 +502,9 @@
 
     <section id="object">
       <div class="objectFlex">
-        <div class="objectLeft reveal-left">
-          <h2>Nas prostor</h2>
-          <p>
+        <div class="objectLeft">
+          <h2 class="reveal-left">Nas prostor</h2>
+          <p class="reveal-left delay-100">
             Pogledajte u galeriju i uverite se sami zasto se ljudi ponovo
             vracaju kod nas. Pruzamo vam i neodoljiv prijatan ambijent. Vec na
             samom ulazu ce vas docekati ocaravajuce boje koje vas pozivaju
@@ -606,12 +515,12 @@
             nasim ambijentom.
           </p>
 
-          <a href="/gallery"><button>Pogledaj galeriju</button></a>
+          <a href="/gallery" class="reveal-left delay-200" style="display: inline-block;"><button>Pogledaj galeriju</button></a>
         </div>
 
-        <div class="objectRight reveal-right">
+        <div class="objectRight">
           <div class="objectRightFlexTop">
-            <div class="objectIMG">
+            <div class="objectIMG reveal-scale delay-100">
               <img
                 src="/galerija/lokal1.jpg"
                 class="rounded"
@@ -619,7 +528,7 @@
               />
             </div>
 
-            <div class="objectIMG">
+            <div class="objectIMG reveal-scale delay-200">
               <img
                 src="/galerija/lokal2.jpg"
                 class="rounded"
@@ -629,7 +538,7 @@
           </div>
 
           <div class="objectRightFlexBottom">
-            <div class="objectIMG">
+            <div class="objectIMG reveal-scale delay-300">
               <img
                 src="/galerija/lokal3.jpg"
                 class="rounded"
@@ -637,7 +546,7 @@
               />
             </div>
 
-            <div class="objectIMG">
+            <div class="objectIMG reveal-scale delay-400">
               <img
                 src="/galerija/lokal4.jpg"
                 class="rounded"
@@ -701,29 +610,8 @@
       </div>
     </section>
 
-    <footer>
-      <div class="footerTopContent">
-        <h4>Socijalne mreze:</h4>
-        <div class="footerTopIcons">
-          <a href="https://www.facebook.com/profile.php?id=100017595854060">
-            <i class="fab fa-facebook ig" aria-hidden="true"></i>
-          </a>
-          <a href="https://www.instagram.com/savic_vet_shop_cuprija/">
-            <i class="fab fa-instagram fb" aria-hidden="true"></i>
-          </a>
-        </div>
-        <a href="#body" id="scrollToTop"
-          >Scroll to top <i class="fa fa-arrow-up" aria-hidden="true"></i
-        ></a>
-      </div>
-
-      <div class="footerBottomContent">
-        <a href="#">Pocetna</a>
-        <a href="/about">O nama</a>
-        <a href="/gallery">Galerija</a>
-        <a href="/legal">Legal</a>
-      </div>
-    </footer>
+    <!-- Footer ce biti dinamicki ucitan iz clone.js -->
+    
     <div id="lightbox-modal" class="lightbox-modal">
       <span class="close-lightbox">&times;</span>
       <div class="lightbox-content">
@@ -736,5 +624,8 @@
         </div>
       </div>
     </div>
+
+    <script src="/js/clone.js"></script>
+    <script src="/js/index.js"></script>
   </body>
 </html>
