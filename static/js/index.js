@@ -123,3 +123,117 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// Intersection Observer for Scroll Animations
+document.addEventListener("DOMContentLoaded", function() {
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("active");
+        observer.unobserve(entry.target); // Only animate once
+      }
+    });
+  }, observerOptions);
+
+  const revealElements = document.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale");
+  revealElements.forEach(el => observer.observe(el));
+});
+
+// Lightbox Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const modal = document.getElementById('lightbox-modal');
+  const modalImg = document.querySelector('.lightbox-image');
+  const closeBtn = document.querySelector('.close-lightbox');
+  const prevBtn = document.querySelector('.prev-lightbox');
+  const nextBtn = document.querySelector('.next-lightbox');
+  
+  // Get all image containers from the object section
+  const imageContainers = Array.from(document.querySelectorAll('.objectIMG'));
+  const images = imageContainers.map(container => container.querySelector('img'));
+  
+  let currentIndex = 0;
+
+  function openLightbox(index) {
+    if (!modal || !modalImg) return;
+    currentIndex = index;
+    modal.style.display = 'block';
+    // Small delay to allow display:block to apply before adding show class for transition
+    setTimeout(() => {
+      modal.classList.add('show');
+    }, 10);
+    updateImage();
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
+  }
+
+  function closeLightbox() {
+    if (!modal) return;
+    modal.classList.remove('show');
+    setTimeout(() => {
+      modal.style.display = 'none';
+    }, 300); // Wait for transition
+    document.body.style.overflow = ''; // Restore scrolling
+  }
+
+  function updateImage() {
+    if (images[currentIndex] && modalImg) {
+        modalImg.src = images[currentIndex].src;
+        modalImg.alt = images[currentIndex].alt;
+    }
+  }
+
+  function showNext() {
+    currentIndex = (currentIndex + 1) % images.length;
+    updateImage();
+  }
+
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    updateImage();
+  }
+
+  // Event Listeners
+  imageContainers.forEach((container, index) => {
+    container.addEventListener('click', () => openLightbox(index));
+  });
+
+  if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+  
+  if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrev();
+      });
+  }
+  
+  if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNext();
+      });
+  }
+
+  // Close on click outside image
+  if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal || e.target.classList.contains('lightbox-content')) {
+          closeLightbox();
+        }
+      });
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (modal && modal.style.display === 'block') {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showPrev();
+      if (e.key === 'ArrowRight') showNext();
+    }
+  });
+});
+

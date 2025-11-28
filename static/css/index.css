@@ -90,23 +90,80 @@
 #welcomeHome .left-btn {
   font-size: 1.05rem;
   color: #fff;
-  background-color: #007700;
+  background: linear-gradient(135deg, #007700, #009900);
   border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+#welcomeHome .left-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+#welcomeHome .left-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+#welcomeHome .left-btn:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(135deg, #009900, #00b300);
+}
+
 #welcomeHome .left-btn span {
   margin-right: 5px;
   margin-bottom: 5px;
+  position: relative;
+  z-index: 1;
 }
 #welcomeHome .right-btn {
   font-size: 1.05rem;
   background-color: #fff;
-  border: none;
+  border: 2px solid transparent;
   color: #010101;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
+
+#welcomeHome .right-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(0, 153, 0, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+#welcomeHome .right-btn:hover::after {
+  left: 100%;
+}
+
+#welcomeHome .right-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
 #welcomeHome .right-btn span {
-  color: #010101;
+  color: inherit;
   margin-right: 5px;
   margin-bottom: 5px;
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease;
 }
 header {
   position: fixed;
@@ -170,12 +227,32 @@ header ul li {
   color: #f0f0f0;
   padding: 8px 14px;
   border-radius: 25px;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+header ul li::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #009900, transparent);
+  transform: translateX(-50%);
+  transition: width 0.4s ease;
+}
+
+header ul li:hover::before {
+  width: 100%;
 }
 
 header ul li:hover {
-  background-color: rgba(0, 153, 0, 0.2);
+  background-color: rgba(0, 153, 0, 0.15);
   color: #009900;
+  transform: translateY(-2px);
+  letter-spacing: 0.5px;
 }
 
 header ul a.active li {
@@ -249,10 +326,11 @@ header ul li.dropdown .mega-column a {
 }
 
 header ul li.dropdown .mega-column a:hover {
-  background-color: rgba(0, 153, 0, 0.15);
-  color: #009900;
+  background: linear-gradient(90deg, rgba(0, 153, 0, 0.25), rgba(0, 153, 0, 0.1));
+  color: #00b300;
   padding-left: 18px;
-  transform: translateX(3px);
+  transform: translateX(5px);
+  border-left: 3px solid #009900;
 }
 
 header ul a {
@@ -284,12 +362,15 @@ header #openCart {
   background-color: #009900;
   border: 2px solid #009900;
   color: white;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 header #openCart:hover {
-  background-color: #007700;
-  border-color: #007700;
-  border-radius: 5px;
+  background: linear-gradient(135deg, #00b300, #009900);
+  border-color: #00b300;
+  transform: translateY(-2px);
+  filter: brightness(1.1);
 }
 
 header #openCart svg path {
@@ -300,11 +381,31 @@ header #savedProduct {
   background-color: transparent;
   border: 2px solid #009900;
   color: white;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+header #savedProduct::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(0, 153, 0, 0.3), transparent);
+  transform: translateX(-100%) rotate(45deg);
+  transition: transform 0.6s ease;
+}
+
+header #savedProduct:hover::before {
+  transform: translateX(100%) rotate(45deg);
 }
 
 header #savedProduct:hover {
-  background-color: rgba(0, 153, 0, 0.1);
-  border-radius: 5px;
+  background-color: rgba(0, 153, 0, 0.15);
+  border-color: #00b300;
+  transform: translateY(-2px) scale(1.02);
 }
 
 header #savedProduct svg path {
@@ -342,6 +443,30 @@ header #savedProduct svg path {
 
 #welcomeSection div a {
   color: #009900;
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 2px;
+  transition: all 0.3s ease;
+}
+
+#welcomeSection div a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #009900, #00b300);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#welcomeSection div a:hover::after {
+  width: 100%;
+}
+
+#welcomeSection div a:hover {
+  color: #00b300;
+  letter-spacing: 0.5px;
 }
 
 #firstSection {
@@ -771,14 +896,37 @@ header #savedProduct svg path {
   height: 50px;
   color: whitesmoke;
   font-size: 1.1rem;
-  background-color: #009900;
-  border: none;
+  background: linear-gradient(135deg, #009900, #007700);
+  border: 2px solid transparent;
   margin-top: 10px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.aboutRightContainer button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+}
+
+.aboutRightContainer button:hover::before {
+  width: 250px;
+  height: 250px;
+}
+
 .aboutRightContainer button:hover {
-  background-color: #010101;
-  border: 2px solid #009900;
-  color: white;
+  background: #010101;
+  border-color: #009900;
+  color: #00b300;
+  transform: translateY(-3px);
 }
 
 #product {
@@ -953,19 +1101,38 @@ header #savedProduct svg path {
 .objectLeft button {
   text-decoration: none;
   color: whitesmoke;
-  background-color: #009900;
-  border: none;
+  background: linear-gradient(135deg, #009900, #00b300);
+  border: 2px solid transparent;
   cursor: pointer;
   width: 230px;
   height: 55px;
   margin-top: 20px;
   border-radius: 50px;
   font-size: 1.1rem;
-  transition: ease-in-out 0.3s;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.objectLeft button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.objectLeft button:hover::before {
+  left: 100%;
 }
 
 .objectLeft button:hover {
-  background-color: #009900a9;
+  background: linear-gradient(135deg, #00b300, #009900);
+  transform: translateY(-4px) scale(1.05);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .objectRight {
@@ -985,8 +1152,39 @@ header #savedProduct svg path {
   width: 100%;
   height: 240px;
   object-fit: cover;
-  -webkit-filter: grayscale(10%); /* Safari 6.0 - 9.0 */
+  -webkit-filter: grayscale(10%);
   filter: grayscale(10%);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.objectIMG {
+  overflow: hidden;
+  border-radius: 8px;
+  position: relative;
+}
+
+.objectIMG::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.objectIMG:hover::before {
+  opacity: 1;
+}
+
+.objectIMG:hover img {
+  transform: scale(1.1) rotate(2deg);
+  filter: grayscale(0%) brightness(1.1);
 }
 #contact {
   text-align: center;
@@ -1009,31 +1207,92 @@ header #savedProduct svg path {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
 }
 
-.contactCard {
-  display: grid;
-  place-content: center;
-  margin-inline: 20px;
+.contact-flip-wrapper {
+  background-color: transparent;
   width: 300px;
   height: 250px;
-  background-color: whitesmoke;
-  cursor: pointer;
+  perspective: 1000px;
   margin-bottom: 50px;
-  border-radius: 60px;
   margin-top: 30px;
 }
 
-.contactFlex a {
+.contact-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  cursor: pointer;
+  display: block;
   text-decoration: none;
 }
 
-.contactCard span {
+.contact-flip-wrapper:hover .contact-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.contact-flip-front,
+.contact-flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.contact-flip-front {
+  background-color: whitesmoke;
+  color: black;
+}
+
+.contact-flip-front span {
   transform: scale(3);
   color: white;
-  background-color: #009900;
+  background: linear-gradient(135deg, #009900, #00b300);
   padding: 10px;
   border-radius: 50%;
+  transition: transform 0.4s ease;
+}
+
+.contact-flip-back {
+  background: linear-gradient(135deg, #009900, #007700);
+  color: white;
+  transform: rotateY(180deg);
+  padding: 20px;
+  border: 2px solid #00b300;
+}
+
+.contact-flip-back span {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.contact-flip-back h5 {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.contact-flip-back p {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #f0f0f0;
+  font-weight: 500;
 }
 footer {
   margin-top: 100px;
@@ -1062,15 +1321,61 @@ footer {
   color: black;
   text-decoration: none;
   margin-bottom: 20px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.fb:hover,
+.ig:hover {
+  background-color: #e8e8e8;
+  color: #333;
 }
 #scrollToTop {
   margin-top: 10px;
   text-decoration: none;
   color: white;
   font-size: 1rem;
+  display: inline-block;
+  position: relative;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
 }
+
+#scrollToTop::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, white, transparent);
+  transform: translateX(-50%);
+  transition: width 0.4s ease;
+}
+
+#scrollToTop:hover::before {
+  width: 100%;
+}
+
+#scrollToTop:hover {
+  color: #00b300;
+  letter-spacing: 1px;
+}
+
 #scrollToTop i {
   font-size: 1rem;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+#scrollToTop:hover i {
+  transform: translateY(-3px);
+  animation: bounce 0.6s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(-3px); }
+  50% { transform: translateY(-8px); }
 }
 
 .footerBottomContent {
@@ -1085,6 +1390,30 @@ footer {
   text-decoration: none;
   color: white;
   font-size: 1.2rem;
+  position: relative;
+  padding-bottom: 3px;
+  transition: all 0.3s ease;
+}
+
+.footerBottomContent a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #009900, transparent);
+  transform: translateX(-50%);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.footerBottomContent a:hover::after {
+  width: 100%;
+}
+
+.footerBottomContent a:hover {
+  color: #00b300;
+  transform: translateY(-2px);
 }
 
 @media only screen and (max-width: 1279px) {
@@ -1555,3 +1884,236 @@ footer {
     margin-inline: 10px;
   }
 }
+
+/* --- Premium Animations --- */
+
+/* Base reveal class */
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Directional reveals */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal-left.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal-scale.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Stagger delays */
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+.delay-300 { transition-delay: 0.3s; }
+.delay-400 { transition-delay: 0.4s; }
+.delay-500 { transition-delay: 0.5s; }
+
+/* Hero specific animations (load immediately) */
+.hero-animate {
+  opacity: 0;
+  animation: heroFadeInUp 1s cubic-bezier(0.5, 0, 0, 1) forwards;
+}
+
+@keyframes heroFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-delay-1 { animation-delay: 0.2s; }
+.hero-delay-2 { animation-delay: 0.4s; }
+.hero-delay-3 { animation-delay: 0.6s; }
+
+/* Hero Image Animations */
+.hero-animate-left {
+  opacity: 0;
+  animation: heroFadeInLeft 1.2s cubic-bezier(0.5, 0, 0, 1) forwards;
+}
+
+@keyframes heroFadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.hero-animate-right {
+  opacity: 0;
+  animation: heroFadeInRight 1.2s cubic-bezier(0.5, 0, 0, 1) forwards;
+}
+
+@keyframes heroFadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Lightbox Styles */
+.lightbox-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  padding-top: 50px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(5px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lightbox-modal.show {
+  opacity: 1;
+}
+
+.lightbox-content {
+  position: relative;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  max-width: 1200px;
+  height: 85vh;
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 153, 0, 0.3);
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lightbox-modal.show .lightbox-image {
+  transform: scale(1);
+}
+
+.close-lightbox {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+  z-index: 2001;
+}
+
+.close-lightbox:hover,
+.close-lightbox:focus {
+  color: #009900;
+  text-decoration: none;
+  cursor: pointer;
+  transform: rotate(90deg);
+}
+
+.prev-lightbox,
+.next-lightbox {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+  padding: 16px;
+  margin-top: -25px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.3s ease;
+  border-radius: 50%;
+  user-select: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-content: center;
+  z-index: 2001;
+}
+
+.prev-lightbox {
+  left: 0;
+}
+
+.next-lightbox {
+  right: 0;
+}
+
+.prev-lightbox:hover,
+.next-lightbox:hover {
+  background-color: rgba(0, 153, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.prev-lightbox span,
+.next-lightbox span {
+  font-size: 24px;
+}
+
+@media only screen and (max-width: 768px) {
+  .lightbox-image {
+    width: 100%;
+  }
+  .prev-lightbox,
+  .next-lightbox {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+  }
+  .prev-lightbox span,
+  .next-lightbox span {
+    font-size: 20px;
+  }
+}
+
