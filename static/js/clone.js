@@ -66,11 +66,9 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
 
         <div class="right">
-            <a href="/cart"><button id="openCart">
+            <button id="openCart">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="30px"
-              height="30px"
               viewBox="0 0 24 24"
               fill="none"
             >
@@ -83,14 +81,12 @@ document.addEventListener("DOMContentLoaded", function () {
               />
             </svg>
 
-            My cart
-          </button></a>
+            <span class="btn-text">My cart</span>
+          </button>
 
-          <a href="/saved"><button id="savedProduct">
+          <button id="savedProduct">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="30px"
-              height="30px"
               viewBox="0 0 16 16"
               fill="none"
             >
@@ -100,10 +96,17 @@ document.addEventListener("DOMContentLoaded", function () {
               />
             </svg>
 
-            Saved items
-          </button></a>
+            <span class="btn-text">Saved items</span>
+          </button>
+        </div>
+
+        <div class="hamburger">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
         </div>
       </nav>
+      <div class="mobile-menu-overlay"></div>
     </header>
   `;
 
@@ -181,4 +184,265 @@ document.addEventListener("DOMContentLoaded", function () {
 
   setActiveNav();
   window.addEventListener('popstate', setActiveNav);
+
+  // Mobile menu toggle
+  const hamburger = document.querySelector(".hamburger");
+  const navMenu = document.querySelector(".mid");
+  const overlay = document.querySelector(".mobile-menu-overlay");
+  const body = document.body;
+
+  if (hamburger) {
+    hamburger.addEventListener("click", () => {
+      hamburger.classList.toggle("active");
+      navMenu.classList.toggle("active");
+      overlay.classList.toggle("active");
+      body.classList.toggle("no-scroll");
+    });
+  }
+  
+  if (overlay) {
+      overlay.addEventListener("click", () => {
+          hamburger.classList.remove("active");
+          navMenu.classList.remove("active");
+          overlay.classList.remove("active");
+          body.classList.remove("no-scroll");
+      });
+  }
+
+  // Mobile dropdown toggle
+  const dropdowns = document.querySelectorAll(".dropdown");
+  dropdowns.forEach(dropdown => {
+      const link = dropdown.querySelector("a");
+      // Prevent default link behavior on mobile to allow toggling dropdown
+      link.addEventListener("click", (e) => {
+          if (window.innerWidth <= 1024) { // Mobile/Tablet breakpoint
+              // Check if it's the main products link
+              if (dropdown.classList.contains("dropdown")) {
+                  // If dropdown is not active, prevent navigation and toggle it
+                  if (!dropdown.classList.contains("active")) {
+                      e.preventDefault();
+                      dropdown.classList.add("active");
+                  } 
+                  // If it IS active, let the link work (go to /products) or toggle off?
+                  // Usually clicking again toggles off.
+                  else {
+                      e.preventDefault();
+                      dropdown.classList.remove("active");
+                  }
+              }
+          }
+      });
+  });
+
+  // ========== CART DRAWER LOGIC ==========
+  const cartDrawerHTML = `
+    <div class="cart-overlay-bg"></div>
+    <div class="cart-drawer">
+      <div class="cart-header">
+        <h3>Your Cart <span class="cart-count">(2)</span></h3>
+        <button class="close-cart">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      
+      <div class="cart-items">
+        <!-- Static Item 1 -->
+        <div class="cart-item">
+          <div class="item-img">
+            <img src="/img/galerija/granula.jpg" alt="Premium Dog Food">
+          </div>
+          <div class="item-details">
+            <h4>Premium Dog Food</h4>
+            <p class="item-variant">15kg Bag</p>
+            <div class="price-row">
+              <span class="item-price">$45.00</span>
+              <div class="qty-control">
+                <button class="qty-btn minus">-</button>
+                <input type="number" value="1" min="1" readonly>
+                <button class="qty-btn plus">+</button>
+              </div>
+            </div>
+          </div>
+          <button class="remove-item">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+
+        <!-- Static Item 2 -->
+        <div class="cart-item">
+          <div class="item-img">
+            <img src="/img/galerija/pas1.jpg" alt="Dog Toy">
+          </div>
+          <div class="item-details">
+            <h4>Interactive Dog Toy</h4>
+            <p class="item-variant">Blue / Large</p>
+            <div class="price-row">
+              <span class="item-price">$15.50</span>
+              <div class="qty-control">
+                <button class="qty-btn minus">-</button>
+                <input type="number" value="2" min="1" readonly>
+                <button class="qty-btn plus">+</button>
+              </div>
+            </div>
+          </div>
+          <button class="remove-item">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="cart-footer">
+        <div class="subtotal-row">
+          <span>Subtotal</span>
+          <span class="total-price">$76.00</span>
+        </div>
+        <p class="shipping-note">Shipping & taxes calculated at checkout</p>
+        <button class="checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML("beforeend", cartDrawerHTML);
+
+  // ========== SAVED ITEMS DRAWER LOGIC ==========
+  const savedDrawerHTML = `
+    <div class="saved-drawer">
+      <div class="saved-header">
+        <h3><span class="material-symbols-outlined">favorite</span> Wishlist <span class="saved-count">2</span></h3>
+        <button class="close-saved">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      
+      <div class="saved-items-grid">
+        <!-- Static Item 1 -->
+        <div class="saved-item-card">
+          <button class="remove-saved-item">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+          <div class="saved-img">
+            <img src="/img/galerija/pas2.jpg" alt="Dog Leash">
+          </div>
+          <div class="saved-details">
+            <h4>Durable Dog Leash</h4>
+            <p class="saved-variant">Red / 2m</p>
+            <div class="saved-bottom">
+              <span class="saved-price">$22.00</span>
+              <button class="move-to-cart-btn">
+                <span class="material-symbols-outlined">shopping_cart</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Static Item 2 -->
+        <div class="saved-item-card">
+          <button class="remove-saved-item">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+          <div class="saved-img">
+            <img src="/img/galerija/pas3.jpg" alt="Cat Bed">
+          </div>
+          <div class="saved-details">
+            <h4>Cozy Cat Bed</h4>
+            <p class="saved-variant">Grey / Medium</p>
+            <div class="saved-bottom">
+              <span class="saved-price">$35.00</span>
+              <button class="move-to-cart-btn">
+                <span class="material-symbols-outlined">shopping_cart</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="saved-footer">
+        <button class="move-all-btn">Move All to Cart</button>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML("beforeend", savedDrawerHTML);
+
+  const openCartBtn = document.getElementById("openCart");
+  const openSavedBtn = document.getElementById("savedProduct");
+  
+  const cartDrawer = document.querySelector(".cart-drawer");
+  const savedDrawer = document.querySelector(".saved-drawer");
+  const cartOverlay = document.querySelector(".cart-overlay-bg");
+  
+  const closeCartBtn = document.querySelector(".close-cart");
+  const closeSavedBtn = document.querySelector(".close-saved");
+
+  function closeAllDrawers() {
+    cartDrawer.classList.remove("active");
+    savedDrawer.classList.remove("active");
+    cartOverlay.classList.remove("active");
+    document.body.classList.remove("no-scroll");
+  }
+
+  function toggleCart() {
+    // If saved is open, close it first
+    if (savedDrawer.classList.contains("active")) {
+        savedDrawer.classList.remove("active");
+        cartDrawer.classList.add("active");
+    } else {
+        cartDrawer.classList.toggle("active");
+        cartOverlay.classList.toggle("active");
+        document.body.classList.toggle("no-scroll");
+    }
+  }
+
+  function toggleSaved() {
+    // If cart is open, close it first
+    if (cartDrawer.classList.contains("active")) {
+        cartDrawer.classList.remove("active");
+        savedDrawer.classList.add("active");
+    } else {
+        savedDrawer.classList.toggle("active");
+        cartOverlay.classList.toggle("active");
+        document.body.classList.toggle("no-scroll");
+    }
+  }
+
+  if (openCartBtn) {
+    openCartBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      toggleCart();
+    });
+  }
+
+  if (openSavedBtn) {
+    openSavedBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      toggleSaved();
+    });
+  }
+
+  if (closeCartBtn) {
+    closeCartBtn.addEventListener("click", closeAllDrawers);
+  }
+
+  if (closeSavedBtn) {
+    closeSavedBtn.addEventListener("click", closeAllDrawers);
+  }
+
+  if (cartOverlay) {
+    cartOverlay.addEventListener("click", closeAllDrawers);
+  }
+
+  // Quantity Logic (Visual Only)
+  const qtyBtns = document.querySelectorAll(".qty-btn");
+  qtyBtns.forEach(btn => {
+    btn.addEventListener("click", function() {
+      const input = this.parentElement.querySelector("input");
+      let value = parseInt(input.value);
+      if (this.classList.contains("plus")) {
+        value++;
+      } else if (this.classList.contains("minus") && value > 1) {
+        value--;
+      }
+      input.value = value;
+    });
+  });
 });
