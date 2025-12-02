@@ -123,6 +123,7 @@ header ul a.active, header ul a.active li, header ul li.active, header ul li a.a
 header ul li.dropdown {
   position: relative;
   cursor: pointer;
+  overflow: visible;
 }
 
 header ul li.dropdown:hover {
@@ -145,30 +146,45 @@ header ul li.dropdown .mega-dropdown {
   position: absolute;
   top: 100%;
   left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(135deg, #1a1a1a 0%, #131111 100%);
-  border: 1px solid rgba(0, 153, 0, 0.4);
-  border-radius: 15px;
-  padding: 30px;
-  min-width: 700px;
-  display: none;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(19, 17, 17, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 153, 0, 0.3);
+  border-radius: 20px;
+  padding: 40px;
+  width: 1000px;
+  max-width: 95vw;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.4s ease;
-  margin-top: 15px;
+  display: block;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   z-index: 9999;
 }
 
+/* Invisible bridge to prevent hover loss */
+header ul li.dropdown::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 20px; /* Matches the initial translateY gap */
+  background: transparent;
+}
+
 header ul li.dropdown:hover .mega-dropdown {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  margin-top: 10px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(10px);
 }
 
 header ul li.dropdown .mega-dropdown-content {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr) 280px;
   gap: 30px;
 }
 
@@ -179,29 +195,135 @@ header ul li.dropdown .mega-column {
 
 header ul li.dropdown .mega-column h4 {
   color: #009900;
-  font-size: 1.2rem;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid rgba(0, 153, 0, 0.3);
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header ul li.dropdown .mega-column h4 span {
+  font-size: 1.4rem;
 }
 
 header ul li.dropdown .mega-column a {
-  color: #f0f0f0;
+  color: #cccccc;
   text-decoration: none;
-  padding: 8px 12px;
-  margin: 3px 0;
-  border-radius: 8px;
+  padding: 10px 15px;
+  margin: 2px 0;
+  border-radius: 10px;
   transition: all 0.3s ease;
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
 }
 
 header ul li.dropdown .mega-column a:hover {
-  background: linear-gradient(90deg, rgba(0, 153, 0, 0.25), rgba(0, 153, 0, 0.1));
-  color: #00b300;
-  padding-left: 18px;
-  transform: translateX(5px);
-  border-left: 3px solid #009900;
+  background: rgba(0, 153, 0, 0.1);
+  color: #fff;
+  padding-left: 20px;
+}
+
+/* Featured Column Styles */
+header ul li.dropdown .featured-column {
+  grid-column: 5;
+}
+
+header ul li.dropdown .featured-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* Border radius and subtle dark overlay requested */
+  border-radius: 10px !important;
+  overflow: hidden !important; /* ensure rounded corners clip the image */
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+header ul li.dropdown .featured-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  /* Match the container radius so the image is rounded */
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  filter: brightness(0.4);
+}
+
+header ul li.dropdown .featured-image-container:hover img {
+  transform: scale(1.05);
+}
+
+header ul li.dropdown .featured-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 25px;
+  /* Add a subtle dark overlay so the image is slightly dimmed and text remains readable */
+  background: linear-gradient(to top, rgba(0,0,0,0.35), rgba(0,0,0,0.12)) !important;
+  box-shadow: none !important;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+header ul li.dropdown .featured-overlay h5 {
+  color: #fff;
+  font-size: 1.4rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+header ul li.dropdown .featured-overlay p {
+  color: #ddd;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+header ul li.dropdown .featured-btn {
+  align-self: flex-start;
+  background: #009900;
+  color: white !important;
+  padding: 10px 20px !important;
+  border-radius: 25px !important;
+  font-size: 0.9rem !important;
+  font-weight: 600;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  margin: 0 !important;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+header ul li.dropdown .featured-btn:hover {
+  background: #00b300 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 153, 0, 0.3);
+  padding-left: 20px !important;
+}
+
+/* ensure no shadow on buttons inside the featured image container */
+header ul li.dropdown .featured-image-container .featured-btn:hover {
+  box-shadow: none !important;
+}
+
+header ul li.dropdown .featured-btn span {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+header ul li.dropdown .featured-btn:hover span {
+  transform: translateX(3px);
 }
 
 header ul a {

@@ -88,6 +88,13 @@
   height: 48px;
 }
 
+/* Slightly larger hero buttons (left-btn = Services & Advice, right-btn = Product Catalog) */
+#welcomeHome .left-btn,
+#welcomeHome .right-btn {
+  width: 190px; /* a bit wider */
+  height: 54px; /* slightly taller */
+}
+
 #welcomeHome .left-btn {
   font-size: 1.05rem;
   color: #fff;
@@ -1342,6 +1349,31 @@
 
   .contactCard span {
     transform: scale(2);
+  }
+}
+
+/* Responsive: slightly smaller hero buttons on narrower screens */
+@media only screen and (max-width: 1023px) {
+  #welcomeHome .left-btn,
+  #welcomeHome .right-btn {
+    width: 170px; /* previous default */
+    height: 50px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  #welcomeHome .left-btn,
+  #welcomeHome .right-btn {
+    width: 150px;
+    height: 46px;
+  }
+}
+
+@media only screen and (max-width: 499px) {
+  #welcomeHome .left-btn,
+  #welcomeHome .right-btn {
+    width: 140px;
+    height: 44px;
   }
 }
 

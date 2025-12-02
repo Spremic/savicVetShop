@@ -1,40 +1,41 @@
-// Header scroll effect
-window.addEventListener("scroll", function () {
-  const header = document.querySelector("header");
-  if (window.scrollY > 50) {
-    header.classList.add("scrolled");
-  } else {
-    header.classList.remove("scrolled");
-  }
-});
-
-// Mega dropdown menu
 document.addEventListener("DOMContentLoaded", function () {
-  const dropdown = document.querySelector(".dropdown");
-  
-  if (dropdown) {
-    const menu = dropdown.querySelector(".mega-dropdown");
-    
-    dropdown.addEventListener("mouseenter", function () {
-      if (menu) {
-        menu.style.display = "block";
-        setTimeout(() => {
-          menu.style.opacity = "1";
-          menu.style.visibility = "visible";
-        }, 10);
-      }
-    });
+  // Header scroll effect
+  window.addEventListener("scroll", function () {
+    const header = document.querySelector("header");
+    if (window.scrollY > 50) {
+      header.classList.add("scrolled");
+    } else {
+      header.classList.remove("scrolled");
+    }
+  });
 
-    dropdown.addEventListener("mouseleave", function () {
-      if (menu) {
-        menu.style.opacity = "0";
-        menu.style.visibility = "hidden";
-        setTimeout(() => {
-          menu.style.display = "none";
-        }, 400);
+  // Add styles for flying item
+  const style = document.createElement("style");
+  style.textContent = `
+    .flying-item {
+      display: grid;
+      place-content: center;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), rgba(0, 153, 0, 0.1));
+      border: 2px solid #009900;
+      border-radius: 50%;
+    }
+
+    .flying-item svg {
+      filter: drop-shadow(0 0 8px rgba(0, 153, 0, 0.6));
+    }
+
+    @keyframes cartNotify {
+      0%, 100% {
+        transform: scale(1);
       }
-    });
-  }
+      50% {
+        transform: scale(1.15);
+      }
+    }
+  `;
+  document.head.appendChild(style);
 
   // Add to cart animation
   const cartButtons = document.querySelectorAll(".add-to-cart");
@@ -94,38 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 800);
     });
   });
-});
 
-// Add styles for flying item
-const style = document.createElement("style");
-style.textContent = `
-  .flying-item {
-    display: grid;
-    place-content: center;
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), rgba(0, 153, 0, 0.1));
-    border: 2px solid #009900;
-    border-radius: 50%;
-  }
-
-  .flying-item svg {
-    filter: drop-shadow(0 0 8px rgba(0, 153, 0, 0.6));
-  }
-
-  @keyframes cartNotify {
-    0%, 100% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.15);
-    }
-  }
-`;
-document.head.appendChild(style);
-
-// Intersection Observer for Scroll Animations
-function initAnimations() {
+  // Intersection Observer for Scroll Animations
   const observerOptions = {
     root: null,
     rootMargin: "0px",
@@ -143,16 +114,8 @@ function initAnimations() {
 
   const revealElements = document.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale");
   revealElements.forEach(el => observer.observe(el));
-}
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initAnimations);
-} else {
-  initAnimations();
-}
-
-// Lightbox Functionality
-document.addEventListener('DOMContentLoaded', function() {
+  // Lightbox Functionality
   const modal = document.getElementById('lightbox-modal');
   const modalImg = document.querySelector('.lightbox-image');
   const closeBtn = document.querySelector('.close-lightbox');
