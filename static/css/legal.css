@@ -1,0 +1,355 @@
+/* legal.css - Stilovi za legal stranicu */
+/* Svi stilovi počinju sa #legalContainer da se ne bi mešali sa clone.css */
+
+/* Osiguravamo da pozadina bude crna */
+#html,
+#body {
+  background-color: #131111 !important;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+#legalContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 120px 20px 40px;
+  display: flex;
+  gap: 40px;
+  min-height: calc(100vh - 80px);
+}
+
+#legalContainer .legal-sidebar {
+  flex: 0 0 280px;
+  position: sticky;
+  top: 120px;
+  align-self: flex-start;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+#legalContainer .legal-content {
+  flex: 1;
+  min-width: 0;
+}
+
+#legalContainer h1 {
+  color: #f0f0f0;
+  margin-bottom: 25px;
+  margin-top: 40px;
+  font-size: 2.5em;
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 700;
+  border-bottom: 3px solid #009900;
+  padding-bottom: 15px;
+  position: relative;
+}
+
+#legalContainer h1:first-of-type {
+  margin-top: 0;
+}
+
+#legalContainer h1::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, #009900, #00b300);
+}
+
+#legalContainer h2 {
+  color: #f0f0f0;
+  margin-bottom: 18px;
+  margin-top: 30px;
+  font-size: 1.8em;
+  font-weight: 600;
+  font-family: "Baloo 2", sans-serif;
+  position: relative;
+  padding-left: 15px;
+}
+
+#legalContainer h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 80%;
+  background: linear-gradient(135deg, #009900, #00b300);
+  border-radius: 2px;
+}
+
+#legalContainer h3 {
+  color: #e0e0e0;
+  margin-bottom: 15px;
+  margin-top: 25px;
+  font-size: 1.4em;
+  font-weight: 500;
+  font-family: "Baloo 2", sans-serif;
+}
+
+#legalContainer p {
+  line-height: 1.9;
+  margin-bottom: 18px;
+  color: #e0e0e0;
+  font-size: 1.05rem;
+}
+
+#legalContainer a {
+  color: #009900;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+#legalContainer a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #009900, #00b300);
+  transition: width 0.3s ease;
+}
+
+#legalContainer a:hover {
+  color: #00b300;
+}
+
+#legalContainer a:hover::after {
+  width: 100%;
+}
+
+#legalContainer ul,
+#legalContainer ol {
+  margin-left: 30px;
+  margin-bottom: 18px;
+  line-height: 1.9;
+}
+
+#legalContainer li {
+  margin-bottom: 12px;
+  color: #e0e0e0;
+  font-size: 1.05rem;
+  position: relative;
+  padding-left: 10px;
+}
+
+#legalContainer ul li::marker {
+  color: #009900;
+}
+
+#legalContainer ol li::marker {
+  color: #009900;
+  font-weight: 600;
+}
+
+#legalContainer .last-updated {
+  color: #e0e0e0;
+  font-style: normal;
+  margin-bottom: 35px;
+  padding: 20px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #131111 100%);
+  border-left: 4px solid #009900;
+  border-radius: 10px;
+}
+
+#legalContainer .last-updated strong {
+  color: #009900;
+}
+
+#legalContainer .section-divider {
+  border-top: 2px solid rgba(0, 153, 0, 0.3);
+  margin: 50px 0;
+  position: relative;
+}
+
+#legalContainer .section-divider::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #009900, transparent);
+}
+
+#legalContainer .company-info {
+  background: linear-gradient(135deg, #1a1a1a 0%, #131111 100%);
+  padding: 25px;
+  border-radius: 10px;
+  margin-top: 30px;
+  border: 2px solid rgba(0, 153, 0, 0.2);
+}
+
+#legalContainer .company-info h2 {
+  margin-top: 0;
+  color: #009900;
+}
+
+#legalContainer .company-info p {
+  margin-bottom: 12px;
+}
+
+#legalContainer .company-info strong {
+  color: #009900;
+}
+
+#legalContainer strong {
+  color: #f0f0f0;
+  font-weight: 600;
+}
+
+#legalContainer .toc {
+  background: linear-gradient(135deg, #1a1a1a 0%, #131111 100%);
+  padding: 25px;
+  border-radius: 10px;
+  border: 2px solid rgba(0, 153, 0, 0.2);
+  position: sticky;
+  top: 120px;
+}
+
+#legalContainer .toc h2 {
+  margin-top: 0;
+  color: #009900;
+  padding-left: 0;
+}
+
+#legalContainer .toc h2::before {
+  display: none;
+}
+
+#legalContainer .toc ul {
+  list-style-type: none;
+  margin-left: 0;
+  margin-top: 15px;
+}
+
+#legalContainer .toc li {
+  padding-left: 25px;
+  position: relative;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+#legalContainer .toc li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #009900;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+#legalContainer .toc li:hover {
+  padding-left: 30px;
+}
+
+#legalContainer .toc li:hover::before {
+  color: #00b300;
+  transform: translateX(5px);
+}
+
+#legalContainer .toc a {
+  color: #e0e0e0;
+  transition: all 0.3s ease;
+  display: block;
+  padding: 5px 0;
+}
+
+#legalContainer .toc a:hover {
+  color: #009900;
+}
+
+#legalContainer .toc a.active {
+  color: #009900;
+  font-weight: 600;
+}
+
+#legalContainer .legal-sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+#legalContainer .legal-sidebar::-webkit-scrollbar-thumb {
+  background-color: #009900;
+  border-radius: 4px;
+}
+
+#legalContainer .legal-sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: #00b300;
+}
+
+#legalContainer section {
+  margin-bottom: 40px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+#legalContainer .last-updated p strong {
+  color: #009900;
+}
+
+#legalContainer ::selection {
+  background-color: #009900;
+  color: white;
+}
+
+#legalContainer ::-moz-selection {
+  background-color: #009900;
+  color: white;
+}
+
+#legalContainer a:focus,
+#legalContainer button:focus {
+  outline: 2px solid #009900;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  #legalContainer {
+    flex-direction: column;
+    padding-top: 100px;
+  }
+
+  #legalContainer .legal-sidebar {
+    position: relative;
+    top: 0;
+    flex: 1;
+    max-height: none;
+  }
+
+  #legalContainer .toc {
+    position: relative;
+    top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  #legalContainer {
+    padding: 100px 10px 20px;
+  }
+
+  #legalContainer h1 {
+    font-size: 2em;
+  }
+
+  #legalContainer h2 {
+    font-size: 1.5em;
+  }
+
+  #legalContainer {
+    gap: 20px;
+  }
+
+  #legalContainer .toc,
+  #legalContainer .company-info,
+  #legalContainer .last-updated {
+    padding: 15px;
+  }
+}

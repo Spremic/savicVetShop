@@ -1829,7 +1829,7 @@
       padding-inline: 10px;
     }
     #firstSection h3 {
-      font-size: 1.7rem;
+      font-size: 2rem;
       margin-bottom: 30px;
     }
     #firstSection .custom-card {
@@ -1846,11 +1846,11 @@
       padding: 4px 10px;
     }
     #firstSection .content-c h4 {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       margin-top: 10px;
     }
     #firstSection .content-c .price {
-      font-size: 1.5rem;
+      font-size: 1.9rem;
     }
     #firstSection .btns-flex {
       margin-top: 14px;
@@ -1868,6 +1868,13 @@
       width: 98%;
       margin-top: 70px;
     }
+    #welcomeSection div h5 {
+      font-size: 2.1rem;
+    }
+    #welcomeSection div p {
+      font-size: 1.4rem;
+      line-height: 24px;
+    }
 
     .productItemContainer {
       width: 98%;
@@ -1877,15 +1884,48 @@
     .productItemIcon span {
       margin-right: 19px;
     }
+    .productItemTXT h5 {
+      font-size: 1.6rem;
+    }
+    .productItemTXT p {
+      font-size: 1.35rem;
+      line-height: 22px;
+    }
 
     .cooperationLeft,
     .cooperationRight {
       width: 98%;
     }
+    .cooperationLeftTXT h4 {
+      font-size: 2rem;
+    }
+    .cooperationLeftTXT p {
+      font-size: 1.35rem;
+      line-height: 22px;
+    }
+    .cooperationCardTXT h5 {
+      font-size: 1.6rem;
+    }
+    .cooperationCardTXT p {
+      font-size: 1.35rem;
+      line-height: 22px;
+    }
 
     .cooperationCard {
       padding-inline: 5px;
       height: initial;
+    }
+    .objectLeft h2 {
+      font-size: 2.3rem;
+    }
+    .objectLeft p {
+      font-size: 1.4rem;
+      line-height: 24px;
+    }
+    .objectLeft button {
+      font-size: 1.45rem;
+      width: 160px;
+      height: 45px;
     }
     .objectIMG img {
       height: 150px;
@@ -1895,8 +1935,21 @@
       width: 98%;
       margin-bottom: 40px;
     }
+    .contactText h3 {
+      font-size: 2.1rem;
+    }
+    .contactText p {
+      font-size: 1.4rem;
+      line-height: 24px;
+    }
     .contactFlex {
       flex-wrap: wrap;
+    }
+    .contact-flip-back h5 {
+      font-size: 1.6rem;
+    }
+    .contact-flip-back p {
+      font-size: 1.4rem;
     }
     .contactCard {
       width: 140px;

@@ -53,6 +53,7 @@ header h1 {
   padding-top: 10px;
   color: #f0f0f0d3;
   white-space: nowrap;
+  font-weight: normal;
 }
 
 header .mid {
