@@ -494,7 +494,8 @@
 
 /* Prevent overflow during reveal animation - apply immediately */
 .product-details.reveal-right {
-  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: visible;
   contain: layout;
   clip-path: inset(0); /* Additional overflow prevention */
 }
@@ -781,7 +782,9 @@
   max-width: 100%;
   box-sizing: border-box;
   flex-wrap: wrap;
-  overflow: hidden;
+  overflow: visible;
+  padding-top: 4px;
+  margin-top: 6px;
 }
 
 .btn-buy-now,
@@ -1120,13 +1123,14 @@
 .recommended-mid-wrapper {
   flex: 1;
   overflow-x: hidden;
-  overflow-y: visible;
+  overflow-y: hidden;
   width: 100%;
   max-width: 100%;
   position: relative;
   padding-top: 10px;
   margin-top: 0;
   box-sizing: border-box;
+  contain: layout;
 }
 
 .recommended-mid {
@@ -1138,6 +1142,22 @@
   max-width: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* Prevent overflow during reveal animation - apply immediately */
+.recommended-mid.reveal,
+.recommended-mid-wrapper.reveal {
+  overflow: hidden !important;
+  contain: layout;
+  clip-path: inset(0); /* Additional overflow prevention */
+}
+
+.recommended-mid.reveal.active,
+.recommended-mid-wrapper.reveal.active {
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  clip-path: none;
 }
 
 .recommended-card {
@@ -1172,6 +1192,19 @@
   display: block !important;
 }
 
+/* Prevent overflow during reveal animation - apply immediately */
+.recommended-card.reveal {
+  overflow: hidden !important;
+  contain: layout;
+  clip-path: inset(0); /* Additional overflow prevention */
+}
+
+.recommended-card.reveal.active {
+  overflow: visible;
+  contain: none;
+  clip-path: none;
+}
+
 .recommended-card::before {
   content: "";
   position: absolute;
@@ -1191,10 +1224,8 @@
 }
 
 .recommended-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(0, 153, 0, 0.2);
-  z-index: 10;
-  position: relative;
+  transform: none;
+  border-color: rgba(0, 153, 0, 0.5);
 }
 
 .recommended-card:hover::before {
