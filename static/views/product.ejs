@@ -31,6 +31,462 @@
   <body id="body">
     <!-- Header ce biti dinamicki ucitan iz clone.js -->
 
+    <main class="product-page">
+      <div class="product-container">
+        <!-- Left Column: Product Images -->
+        <div class="product-images reveal-left">
+          <div class="images-wrapper">
+            <div class="thumbnail-container">
+              <div class="thumbnail active" data-image="/img/pas1.jpg">
+                <img src="/img/pas1.jpg" alt="Thumbnail 1" />
+              </div>
+              <div class="thumbnail" data-image="/img/pas2.jpg">
+                <img src="/img/pas2.jpg" alt="Thumbnail 2" />
+              </div>
+              <div class="thumbnail" data-image="/img/pas3.jpg">
+                <img src="/img/pas3.jpg" alt="Thumbnail 3" />
+              </div>
+              <div class="thumbnail" data-image="/img/granula.jpg">
+                <img src="/img/granula.jpg" alt="Thumbnail 4" />
+              </div>
+              <div class="thumbnail" data-image="/img/galerija/lokal1.jpg">
+                <img src="/img/galerija/lokal1.jpg" alt="Thumbnail 5" />
+              </div>
+              <div class="thumbnail" data-image="/img/galerija/lokal2.jpg">
+                <img src="/img/galerija/lokal2.jpg" alt="Thumbnail 6" />
+              </div>
+              <div class="thumbnail" data-image="/img/galerija/lokal3.jpg">
+                <img src="/img/galerija/lokal3.jpg" alt="Thumbnail 7" />
+              </div>
+              <div class="thumbnail" data-image="/img/galerija/lokal4.jpg">
+                <img src="/img/galerija/lokal4.jpg" alt="Thumbnail 8" />
+              </div>
+              <div class="thumbnail" data-image="/img/galerija/lokal5.jpg">
+                <img src="/img/galerija/lokal5.jpg" alt="Thumbnail 9" />
+              </div>
+            </div>
+            
+            <div class="main-image-container">
+              <img id="mainProductImage" src="/img/pas1.jpg" alt="Product Image" class="main-image" />
+              <button class="image-zoom-btn" aria-label="Zoom image">
+                <span class="material-symbols-outlined">zoom_in</span>
+              </button>
+              <button class="image-arrow-left" aria-label="Previous image">
+                <span class="material-symbols-outlined">arrow_back_ios</span>
+              </button>
+              <button class="image-arrow-right" aria-label="Next image">
+                <span class="material-symbols-outlined">arrow_forward_ios</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Seller Information Card -->
+          <div class="seller-card reveal-left delay-200">
+            <div class="seller-info">
+              <div class="seller-logo">
+                <img src="/img/happy animal.png" alt="Happy Animals" />
+                <span class="verified-badge">
+                  <span class="material-symbols-outlined">verified</span>
+                </span>
+              </div>
+              <div class="seller-details">
+                <h4>Happy Animals</h4>
+                <div class="seller-rating">
+                  <span class="satisfied-customers">1000+ Satisfied Customers</span>
+                </div>
+                <div class="seller-location">
+                  <span class="material-symbols-outlined">location_on</span>
+                  <span>New York, USA</span>
+                </div>
+              </div>
+            </div>
+            <button class="view-more-btn">View More</button>
+          </div>
+        </div>
+
+        <!-- Right Column: Product Details -->
+        <div class="product-details reveal-right">
+          <div class="product-badge reveal delay-100">NEW ARRIVAL</div>
+          
+          <h1 class="product-title reveal delay-100">Premium Pet Food - Complete Nutrition</h1>
+          
+          <div class="product-price reveal delay-200">
+            <span class="currency">$</span>
+            <span class="amount">899,00</span>
+          </div>
+
+          <!-- Description -->
+          <div class="product-description reveal delay-300">
+            <h3 class="description-title">Description:</h3>
+            <p class="description-text">
+              Our premium pet food offers complete and balanced nutrition designed to support your pet's health at every stage of life. Crafted with carefully selected natural ingredients, this formula provides essential vitamins, minerals, and proteins that your furry friend needs to thrive. Whether you have a playful puppy, an active adult dog, or a senior companion, this nutritionally rich food helps maintain optimal health, energy levels, and overall vitality. Developed with guidance from veterinarians and pet nutrition experts, this formula ensures your pet receives the highest quality nutrition for a happy and healthy life.
+            </p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="product-actions reveal delay-400">
+            <button class="btn-buy-now">
+              <span class="material-symbols-outlined">shopping_cart</span>
+              Buy Now
+            </button>
+            <button class="btn-add-cart">
+              <span class="material-symbols-outlined">add_shopping_cart</span>
+              Add to Cart
+            </button>
+            <button class="btn-favorite" aria-label="Add to favorites">
+              <span class="material-symbols-outlined">favorite</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Specifications Section -->
+      <section class="specifications-section">
+        <h2 class="specifications-title reveal">Specifications</h2>
+        <div class="specifications-content">
+          <div class="spec-item reveal delay-100">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Brand:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">Happy Animals</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-100">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Gramaža:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">2.5 kg</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-100">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Tip proizvoda:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">Suva hrana</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-200">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Vrsta životinje:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">Psi i mačke</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-200">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Starosna dob:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">Svi uzrasti</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-200">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Protein:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">28%</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-300">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Masti:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">15%</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-300">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Vlakna:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">4%</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-300">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Vlaga:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">10%</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-400">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Glavni sastojci:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">Piletina, riža, povrće</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-400">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Dodatni sastojci:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">Omega-3, vitamini, minerali</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-400">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Rok trajanja:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">24 meseca</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-500">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Zemlja porekla:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">Srbija</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-500">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Pakovanje:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">Vakuum pakovanje</span>
+            </div>
+          </div>
+          <div class="spec-item reveal delay-500">
+            <div class="spec-label-wrapper">
+              <span class="spec-label">Certifikat:</span>
+            </div>
+            <div class="spec-value-wrapper">
+              <span class="spec-value">ISO 22000, HACCP</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recommended Products Section -->
+      <section class="recommended-section">
+        <h3 class="recommended-title reveal">Recommended Products</h3>
+        
+        <div class="recommended-flex-container">
+          <div class="recommended-arrow-l">
+            <span class="material-symbols-outlined">arrow_back_ios_new</span>
+          </div>
+
+          <div class="recommended-mid-wrapper">
+            <div class="recommended-mid">
+            <div class="recommended-card reveal delay-100">
+              <div class="recommended-image-c">
+                <div class="recommended-heart-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path class="recommended-heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2" />
+                    <path class="recommended-heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0" />
+                  </svg>
+                </div>
+                <img src="/img/pas1.jpg" alt="Recommended Product" />
+              </div>
+              <div class="recommended-content-c">
+                <span>Royal Canin</span>
+                <h4>Premium Granule 1kg Royal Canin</h4>
+                <div class="recommended-price">2,450 RSD</div>
+                <div class="recommended-btns-flex">
+                  <button class="recommended-buy-now">Buy now</button>
+                  <button class="recommended-add-to-cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                      <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="recommended-card reveal delay-200">
+              <div class="recommended-image-c">
+                <div class="recommended-heart-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path class="recommended-heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2" />
+                    <path class="recommended-heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0" />
+                  </svg>
+                </div>
+                <img src="/img/pas2.jpg" alt="Recommended Product" />
+              </div>
+              <div class="recommended-content-c">
+                <span>Monge</span>
+                <h4>Natural Superpremium Dog Food 2kg</h4>
+                <div class="recommended-price">3,200 RSD</div>
+                <div class="recommended-btns-flex">
+                  <button class="recommended-buy-now">Buy now</button>
+                  <button class="recommended-add-to-cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                      <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="recommended-card reveal delay-300">
+              <div class="recommended-image-c">
+                <div class="recommended-heart-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path class="recommended-heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2" />
+                    <path class="recommended-heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0" />
+                  </svg>
+                </div>
+                <img src="/img/pas3.jpg" alt="Recommended Product" />
+              </div>
+              <div class="recommended-content-c">
+                <span>Premil</span>
+                <h4>Complete Nutrition Cat Food 1.5kg</h4>
+                <div class="recommended-price">1,890 RSD</div>
+                <div class="recommended-btns-flex">
+                  <button class="recommended-buy-now">Buy now</button>
+                  <button class="recommended-add-to-cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                      <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="recommended-card reveal delay-400">
+              <div class="recommended-image-c">
+                <div class="recommended-heart-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path class="recommended-heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2" />
+                    <path class="recommended-heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0" />
+                  </svg>
+                </div>
+                <img src="/img/granula.jpg" alt="Recommended Product" />
+              </div>
+              <div class="recommended-content-c">
+                <span>Purina</span>
+                <h4>Pro Plan Adult Dog Food 3kg</h4>
+                <div class="recommended-price">4,100 RSD</div>
+                <div class="recommended-btns-flex">
+                  <button class="recommended-buy-now">Buy now</button>
+                  <button class="recommended-add-to-cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                      <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="recommended-card reveal delay-100">
+              <div class="recommended-image-c">
+                <div class="recommended-heart-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path class="recommended-heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2" />
+                    <path class="recommended-heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0" />
+                  </svg>
+                </div>
+                <img src="/img/pas1.jpg" alt="Recommended Product" />
+              </div>
+              <div class="recommended-content-c">
+                <span>Hill's</span>
+                <h4>Science Plan Adult Dog Food 2.5kg</h4>
+                <div class="recommended-price">3,800 RSD</div>
+                <div class="recommended-btns-flex">
+                  <button class="recommended-buy-now">Buy now</button>
+                  <button class="recommended-add-to-cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                      <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="recommended-card reveal delay-200">
+              <div class="recommended-image-c">
+                <div class="recommended-heart-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path class="recommended-heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2" />
+                    <path class="recommended-heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0" />
+                  </svg>
+                </div>
+                <img src="/img/pas2.jpg" alt="Recommended Product" />
+              </div>
+              <div class="recommended-content-c">
+                <span>Eukanuba</span>
+                <h4>Adult Medium Breed Dog Food 3kg</h4>
+                <div class="recommended-price">4,500 RSD</div>
+                <div class="recommended-btns-flex">
+                  <button class="recommended-buy-now">Buy now</button>
+                  <button class="recommended-add-to-cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                      <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="recommended-card reveal delay-300">
+              <div class="recommended-image-c">
+                <div class="recommended-heart-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path class="recommended-heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2" />
+                    <path class="recommended-heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0" />
+                  </svg>
+                </div>
+                <img src="/img/pas3.jpg" alt="Recommended Product" />
+              </div>
+              <div class="recommended-content-c">
+                <span>Acana</span>
+                <h4>Grain-Free Dog Food 2kg</h4>
+                <div class="recommended-price">5,200 RSD</div>
+                <div class="recommended-btns-flex">
+                  <button class="recommended-buy-now">Buy now</button>
+                  <button class="recommended-add-to-cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                      <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="recommended-card reveal delay-400">
+              <div class="recommended-image-c">
+                <div class="recommended-heart-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path class="recommended-heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2" />
+                    <path class="recommended-heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0" />
+                  </svg>
+                </div>
+                <img src="/img/granula.jpg" alt="Recommended Product" />
+              </div>
+              <div class="recommended-content-c">
+                <span>Orijen</span>
+                <h4>Regional Red Dog Food 2.5kg</h4>
+                <div class="recommended-price">6,100 RSD</div>
+                <div class="recommended-btns-flex">
+                  <button class="recommended-buy-now">Buy now</button>
+                  <button class="recommended-add-to-cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                      <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div class="recommended-arrow-r">
+            <span class="material-symbols-outlined">arrow_forward_ios</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
     <!-- Footer ce biti dinamicki ucitan iz clone.js -->
 
     <script src="/js/clone.js"></script>

@@ -1503,7 +1503,10 @@
     margin-inline: 25px;
   }
   #welcomeSection div h5 {
-    font-size: 2.2rem;
+    font-size: 1.5rem;
+  }
+  #welcomeSection div p {
+    font-size: 0.9rem;
   }
   .productItemContainer {
     margin-left: 20px;
@@ -1515,7 +1518,7 @@
   }
 
   .productItemTXT h5 {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
 
   .productItemTXT p {
@@ -1534,7 +1537,7 @@
     width: 90%;
   }
   .cooperationLeftTXT h4 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
   .cooperationLeftTXT p {
     font-size: 0.9rem;
@@ -1546,7 +1549,10 @@
   }
 
   .cooperationCardTXT h5 {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
+  }
+  .cooperationCardTXT p {
+    font-size: 0.9rem;
   }
   .cooperationNumber p {
     font-size: 2.5rem;
@@ -1565,11 +1571,11 @@
   }
 
   .objectLeft h2 {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
   }
   .objectLeft p {
     font-size: 0.9rem;
-    line-height: 27px;
+    line-height: 26px;
     margin-top: 10px;
     margin-bottom: 0px;
   }
@@ -1591,11 +1597,17 @@
   }
 
   .contactText h3 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .contactText p {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+  }
+  .contact-flip-back h5 {
+    font-size: 1.1rem;
+  }
+  .contact-flip-back p {
+    font-size: 0.9rem;
   }
 
   .contactCard {
@@ -1869,11 +1881,11 @@
       margin-top: 70px;
     }
     #welcomeSection div h5 {
-      font-size: 2.1rem;
+      font-size: 1.5rem;
     }
     #welcomeSection div p {
-      font-size: 1.4rem;
-      line-height: 24px;
+      font-size: 0.9rem;
+      line-height: 26px;
     }
 
     .productItemContainer {
@@ -1885,11 +1897,11 @@
       margin-right: 19px;
     }
     .productItemTXT h5 {
-      font-size: 1.6rem;
+      font-size: 1.1rem;
     }
     .productItemTXT p {
-      font-size: 1.35rem;
-      line-height: 22px;
+      font-size: 0.9rem;
+      line-height: 26px;
     }
 
     .cooperationLeft,
@@ -1897,18 +1909,18 @@
       width: 98%;
     }
     .cooperationLeftTXT h4 {
-      font-size: 2rem;
+      font-size: 1.5rem;
     }
     .cooperationLeftTXT p {
-      font-size: 1.35rem;
-      line-height: 22px;
+      font-size: 0.9rem;
+      line-height: 26px;
     }
     .cooperationCardTXT h5 {
-      font-size: 1.6rem;
+      font-size: 1.1rem;
     }
     .cooperationCardTXT p {
-      font-size: 1.35rem;
-      line-height: 22px;
+      font-size: 0.9rem;
+      line-height: 26px;
     }
 
     .cooperationCard {
@@ -1916,14 +1928,14 @@
       height: initial;
     }
     .objectLeft h2 {
-      font-size: 2.3rem;
+      font-size: 1.5rem;
     }
     .objectLeft p {
-      font-size: 1.4rem;
-      line-height: 24px;
+      font-size: 0.9rem;
+      line-height: 26px;
     }
     .objectLeft button {
-      font-size: 1.45rem;
+      font-size: 1rem;
       width: 160px;
       height: 45px;
     }
@@ -1936,20 +1948,20 @@
       margin-bottom: 40px;
     }
     .contactText h3 {
-      font-size: 2.1rem;
+      font-size: 1.5rem;
     }
     .contactText p {
-      font-size: 1.4rem;
-      line-height: 24px;
+      font-size: 0.9rem;
+      line-height: 26px;
     }
     .contactFlex {
       flex-wrap: wrap;
     }
     .contact-flip-back h5 {
-      font-size: 1.6rem;
+      font-size: 1.1rem;
     }
     .contact-flip-back p {
-      font-size: 1.4rem;
+      font-size: 0.9rem;
     }
     .contactCard {
       width: 140px;
@@ -1969,6 +1981,9 @@
   visibility: hidden;
   transition: all 1s cubic-bezier(0.5, 0, 0, 1);
   will-change: opacity, transform;
+  overflow: hidden !important; /* Prevent overflow during animation - force immediately */
+  contain: layout; /* Contain layout changes during animation */
+  clip-path: inset(0); /* Additional overflow prevention */
 }
 
 .reveal {
@@ -1995,6 +2010,9 @@
   opacity: 1;
   visibility: visible;
   transform: translate(0) scale(1);
+  overflow: visible; /* Restore overflow after animation */
+  contain: none; /* Remove containment after animation */
+  clip-path: none; /* Remove clip-path after animation */
 }
 
 /* Stagger delays */
