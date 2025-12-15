@@ -1,17 +1,54 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
+const compression = require("compression");
 const port = process.env.PORT || 3000;
 const app = express();
+
+// Enable compression
+app.use(compression());
 
 // EJS konfiguracija
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "static/views"));
 
-app.use(express.static(__dirname + "/static/css"));
-app.use(express.static(__dirname + "/static/img"));
-app.use(express.static(__dirname + "/static/js"));
-app.use("/", express.static(path.join(__dirname, "static")));
+// Static files - no cache headers
+app.use(express.static(__dirname + "/static/css", {
+  etag: false,
+  lastModified: false,
+  setHeaders: (res) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+  }
+}));
+app.use(express.static(__dirname + "/static/img", {
+  etag: false,
+  lastModified: false,
+  setHeaders: (res) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+  }
+}));
+app.use(express.static(__dirname + "/static/js", {
+  etag: false,
+  lastModified: false,
+  setHeaders: (res) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+  }
+}));
+app.use("/", express.static(path.join(__dirname, "static"), {
+  etag: false,
+  lastModified: false,
+  setHeaders: (res) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+  }
+}));
 app.get("/about", (req, res) => {
   res.sendFile(path.join(__dirname, "/static/about.html"));
 });

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <header>
       <nav>
         <div class="left">
-          <a href="/" class="logo-link"><img src="/img/happy animal.png" alt="Happy Animals logo" /></a>
+          <a href="/" class="logo-link"><img src="/img/happy animal.png" alt="Happy Animals logo" loading="eager" fetchpriority="high" /></a>
           <h1><a href="/" class="logo-link">Happy Animals</a></h1>
         </div>
 
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                     <div class="mega-column featured-column">
                         <div class="featured-image-container">
-                          <img src="/img/dropdownImg.png" alt="Dropdown image" />
+                          <img src="/img/dropdownImg.png" alt="Dropdown image" loading="lazy" />
                           <div class="featured-overlay">
                             <h5>New Collection</h5>
                             <p>Premium quality for your pets</p>
@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <!-- Static Item 1 -->
         <div class="cart-item">
           <div class="item-img">
-            <img src="/img/galerija/granula.jpg" alt="Premium Dog Food">
+            <img src="/img/galerija/granula.jpg" alt="Premium Dog Food" loading="lazy">
           </div>
           <div class="item-details">
             <h4>Premium Dog Food</h4>
@@ -271,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <!-- Static Item 2 -->
         <div class="cart-item">
           <div class="item-img">
-            <img src="/img/galerija/pas1.jpg" alt="Dog Toy">
+            <img src="/img/galerija/pas1.jpg" alt="Dog Toy" loading="lazy">
           </div>
           <div class="item-details">
             <h4>Interactive Dog Toy</h4>
@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <span class="material-symbols-outlined">close</span>
           </button>
           <div class="saved-img">
-            <img src="/img/galerija/pas2.jpg" alt="Dog Leash">
+            <img src="/img/galerija/pas2.jpg" alt="Dog Leash" loading="lazy">
           </div>
           <div class="saved-details">
             <h4>Durable Dog Leash</h4>
@@ -341,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <span class="material-symbols-outlined">close</span>
           </button>
           <div class="saved-img">
-            <img src="/img/galerija/pas3.jpg" alt="Cat Bed">
+            <img src="/img/galerija/pas3.jpg" alt="Cat Bed" loading="lazy">
           </div>
           <div class="saved-details">
             <h4>Cozy Cat Bed</h4>
