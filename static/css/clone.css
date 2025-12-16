@@ -695,7 +695,7 @@ body.no-scroll {
     justify-content: flex-start;
     padding-top: 100px;
     transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+    box-shadow: none;
     border-left: 1px solid rgba(0, 153, 0, 0.3);
   }
 
@@ -856,7 +856,7 @@ body.no-scroll {
   height: 100vh;
   background: #131111;
   z-index: 1003;
-  box-shadow: -5px 0 30px rgba(0, 0, 0, 0.8);
+  box-shadow: none;
   border-left: none;
   transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;

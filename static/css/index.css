@@ -468,6 +468,7 @@
   justify-content: center;
   gap: 25px;
   flex: 1;
+  overflow-y: hidden;
 }
 
 #firstSection .custom-card {
@@ -478,6 +479,7 @@
   overflow: hidden;
   transition: all 0.4s ease;
   position: relative;
+  cursor: pointer;
 }
 
 #firstSection .custom-card::before {
@@ -499,7 +501,6 @@
 }
 
 #firstSection .custom-card:hover {
-  transform: translateY(-8px);
   border-color: rgba(0, 153, 0, 0.2);
 }
 
@@ -1412,7 +1413,9 @@
     gap: 20px;
     flex-wrap: nowrap;
     overflow-x: auto;
+    overflow-y: hidden;
     justify-content: flex-start;
+    padding-top: 12px;
     padding-bottom: 10px;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -1716,6 +1719,8 @@
     flex-direction: row;
     width: 100%;
     gap: 15px;
+    padding-top: 12px;
+    overflow-y: hidden;
   }
   #firstSection .custom-card {
     min-width: 70vw;

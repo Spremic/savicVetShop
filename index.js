@@ -64,6 +64,10 @@ app.get("/product", (req, res) => {
   res.render("product");
 });
 
+app.get("/custom-page", (req, res) => {
+  res.sendFile(path.join(__dirname, "/static/custom-page.html"));
+});
+
 app.use(bodyParser.json());
 app.listen(port, () => {
   console.log(`App is listening on port ${port}`);
