@@ -1084,7 +1084,7 @@ body.no-scroll {
 
 .cart-footer {
   padding: 30px;
-  padding-bottom: calc(30px + env(safe-area-inset-bottom, 0));
+  padding-bottom: calc(40px + env(safe-area-inset-bottom, 10px));
   background: #0a0a0a;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -1162,11 +1162,11 @@ body.no-scroll {
   }
 
   .cart-footer {
-    padding-bottom: calc(80px + env(safe-area-inset-bottom, 80px)) !important;
+    padding-bottom: calc(90px + env(safe-area-inset-bottom, 90px)) !important;
   }
 
   .saved-footer {
-    padding-bottom: calc(80px + env(safe-area-inset-bottom, 80px)) !important;
+    padding-bottom: calc(90px + env(safe-area-inset-bottom, 90px)) !important;
   }
 }
 
@@ -1342,7 +1342,7 @@ body.no-scroll {
 
 .saved-footer {
   padding: 25px;
-  padding-bottom: calc(25px + env(safe-area-inset-bottom, 0));
+  padding-bottom: calc(35px + env(safe-area-inset-bottom, 10px));
   background: #1a1a1a;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -1390,11 +1390,11 @@ body.no-scroll {
   }
 
   .saved-footer {
-    padding-bottom: calc(80px + env(safe-area-inset-bottom, 80px)) !important;
+    padding-bottom: calc(90px + env(safe-area-inset-bottom, 90px)) !important;
   }
 
   .cart-footer {
-    padding-bottom: calc(80px + env(safe-area-inset-bottom, 80px)) !important;
+    padding-bottom: calc(90px + env(safe-area-inset-bottom, 90px)) !important;
   }
 }
 
