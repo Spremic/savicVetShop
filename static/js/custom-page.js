@@ -1,3 +1,19 @@
+// Suppress browser extension async listener errors
+window.addEventListener('error', function(e) {
+  if (e.message && e.message.includes('asynchronous response') && e.message.includes('message channel closed')) {
+    e.preventDefault();
+    return false;
+  }
+}, true);
+
+// Suppress unhandled promise rejections from browser extensions
+window.addEventListener('unhandledrejection', function(e) {
+  if (e.reason && e.reason.message && e.reason.message.includes('asynchronous response') && e.reason.message.includes('message channel closed')) {
+    e.preventDefault();
+    return false;
+  }
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   // Header scroll effect
   window.addEventListener("scroll", function () {
@@ -244,8 +260,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Create flying element
         const flyingElement = document.createElement("div");
         flyingElement.className = "flying-item";
-        flyingElement.innerHTML =
-          '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none"><path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#009900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
+        flyingElement.innerHTML = '<span class="material-symbols-outlined">add_shopping_cart</span>';
 
         // Add styles for flying item
         if (!document.querySelector('style[data-flying-item]')) {
@@ -261,7 +276,9 @@ document.addEventListener("DOMContentLoaded", function () {
               border: 2px solid #009900;
               border-radius: 50%;
             }
-            .flying-item svg {
+            .flying-item .material-symbols-outlined {
+              font-size: 24px;
+              color: #009900;
               filter: drop-shadow(0 0 8px rgba(0, 153, 0, 0.6));
             }
             @keyframes cartNotify {
@@ -309,5 +326,486 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 800);
       });
     });
+  }
+
+  // Add to cart animation for cart-icon-btn (small icon button)
+  const cartIconButtons = document.querySelectorAll(".cart-icon-btn");
+  const cartIconHeader = document.querySelector("#openCart");
+
+  if (cartIconButtons.length > 0 && cartIconHeader) {
+    cartIconButtons.forEach((button) => {
+      button.addEventListener("click", function (e) {
+        e.stopPropagation();
+
+        // Get button position
+        const buttonRect = button.getBoundingClientRect();
+        const buttonX = buttonRect.left + buttonRect.width / 2;
+        const buttonY = buttonRect.top + buttonRect.height / 2;
+
+        // Get cart position
+        const cartRect = cartIconHeader.getBoundingClientRect();
+        const cartX = cartRect.left + cartRect.width / 2;
+        const cartY = cartRect.top + cartRect.height / 2;
+
+        // Create flying element
+        const flyingElement = document.createElement("div");
+        flyingElement.className = "flying-item";
+        flyingElement.innerHTML = '<span class="material-symbols-outlined">add_shopping_cart</span>';
+
+        // Add styles for flying item (if not already added)
+        if (!document.querySelector('style[data-flying-item]')) {
+          const style = document.createElement("style");
+          style.setAttribute("data-flying-item", "true");
+          style.textContent = `
+            .flying-item {
+              display: grid;
+              place-content: center;
+              width: 40px;
+              height: 40px;
+              background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), rgba(0, 153, 0, 0.1));
+              border: 2px solid #009900;
+              border-radius: 50%;
+            }
+            .flying-item .material-symbols-outlined {
+              font-size: 24px;
+              color: #009900;
+              filter: drop-shadow(0 0 8px rgba(0, 153, 0, 0.6));
+            }
+            @keyframes cartNotify {
+              0%, 100% { transform: scale(1); }
+              50% { transform: scale(1.15); }
+            }
+          `;
+          document.head.appendChild(style);
+        }
+
+        document.body.appendChild(flyingElement);
+
+        // Set initial position
+        flyingElement.style.position = "fixed";
+        flyingElement.style.left = buttonX + "px";
+        flyingElement.style.top = buttonY + "px";
+        flyingElement.style.pointerEvents = "none";
+        flyingElement.style.zIndex = "9999";
+
+        // Trigger animation
+        setTimeout(() => {
+          flyingElement.style.transition =
+            "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+          flyingElement.style.left = cartX + "px";
+          flyingElement.style.top = cartY + "px";
+          flyingElement.style.opacity = "0";
+          flyingElement.style.transform = "scale(0.3)";
+        }, 10);
+
+        // Add button animation
+        button.style.transform = "scale(0.95)";
+        setTimeout(() => {
+          button.style.transform = "";
+        }, 150);
+
+        // Add pulse effect to cart
+        cartIconHeader.style.animation = "cartNotify 0.6s ease";
+        setTimeout(() => {
+          cartIconHeader.style.animation = "";
+        }, 600);
+
+        // Remove flying element after animation
+        setTimeout(() => {
+          flyingElement.remove();
+        }, 800);
+      });
+    });
+  }
+
+  // Pagination functionality
+  const productsGrid = document.querySelector(".products-grid");
+  const paginationNumbers = document.getElementById("paginationNumbers");
+  const prevBtn = document.getElementById("prevPageBtn");
+  const nextBtn = document.getElementById("nextPageBtn");
+  let currentPage = 1;
+  const itemsPerPage = 9;
+  const totalPages = 6;
+
+  // Generate product data for all pages
+  const generateProductData = (page) => {
+    const products = [];
+    const categories = ["food", "toys", "equipment", "accessories"];
+    const brands = ["Royal Canin", "Monge", "Premil", "Happy Pets", "Travel Pro", "Comfort Fit", "Purina Pro", "Play Time", "Secure Walk", "PetCo", "FurReal", "Whiskers", "Pawfect", "BarkBox", "CatNip", "DogZone", "PetLife", "AnimalCare"];
+    const foodTitles = ["Premium Dog Food", "Natural Cat Food", "Superpremium Granules", "Complete Nutrition", "Grain Free Formula", "Puppy Starter", "Senior Diet", "Weight Control", "Sensitive Stomach"];
+    const toyTitles = ["Interactive Toy Set", "Feather Wand", "Chew Toy", "Puzzle Game", "Ball Set", "Rope Toy", "Squeaky Toy", "Laser Pointer", "Fetch Stick"];
+    const equipmentTitles = ["Pet Carrier", "Travel Bag", "Dog Bed", "Cat Tree", "Litter Box", "Water Bowl", "Food Dispenser", "Crate", "Playpen"];
+    const accessoryTitles = ["Leather Collar", "Retractable Leash", "Name Tag", "Harness", "Dog Coat", "Cat Scratching Post", "Pet Grooming Kit", "Travel Bottle", "ID Tag"];
+    const prices = ["1,890", "2,100", "2,450", "2,800", "3,200", "3,500", "4,200", "4,500", "5,800"];
+    const images = ["/img/pansion.jpg", "/img/granula.jpg", "/img/pas1.jpg", "/img/pas2.jpg", "/img/pas3.jpg", "/img/zec.jpg", "/img/pansionSlika.jpg"];
+
+    for (let i = 0; i < itemsPerPage; i++) {
+      const globalIndex = (page - 1) * itemsPerPage + i;
+      const category = categories[globalIndex % categories.length];
+      let title = "";
+      if (category === "food") title = foodTitles[globalIndex % foodTitles.length];
+      else if (category === "toys") title = toyTitles[globalIndex % toyTitles.length];
+      else if (category === "equipment") title = equipmentTitles[globalIndex % equipmentTitles.length];
+      else title = accessoryTitles[globalIndex % accessoryTitles.length];
+
+      products.push({
+        brand: brands[globalIndex % brands.length],
+        title: title,
+        price: prices[globalIndex % prices.length],
+        category: category,
+        rating: (4.5 + Math.random() * 0.5).toFixed(1),
+        priceRange: globalIndex % 3 === 0 ? "low" : globalIndex % 3 === 1 ? "medium" : "high",
+        image: images[globalIndex % images.length],
+        description: `Premium quality product designed for your pet's comfort and wellbeing. Features high-quality materials and thoughtful design that ensures durability and functionality.`
+      });
+    }
+    return products;
+  };
+
+  // Render products for current page
+  const renderProducts = (page) => {
+    const products = generateProductData(page);
+    productsGrid.innerHTML = "";
+
+    products.forEach((product) => {
+      const productCard = document.createElement("div");
+      productCard.className = "product-card";
+      productCard.setAttribute("data-category", product.category);
+      productCard.setAttribute("data-price", product.priceRange);
+      productCard.setAttribute("data-rating", product.rating);
+
+      productCard.innerHTML = `
+        <div class="product-image">
+          <img src="${product.image}" alt="${product.title}" loading="lazy" />
+        </div>
+        <div class="product-info">
+          <div class="product-brand">${product.brand}</div>
+          <h3 class="product-title">${product.title}</h3>
+          <div class="product-price">
+            <span class="price-range">${product.price} RSD</span>
+          </div>
+          <p class="product-description">${product.description}</p>
+          <div class="product-buttons">
+            <button class="import-btn">
+              <span class="material-symbols-outlined">shopping_bag</span>
+              Buy Now
+            </button>
+            <button class="cart-icon-btn">
+              <span class="material-symbols-outlined">add_shopping_cart</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      productsGrid.appendChild(productCard);
+    });
+
+    // Reinitialize cart button animations for new products
+    setTimeout(() => {
+      const newImportButtons = productsGrid.querySelectorAll(".import-btn");
+      const newCartIconButtons = productsGrid.querySelectorAll(".cart-icon-btn");
+      const cartIconHeader = document.querySelector("#openCart");
+
+      // Reattach event listeners for new buttons
+      if (newImportButtons.length > 0 && cartIconHeader) {
+        newImportButtons.forEach((button) => {
+          button.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const buttonRect = button.getBoundingClientRect();
+            const buttonX = buttonRect.left + buttonRect.width / 2;
+            const buttonY = buttonRect.top + buttonRect.height / 2;
+            const cartRect = cartIconHeader.getBoundingClientRect();
+            const cartX = cartRect.left + cartRect.width / 2;
+            const cartY = cartRect.top + cartRect.height / 2;
+
+            const flyingElement = document.createElement("div");
+            flyingElement.className = "flying-item";
+            flyingElement.innerHTML = '<span class="material-symbols-outlined">add_shopping_cart</span>';
+
+            if (!document.querySelector('style[data-flying-item]')) {
+              const style = document.createElement("style");
+              style.setAttribute("data-flying-item", "true");
+              style.textContent = `
+                .flying-item {
+                  display: grid;
+                  place-content: center;
+                  width: 40px;
+                  height: 40px;
+                  background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), rgba(0, 153, 0, 0.1));
+                  border: 2px solid #009900;
+                  border-radius: 50%;
+                }
+                .flying-item .material-symbols-outlined {
+                  font-size: 24px;
+                  color: #009900;
+                  filter: drop-shadow(0 0 8px rgba(0, 153, 0, 0.6));
+                }
+                @keyframes cartNotify {
+                  0%, 100% { transform: scale(1); }
+                  50% { transform: scale(1.15); }
+                }
+              `;
+              document.head.appendChild(style);
+            }
+
+            document.body.appendChild(flyingElement);
+            flyingElement.style.position = "fixed";
+            flyingElement.style.left = buttonX + "px";
+            flyingElement.style.top = buttonY + "px";
+            flyingElement.style.pointerEvents = "none";
+            flyingElement.style.zIndex = "9999";
+
+            setTimeout(() => {
+              flyingElement.style.transition = "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+              flyingElement.style.left = cartX + "px";
+              flyingElement.style.top = cartY + "px";
+              flyingElement.style.opacity = "0";
+              flyingElement.style.transform = "scale(0.3)";
+            }, 10);
+
+            button.style.transform = "scale(0.95)";
+            setTimeout(() => {
+              button.style.transform = "";
+            }, 150);
+
+            cartIconHeader.style.animation = "cartNotify 0.6s ease";
+            setTimeout(() => {
+              cartIconHeader.style.animation = "";
+            }, 600);
+
+            setTimeout(() => {
+              flyingElement.remove();
+            }, 800);
+          });
+        });
+      }
+
+      if (newCartIconButtons.length > 0 && cartIconHeader) {
+        newCartIconButtons.forEach((button) => {
+          button.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const buttonRect = button.getBoundingClientRect();
+            const buttonX = buttonRect.left + buttonRect.width / 2;
+            const buttonY = buttonRect.top + buttonRect.height / 2;
+            const cartRect = cartIconHeader.getBoundingClientRect();
+            const cartX = cartRect.left + cartRect.width / 2;
+            const cartY = cartRect.top + cartRect.height / 2;
+
+            const flyingElement = document.createElement("div");
+            flyingElement.className = "flying-item";
+            flyingElement.innerHTML = '<span class="material-symbols-outlined">add_shopping_cart</span>';
+
+            if (!document.querySelector('style[data-flying-item]')) {
+              const style = document.createElement("style");
+              style.setAttribute("data-flying-item", "true");
+              style.textContent = `
+                .flying-item {
+                  display: grid;
+                  place-content: center;
+                  width: 40px;
+                  height: 40px;
+                  background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), rgba(0, 153, 0, 0.1));
+                  border: 2px solid #009900;
+                  border-radius: 50%;
+                }
+                .flying-item .material-symbols-outlined {
+                  font-size: 24px;
+                  color: #009900;
+                  filter: drop-shadow(0 0 8px rgba(0, 153, 0, 0.6));
+                }
+                @keyframes cartNotify {
+                  0%, 100% { transform: scale(1); }
+                  50% { transform: scale(1.15); }
+                }
+              `;
+              document.head.appendChild(style);
+            }
+
+            document.body.appendChild(flyingElement);
+            flyingElement.style.position = "fixed";
+            flyingElement.style.left = buttonX + "px";
+            flyingElement.style.top = buttonY + "px";
+            flyingElement.style.pointerEvents = "none";
+            flyingElement.style.zIndex = "9999";
+
+            setTimeout(() => {
+              flyingElement.style.transition = "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+              flyingElement.style.left = cartX + "px";
+              flyingElement.style.top = cartY + "px";
+              flyingElement.style.opacity = "0";
+              flyingElement.style.transform = "scale(0.3)";
+            }, 10);
+
+            button.style.transform = "scale(0.95)";
+            setTimeout(() => {
+              button.style.transform = "";
+            }, 150);
+
+            cartIconHeader.style.animation = "cartNotify 0.6s ease";
+            setTimeout(() => {
+              cartIconHeader.style.animation = "";
+            }, 600);
+
+            setTimeout(() => {
+              flyingElement.remove();
+            }, 800);
+          });
+        });
+      }
+    }, 100);
+  };
+
+  // Generate pagination numbers dynamically (max 4 numbers)
+  // Simple sliding logic: always show 3 numbers that slide with current page
+  const generatePaginationNumbers = () => {
+    paginationNumbers.innerHTML = "";
+    
+    if (totalPages <= 4) {
+      // If total pages <= 4, show all
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.className = `pagination-number ${i === currentPage ? "active" : ""}`;
+        btn.setAttribute("data-page", i.toString());
+        btn.textContent = i.toString();
+        paginationNumbers.appendChild(btn);
+      }
+      return;
+    }
+
+    // Calculate the 3 numbers to show around current page
+    let startNum = Math.max(1, currentPage - 1);
+    let endNum = Math.min(totalPages, currentPage + 1);
+    
+    // Adjust if we're at the beginning
+    if (currentPage <= 2) {
+      startNum = 1;
+      endNum = 3;
+    }
+    // Adjust if we're at the end
+    else if (currentPage >= totalPages - 1) {
+      startNum = totalPages - 2;
+      endNum = totalPages;
+    }
+
+    // Show first page only if we're at the start (pages 1-2)
+    if (currentPage <= 2) {
+      // No ellipsis needed, just show first 3 + last
+      for (let i = startNum; i <= endNum; i++) {
+        const btn = document.createElement("button");
+        btn.className = `pagination-number ${i === currentPage ? "active" : ""}`;
+        btn.setAttribute("data-page", i.toString());
+        btn.textContent = i.toString();
+        paginationNumbers.appendChild(btn);
+      }
+      
+      const ellipsis = document.createElement("span");
+      ellipsis.className = "pagination-ellipsis";
+      ellipsis.textContent = "...";
+      paginationNumbers.appendChild(ellipsis);
+
+      const lastBtn = document.createElement("button");
+      lastBtn.className = `pagination-number ${totalPages === currentPage ? "active" : ""}`;
+      lastBtn.setAttribute("data-page", totalPages.toString());
+      lastBtn.textContent = totalPages.toString();
+      paginationNumbers.appendChild(lastBtn);
+    }
+    // Show last page only if we're at the end (pages 5-6)
+    else if (currentPage >= totalPages - 1) {
+      const firstBtn = document.createElement("button");
+      firstBtn.className = `pagination-number ${1 === currentPage ? "active" : ""}`;
+      firstBtn.setAttribute("data-page", "1");
+      firstBtn.textContent = "1";
+      paginationNumbers.appendChild(firstBtn);
+
+      const ellipsis = document.createElement("span");
+      ellipsis.className = "pagination-ellipsis";
+      ellipsis.textContent = "...";
+      paginationNumbers.appendChild(ellipsis);
+
+      for (let i = startNum; i <= endNum; i++) {
+        const btn = document.createElement("button");
+        btn.className = `pagination-number ${i === currentPage ? "active" : ""}`;
+        btn.setAttribute("data-page", i.toString());
+        btn.textContent = i.toString();
+        paginationNumbers.appendChild(btn);
+      }
+    }
+    // Middle pages (3-4): show 3 numbers + last = 4 numbers total
+    else {
+      // Show: ... 2 3 4 ... 6 or ... 3 4 5 ... 6 (3 numbers + last = 4 total)
+      const ellipsis1 = document.createElement("span");
+      ellipsis1.className = "pagination-ellipsis";
+      ellipsis1.textContent = "...";
+      paginationNumbers.appendChild(ellipsis1);
+
+      // Show the 3 sliding numbers
+      for (let i = startNum; i <= endNum; i++) {
+        const btn = document.createElement("button");
+        btn.className = `pagination-number ${i === currentPage ? "active" : ""}`;
+        btn.setAttribute("data-page", i.toString());
+        btn.textContent = i.toString();
+        paginationNumbers.appendChild(btn);
+      }
+
+      const ellipsis2 = document.createElement("span");
+      ellipsis2.className = "pagination-ellipsis";
+      ellipsis2.textContent = "...";
+      paginationNumbers.appendChild(ellipsis2);
+
+      // Always show last page
+      const lastBtn = document.createElement("button");
+      lastBtn.className = `pagination-number ${totalPages === currentPage ? "active" : ""}`;
+      lastBtn.setAttribute("data-page", totalPages.toString());
+      lastBtn.textContent = totalPages.toString();
+      paginationNumbers.appendChild(lastBtn);
+    }
+  };
+
+  // Update pagination UI
+  const updatePagination = () => {
+    // Regenerate pagination numbers
+    generatePaginationNumbers();
+    
+    // Reattach event listeners to new buttons
+    const pageNumbers = paginationNumbers.querySelectorAll(".pagination-number");
+    pageNumbers.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        currentPage = parseInt(btn.getAttribute("data-page"));
+        renderProducts(currentPage);
+        updatePagination();
+        window.scrollTo({ top: productsGrid.offsetTop - 100, behavior: "smooth" });
+      });
+    });
+
+    // Update prev/next buttons
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages;
+  };
+
+  // Event listeners for pagination
+  if (paginationNumbers && prevBtn && nextBtn) {
+    // Prev button
+    prevBtn.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderProducts(currentPage);
+        updatePagination();
+        window.scrollTo({ top: productsGrid.offsetTop - 100, behavior: "smooth" });
+      }
+    });
+
+    // Next button
+    nextBtn.addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderProducts(currentPage);
+        updatePagination();
+        window.scrollTo({ top: productsGrid.offsetTop - 100, behavior: "smooth" });
+      }
+    });
+
+    // Initial render - render first page
+    renderProducts(1);
+    updatePagination();
   }
 });

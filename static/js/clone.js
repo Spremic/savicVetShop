@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <!-- Static Item 1 -->
         <div class="cart-item">
           <div class="item-img">
-            <img src="/img/galerija/granula.jpg" alt="Premium Dog Food" loading="lazy">
+            <img src="/img/granula.jpg" alt="Premium Dog Food" loading="lazy">
           </div>
           <div class="item-details">
             <h4>Premium Dog Food</h4>
@@ -271,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <!-- Static Item 2 -->
         <div class="cart-item">
           <div class="item-img">
-            <img src="/img/galerija/pas1.jpg" alt="Dog Toy" loading="lazy">
+            <img src="/img/pas1.jpg" alt="Dog Toy" loading="lazy">
           </div>
           <div class="item-details">
             <h4>Interactive Dog Toy</h4>
@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <span class="material-symbols-outlined">close</span>
           </button>
           <div class="saved-img">
-            <img src="/img/galerija/pas2.jpg" alt="Dog Leash" loading="lazy">
+            <img src="/img/pas2.jpg" alt="Dog Leash" loading="lazy">
           </div>
           <div class="saved-details">
             <h4>Durable Dog Leash</h4>
@@ -341,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <span class="material-symbols-outlined">close</span>
           </button>
           <div class="saved-img">
-            <img src="/img/galerija/pas3.jpg" alt="Cat Bed" loading="lazy">
+            <img src="/img/pas3.jpg" alt="Cat Bed" loading="lazy">
           </div>
           <div class="saved-details">
             <h4>Cozy Cat Bed</h4>

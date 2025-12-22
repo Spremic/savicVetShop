@@ -46,7 +46,9 @@
     <div id="page-loader">
       <div class="loader-content">
         <div class="loader-logo">
-          <i class="fas fa-paw loader-paw"></i>
+          <svg class="loader-paw" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
+            <path d="M226.5 92.9c14.3 42.9-.3 86.2-32.6 96.8s-70.1-15.6-84.4-58.5s.3-86.2 32.6-96.8s70.1 15.6 84.4 58.5zM100.4 198.6c18.9 32.4 14.3 70.1-10.2 84.1s-59.7-.9-78.5-33.3S-2.7 179.3 21.8 165.3s59.7 .9 78.5 33.3zM69.2 401.2C121.6 259.9 214.7 224 256 224s134.4 35.9 186.8 177.2c3.6 9.7 5.2 20.1 5.2 30.5v1.6c0 25.8-20.9 46.7-46.7 46.7c-11.5 0-22.9-1.4-34-4.2l-88-22c-15.3-3.8-31.3-3.8-46.6 0l-88 22c-11.1 2.8-22.5 4.2-34 4.2C84.9 480 64 459.1 64 433.3v-1.6c0-10.4 1.6-20.8 5.2-30.5zM421.8 282.7c-24.5-14-29.1-51.7-10.2-84.1s54-47.3 78.5-33.3s29.1 51.7 10.2 84.1s-54 47.3-78.5 33.3zM310.1 189.7c-32.3-10.6-46.9-53.9-32.6-96.8s52.1-69.1 84.4-58.5s46.9 53.9 32.6 96.8s-52.1 69.1-84.4 58.5z"/>
+          </svg>
         </div>
         <div class="loader-text">Happy Animals</div>
         <div class="loader-progress">
@@ -57,62 +59,20 @@
 
     <!-- Header ce biti dinamicki ucitan iz clone.js -->
 
-    <section id="catalog-section">
-      <!-- Hero Categories Section -->
-      <div class="hero-categories">
-        <div class="hero-category-item" data-category="food">
-          <div class="hero-category-image">
-            <img src="/img/pansion.jpg" alt="Food" loading="lazy" />
-            <div class="hero-category-overlay"></div>
-          </div>
-          <div class="hero-category-content">
-            <span class="material-symbols-outlined">restaurant</span>
-            <h3>Pet Food</h3>
-            <p>Premium nutrition for your pets</p>
-            <span class="hero-category-link">Shop Now <span class="material-symbols-outlined">arrow_forward</span></span>
-          </div>
-        </div>
-
-        <div class="hero-category-item" data-category="toys">
-          <div class="hero-category-image">
-            <img src="/img/pansionSlika.jpg" alt="Toys" loading="lazy" />
-            <div class="hero-category-overlay"></div>
-          </div>
-          <div class="hero-category-content">
-            <span class="material-symbols-outlined">toys</span>
-            <h3>Toys & Games</h3>
-            <p>Fun and interactive toys</p>
-            <span class="hero-category-link">Shop Now <span class="material-symbols-outlined">arrow_forward</span></span>
-          </div>
-        </div>
-
-        <div class="hero-category-item" data-category="equipment">
-          <div class="hero-category-image">
-            <img src="/img/pas1.jpg" alt="Equipment" loading="lazy" />
-            <div class="hero-category-overlay"></div>
-          </div>
-          <div class="hero-category-content">
-            <span class="material-symbols-outlined">pets</span>
-            <h3>Equipment</h3>
-            <p>Essential pet accessories</p>
-            <span class="hero-category-link">Shop Now <span class="material-symbols-outlined">arrow_forward</span></span>
-          </div>
-        </div>
-
-        <div class="hero-category-item" data-category="accessories">
-          <div class="hero-category-image">
-            <img src="/img/pas2.jpg" alt="Accessories" loading="lazy" />
-            <div class="hero-category-overlay"></div>
-          </div>
-          <div class="hero-category-content">
-            <span class="material-symbols-outlined">checkroom</span>
-            <h3>Accessories</h3>
-            <p>Stylish pet accessories</p>
-            <span class="hero-category-link">Shop Now <span class="material-symbols-outlined">arrow_forward</span></span>
-          </div>
-        </div>
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-content">
+        <nav class="breadcrumbs">
+          <a href="/">Home</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current">Products</span>
+        </nav>
+        <h1 class="page-title">Product Catalog</h1>
+        <p class="page-description">Discover our premium selection of pet products designed for your furry friends</p>
       </div>
+    </div>
 
+    <section id="catalog-section">
       <div class="catalog-content-wrapper">
         <!-- Modern Filters Sidebar -->
         <aside class="filters-sidebar" id="filtersSidebar">
@@ -228,6 +188,141 @@
               </div>
             </div>
 
+            <!-- Brand Filter -->
+            <div class="filter-section">
+              <h4 class="filter-section-title">
+                <span class="material-symbols-outlined">branding_watermark</span>
+                Brand
+              </h4>
+              <div class="filter-options">
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="brand" value="all" checked>
+                  <span class="checkmark"></span>
+                  <span class="filter-text">All Brands</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="brand" value="royal-canin">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">Royal Canin</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="brand" value="monge">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">Monge</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="brand" value="premil">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">Premil</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="brand" value="purina">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">Purina</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Pet Type Filter -->
+            <div class="filter-section">
+              <h4 class="filter-section-title">
+                <span class="material-symbols-outlined">pets</span>
+                Pet Type
+              </h4>
+              <div class="filter-options">
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="pet-type" value="all" checked>
+                  <span class="checkmark"></span>
+                  <span class="filter-text">All Pets</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="pet-type" value="dog">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">Dogs</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="pet-type" value="cat">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">Cats</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="pet-type" value="bird">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">Birds</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="pet-type" value="small-animal">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">Small Animals</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Availability Filter -->
+            <div class="filter-section">
+              <h4 class="filter-section-title">
+                <span class="material-symbols-outlined">inventory</span>
+                Availability
+              </h4>
+              <div class="filter-options">
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="availability" value="all" checked>
+                  <span class="checkmark"></span>
+                  <span class="filter-text">All Products</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="availability" value="in-stock">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">In Stock</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="availability" value="new">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">New Arrivals</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="availability" value="sale">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">On Sale</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Size Filter -->
+            <div class="filter-section">
+              <h4 class="filter-section-title">
+                <span class="material-symbols-outlined">straighten</span>
+                Size
+              </h4>
+              <div class="filter-options">
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="size" value="all" checked>
+                  <span class="checkmark"></span>
+                  <span class="filter-text">All Sizes</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="size" value="small">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">Small (0.5-1kg)</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="size" value="medium">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">Medium (1-2kg)</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="size" value="large">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">Large (2-5kg)</span>
+                </label>
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" class="filter-checkbox" name="size" value="xlarge">
+                  <span class="checkmark"></span>
+                  <span class="filter-text">Extra Large (5kg+)</span>
+                </label>
+              </div>
+            </div>
+
             <!-- Clear Filters Button -->
             <div class="filter-actions">
               <button class="clear-filters-btn" id="clearFiltersBtn">
@@ -252,12 +347,63 @@
             </button>
           </div>
 
+          <!-- Hero Categories Section -->
+          <div class="hero-categories">
+            <div class="hero-category-item" data-category="food">
+              <div class="hero-category-image">
+                <img src="/img/pansion.jpg" alt="Food" loading="lazy" />
+                <div class="hero-category-overlay"></div>
+              </div>
+              <div class="hero-category-content">
+                <span class="material-symbols-outlined">restaurant</span>
+                <h3>Pet Food</h3>
+                <p>Premium nutrition for your pets</p>
+                <span class="hero-category-link">Shop Now <span class="material-symbols-outlined">arrow_forward</span></span>
+              </div>
+            </div>
+
+            <div class="hero-category-item" data-category="toys">
+              <div class="hero-category-image">
+                <img src="/img/pansionSlika.jpg" alt="Toys" loading="lazy" />
+                <div class="hero-category-overlay"></div>
+              </div>
+              <div class="hero-category-content">
+                <span class="material-symbols-outlined">toys</span>
+                <h3>Toys & Games</h3>
+                <p>Fun and interactive toys</p>
+                <span class="hero-category-link">Shop Now <span class="material-symbols-outlined">arrow_forward</span></span>
+              </div>
+            </div>
+
+            <div class="hero-category-item" data-category="equipment">
+              <div class="hero-category-image">
+                <img src="/img/pas1.jpg" alt="Equipment" loading="lazy" />
+                <div class="hero-category-overlay"></div>
+              </div>
+              <div class="hero-category-content">
+                <span class="material-symbols-outlined">pets</span>
+                <h3>Equipment</h3>
+                <p>Essential pet accessories</p>
+                <span class="hero-category-link">Shop Now <span class="material-symbols-outlined">arrow_forward</span></span>
+              </div>
+            </div>
+
+            <div class="hero-category-item" data-category="accessories">
+              <div class="hero-category-image">
+                <img src="/img/pas2.jpg" alt="Accessories" loading="lazy" />
+                <div class="hero-category-overlay"></div>
+              </div>
+              <div class="hero-category-content">
+                <span class="material-symbols-outlined">checkroom</span>
+                <h3>Accessories</h3>
+                <p>Stylish pet accessories</p>
+                <span class="hero-category-link">Shop Now <span class="material-symbols-outlined">arrow_forward</span></span>
+              </div>
+            </div>
+          </div>
+
           <div class="products-grid reveal delay-200">
         <div class="product-card" data-category="food" data-price="medium" data-rating="4.8">
-          <div class="product-checkbox">
-            <input type="checkbox" id="product1" />
-            <label for="product1"></label>
-          </div>
           <div class="product-image">
             <img src="/img/pansion.jpg" alt="Premium Dog Food" loading="lazy" />
             <div class="product-badge">New</div>
@@ -265,105 +411,69 @@
           <div class="product-info">
             <div class="product-brand">Royal Canin</div>
             <h3 class="product-title">Premium Granule 1kg Royal Canin</h3>
-            <div class="product-rating">
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-              <span class="rating-text">4.8 (1,234 reviews)</span>
-            </div>
             <div class="product-price">
               <span class="price-range">2,450 RSD</span>
             </div>
-            <div class="product-tags">
-              <span class="tag">Premium</span>
-              <span class="tag">Dog Food</span>
+            <p class="product-description">Premium quality dog food with balanced nutrition for all breeds. Rich in proteins and essential vitamins. Formulated with natural ingredients to promote optimal health and vitality.</p>
+            <div class="product-buttons">
+              <button class="import-btn">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                Buy Now
+              </button>
+              <button class="cart-icon-btn">
+                <span class="material-symbols-outlined">add_shopping_cart</span>
+              </button>
             </div>
-            <button class="import-btn">
-              <span class="material-symbols-outlined">add_shopping_cart</span>
-              Add to Cart
-            </button>
           </div>
         </div>
 
         <div class="product-card" data-category="food" data-price="medium" data-rating="4.9">
-          <div class="product-checkbox">
-            <input type="checkbox" id="product2" />
-            <label for="product2"></label>
-          </div>
           <div class="product-image">
             <img src="/img/granula.jpg" alt="Natural Dog Food" loading="lazy" />
           </div>
           <div class="product-info">
             <div class="product-brand">Monge</div>
             <h3 class="product-title">Natural Superpremium Dog Food 2kg</h3>
-            <div class="product-rating">
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-              <span class="rating-text">4.9 (976 reviews)</span>
-            </div>
             <div class="product-price">
               <span class="price-range">3,200 RSD</span>
             </div>
-            <div class="product-tags">
-              <span class="tag">Natural</span>
-              <span class="tag">Superpremium</span>
+            <p class="product-description">Natural superpremium formula with no artificial additives. Perfect for dogs with sensitive stomachs. Contains high-quality proteins and omega fatty acids for healthy coat and skin.</p>
+            <div class="product-buttons">
+              <button class="import-btn">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                Buy Now
+              </button>
+              <button class="cart-icon-btn">
+                <span class="material-symbols-outlined">add_shopping_cart</span>
+              </button>
             </div>
-            <button class="import-btn">
-              <span class="material-symbols-outlined">add_shopping_cart</span>
-              Add to Cart
-            </button>
           </div>
         </div>
 
         <div class="product-card" data-category="food" data-price="low" data-rating="4.7">
-          <div class="product-checkbox">
-            <input type="checkbox" id="product3" />
-            <label for="product3"></label>
-          </div>
           <div class="product-image">
             <img src="/img/pansion.jpg" alt="Cat Food" loading="lazy" />
           </div>
           <div class="product-info">
             <div class="product-brand">Premil</div>
             <h3 class="product-title">Complete Nutrition Cat Food 1.5kg</h3>
-            <div class="product-rating">
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-              <span class="rating-text">4.7 (1,654 reviews)</span>
-            </div>
             <div class="product-price">
               <span class="price-range">1,890 RSD</span>
             </div>
-            <div class="product-tags">
-              <span class="tag">Cat Food</span>
-              <span class="tag">Complete</span>
+            <p class="product-description">Complete and balanced nutrition for cats of all ages. Supports healthy digestion and immune system. Made with premium ingredients that provide essential nutrients.</p>
+            <div class="product-buttons">
+              <button class="import-btn">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                Buy Now
+              </button>
+              <button class="cart-icon-btn">
+                <span class="material-symbols-outlined">add_shopping_cart</span>
+              </button>
             </div>
-            <button class="import-btn">
-              <span class="material-symbols-outlined">add_shopping_cart</span>
-              Add to Cart
-            </button>
           </div>
         </div>
 
         <div class="product-card" data-category="toys" data-price="low" data-rating="4.8">
-          <div class="product-checkbox">
-            <input type="checkbox" id="product4" />
-            <label for="product4"></label>
-          </div>
           <div class="product-image">
             <img src="/img/pansionSlika.jpg" alt="Dog Toy" loading="lazy" />
             <div class="product-badge">Popular</div>
@@ -371,169 +481,149 @@
           <div class="product-info">
             <div class="product-brand">Happy Pets</div>
             <h3 class="product-title">Interactive Dog Toy Set</h3>
-            <div class="product-rating">
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-              <span class="rating-text">4.8 (886 reviews)</span>
-            </div>
             <div class="product-price">
               <span class="price-range">1,250 RSD</span>
             </div>
-            <div class="product-tags">
-              <span class="tag">Toys</span>
-              <span class="tag">Interactive</span>
+            <p class="product-description">Engaging interactive toys to keep your dog entertained and mentally stimulated. Durable and safe materials. Designed to reduce boredom and prevent destructive behavior.</p>
+            <div class="product-buttons">
+              <button class="import-btn">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                Buy Now
+              </button>
+              <button class="cart-icon-btn">
+                <span class="material-symbols-outlined">add_shopping_cart</span>
+              </button>
             </div>
-            <button class="import-btn">
-              <span class="material-symbols-outlined">add_shopping_cart</span>
-              Add to Cart
-            </button>
           </div>
         </div>
 
         <div class="product-card" data-category="equipment" data-price="high" data-rating="4.6">
-          <div class="product-checkbox">
-            <input type="checkbox" id="product5" />
-            <label for="product5"></label>
-          </div>
           <div class="product-image">
             <img src="/img/pas1.jpg" alt="Pet Carrier" loading="lazy" />
           </div>
           <div class="product-info">
             <div class="product-brand">Travel Pro</div>
             <h3 class="product-title">Premium Pet Carrier Large</h3>
-            <div class="product-rating">
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-              <span class="rating-text">4.6 (1,276 reviews)</span>
-            </div>
             <div class="product-price">
               <span class="price-range">5,800 RSD</span>
             </div>
-            <div class="product-tags">
-              <span class="tag">Carrier</span>
-              <span class="tag">Travel</span>
+            <p class="product-description">Spacious and comfortable carrier for safe pet transportation. Features ventilation windows and secure locks. Lightweight design makes it easy to carry while ensuring your pet's comfort during travel.</p>
+            <div class="product-buttons">
+              <button class="import-btn">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                Buy Now
+              </button>
+              <button class="cart-icon-btn">
+                <span class="material-symbols-outlined">add_shopping_cart</span>
+              </button>
             </div>
-            <button class="import-btn">
-              <span class="material-symbols-outlined">add_shopping_cart</span>
-              Add to Cart
-            </button>
           </div>
         </div>
 
         <div class="product-card" data-category="accessories" data-price="medium" data-rating="4.8">
-          <div class="product-checkbox">
-            <input type="checkbox" id="product6" />
-            <label for="product6"></label>
-          </div>
           <div class="product-image">
             <img src="/img/pas2.jpg" alt="Pet Collar" loading="lazy" />
           </div>
           <div class="product-info">
             <div class="product-brand">Comfort Fit</div>
             <h3 class="product-title">Leather Dog Collar with Name Tag</h3>
-            <div class="product-rating">
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-              <span class="rating-text">4.8 (1,334 reviews)</span>
-            </div>
             <div class="product-price">
               <span class="price-range">2,100 RSD</span>
             </div>
-            <div class="product-tags">
-              <span class="tag">Collar</span>
-              <span class="tag">Leather</span>
+            <p class="product-description">Premium leather collar with customizable name tag. Adjustable size with secure buckle closure. Handcrafted from genuine leather that becomes softer over time.</p>
+            <div class="product-buttons">
+              <button class="import-btn">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                Buy Now
+              </button>
+              <button class="cart-icon-btn">
+                <span class="material-symbols-outlined">add_shopping_cart</span>
+              </button>
             </div>
-            <button class="import-btn">
-              <span class="material-symbols-outlined">add_shopping_cart</span>
-              Add to Cart
-            </button>
           </div>
         </div>
 
         <div class="product-card" data-category="food" data-price="high" data-rating="4.7">
-          <div class="product-checkbox">
-            <input type="checkbox" id="product7" />
-            <label for="product7"></label>
-          </div>
           <div class="product-image">
             <img src="/img/pas3.jpg" alt="Premium Cat Food" loading="lazy" />
           </div>
           <div class="product-info">
             <div class="product-brand">Purina Pro</div>
             <h3 class="product-title">Premium Cat Food 3kg</h3>
-            <div class="product-rating">
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-              <span class="rating-text">4.7 (1,967 reviews)</span>
-            </div>
             <div class="product-price">
               <span class="price-range">4,500 RSD</span>
             </div>
-            <div class="product-tags">
-              <span class="tag">Premium</span>
-              <span class="tag">Cat Food</span>
+            <p class="product-description">High-quality premium cat food with real meat. Supports healthy skin, coat, and overall wellbeing. Contains antioxidants and fiber for digestive health.</p>
+            <div class="product-buttons">
+              <button class="import-btn">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                Buy Now
+              </button>
+              <button class="cart-icon-btn">
+                <span class="material-symbols-outlined">add_shopping_cart</span>
+              </button>
             </div>
-            <button class="import-btn">
-              <span class="material-symbols-outlined">add_shopping_cart</span>
-              Add to Cart
-            </button>
           </div>
         </div>
 
         <div class="product-card" data-category="toys" data-price="low" data-rating="4.5">
-          <div class="product-checkbox">
-            <input type="checkbox" id="product8" />
-            <label for="product8"></label>
-          </div>
           <div class="product-image">
             <img src="/img/zec.jpg" alt="Cat Toy" loading="lazy" />
           </div>
           <div class="product-info">
             <div class="product-brand">Play Time</div>
             <h3 class="product-title">Feather Wand Cat Toy</h3>
-            <div class="product-rating">
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="far fa-star"></i>
-              </div>
-              <span class="rating-text">4.5 (1,256 reviews)</span>
-            </div>
             <div class="product-price">
               <span class="price-range">890 RSD</span>
             </div>
-            <div class="product-tags">
-              <span class="tag">Cat Toy</span>
-              <span class="tag">Interactive</span>
+            <p class="product-description">Interactive feather wand toy to stimulate your cat's natural hunting instincts. Great for exercise and bonding. Features colorful feathers that attract attention and encourage active play.</p>
+            <div class="product-buttons">
+              <button class="import-btn">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                Buy Now
+              </button>
+              <button class="cart-icon-btn">
+                <span class="material-symbols-outlined">add_shopping_cart</span>
+              </button>
             </div>
-            <button class="import-btn">
-              <span class="material-symbols-outlined">add_shopping_cart</span>
-              Add to Cart
-            </button>
           </div>
         </div>
+
+        <div class="product-card" data-category="accessories" data-price="medium" data-rating="4.9">
+          <div class="product-image">
+            <img src="/img/pas2.jpg" alt="Dog Leash" loading="lazy" />
+          </div>
+          <div class="product-info">
+            <div class="product-brand">Secure Walk</div>
+            <h3 class="product-title">Retractable Dog Leash 5m</h3>
+            <div class="product-price">
+              <span class="price-range">2,800 RSD</span>
+            </div>
+            <p class="product-description">Premium retractable leash with comfortable grip and smooth one-button brake system. Durable construction ensures long-lasting performance for daily walks and outdoor adventures.</p>
+            <div class="product-buttons">
+              <button class="import-btn">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                Buy Now
+              </button>
+              <button class="cart-icon-btn">
+                <span class="material-symbols-outlined">add_shopping_cart</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-container">
+          <button class="pagination-btn prev-btn" id="prevPageBtn" disabled>
+            <span class="material-symbols-outlined">arrow_back</span>
+          </button>
+          <div class="pagination-numbers" id="paginationNumbers">
+            <!-- Numbers will be generated dynamically -->
+          </div>
+          <button class="pagination-btn next-btn" id="nextPageBtn">
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
         </div>
 
         <!-- Sidebar Overlay -->
