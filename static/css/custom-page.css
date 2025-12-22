@@ -477,6 +477,7 @@ body {
   margin-top: 10px;
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
 .clear-filters-btn {
@@ -1092,6 +1093,7 @@ body {
     transition: left 0.3s ease;
     overflow-y: auto;
     box-sizing: border-box;
+    padding-bottom: env(safe-area-inset-bottom, 0) !important;
   }
 
   .filters-sidebar.active {
@@ -1106,6 +1108,10 @@ body {
     gap: 0;
     flex-direction: column;
     width: 100%;
+  }
+
+  .filter-actions {
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px)) !important;
   }
 }
 
@@ -1399,7 +1405,7 @@ body {
     width: 80vw !important;
     min-width: 80vw !important;
     max-width: 80vw !important;
-    height: 170px !important;
+    height: 190px !important;
   }
 
   .hero-category-content {
@@ -1419,6 +1425,14 @@ body {
   .product-brand {
     font-size: 0.7rem;
     padding: 4px 10px;
+  }
+
+  .filter-actions {
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px)) !important;
+  }
+
+  .filters-sidebar {
+    padding-bottom: env(safe-area-inset-bottom, 0) !important;
   }
 }
 
@@ -1572,6 +1586,11 @@ body {
   .filters-sidebar {
     width: 320px;
     max-width: 85vw;
+    padding-bottom: env(safe-area-inset-bottom, 0) !important;
+  }
+
+  .filter-actions {
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px)) !important;
   }
 }
 
