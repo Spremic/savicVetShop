@@ -1093,7 +1093,7 @@ body {
     transition: left 0.3s ease;
     overflow-y: auto;
     box-sizing: border-box;
-    padding-bottom: env(safe-area-inset-bottom, 0) !important;
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 60px)) !important;
   }
 
   .filters-sidebar.active {
@@ -1111,7 +1111,7 @@ body {
   }
 
   .filter-actions {
-    padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px)) !important;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 80px)) !important;
   }
 }
 
@@ -1428,11 +1428,11 @@ body {
   }
 
   .filter-actions {
-    padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px)) !important;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 80px)) !important;
   }
 
   .filters-sidebar {
-    padding-bottom: env(safe-area-inset-bottom, 0) !important;
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 60px)) !important;
   }
 }
 
@@ -1586,11 +1586,11 @@ body {
   .filters-sidebar {
     width: 320px;
     max-width: 85vw;
-    padding-bottom: env(safe-area-inset-bottom, 0) !important;
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 60px)) !important;
   }
 
   .filter-actions {
-    padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px)) !important;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 80px)) !important;
   }
 }
 
