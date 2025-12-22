@@ -424,8 +424,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const prevBtn = document.getElementById("prevPageBtn");
   const nextBtn = document.getElementById("nextPageBtn");
   let currentPage = 1;
-  const itemsPerPage = 9;
-  const totalPages = 6;
+  
+  // Function to get items per page based on screen width
+  const getItemsPerPage = () => {
+    return window.innerWidth < 500 ? 10 : 9;
+  };
+  
+  let itemsPerPage = getItemsPerPage();
+  const totalProducts = 54; // Total number of products (9 per page * 6 pages)
+  let totalPages = Math.ceil(totalProducts / itemsPerPage);
 
   // Generate product data for all pages
   const generateProductData = (page) => {
@@ -441,6 +448,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     for (let i = 0; i < itemsPerPage; i++) {
       const globalIndex = (page - 1) * itemsPerPage + i;
+      
+      // Stop if we've reached the total number of products
+      if (globalIndex >= totalProducts) {
+        break;
+      }
+      
       const category = categories[globalIndex % categories.length];
       let title = "";
       if (category === "food") title = foodTitles[globalIndex % foodTitles.length];
@@ -802,6 +815,31 @@ document.addEventListener("DOMContentLoaded", function () {
         updatePagination();
         window.scrollTo({ top: productsGrid.offsetTop - 100, behavior: "smooth" });
       }
+    });
+
+    // Function to update pagination when screen size changes
+    const updatePaginationOnResize = () => {
+      const newItemsPerPage = getItemsPerPage();
+      if (newItemsPerPage !== itemsPerPage) {
+        itemsPerPage = newItemsPerPage;
+        const newTotalPages = Math.ceil(totalProducts / itemsPerPage);
+        
+        // Adjust current page if it's out of bounds
+        if (currentPage > newTotalPages) {
+          currentPage = newTotalPages;
+        }
+        
+        totalPages = newTotalPages;
+        renderProducts(currentPage);
+        updatePagination();
+      }
+    };
+
+    // Listen for window resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updatePaginationOnResize, 250);
     });
 
     // Initial render - render first page
