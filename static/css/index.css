@@ -1968,7 +1968,7 @@
       line-height: 26px;
     }
     .contactFlex {
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
     }
     .contact-flip-back h5 {
       font-size: 1.1rem;
@@ -1977,8 +1977,157 @@
       font-size: 0.9rem;
     }
     .contactCard {
-      width: 140px;
+      width: auto;
       margin-top: 0px;
+    }
+    .contact-flip-front span {
+      transform: none;
+      width: 95%;
+      aspect-ratio: 1;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Premium Dark Theme Mobile Contact Section */
+    .contactFlex {
+      display: none !important;
+    }
+
+    .contactMobile {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      padding: 0 15px;
+      margin-top: 10px;
+    }
+
+    .contact-item-mobile {
+      background: linear-gradient(145deg, #1a1a1a 0%, #131111 100%);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+    }
+
+    .contact-item-mobile::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #009900, #00b300, #009900);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+
+    .contact-link-mobile {
+      display: flex;
+      align-items: center;
+      padding: 24px 20px;
+      text-decoration: none;
+      color: white;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+
+    .contact-icon-mobile {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #009900 0%, #00b300 50%, #007700 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 18px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-icon-mobile::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: rotate(45deg);
+      transition: all 0.5s ease;
+      opacity: 0;
+    }
+
+
+    @keyframes shine {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .contact-icon-mobile span {
+      font-size: 26px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .contact-content-mobile {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .contact-content-mobile h4 {
+      margin: 0 0 6px 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+      letter-spacing: 0.5px;
+      font-family: "Baloo 2", sans-serif;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .contact-content-mobile p {
+      margin: 0;
+      font-size: 15px;
+      color: #b8b8b8;
+      line-height: 1.5;
+      font-weight: 400;
+      opacity: 0.9;
+    }
+
+    .contact-arrow-mobile {
+      margin-left: 12px;
+      opacity: 0.7;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .contact-arrow-mobile span {
+      font-size: 22px;
+      color: #009900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 1px 2px rgba(0, 153, 0, 0.3));
+    }
+
+
+    /* Add subtle glow effect on active/focus */
+    .contact-link-mobile:active .contact-icon-mobile,
+    .contact-link-mobile:focus .contact-icon-mobile {
+      /* Removed box-shadow for cleaner look */
     }
   }
 }
