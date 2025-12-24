@@ -1682,4 +1682,58 @@ body {
   }
 }
 
+/* Mobile: Remove all hover effects below 500px */
+@media (max-width: 500px) {
+  /* Add to Cart buttons */
+  .cart-icon-btn:hover,
+  .cart-icon-btn:active,
+  .cart-icon-btn:focus,
+  .cart-icon-btn:focus-visible,
+  .cart-icon-btn:focus-within {
+    background: inherit !important;
+    transform: none !important;
+    outline: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+  }
+
+  .cart-icon-btn:hover span,
+  .cart-icon-btn:active span,
+  .cart-icon-btn:focus span,
+  .cart-icon-btn:focus-visible span,
+  .cart-icon-btn:focus-within span {
+    transform: none !important;
+  }
+
+  /* Product card hover effects */
+  .product-card:hover {
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .product-card:hover .product-image img {
+    transform: none !important;
+  }
+
+  .product-card:hover .product-badge {
+    transform: none !important;
+  }
+
+  .product-card:hover .product-brand {
+    background: linear-gradient(135deg, rgba(0, 153, 0, 0.15) 0%, rgba(0, 153, 0, 0.25) 100%) !important;
+    transform: none !important;
+  }
+
+  .product-card:hover .product-title {
+    color: inherit !important;
+  }
+
+  .product-card:hover .tag {
+    background: inherit !important;
+    border-color: inherit !important;
+    color: inherit !important;
+    transform: none !important;
+  }
+}
 
