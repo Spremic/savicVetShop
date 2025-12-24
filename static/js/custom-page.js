@@ -668,13 +668,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 100);
   };
 
-  // Generate pagination numbers dynamically (max 4 numbers)
-  // Simple sliding logic: always show 3 numbers that slide with current page
+  // Generate pagination numbers dynamically (always show first, next, and last pages)
   const generatePaginationNumbers = () => {
     paginationNumbers.innerHTML = "";
-    
-    if (totalPages <= 4) {
-      // If total pages <= 4, show all
+
+    if (totalPages <= 5) {
+      // If total pages <= 5, show all
       for (let i = 1; i <= totalPages; i++) {
         const btn = document.createElement("button");
         btn.className = `pagination-number ${i === currentPage ? "active" : ""}`;
@@ -685,93 +684,49 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Calculate the 3 numbers to show around current page
-    let startNum = Math.max(1, currentPage - 1);
-    let endNum = Math.min(totalPages, currentPage + 1);
-    
-    // Adjust if we're at the beginning
-    if (currentPage <= 2) {
-      startNum = 1;
-      endNum = 3;
-    }
-    // Adjust if we're at the end
-    else if (currentPage >= totalPages - 1) {
-      startNum = totalPages - 2;
-      endNum = totalPages;
-    }
+    // Always show first page (1)
+    const firstBtn = document.createElement("button");
+    firstBtn.className = `pagination-number ${1 === currentPage ? "active" : ""}`;
+    firstBtn.setAttribute("data-page", "1");
+    firstBtn.textContent = "1";
+    paginationNumbers.appendChild(firstBtn);
 
-    // Show first page only if we're at the start (pages 1-2)
-    if (currentPage <= 2) {
-      // No ellipsis needed, just show first 3 + last
-      for (let i = startNum; i <= endNum; i++) {
-        const btn = document.createElement("button");
-        btn.className = `pagination-number ${i === currentPage ? "active" : ""}`;
-        btn.setAttribute("data-page", i.toString());
-        btn.textContent = i.toString();
-        paginationNumbers.appendChild(btn);
-      }
-      
-      const ellipsis = document.createElement("span");
-      ellipsis.className = "pagination-ellipsis";
-      ellipsis.textContent = "...";
-      paginationNumbers.appendChild(ellipsis);
-
-      const lastBtn = document.createElement("button");
-      lastBtn.className = `pagination-number ${totalPages === currentPage ? "active" : ""}`;
-      lastBtn.setAttribute("data-page", totalPages.toString());
-      lastBtn.textContent = totalPages.toString();
-      paginationNumbers.appendChild(lastBtn);
-    }
-    // Show last page only if we're at the end (pages 5-6)
-    else if (currentPage >= totalPages - 1) {
-      const firstBtn = document.createElement("button");
-      firstBtn.className = `pagination-number ${1 === currentPage ? "active" : ""}`;
-      firstBtn.setAttribute("data-page", "1");
-      firstBtn.textContent = "1";
-      paginationNumbers.appendChild(firstBtn);
-
-      const ellipsis = document.createElement("span");
-      ellipsis.className = "pagination-ellipsis";
-      ellipsis.textContent = "...";
-      paginationNumbers.appendChild(ellipsis);
-
-      for (let i = startNum; i <= endNum; i++) {
-        const btn = document.createElement("button");
-        btn.className = `pagination-number ${i === currentPage ? "active" : ""}`;
-        btn.setAttribute("data-page", i.toString());
-        btn.textContent = i.toString();
-        paginationNumbers.appendChild(btn);
-      }
-    }
-    // Middle pages (3-4): show 3 numbers + last = 4 numbers total
-    else {
-      // Show: ... 2 3 4 ... 6 or ... 3 4 5 ... 6 (3 numbers + last = 4 total)
+    // Show ellipsis after first page if current page is far from beginning
+    if (currentPage > 3) {
       const ellipsis1 = document.createElement("span");
       ellipsis1.className = "pagination-ellipsis";
       ellipsis1.textContent = "...";
       paginationNumbers.appendChild(ellipsis1);
+    }
 
-      // Show the 3 sliding numbers
-      for (let i = startNum; i <= endNum; i++) {
+    // Show pages around current page (but not first or last)
+    const startPage = Math.max(2, Math.min(currentPage - 1, totalPages - 3));
+    const endPage = Math.min(totalPages - 1, Math.max(currentPage + 1, 4));
+
+    for (let i = startPage; i <= endPage; i++) {
+      if (i > 1 && i < totalPages) {
         const btn = document.createElement("button");
         btn.className = `pagination-number ${i === currentPage ? "active" : ""}`;
         btn.setAttribute("data-page", i.toString());
         btn.textContent = i.toString();
         paginationNumbers.appendChild(btn);
       }
+    }
 
+    // Show ellipsis before last page if current page is far from end
+    if (currentPage < totalPages - 2) {
       const ellipsis2 = document.createElement("span");
       ellipsis2.className = "pagination-ellipsis";
       ellipsis2.textContent = "...";
       paginationNumbers.appendChild(ellipsis2);
-
-      // Always show last page
-      const lastBtn = document.createElement("button");
-      lastBtn.className = `pagination-number ${totalPages === currentPage ? "active" : ""}`;
-      lastBtn.setAttribute("data-page", totalPages.toString());
-      lastBtn.textContent = totalPages.toString();
-      paginationNumbers.appendChild(lastBtn);
     }
+
+    // Always show last page
+    const lastBtn = document.createElement("button");
+    lastBtn.className = `pagination-number ${totalPages === currentPage ? "active" : ""}`;
+    lastBtn.setAttribute("data-page", totalPages.toString());
+    lastBtn.textContent = totalPages.toString();
+    paginationNumbers.appendChild(lastBtn);
   };
 
   // Update pagination UI
