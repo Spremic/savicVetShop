@@ -60,7 +60,7 @@ body {
   left: 0;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(0, 153, 0, 0.3), transparent);
+  background: transparent;
 }
 
 .page-header-content {
@@ -303,9 +303,9 @@ body {
 }
 
 .filter-toggle-btn:hover {
-  background: linear-gradient(135deg, #00b300, #009900);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 153, 0, 0.3);
+  background: linear-gradient(135deg, #009900, #007700);
+  transform: none;
+  box-shadow: none;
 }
 
 .filter-toggle-btn span {
@@ -1080,6 +1080,25 @@ body {
 
   .filters-sidebar.active {
     left: 0;
+    padding-top: 115px !important;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .filters-sidebar.active::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+
+  .filters-sidebar.active::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+
+  /* Darken header when filters sidebar is active */
+  body.filters-active header {
+    background-color: #131111 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
   }
 
   .close-sidebar-btn {

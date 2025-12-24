@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function toggleSidebar() {
     filtersSidebar.classList.toggle("active");
     sidebarOverlay.classList.toggle("active");
+    document.body.classList.toggle("filters-active");
     document.body.style.overflow = filtersSidebar.classList.contains("active")
       ? "hidden"
       : "";
@@ -105,6 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function closeSidebar() {
     filtersSidebar.classList.remove("active");
     sidebarOverlay.classList.remove("active");
+    document.body.classList.remove("filters-active");
     document.body.style.overflow = "";
   }
 
