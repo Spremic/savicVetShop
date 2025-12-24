@@ -238,92 +238,24 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Add to cart animation (similar to index.js)
+  // Buy Now buttons - no animation for these buttons
   const importButtons = document.querySelectorAll(".import-btn");
-  const cartIcon = document.querySelector("#openCart");
 
-  if (importButtons.length > 0 && cartIcon) {
+  if (importButtons.length > 0) {
     importButtons.forEach((button) => {
       button.addEventListener("click", function (e) {
-        e.stopPropagation();
+        console.log("Buy Now button clicked - preventing animation");
+        e.preventDefault();
+        e.stopImmediatePropagation();
 
-        // Get button position
-        const buttonRect = button.getBoundingClientRect();
-        const buttonX = buttonRect.left + buttonRect.width / 2;
-        const buttonY = buttonRect.top + buttonRect.height / 2;
-
-        // Get cart position
-        const cartRect = cartIcon.getBoundingClientRect();
-        const cartX = cartRect.left + cartRect.width / 2;
-        const cartY = cartRect.top + cartRect.height / 2;
-
-        // Create flying element
-        const flyingElement = document.createElement("div");
-        flyingElement.className = "flying-item";
-        flyingElement.innerHTML = '<span class="material-symbols-outlined">add_shopping_cart</span>';
-
-        // Add styles for flying item
-        if (!document.querySelector('style[data-flying-item]')) {
-          const style = document.createElement("style");
-          style.setAttribute("data-flying-item", "true");
-          style.textContent = `
-            .flying-item {
-              display: grid;
-              place-content: center;
-              width: 40px;
-              height: 40px;
-              background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), rgba(0, 153, 0, 0.1));
-              border: 2px solid #009900;
-              border-radius: 50%;
-            }
-            .flying-item .material-symbols-outlined {
-              font-size: 24px;
-              color: #009900;
-              filter: drop-shadow(0 0 8px rgba(0, 153, 0, 0.6));
-            }
-            @keyframes cartNotify {
-              0%, 100% { transform: scale(1); }
-              50% { transform: scale(1.15); }
-            }
-          `;
-          document.head.appendChild(style);
-        }
-
-        document.body.appendChild(flyingElement);
-
-        // Set initial position
-        flyingElement.style.position = "fixed";
-        flyingElement.style.left = buttonX + "px";
-        flyingElement.style.top = buttonY + "px";
-        flyingElement.style.pointerEvents = "none";
-        flyingElement.style.zIndex = "9999";
-
-        // Trigger animation
-        setTimeout(() => {
-          flyingElement.style.transition =
-            "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-          flyingElement.style.left = cartX + "px";
-          flyingElement.style.top = cartY + "px";
-          flyingElement.style.opacity = "0";
-          flyingElement.style.transform = "scale(0.3)";
-        }, 10);
-
-        // Add button animation
+        // Simple button press animation only
         button.style.transform = "scale(0.95)";
         setTimeout(() => {
           button.style.transform = "";
         }, 150);
 
-        // Add pulse effect to cart
-        cartIcon.style.animation = "cartNotify 0.6s ease";
-        setTimeout(() => {
-          cartIcon.style.animation = "";
-        }, 600);
-
-        // Remove flying element after animation
-        setTimeout(() => {
-          flyingElement.remove();
-        }, 800);
+        // Prevent any other animations
+        return false;
       });
     });
   }
@@ -519,76 +451,22 @@ document.addEventListener("DOMContentLoaded", function () {
       const newCartIconButtons = productsGrid.querySelectorAll(".cart-icon-btn");
       const cartIconHeader = document.querySelector("#openCart");
 
-      // Reattach event listeners for new buttons
-      if (newImportButtons.length > 0 && cartIconHeader) {
+      // Reattach event listeners for new buttons (Buy Now buttons - no animation)
+      if (newImportButtons.length > 0) {
         newImportButtons.forEach((button) => {
           button.addEventListener("click", function (e) {
-            e.stopPropagation();
-            const buttonRect = button.getBoundingClientRect();
-            const buttonX = buttonRect.left + buttonRect.width / 2;
-            const buttonY = buttonRect.top + buttonRect.height / 2;
-            const cartRect = cartIconHeader.getBoundingClientRect();
-            const cartX = cartRect.left + cartRect.width / 2;
-            const cartY = cartRect.top + cartRect.height / 2;
+            console.log("New Buy Now button clicked - preventing animation");
+            e.preventDefault();
+            e.stopImmediatePropagation();
 
-            const flyingElement = document.createElement("div");
-            flyingElement.className = "flying-item";
-            flyingElement.innerHTML = '<span class="material-symbols-outlined">add_shopping_cart</span>';
-
-            if (!document.querySelector('style[data-flying-item]')) {
-              const style = document.createElement("style");
-              style.setAttribute("data-flying-item", "true");
-              style.textContent = `
-                .flying-item {
-                  display: grid;
-                  place-content: center;
-                  width: 40px;
-                  height: 40px;
-                  background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), rgba(0, 153, 0, 0.1));
-                  border: 2px solid #009900;
-                  border-radius: 50%;
-                }
-                .flying-item .material-symbols-outlined {
-                  font-size: 24px;
-                  color: #009900;
-                  filter: drop-shadow(0 0 8px rgba(0, 153, 0, 0.6));
-                }
-                @keyframes cartNotify {
-                  0%, 100% { transform: scale(1); }
-                  50% { transform: scale(1.15); }
-                }
-              `;
-              document.head.appendChild(style);
-            }
-
-            document.body.appendChild(flyingElement);
-            flyingElement.style.position = "fixed";
-            flyingElement.style.left = buttonX + "px";
-            flyingElement.style.top = buttonY + "px";
-            flyingElement.style.pointerEvents = "none";
-            flyingElement.style.zIndex = "9999";
-
-            setTimeout(() => {
-              flyingElement.style.transition = "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-              flyingElement.style.left = cartX + "px";
-              flyingElement.style.top = cartY + "px";
-              flyingElement.style.opacity = "0";
-              flyingElement.style.transform = "scale(0.3)";
-            }, 10);
-
+            // Simple button press animation only
             button.style.transform = "scale(0.95)";
             setTimeout(() => {
               button.style.transform = "";
             }, 150);
 
-            cartIconHeader.style.animation = "cartNotify 0.6s ease";
-            setTimeout(() => {
-              cartIconHeader.style.animation = "";
-            }, 600);
-
-            setTimeout(() => {
-              flyingElement.remove();
-            }, 800);
+            // Prevent any other animations
+            return false;
           });
         });
       }
