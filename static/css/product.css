@@ -1573,6 +1573,13 @@
     min-height: 300px;
   }
 
+  .main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
   .thumbnail-container {
     flex-direction: row;
     overflow-x: scroll !important;
@@ -1967,6 +1974,13 @@
     min-height: 280px;
   }
 
+  .main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
   .thumbnail {
     min-width: 80px;
     width: 80px;
@@ -2215,6 +2229,13 @@
     max-height: 400px;
     min-height: 250px;
     border-radius: 16px;
+  }
+
+  .main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 
   .thumbnail {
