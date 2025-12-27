@@ -104,6 +104,36 @@
   letter-spacing: 1px;
 }
 
+.order-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.order-text {
+  position: relative;
+}
+
+.product-count {
+  position: absolute;
+  top: -10px;
+  right: -22px;
+  color: #009900;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
+
+.order-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #009900;
+}
+
 .order-summary h3 {
   position: sticky;
   top: 0;
@@ -725,15 +755,48 @@ textarea ~ .floating-label {
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
-  .form-row {
-    flex-direction: column;
-    gap: 15px;
+  #shopping-cart-section {
+    padding: 0;
+  }
+
+  .cart-header h2 {
+    margin-top: 90px;
   }
 
   .shipping-address,
   .order-summary {
-    flex: 0 0 100%;
+    width: 100%;
     margin-bottom: 30px;
+  }
+
+  .shipping-address,
+  .order-summary {
+    padding: 0;
+    background-color: transparent;
+  }
+
+  .order-summary {
+    height: auto;
+    min-height: auto;
+    max-height: none;
+  }
+
+  .order-details {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    margin-top: 15px;
+  }
+
+  .order-summary h3 {
+    background-color: transparent;
+    padding-top: 15px;
+    margin-bottom: 0;
+  }
+
+  .product-count {
+    top: -10px;
+    right: -20px;
   }
 
   .cart-content {
@@ -791,8 +854,8 @@ textarea ~ .floating-label {
   }
 
 
-  /* Adjust order summary height for screens with smaller height (only for desktop > 1024px) */
-  @media (min-width: 1024px) and (max-height: 800px) {
+  /* Adjust order summary height for screens with smaller height (only for desktop > 1024px / >= 1025px) */
+  @media (min-width: 1025px) and (max-height: 800px) {
     .order-summary {
       min-height: auto;
       max-height: 800px;
@@ -804,7 +867,7 @@ textarea ~ .floating-label {
     }
   }
 
-  @media (min-width: 1024px) and (max-height: 650px) {
+  @media (min-width: 1025px) and (max-height: 650px) {
     .order-summary {
       min-height: auto;
       max-height: 700px;
@@ -816,7 +879,7 @@ textarea ~ .floating-label {
     }
   }
 
-  @media (min-width: 1024px) and (max-height: 600px) {
+  @media (min-width: 1025px) and (max-height: 600px) {
     .order-summary {
       min-height: auto;
       max-height: 600px;
@@ -828,7 +891,7 @@ textarea ~ .floating-label {
     }
   }
 
-  @media (min-width: 1024px) and (max-height: 550px) {
+  @media (min-width: 1025px) and (max-height: 550px) {
     .order-summary {
       min-height: auto;
       max-height: 540px;
@@ -840,7 +903,7 @@ textarea ~ .floating-label {
     }
   }
 
-  @media (min-width: 1024px) and (max-height: 500px) {
+  @media (min-width: 1025px) and (max-height: 500px) {
     .order-summary {
       min-height: auto;
       max-height: 480px;

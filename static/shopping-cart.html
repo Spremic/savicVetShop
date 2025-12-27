@@ -289,7 +289,13 @@
           </div>
 
           <div class="order-summary">
-            <h3>Your Order</h3>
+            <h3 class="order-title">
+              <span class="order-text">
+                Your Order<span class="product-count">18</span>
+              </span>
+              <span class="order-total">Ukupno: $487.23</span>
+            </h3>
+
             <div class="order-details">
               <div class="order-item">
                 <button class="remove-item" aria-label="Remove item">×</button>
@@ -652,20 +658,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- Order Summary Footer -->
-            <div class="order-summary-footer">
-              <div class="order-stats">
-                <div class="total-items">
-                  <span class="items-count">18</span>
-                  <span class="items-label">proizvoda</span>
-                </div>
-                <div class="total-price">
-                  <span class="price-label">Ukupno:</span>
-                  <span class="price-amount">$487.23</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -789,8 +781,8 @@
 
         // Make order summary sticky - stable at bottom when scrolling
         function makeOrderSummarySticky() {
-          // Disable sticky behavior on screens smaller than 1024px
-          if (window.innerWidth < 1024) return;
+          // Disable sticky behavior on screens smaller than 1025px
+          if (window.innerWidth <= 1024) return;
 
           const orderSummary = document.querySelector('.order-summary');
           const cartContent = document.querySelector('.cart-content');
