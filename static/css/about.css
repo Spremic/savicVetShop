@@ -187,10 +187,10 @@
   place-content: center;
 }
 
-.goalCard i {
+.goalCard .material-symbols-outlined {
   font-size: 3rem;
   margin-bottom: 20px;
-  color: black;
+  color: black !important;
   background-color: white;
   width: 70px;
   height: 70px;
@@ -454,6 +454,12 @@ footer {
     width: 332px;
   }
 
+  .goalCard .material-symbols-outlined {
+    font-size: 2.8rem;
+    width: 65px;
+    height: 65px;
+  }
+
   .allImg img {
     width: 90%;
     box-shadow: 12px 12px #09ff00;
@@ -571,6 +577,12 @@ footer {
     width: 80%;
     height: auto;
   }
+
+  .goalCard .material-symbols-outlined {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+  }
   .footerBottomContent a {
     font-size: 1rem;
   }
@@ -636,10 +648,10 @@ footer {
     height: 260px;
   }
 
-  .goalCard i {
-    font-size: 2.5rem;
-    width: 60px;
-    height: 60px;
+  .goalCard .material-symbols-outlined {
+    font-size: 2.2rem;
+    width: 55px;
+    height: 55px;
   }
 
   .goalCard h6 {
