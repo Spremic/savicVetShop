@@ -646,7 +646,7 @@ textarea ~ .floating-label {
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .form-row {
     flex-direction: column;
     gap: 15px;
@@ -661,6 +661,12 @@ textarea ~ .floating-label {
   .cart-content {
     flex-direction: column;
   }
+
+  /* Make "Your Order" appear first when stacked vertically */
+  .order-summary {
+    order: -1;
+  }
+}
 
   .order-item {
     padding: 15px;
