@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en" id="html">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart – Happy Animals</title>
+
+    <!-- Resource Hints -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    <link rel="dns-prefetch" href="https://code.jquery.com" />
+
+    <!-- Critical CSS -->
+    <link rel="preload" href="/css/clone.css" as="style" />
+    <link rel="preload" href="/css/shopping-cart.css" as="style" />
+    <link rel="preload" href="/css/loader.css" as="style" />
+    <link rel="stylesheet" href="/css/clone.css" />
+    <link rel="stylesheet" href="/css/shopping-cart.css" />
+    <link rel="stylesheet" href="/css/loader.css" />
+
+    <!-- External CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
+  </head>
+  <body id="body">
+    <!-- Page Loader -->
+    <div id="page-loader">
+      <div class="loader-content">
+        <div class="loader-logo">
+          <svg
+            class="loader-paw"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+            fill="currentColor"
+          >
+            <path
+              d="M226.5 92.9c14.3 42.9-.3 86.2-32.6 96.8s-70.1-15.6-84.4-58.5s.3-86.2 32.6-96.8s70.1 15.6 84.4 58.5zM100.4 198.6c18.9 32.4 14.3 70.1-10.2 84.1s-59.7-.9-78.5-33.3S-2.7 179.3 21.8 165.3s59.7 .9 78.5 33.3zM69.2 401.2C121.6 259.9 214.7 224 256 224s134.4 35.9 186.8 177.2c3.6 9.7 5.2 20.1 5.2 30.5v1.6c0 25.8-20.9 46.7-46.7 46.7c-11.5 0-22.9-1.4-34-4.2l-88-22c-15.3-3.8-31.3-3.8-46.6 0l-88 22c-11.1 2.8-22.5 4.2-34 4.2C84.9 480 64 459.1 64 433.3v-1.6c0-10.4 1.6-20.8 5.2-30.5zM421.8 282.7c-24.5-14-29.1-51.7-10.2-84.1s54-47.3 78.5-33.3s29.1 51.7 10.2 84.1s-54 47.3-78.5 33.3zM310.1 189.7c-32.3-10.6-46.9-53.9-32.6-96.8s52.1-69.1 84.4-58.5s46.9 53.9 32.6 96.8s-52.1 69.1-84.4 58.5z"
+            />
+          </svg>
+        </div>
+        <div class="loader-text">Happy Animals</div>
+        <div class="loader-progress">
+          <div class="loader-progress-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTET -->
+
+    <section id="shopping-cart-section">
+      <div class="container">
+        <div class="cart-header">
+          <h2>SHOPPING <span>CART</span></h2>
+        </div>
+
+        <div class="cart-content">
+          <div class="shipping-address">
+            <h3>Shipping Address</h3>
+            <div class="address-form">
+              <form class="shipping-form">
+                <div class="form-row">
+                  <div class="form-group" data-placeholder="First Name *">
+                    <input type="text" id="firstName" name="firstName" required>
+                  </div>
+                  <div class="form-group" data-placeholder="Last Name *">
+                    <input type="text" id="lastName" name="lastName" required>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group" data-placeholder="Phone Number *">
+                    <input type="tel" id="phone" name="phone" required>
+                  </div>
+                  <div class="form-group" data-placeholder="Email Address *">
+                    <input type="email" id="email" name="email" required>
+                  </div>
+                </div>
+
+                <div class="form-group" data-placeholder="ZIP / Postal Code *">
+                  <input type="text" id="zipCode" name="zipCode" required>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group" data-placeholder="City *">
+                    <input type="text" id="city" name="city" required>
+                  </div>
+                  <div class="form-group" data-placeholder="State *">
+                    <input type="text" id="state" name="state" maxlength="2" required>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group" data-placeholder="Street Address / P.O. Box *">
+                    <input type="text" id="streetAddress" name="streetAddress" required>
+                  </div>
+                  <div class="form-group" data-placeholder="Apartment, Suite, Unit, etc.">
+                    <input type="text" id="apartment" name="apartment">
+                  </div>
+                </div>
+
+                <div class="form-group" data-placeholder="Additional Notes">
+                  <textarea id="notes" name="notes" rows="8"></textarea>
+                </div>
+
+                <div class="payment-section">
+                  <h4>Payment Method</h4>
+
+                  <div class="payment-list">
+                    <div class="payment-row">
+                        <input type="radio" id="card" name="payment" value="card">
+                        <label for="card" class="payment-label active">
+                        <div class="payment-header">
+                          <div class="custom-radio"></div>
+                          <span class="service-name">Credit / Debit Card</span>
+                          <div class="service-logos">
+                          <svg xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.1" id="Layer_1" x="0px" y="0px" width="42" height="26" viewBox="0 0 750 471" enable-background="new 0 0 750 471" xml:space="preserve" class="logo-small">
+                            <g id="visa" sketch:type="MSLayerGroup">
+                              <path id="Shape" sketch:type="MSShapeGroup" fill="#0E4595" d="M278.198,334.228l33.36-195.763h53.358l-33.384,195.763H278.198 L278.198,334.228z"/>
+                              <path id="path13" sketch:type="MSShapeGroup" fill="#0E4595" d="M524.307,142.687c-10.57-3.966-27.135-8.222-47.822-8.222 c-52.725,0-89.863,26.551-90.18,64.604c-0.297,28.129,26.514,43.821,46.754,53.185c20.77,9.597,27.752,15.716,27.652,24.283 c-0.133,13.123-16.586,19.116-31.924,19.116c-21.355,0-32.701-2.967-50.225-10.274l-6.877-3.112l-7.488,43.823 c12.463,5.466,35.508,10.199,59.438,10.445c56.09,0,92.502-26.248,92.916-66.884c0.199-22.27-14.016-39.216-44.801-53.188 c-18.65-9.056-30.072-15.099-29.951-24.269c0-8.137,9.668-16.838,30.559-16.838c17.447-0.271,30.088,3.534,39.936,7.5l4.781,2.259 L524.307,142.687"/>
+                              <path id="Path" sketch:type="MSShapeGroup" fill="#0E4595" d="M661.615,138.464h-41.23c-12.773,0-22.332,3.486-27.941,16.234 l-79.244,179.402h56.031c0,0,9.16-24.121,11.232-29.418c6.123,0,60.555,0.084,68.336,0.084c1.596,6.854,6.492,29.334,6.492,29.334 h49.512L661.615,138.464L661.615,138.464z M596.198,264.872c4.414-11.279,21.26-54.724,21.26-54.724 c-0.314,0.521,4.381-11.334,7.074-18.684l3.607,16.878c0,0,10.217,46.729,12.352,56.527h-44.293V264.872L596.198,264.872z"/>
+                              <path d="M 45.878906 138.46484 L 45.197266 142.53711 C 66.290228 147.64311 85.129273 155.0333 101.62305 164.22656 L 148.96875 333.91406 L 205.42383 333.85156 L 289.42773 138.46484 L 232.90234 138.46484 L 180.66406 271.96094 L 175.09961 244.83008 C 174.83893 243.99185 174.55554 243.15215 174.26562 242.31055 L 156.10547 154.99219 C 152.87647 142.59619 143.50892 138.89684 131.91992 138.46484 L 45.878906 138.46484 z" id="path16" style="fill:#0e4595;fill-opacity:1"/>
+                            </g>
+                          </svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="42" height="26" viewBox="0 0 24 24" class="logo-small">
+                            <g fill="none" fill-rule="evenodd">
+                              <circle cx="7" cy="12" r="7" fill="#EA001B"/>
+                              <circle cx="17" cy="12" r="7" fill="#FFA200" fill-opacity=".8"/>
+                            </g>
+                          </svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="42" height="26" viewBox="0 -139.5 750 750" version="1.1" class="logo-small">
+                            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <g id="amex" fill-rule="nonzero">
+                                <rect id="Rectangle-1" fill="#2557D6" x="0" y="0" width="750" height="471" rx="40"/>
+                                <path d="M0.002688,221.18508 L36.026849,221.18508 L44.149579,201.67506 L62.334596,201.67506 L70.436042,221.18508 L141.31637,221.18508 L141.31637,206.26909 L147.64322,221.24866 L184.43894,221.24866 L190.76579,206.04654 L190.76579,221.18508 L366.91701,221.18508 L366.83451,189.15941 L370.2427,189.15941 C372.62924,189.24161 373.3263,189.46144 373.3263,193.38516 L373.3263,221.18508 L464.43232,221.18508 L464.43232,213.72973 C471.78082,217.6508 483.21064,221.18508 498.25086,221.18508 L536.57908,221.18508 L544.78163,201.67506 L562.96664,201.67506 L570.98828,221.18508 L644.84844,221.18508 L644.84844,202.65269 L656.0335,221.18508 L715.22061,221.18508 L715.22061,98.67789 L656.64543,98.67789 L656.64543,113.14614 L648.44288,98.67789 L588.33787,98.67789 L588.33787,113.14614 L580.80579,98.67789 L499.61839,98.67789 C486.02818,98.67789 474.08221,100.5669 464.43232,105.83121 L464.43232,98.67789 L408.40596,98.67789 L408.40596,105.83121 C402.26536,100.40529 393.89786,98.67789 384.59383,98.67789 L179.90796,98.67789 L166.17407,130.3194 L152.07037,98.67789 L87.59937,98.67789 L87.59937,113.14614 L80.516924,98.67789 L25.533518,98.67789 L-2.99999999e-06,156.92445 L-2.99999999e-06,221.18508 L0.002597,221.18508 L0.002688,221.18508 Z M227.39957,203.51436 L205.78472,203.51436 L205.70492,134.72064 L175.13228,203.51436 L156.62,203.51436 L125.96754,134.6597 L125.96754,203.51436 L83.084427,203.51436 L74.982981,183.92222 L31.083524,183.92222 L22.8996,203.51436 L4.7e-05,203.51436 L37.756241,115.67692 L69.08183,115.67692 L104.94103,198.84086 L104.94103,115.67692 L139.35289,115.67692 L166.94569,175.26406 L192.29297,115.67692 L227.39657,115.67692 L227.39657,203.51436 L227.39957,203.51436 Z M67.777214,165.69287 L53.346265,130.67606 L38.997794,165.69287 L67.777214,165.69287 Z M313.41947,203.51436 L242.98611,203.51436 L242.98611,115.67692 L313.41947,115.67692 L313.41947,133.96821 L264.07116,133.96821 L264.07116,149.8009 L312.23551,149.8009 L312.23551,167.80606 L264.07116,167.80606 L264.07116,185.34759 L313.41947,185.34759 L313.41947,203.51436 Z M412.67528,139.33321 C412.67528,153.33782 403.28877,160.57326 397.81863,162.74575 C402.43206,164.49434 406.37237,167.58351 408.24808,170.14281 C411.22525,174.51164 411.73875,178.41416 411.73875,186.25897 L411.73875,203.51436 L390.47278,203.51436 L390.39298,192.43732 C390.39298,187.1518 390.90115,179.55074 387.0646,175.32499 C383.98366,172.23581 379.28774,171.56552 371.69714,171.56552 L349.06363,171.56552 L349.06363,203.51436 L327.98125,203.51436 L327.98125,115.67692 L376.47552,115.67692 C387.25084,115.67692 395.18999,115.9604 402.00639,119.88413 C408.67644,123.80786 412.67529,129.53581 412.67529,139.33321 L412.67528,139.33321 Z M386.02277,152.37632 C383.1254,154.12756 379.69859,154.18584 375.59333,154.18584 L349.97998,154.18584 L349.97998,134.67583 L375.94186,134.67583 C379.61611,134.67583 383.44999,134.8401 385.94029,136.26016 C388.67536,137.53981 390.36749,140.26337 390.36749,144.02548 C390.36749,147.86443 388.75784,150.95361 386.02277,152.37632 Z M446.48908,203.51436 L424.97569,203.51436 L424.97569,115.67692 L446.48908,115.67692 L446.48908,203.51436 Z M696.22856,203.51436 L666.35032,203.51436 L626.38585,137.58727 L626.38585,203.51436 L583.44687,203.51436 L575.24166,183.92222 L531.44331,183.92222 L523.48287,203.51436 L498.81137,203.51436 C488.56284,203.51436 475.58722,201.25709 468.23872,193.79909 C460.82903,186.3411 456.97386,176.23903 456.97386,160.26593 C456.97386,147.23895 459.27791,135.33 468.33983,125.91941 C475.15621,118.90916 485.83044,115.67692 500.35982,115.67692 L520.77174,115.67692 L520.77174,134.49809 L500.78818,134.49809 C493.0938,134.49809 488.74909,135.63733 484.564,139.70147 C480.96957,143.4 478.50322,150.39171 478.50322,159.59829 C478.50322,169.00887 480.38158,175.79393 484.30061,180.22633 C487.5465,183.70232 493.445,184.75677 498.99495,184.75677 L508.46393,184.75677 L538.17987,115.67957 L569.77152,115.67957 L605.46843,198.76138 L605.46843,115.67957 L637.5709,115.67957 L674.6327,176.85368 L674.6327,115.67957 L696.22856,115.67957 L696.22856,203.51436 Z M568.07051,165.69287 L553.47993,130.67606 L538.96916,165.69287 L568.07051,165.69287 Z" id="Path" fill="#FFFFFF"/>
+                                <path d="M749.95644,343.76716 C744.83485,351.22516 734.85504,355.00582 721.34464,355.00582 L680.62723,355.00582 L680.62723,336.1661 L721.17969,336.1661 C725.20248,336.1661 728.01736,335.63887 729.71215,333.99096 C731.18079,332.63183 732.2051,330.65804 732.2051,328.26036 C732.2051,325.70107 731.18079,323.66899 729.62967,322.45028 C728.09984,321.10969 725.87294,320.50033 722.20135,320.50033 C702.40402,319.83005 677.70592,321.10969 677.70592,293.30714 C677.70592,280.56363 685.83131,267.14983 707.95664,267.14983 L749.95379,267.14983 L749.95644,249.66925 L710.93382,249.66925 C699.15812,249.66925 690.60438,252.47759 684.54626,256.84375 L684.54626,249.66925 L626.83044,249.66925 C617.60091,249.66925 606.76706,251.94771 601.64279,256.84375 L601.64279,249.66925 L498.57751,249.66925 L498.57751,256.84375 C490.37496,250.95154 476.53466,249.66925 470.14663,249.66925 L402.16366,249.66925 L402.16366,256.84375 C395.67452,250.58593 381.24357,249.66925 372.44772,249.66925 L296.3633,249.66925 L278.95252,268.43213 L262.64586,249.66925 L148.99149,249.66925 L148.99149,372.26121 L260.50676,372.26121 L278.447,353.20159 L295.34697,372.26121 L364.08554,372.32211 L364.08554,343.48364 L370.84339,343.48364 C379.96384,343.62405 390.72054,343.25845 400.21079,339.17311 L400.21079,372.25852 L456.90762,372.25852 L456.90762,340.30704 L459.64268,340.30704 C463.13336,340.30704 463.47657,340.45011 463.47657,343.92344 L463.47657,372.25587 L635.71144,372.25587 C646.64639,372.25587 658.07621,369.46873 664.40571,364.41107 L664.40571,372.25587 L719.03792,372.25587 C730.40656,372.25587 741.50913,370.66889 749.95644,366.60475 L749.95644,343.76712 L749.95644,343.76716 Z M408.45301,296.61266 C408.45301,321.01872 390.16689,326.05784 371.7371,326.05784 L345.42935,326.05784 L345.42935,355.52685 L304.44855,355.52685 L278.48667,326.44199 L251.5058,355.52685 L167.9904,355.52685 L167.9904,267.66822 L252.79086,267.66822 L278.73144,296.46694 L305.55002,267.66822 L372.92106,267.66822 C389.6534,267.66822 408.45301,272.28078 408.45301,296.61266 Z M240.82781,337.04655 L188.9892,337.04655 L188.9892,319.56596 L235.27785,319.56596 L235.27785,301.64028 L188.9892,301.64028 L188.9892,285.66718 L241.84947,285.66718 L264.91132,311.27077 L240.82781,337.04655 Z M324.3545,347.10668 L291.9833,311.3189 L324.3545,276.6677 L324.3545,347.10668 Z M372.2272,308.04117 L344.98027,308.04117 L344.98027,285.66718 L372.47197,285.66718 C380.08388,285.66718 385.36777,288.75636 385.36777,296.43956 C385.36777,304.03796 380.32865,308.04117 372.2272,308.04117 Z M514.97053,267.66815 L585.34004,267.66815 L585.34004,285.83764 L535.96778,285.83764 L535.96778,301.81074 L584.1348,301.81074 L584.1348,319.73642 L535.96778,319.73642 L535.96778,337.21701 L585.34004,337.29641 L585.34004,355.52678 L514.97053,355.52678 L514.97053,267.66815 Z M487.91724,314.6973 C492.61049,316.42205 496.44703,319.51387 498.24559,322.07317 C501.22276,326.36251 501.65378,330.36571 501.73891,338.10985 L501.73891,355.52685 L480.5714,355.52685 L480.5714,344.53458 C480.5714,339.24908 481.08223,331.42282 477.1632,327.33748 C474.08226,324.19002 469.38635,323.4376 461.69463,323.4376 L439.16223,323.4376 L439.16223,355.52685 L417.97609,355.52685 L417.97609,267.66822 L466.65393,267.66822 C477.32816,267.66822 485.10236,268.13716 492.02251,271.81449 C498.6766,275.8177 502.86168,281.30191 502.86168,291.3245 C502.85868,305.34765 493.46719,312.50362 487.91724,314.6973 Z M475.99899,303.59022 C473.17879,305.25668 469.69077,305.39975 465.58817,305.39975 L439.97483,305.39975 L439.97483,285.66718 L465.9367,285.66718 C469.69077,285.66718 473.4475,285.74658 475.99899,287.25416 C478.7314,288.67687 480.36499,291.39779 480.36499,295.15725 C480.36499,298.91672 478.7314,301.94496 475.99899,303.59022 Z M666.33539,309.1866 C670.44067,313.41766 672.64095,318.7588 672.64095,327.80112 C672.64095,346.70178 660.78278,355.5242 639.51948,355.5242 L598.45353,355.5242 L598.45353,336.68449 L639.35453,336.68449 C643.35337,336.68449 646.18954,336.15726 647.9668,334.50934 C649.41681,333.15021 650.45709,331.17643 650.45709,328.77875 C650.45709,326.21944 649.33167,324.18738 647.88433,322.96866 C646.27201,321.62807 644.04778,321.01872 640.37619,321.01872 C620.65868,320.34843 595.9659,321.62807 595.9659,293.82551 C595.9659,281.08201 604.00615,267.66822 626.11019,267.66822 L668.37872,267.66822 L668.37872,286.36752 L629.70196,286.36752 C625.86809,286.36752 623.37512,286.51059 621.25464,287.9545 C618.94527,289.37721 618.08856,291.48876 618.08856,294.2759 C618.08856,297.59028 620.04941,299.8449 622.702,300.81987 C624.92624,301.59084 627.31543,301.81603 630.9072,301.81603 L642.25722,302.12071 C653.703,302.39889 661.55967,304.37003 666.33539,309.1866 Z M750,285.66718 L711.57335,285.66718 C707.7368,285.66718 705.18797,285.81025 703.04088,287.25416 C700.81665,288.67687 699.95995,290.78843 699.95995,293.57558 C699.95995,296.88994 701.83831,299.14456 704.57071,300.11953 C706.79495,300.8905 709.18415,301.1157 712.6961,301.1157 L724.12327,301.42038 C735.65419,301.70387 743.35123,303.67765 748.04448,308.49157 C748.89852,309.16186 749.41202,309.91428 750,310.6667 L750,285.66718 Z" id="path13" fill="#FFFFFF"/>
+                              </g>
+                            </g>
+                          </svg>
+                          <svg width="100" height="65" viewBox="0 -213 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" fill="#ffffff" class="logo-small"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <linearGradient x1="19.4143743%" y1="9.06316954%" x2="88.6006499%" y2="80.4988417%" id="linearGradient-1"> <stop stop-color="#F34F26" offset="0%"> </stop> <stop stop-color="#F69E35" offset="100%"> </stop> </linearGradient> <path d="M270.356257,0.364742204 C246.374007,0.364742204 226.91662,19.0997905 226.91662,42.2224896 C226.91662,66.805636 245.528651,85.1826697 270.356257,85.1826697 C294.56404,85.1826697 313.677606,66.5627539 313.677606,42.7050996 C313.677606,18.9893895 294.69179,0.364742204 270.356257,0.364742204 Z" id="path-2"> </path> <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-3"> <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"> </feMorphology> <feGaussianBlur stdDeviation="4" in="shadowSpreadInner1" result="shadowBlurInner1"> </feGaussianBlur> <feOffset dx="3" dy="3" in="shadowBlurInner1" result="shadowOffsetInner1"> </feOffset> <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"> </feComposite> <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0" type="matrix" in="shadowInnerInner1"> </feColorMatrix> </filter> </defs> <g> <g> <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"> </use> <use fill="#000000" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"> </use> </g> <path d="M23.7456761,1.8914302 L0.392712098,1.8914302 L0.392712098,83.3452818 L23.6242351,83.3452818 C35.9497171,83.3452818 44.8638087,80.424387 52.6833531,73.947003 C61.9617679,66.2520539 67.4644687,54.6489097 67.4644687,42.6577848 C67.4644687,18.6092946 49.4990731,1.8914302 23.7456761,1.8914302 Z M42.3182772,63.0677739 C37.2966092,67.598946 30.8318426,69.5561979 20.5582417,69.5561979 L16.2904548,69.5561979 L16.2904548,15.6836683 L20.5582417,15.6836683 C30.8318426,15.6836683 37.0489955,17.5179019 42.3182772,22.2761847 C47.8130922,27.1622172 51.0904245,34.7278394 51.0904245,42.5410752 C51.0904245,50.3700827 47.8130922,58.2006673 42.3182772,63.0677739 Z M74.7982489,83.3452818 L90.66918,83.3452818 L90.66918,1.8914302 L74.7982489,1.8914302 L74.7982489,83.3452818 Z M129.525598,33.136488 C119.986952,29.6020791 117.179612,27.271041 117.179612,22.8896988 C117.179612,17.7560527 122.177623,13.8510119 129.028793,13.8510119 C133.791807,13.8510119 137.700002,15.8035322 141.865274,20.430911 L150.159543,9.57849352 C143.32099,3.58056537 135.138699,0.531920849 126.213568,0.531920849 C111.815701,0.531920849 100.815031,10.5515994 100.815031,23.8517646 C100.815031,35.0984713 105.940791,40.8330142 120.846503,46.2205826 C127.079427,48.4080994 130.247935,49.8669696 131.839287,50.8637328 C135.014104,52.9408486 136.60861,55.8617434 136.60861,59.2794427 C136.60861,65.8845763 131.351945,70.762723 124.257894,70.762723 C116.684385,70.762723 110.583942,66.9807005 106.917052,59.8976883 L96.6702625,69.8022343 C103.98354,80.534788 112.779344,85.3135737 124.884025,85.3135737 C141.371624,85.3135737 152.968459,74.3065948 152.968459,58.5555276 C152.968459,45.6070685 147.607703,39.7400445 129.525598,33.136488 Z M157.974356,42.6577848 C157.974356,66.6226858 176.78984,85.1826697 200.980274,85.1826697 C207.818827,85.1826697 213.681119,83.8310461 220.895035,80.424387 L220.895035,61.7271904 C214.534361,68.0847103 208.91495,70.6428591 201.705766,70.6428591 C185.708663,70.6428591 174.342092,59.0365605 174.342092,42.5410752 C174.342092,26.9146035 186.063522,14.5765041 200.980274,14.5765041 C208.541165,14.5765041 214.291478,17.2624025 220.895035,23.735055 L220.895035,5.03943561 C213.933464,1.50818104 208.18315,0.0540422711 201.34302,0.0540422711 C177.275604,0.0540422711 157.974356,18.9893895 157.974356,42.6577848 Z M349.625746,56.6061616 L327.883059,1.8914302 L310.537486,1.8914302 L345.116654,85.4255519 L353.660114,85.4255519 L388.843332,1.8914302 L371.625509,1.8914302 L349.625746,56.6061616 Z M396.065135,83.3452818 L441.130819,83.3452818 L441.130819,69.5561979 L411.942374,69.5561979 L411.942374,47.5548575 L440.014192,47.5548575 L440.014192,33.7626193 L411.942374,33.7626193 L411.942374,15.6836683 L441.130819,15.6836683 L441.130819,1.8914302 L396.065135,1.8914302 L396.065135,83.3452818 Z M504.019955,25.9304575 C504.019955,10.6714633 493.530284,1.8914302 475.19741,1.8914302 L451.62049,1.8914302 L451.62049,83.3452818 L467.515079,83.3452818 L467.515079,50.6082334 L469.595349,50.6082334 L491.569878,83.3452818 L511.114007,83.3452818 L485.447354,49.0342307 C497.435324,46.5833287 504.019955,38.3963067 504.019955,25.9304575 Z M472.137726,39.3820298 L467.515079,39.3820298 L467.515079,14.6995224 L472.391648,14.6995224 C482.307234,14.6995224 487.679032,18.864794 487.679032,26.7915853 C487.679032,34.9691444 482.307234,39.3820298 472.137726,39.3820298 Z" fill="#e0e3e6"> </path> </g> </g>                          </svg>
+                          </div>
+                        </div>
+
+                        <!-- Credit Card Form -->
+                        <div class="payment-form" id="card-form">
+                          <div class="form-row">
+                            <div class="form-group">
+                              <label for="cardNumber">Card Number</label>
+                              <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" required>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="form-group">
+                              <label for="expiryDate">Expiry Date</label>
+                              <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
+                            </div>
+                            <div class="form-group">
+                              <label for="cvv">CVV</label>
+                              <input type="text" id="cvv" name="cvv" placeholder="123" required>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="form-group">
+                              <label for="cardName">Name on Card</label>
+                              <input type="text" id="cardName" name="cardName" placeholder="John Doe" required>
+                            </div>
+                          </div>
+                          <button type="button" class="payment-btn">Complete Payment</button>
+                        </div>
+                      </label>
+                    </div>
+
+                    <div class="payment-row">
+                      <input type="radio" id="paypal" name="payment" value="paypal">
+                      <label for="paypal" class="payment-label">
+                        <div class="payment-header">
+                          <div class="custom-radio"></div>
+                          <span class="service-name">PayPal</span>
+                          <div class="service-logos">
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="42" height="26" viewBox="-3.5 0 48 48" version="1.1" class="logo-small">
+                            <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <g id="Color-" transform="translate(-804.000000, -660.000000)" fill="#022B87">
+                                <path d="M838.91167,663.619443 C836.67088,661.085983 832.621734,660 827.440097,660 L812.404732,660 C811.344818,660 810.443663,660.764988 810.277343,661.801472 L804.016136,701.193856 C803.892151,701.970844 804.498465,702.674333 805.292267,702.674333 L814.574458,702.674333 L816.905967,688.004562 L816.833391,688.463555 C816.999712,687.427071 817.894818,686.662083 818.95322,686.662083 L823.363735,686.662083 C832.030541,686.662083 838.814901,683.170138 840.797138,673.069296 C840.856106,672.7693 840.951363,672.194809 840.951363,672.194809 C841.513828,668.456868 840.946827,665.920407 838.91167,663.619443 Z M843.301017,674.10803 C841.144899,684.052874 834.27133,689.316292 823.363735,689.316292 L819.408334,689.316292 L816.458414,708 L822.873846,708 C823.800704,708 824.588458,707.33101 824.733611,706.423525 L824.809211,706.027531 L826.284927,696.754676 L826.380183,696.243184 C826.523823,695.335698 827.313089,694.666708 828.238435,694.666708 L829.410238,694.666708 C836.989913,694.666708 842.92604,691.611256 844.660308,682.776394 C845.35583,679.23045 845.021677,676.257496 843.301017,674.10803 Z" id="Paypal"/>
+                              </g>
+                            </g>
+                          </svg>
+                          </div>
+                        </div>
+
+                        <!-- PayPal Form -->
+                        <div class="payment-form" id="paypal-form">
+                          <div class="form-row">
+                            <div class="form-group">
+                              <label for="paypalEmail">PayPal Email</label>
+                              <input type="email" id="paypalEmail" name="paypalEmail" placeholder="your-email@example.com" required>
+                            </div>
+                          </div>
+                          <div class="paypal-notice">
+                            <p>You will be redirected to PayPal to complete your payment securely.</p>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+
+                    <div class="payment-row">
+                      <input type="radio" id="applepay" name="payment" value="applepay">
+                      <label for="applepay" class="payment-label">
+                        <div class="payment-header">
+                          <div class="custom-radio"></div>
+                          <span class="service-name">Apple Pay</span>
+                          <div class="service-logos">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="#ffffff" width="80" height="50" viewBox="0 0 32 32" class="logo-small">
+                            <path d="M5.849 11.047c-0.376 0.448-0.975 0.803-1.573 0.751-0.079-0.604 0.219-1.251 0.563-1.652 0.375-0.457 1.031-0.785 1.563-0.812 0.063 0.631-0.183 1.251-0.552 1.713zM6.396 11.917c-0.869-0.053-1.615 0.499-2.027 0.499-0.421 0-1.052-0.473-1.739-0.457-0.891 0.011-1.724 0.52-2.177 1.339-0.943 1.629-0.245 4.041 0.661 5.369 0.443 0.656 0.973 1.375 1.672 1.355 0.661-0.027 0.927-0.437 1.724-0.437 0.807 0 1.036 0.437 1.74 0.421 0.723-0.011 1.181-0.656 1.624-1.312 0.505-0.745 0.713-1.475 0.724-1.511-0.011-0.016-1.401-0.552-1.411-2.167-0.011-1.355 1.093-2 1.14-2.037-0.62-0.937-1.599-1.036-1.932-1.061zM11.412 10.083v9.855h1.515v-3.369h2.095c1.911 0 3.255-1.328 3.255-3.245 0-1.921-1.317-3.24-3.203-3.24zM12.927 11.375h1.745c1.312 0 2.063 0.708 2.063 1.953s-0.751 1.959-2.073 1.959h-1.735zM21.036 20.011c0.953 0 1.833-0.484 2.235-1.256h0.032v1.183h1.4v-4.907c0-1.416-1.124-2.337-2.859-2.337-1.604 0-2.792 0.932-2.833 2.208h1.359c0.115-0.609 0.667-1.005 1.433-1.005 0.927 0 1.443 0.437 1.443 1.24v0.541l-1.885 0.115c-1.761 0.109-2.709 0.833-2.709 2.099 0 1.276 0.98 2.12 2.385 2.12zM21.448 18.844c-0.808 0-1.323-0.391-1.323-0.989 0-0.62 0.495-0.985 1.437-1.043l1.683-0.104v0.557c0 0.923-0.776 1.579-1.803 1.579zM26.573 22.62c1.473 0 2.167-0.573 2.771-2.297l2.656-7.531h-1.536l-1.781 5.817h-0.032l-1.781-5.817h-1.583l2.563 7.172-0.136 0.437c-0.235 0.735-0.609 1.020-1.276 1.020-0.12 0-0.349-0.015-0.443-0.025v1.183c0.088 0.025 0.464 0.036 0.573 0.036z"/>
+                          </svg>
+                          </div>
+                        </div>
+
+                        <!-- Apple Pay Form -->
+                        <div class="payment-form" id="applepay-form">
+                          <div class="apple-pay-notice">
+                            <p>Touch ID or Face ID will be required to complete your Apple Pay transaction.</p>
+                            <p>You will be prompted to authorize the payment on your Apple device.</p>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+
+                    <div class="payment-row">
+                      <input type="radio" id="googlepay" name="payment" value="googlepay">
+                      <label for="googlepay" class="payment-label">
+                        <div class="payment-header">
+                          <div class="custom-radio"></div>
+                          <span class="service-name">Google Pay</span>
+                          <div class="service-logos">
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="26" width="42" version="1.1" id="Layer_1" viewBox="0 0 2387.3 948" xml:space="preserve" class="logo-small">
+                            <style type="text/css">
+                              .st0{fill:#5F6368;}
+                              .st1{fill:#4285F4;}
+                              .st2{fill:#34A853;}
+                              .st3{fill:#FBBC04;}
+                              .st4{fill:#EA4335;}
+                            </style>
+                            <g>
+                              <path class="st0" d="M1129.1,463.2V741h-88.2V54.8h233.8c56.4-1.2,110.9,20.2,151.4,59.4c41,36.9,64.1,89.7,63.2,144.8 c1.2,55.5-21.9,108.7-63.2,145.7c-40.9,39-91.4,58.5-151.4,58.4L1129.1,463.2L1129.1,463.2z M1129.1,139.3v239.6h147.8 c32.8,1,64.4-11.9,87.2-35.5c46.3-45,47.4-119.1,2.3-165.4c-0.8-0.8-1.5-1.6-2.3-2.3c-22.5-24.1-54.3-37.3-87.2-36.4L1129.1,139.3 L1129.1,139.3z M1692.5,256.2c65.2,0,116.6,17.4,154.3,52.2c37.7,34.8,56.5,82.6,56.5,143.2V741H1819v-65.2h-3.8 c-36.5,53.7-85.1,80.5-145.7,80.5c-51.7,0-95-15.3-129.8-46c-33.8-28.5-53-70.7-52.2-115c0-48.6,18.4-87.2,55.1-115.9 c36.7-28.7,85.7-43.1,147.1-43.1c52.3,0,95.5,9.6,129.3,28.7v-20.2c0.2-30.2-13.2-58.8-36.4-78c-23.3-21-53.7-32.5-85.1-32.1 c-49.2,0-88.2,20.8-116.9,62.3l-77.6-48.9C1545.6,286.8,1608.8,256.2,1692.5,256.2L1692.5,256.2z M1578.4,597.3 c-0.1,22.8,10.8,44.2,29.2,57.5c19.5,15.3,43.7,23.5,68.5,23c37.2-0.1,72.9-14.9,99.2-41.2c29.2-27.5,43.8-59.7,43.8-96.8 c-27.5-21.9-65.8-32.9-115-32.9c-35.8,0-65.7,8.6-89.6,25.9C1590.4,550.4,1578.4,571.7,1578.4,597.3L1578.4,597.3z M2387.3,271.5 L2093,948h-91l109.2-236.7l-193.6-439.8h95.8l139.9,337.3h1.9l136.1-337.3L2387.3,271.5z"/>
+                            </g>
+                            <path class="st1" d="M772.8,403.2c0-26.9-2.2-53.7-6.8-80.2H394.2v151.8h212.9c-8.8,49-37.2,92.3-78.7,119.8v98.6h127.1 C729.9,624.7,772.8,523.2,772.8,403.2L772.8,403.2z"/>
+                            <path class="st2" d="M394.2,788.5c106.4,0,196-34.9,261.3-95.2l-127.1-98.6c-35.4,24-80.9,37.7-134.2,37.7 c-102.8,0-190.1-69.3-221.3-162.7H42v101.6C108.9,704.5,245.2,788.5,394.2,788.5z"/>
+                            <path class="st3" d="M172.9,469.7c-16.5-48.9-16.5-102,0-150.9V217.2H42c-56,111.4-56,242.7,0,354.1L172.9,469.7z"/>
+                            <path class="st4" d="M394.2,156.1c56.2-0.9,110.5,20.3,151.2,59.1L658,102.7C586.6,35.7,492.1-1.1,394.2,0 C245.2,0,108.9,84.1,42,217.2l130.9,101.6C204.1,225.4,291.4,156.1,394.2,156.1z"/>
+                          </svg>
+                          </div>
+                        </div>
+
+                        <!-- Google Pay Form -->
+                        <div class="payment-form" id="googlepay-form">
+                          <div class="google-pay-notice">
+                            <p>Your Google account will be used to complete the payment securely.</p>
+                            <p>You will be prompted to confirm the payment through Google Pay.</p>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="order-summary">
+            <h3>Your Order</h3>
+            <div class="order-details">
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pas1.jpg" alt="Premium Dog Food">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Premium Dog Food</h4>
+                  <p class="item-brand">Royal Canin</p>
+                  <div class="item-footer">
+                    <span class="item-price">$29.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">1</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/catWelcome.png" alt="Cat Toy Set">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Cat Toy Set</h4>
+                  <p class="item-brand">Play Time</p>
+                  <div class="item-footer">
+                    <span class="item-price">$15.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">2</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/papagaj.png" alt="Bird Cage">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Bird Cage Deluxe</h4>
+                  <p class="item-brand">Travel Pro</p>
+                  <div class="item-footer">
+                    <span class="item-price">$89.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">1</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/granula.jpg" alt="Natural Dog Food">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Natural Superpremium Dog Food</h4>
+                  <p class="item-brand">Monge</p>
+                  <div class="item-footer">
+                    <span class="item-price">$32.50</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">1</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pansion.jpg" alt="Cat Food">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Complete Nutrition Cat Food</h4>
+                  <p class="item-brand">Premil</p>
+                  <div class="item-footer">
+                    <span class="item-price">$18.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">3</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pansionSlika.jpg" alt="Dog Toy">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Interactive Dog Toy Set</h4>
+                  <p class="item-brand">Happy Pets</p>
+                  <div class="item-footer">
+                    <span class="item-price">$24.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">1</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pas1.jpg" alt="Pet Carrier">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Premium Pet Carrier Large</h4>
+                  <p class="item-brand">Travel Pro</p>
+                  <div class="item-footer">
+                    <span class="item-price">$75.00</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">1</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pas2.jpg" alt="Dog Collar">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Leather Dog Collar with Name Tag</h4>
+                  <p class="item-brand">Comfort Fit</p>
+                  <div class="item-footer">
+                    <span class="item-price">$19.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">2</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pas3.jpg" alt="Premium Cat Food">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Premium Cat Food 3kg</h4>
+                  <p class="item-brand">Purina Pro</p>
+                  <div class="item-footer">
+                    <span class="item-price">$45.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">1</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/zec.jpg" alt="Cat Toy">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Feather Wand Cat Toy</h4>
+                  <p class="item-brand">Play Time</p>
+                  <div class="item-footer">
+                    <span class="item-price">$8.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">4</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pas2.jpg" alt="Dog Leash">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Retractable Dog Leash 5m</h4>
+                  <p class="item-brand">Secure Walk</p>
+                  <div class="item-footer">
+                    <span class="item-price">$28.50</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">1</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pansion.jpg" alt="Dog Food Royal Canin">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Senior Dog Food Formula</h4>
+                  <p class="item-brand">Royal Canin</p>
+                  <div class="item-footer">
+                    <span class="item-price">$34.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">1</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/catWelcome.png" alt="Cat Litter">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Premium Cat Litter 5kg</h4>
+                  <p class="item-brand">Comfort Fit</p>
+                  <div class="item-footer">
+                    <span class="item-price">$12.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">2</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pansionSlika.jpg" alt="Bird Food">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Mixed Bird Seed 1kg</h4>
+                  <p class="item-brand">Happy Pets</p>
+                  <div class="item-footer">
+                    <span class="item-price">$9.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">3</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pas1.jpg" alt="Dog Shampoo">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Natural Dog Shampoo 500ml</h4>
+                  <p class="item-brand">Monge</p>
+                  <div class="item-footer">
+                    <span class="item-price">$14.50</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">1</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pas3.jpg" alt="Cat Scratching Post">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Cat Scratching Post Deluxe</h4>
+                  <p class="item-brand">Play Time</p>
+                  <div class="item-footer">
+                    <span class="item-price">$39.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">1</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/granula.jpg" alt="Hamster Cage">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Hamster Cage with Accessories</h4>
+                  <p class="item-brand">Travel Pro</p>
+                  <div class="item-footer">
+                    <span class="item-price">$49.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">1</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pansion.jpg" alt="Fish Tank">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Aquarium Starter Kit 20L</h4>
+                  <p class="item-brand">Secure Walk</p>
+                  <div class="item-footer">
+                    <span class="item-price">$89.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">1</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-item">
+                <button class="remove-item" aria-label="Remove item">×</button>
+                <div class="item-image">
+                  <img src="/img/pas2.jpg" alt="Bird Perch">
+                </div>
+                <div class="item-info">
+                  <h4 class="item-title">Natural Wood Bird Perch Set</h4>
+                  <p class="item-brand">Purina Pro</p>
+                  <div class="item-footer">
+                    <span class="item-price">$16.99</span>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+                      <span class="quantity">2</span>
+                      <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="/js/clone.js" defer></script>
+    <script src="/js/loader.js" defer></script>
+    <script>
+      // Handle payment method selection
+      document.querySelectorAll('input[name="payment"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          // Remove active class from all labels
+          document.querySelectorAll('.payment-label').forEach(label => {
+            label.classList.remove('active');
+          });
+          // Add active class to selected label
+          if (this.checked) {
+            this.nextElementSibling.classList.add('active');
+          }
+        });
+      });
+
+      // Handle floating labels for shipping form
+      document.querySelectorAll('.shipping-form input, .shipping-form textarea').forEach(input => {
+        const formGroup = input.closest('.form-group');
+        if (!formGroup) return; // Skip if not in a form-group
+
+        const placeholder = formGroup.getAttribute('data-placeholder');
+        if (!placeholder) return; // Skip if no data-placeholder
+
+        // Create floating label element for all inputs
+        let floatingLabel = formGroup.querySelector('.floating-label');
+        if (!floatingLabel) {
+          floatingLabel = document.createElement('span');
+          floatingLabel.className = 'floating-label';
+
+          if (placeholder && placeholder.includes('*')) {
+            const cleanText = placeholder.replace('*', '').trim();
+            floatingLabel.innerHTML = cleanText + '<span class="green-asterisk">*</span>';
+          } else {
+            floatingLabel.textContent = placeholder;
+          }
+
+          formGroup.appendChild(floatingLabel);
+        }
+
+        // Check initial state - only show if input has value
+        if (input.value) {
+          formGroup.classList.add('floating');
+        } else {
+          formGroup.classList.remove('floating');
+        }
+
+        input.addEventListener('focus', function() {
+          formGroup.classList.add('floating');
+        });
+
+        input.addEventListener('blur', function() {
+          if (!this.value) {
+            formGroup.classList.remove('floating');
+          }
+        });
+
+        input.addEventListener('input', function() {
+          if (this.value) {
+            formGroup.classList.add('floating');
+          } else {
+            formGroup.classList.remove('floating');
+          }
+        });
+      });
+
+      // Make asterisks green in floating labels
+      function updateFloatingLabels() {
+        document.querySelectorAll('.form-group.floating').forEach(group => {
+          const beforeElement = window.getComputedStyle(group, '::before');
+          const content = beforeElement.content;
+          if (content && content.includes('*')) {
+            // Replace * with green asterisk
+            const newContent = content.replace(/\*/g, '<span style="color: #009900">*</span>');
+            // We need to update the content property
+            group.style.setProperty('--floating-content', newContent);
+          }
+        });
+      }
+
+      // Update floating labels on DOM changes
+      const observer = new MutationObserver(updateFloatingLabels);
+      observer.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
+
+      // Order items functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        // Quantity controls
+        document.querySelectorAll('.quantity-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const quantitySpan = this.parentElement.querySelector('.quantity');
+            let quantity = parseInt(quantitySpan.textContent);
+
+            if (this.classList.contains('plus')) {
+              quantity++;
+            } else if (this.classList.contains('minus') && quantity > 1) {
+              quantity--;
+            }
+
+            quantitySpan.textContent = quantity;
+          });
+        });
+
+        // Remove item functionality
+        document.querySelectorAll('.remove-item').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const orderItem = this.closest('.order-item');
+            orderItem.style.transform = 'translateX(100%)';
+            orderItem.style.opacity = '0';
+
+            setTimeout(() => {
+              orderItem.remove();
+            }, 300);
+          });
+        });
+
+        // Make order summary sticky - stable at bottom when scrolling
+        function makeOrderSummarySticky() {
+          const orderSummary = document.querySelector('.order-summary');
+          const cartContent = document.querySelector('.cart-content');
+          const header = document.querySelector('header');
+
+          if (!orderSummary || !cartContent || !orderSummary.dataset.originalTop) return;
+
+          const scrollY = window.scrollY;
+          const originalTop = parseInt(orderSummary.dataset.originalTop);
+
+          // Calculate header height
+          const headerHeight = header ? header.offsetHeight : 95; // Fallback to 95px if header not found
+          const stickyTop = headerHeight + 20; // 20px padding below header
+
+          // Get the bottom position of cart-content
+          const cartContentRect = cartContent.getBoundingClientRect();
+          const cartContentBottom = cartContentRect.bottom + window.scrollY;
+
+          // Make sticky when header touches order summary, but stop before cart-content ends
+          if (scrollY > (originalTop - stickyTop) && scrollY < (cartContentBottom - stickyTop - orderSummary.offsetHeight)) {
+            // If it was stopped, clear that state and make it sticky again
+            if (orderSummary.dataset.isStopped) {
+              orderSummary.dataset.isStopped = '';
+            }
+            orderSummary.style.position = 'fixed';
+            orderSummary.style.top = stickyTop + 'px';
+            orderSummary.style.bottom = 'auto';
+            orderSummary.style.left = orderSummary.dataset.originalLeft;
+            orderSummary.style.width = orderSummary.dataset.originalWidth;
+            orderSummary.style.flex = 'none';
+            orderSummary.dataset.isSticky = 'true';
+          } else if (scrollY >= (cartContentBottom - stickyTop - orderSummary.offsetHeight) && !orderSummary.dataset.isStopped) {
+            // Stop at cart-content end position - align bottom with cart-content bottom
+            const cartContentHeight = cartContent.offsetHeight;
+            const relativeTop = cartContentHeight - orderSummary.offsetHeight;
+
+            orderSummary.style.position = 'relative';
+            orderSummary.style.top = relativeTop + 'px';
+            orderSummary.style.bottom = 'auto';
+            orderSummary.style.left = '';
+            orderSummary.style.width = orderSummary.dataset.originalWidth; // Keep original width
+            orderSummary.style.flex = 'none';
+            orderSummary.dataset.isSticky = '';
+            orderSummary.dataset.isStopped = 'true';
+          } else if (scrollY <= originalTop + 50) {
+            // Only return to normal position when scrolling way back up
+            orderSummary.style.position = '';
+            orderSummary.style.top = '';
+            orderSummary.style.bottom = '';
+            orderSummary.style.left = '';
+            orderSummary.style.width = '';
+            orderSummary.style.flex = '';
+            orderSummary.dataset.isSticky = '';
+            orderSummary.dataset.isStopped = '';
+          }
+          // If stopped, keep the current position
+        }
+
+        // Initialize sticky positioning data on load
+        function initializeStickyData() {
+          const orderSummary = document.querySelector('.order-summary');
+          if (orderSummary && !orderSummary.dataset.initialized) {
+            const rect = orderSummary.getBoundingClientRect();
+            orderSummary.dataset.originalTop = (rect.top + window.scrollY) + 'px';
+            orderSummary.dataset.originalLeft = orderSummary.offsetLeft + 'px';
+            orderSummary.dataset.originalWidth = orderSummary.offsetWidth + 'px';
+            orderSummary.dataset.initialized = 'true';
+          }
+        }
+
+        // Initialize on load
+        initializeStickyData();
+
+        // Add scroll event listener
+        window.addEventListener('scroll', makeOrderSummarySticky);
+        window.addEventListener('resize', function() {
+          initializeStickyData();
+          makeOrderSummarySticky();
+        });
+      });
+    </script>
+  </body>
+</html>
