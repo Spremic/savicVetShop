@@ -87,6 +87,10 @@
   padding: 30px;
   background-color: #1a1a1a;
   min-height: 400px;
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .shipping-address h3,
@@ -120,6 +124,8 @@
   max-height: 500px;
   overflow-y: auto;
   overflow-x: hidden;
+  flex: 1;
+  min-height: 0;
 }
 
 /* Order Summary Footer */
@@ -127,6 +133,7 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 20px;
   margin-top: 20px;
+  flex-shrink: 0;
 }
 
 .order-stats {
@@ -775,9 +782,6 @@ textarea ~ .floating-label {
     margin-top: 15px;
   }
 
-  .order-stats {
-  }
-
   .items-count {
     font-size: 1.2rem;
   }
@@ -788,52 +792,63 @@ textarea ~ .floating-label {
 
 
   /* Adjust order summary height for screens with smaller height (only for desktop > 1024px) */
-  @media (min-width: 1024px) and (max-height: 700px) {
+  @media (min-width: 1024px) and (max-height: 800px) {
     .order-summary {
-      max-height: 400px;
+      min-height: auto;
+      max-height: 800px;
+      height: fit-content;
     }
 
     .order-details {
-      max-height: 250px;
+      max-height: 500px;
     }
   }
 
   @media (min-width: 1024px) and (max-height: 650px) {
     .order-summary {
-      max-height: 350px;
+      min-height: auto;
+      max-height: 700px;
+      height: fit-content;
     }
 
     .order-details {
-      max-height: 200px;
+      max-height: 400px;
     }
   }
 
   @media (min-width: 1024px) and (max-height: 600px) {
     .order-summary {
-      max-height: 300px;
+      min-height: auto;
+      max-height: 600px;
+      height: fit-content;
     }
 
     .order-details {
-      max-height: 150px;
+      max-height: 300px;
     }
   }
 
   @media (min-width: 1024px) and (max-height: 550px) {
     .order-summary {
-      max-height: 280px;
+      min-height: auto;
+      max-height: 540px;
+      height: fit-content;
     }
 
     .order-details {
-      max-height: 130px;
+      max-height: 240px;
     }
   }
 
   @media (min-width: 1024px) and (max-height: 500px) {
     .order-summary {
-      max-height: 250px;
+      min-height: auto;
+      max-height: 480px;
+      height: fit-content;
     }
 
     .order-details {
-      max-height: 100px;
+      max-height: 180px;
     }
   }
+
