@@ -87,8 +87,6 @@
   padding: 30px;
   background-color: #1a1a1a;
   min-height: 400px;
-  max-height: 600px;
-  overflow: auto;
 }
 
 .shipping-address h3,
@@ -102,10 +100,77 @@
   letter-spacing: 1px;
 }
 
+.order-summary h3 {
+  position: sticky;
+  top: 0;
+  background-color: #1a1a1a;
+  z-index: 10;
+  margin-top: 0;
+  margin-bottom: 25px;
+  padding-top: 0;
+}
+
 .address-form,
 .order-details {
   /* Placeholder for future content */
   min-height: 300px;
+}
+
+.order-details {
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Order Summary Footer */
+.order-summary-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+.order-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-items {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.items-count {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #009900;
+  font-family: "Baloo 2", sans-serif;
+}
+
+.items-label {
+  font-size: 1rem;
+  color: #f0f0f0;
+  font-weight: 500;
+}
+
+.total-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.price-amount {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #009900;
+  font-family: "Baloo 2", sans-serif;
 }
 
 /* Shipping Form Styles */
@@ -703,4 +768,72 @@ textarea ~ .floating-label {
 
   .quantity-controls {
     gap: 8px;
+  }
+
+  .order-summary-footer {
+    padding-top: 15px;
+    margin-top: 15px;
+  }
+
+  .order-stats {
+  }
+
+  .items-count {
+    font-size: 1.2rem;
+  }
+
+  .price-amount {
+    font-size: 1.6rem;
+  }
+
+
+  /* Adjust order summary height for screens with smaller height (only for desktop > 1024px) */
+  @media (min-width: 1024px) and (max-height: 700px) {
+    .order-summary {
+      max-height: 400px;
+    }
+
+    .order-details {
+      max-height: 250px;
+    }
+  }
+
+  @media (min-width: 1024px) and (max-height: 650px) {
+    .order-summary {
+      max-height: 350px;
+    }
+
+    .order-details {
+      max-height: 200px;
+    }
+  }
+
+  @media (min-width: 1024px) and (max-height: 600px) {
+    .order-summary {
+      max-height: 300px;
+    }
+
+    .order-details {
+      max-height: 150px;
+    }
+  }
+
+  @media (min-width: 1024px) and (max-height: 550px) {
+    .order-summary {
+      max-height: 280px;
+    }
+
+    .order-details {
+      max-height: 130px;
+    }
+  }
+
+  @media (min-width: 1024px) and (max-height: 500px) {
+    .order-summary {
+      max-height: 250px;
+    }
+
+    .order-details {
+      max-height: 100px;
+    }
   }
