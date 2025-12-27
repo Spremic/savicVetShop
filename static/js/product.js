@@ -143,8 +143,11 @@ document.addEventListener("DOMContentLoaded", function () {
     mainImage.addEventListener("load", updateLensImage);
   }
 
-  attachLensHandlers();
-  
+  // Only attach zoom lens handlers for screens 1024px and above
+  if (window.innerWidth >= 1024) {
+    attachLensHandlers();
+  }
+
   // Function to get current image index
   function getCurrentImageIndex() {
     if (!mainImage) return 0;
@@ -414,19 +417,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Image zoom button (placeholder - can be enhanced with lightbox)
   const zoomBtn = document.querySelector(".image-zoom-btn");
-  
+
   if (zoomBtn && mainImageContainer) {
     zoomBtn.addEventListener("click", function (e) {
       e.stopPropagation();
-      // TODO: Implement lightbox/modal for image zoom
-      console.log("Zoom image");
+      // Only allow zoom on screens 1024px and above
+      if (window.innerWidth >= 1024) {
+        // TODO: Implement lightbox/modal for image zoom
+        console.log("Zoom image");
+      }
     });
   }
 
   if (mainImageContainer) {
     mainImageContainer.addEventListener("click", function () {
-      // TODO: Implement lightbox on main image click
-      console.log("Open image in lightbox");
+      // Only open zoom on screens 1024px and above
+      if (window.innerWidth >= 1024) {
+        // TODO: Implement lightbox on main image click
+        console.log("Open image in lightbox");
+      }
     });
   }
 

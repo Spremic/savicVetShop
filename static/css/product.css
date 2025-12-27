@@ -134,6 +134,13 @@
   z-index: 10;
 }
 
+/* Hide zoom button on screens below 1024px */
+@media only screen and (max-width: 1023px) {
+  .image-zoom-btn {
+    display: none !important;
+  }
+}
+
 .image-zoom-btn:hover {
   background: rgba(0, 153, 0, 0.8);
   transform: scale(1.1);
