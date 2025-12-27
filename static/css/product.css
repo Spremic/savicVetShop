@@ -1574,10 +1574,10 @@
   }
 
   .main-image {
-    width: 400px;
-    height: 400px;
-    object-fit: cover;
-    object-position: center;
+    width: 400px !important;
+    height: 400px !important;
+    object-fit: cover !important;
+    object-position: center !important;
   }
 
   .thumbnail-container {
