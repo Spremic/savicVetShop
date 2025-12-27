@@ -65,6 +65,7 @@
 
 .cart-header h2 span {
   color: #009900;
+  font-family: "Baloo 2", sans-serif;
 }
 
 .cart-content {
@@ -753,7 +754,28 @@ textarea ~ .floating-label {
   text-align: center;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments for 1025px to 1280px */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  #shopping-cart-section .container {
+    width: 1040px;
+    margin: 0 auto;
+  }
+
+  .cart-content {
+    width: 100%;
+    margin: 0 auto;
+    gap: 20px;
+  }
+
+  .shipping-address {
+    flex: 0 0 50%;
+  }
+
+  .order-summary {
+    flex: 0 0 50%;
+  }
+}
+
 @media (max-width: 1024px) {
   #shopping-cart-section {
     padding: 0;
@@ -809,6 +831,11 @@ textarea ~ .floating-label {
   }
 }
 
+  /* Font sizes from index.css for mobile */
+  .cart-header h2 {
+    font-size: 3.6rem;
+  }
+
   .order-item {
     padding: 15px;
     gap: 12px;
@@ -824,16 +851,16 @@ textarea ~ .floating-label {
   }
 
   .item-title {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
   }
 
   .item-brand {
-    font-size: 0.75rem;
-    padding: 2px 6px;
+    font-size: 0.7rem;
+    padding: 5px 12px;
   }
 
   .item-price {
-    font-size: 1.3rem;
+    font-size: 1.6rem;
   }
 
   .quantity-controls {
@@ -851,6 +878,43 @@ textarea ~ .floating-label {
 
   .price-amount {
     font-size: 1.6rem;
+  }
+
+  /* Additional font sizes for form elements */
+  .shipping-address h3,
+  .order-summary h3 {
+    font-size: 1.5rem;
+  }
+
+  .form-group label {
+    font-size: 1rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 1rem;
+  }
+
+  .payment-section h4 {
+    font-size: 1.5rem;
+  }
+
+  .service-name {
+    font-size: 1.1rem;
+  }
+
+  .paypal-notice,
+  .apple-pay-notice,
+  .google-pay-notice {
+    font-size: 0.9rem;
+  }
+
+  .total-items .items-label {
+    font-size: 1rem;
+  }
+
+  .total-price .price-label {
+    font-size: 0.9rem;
   }
 
 
@@ -915,3 +979,88 @@ textarea ~ .floating-label {
     }
   }
 
+/* Responsive adjustments for screens up to 499px */
+@media (max-width: 499px) {
+  .cart-header h2 {
+    font-size: 2rem;
+  }
+}
+
+/* Responsive adjustments for screens up to 500px */
+@media (max-width: 500px) {
+  .order-total {
+    font-size: 1.1rem;
+  }
+
+  .order-text {
+    font-weight: normal;
+    font-size: 1.3rem;
+  }
+
+  .product-count {
+    font-size: 0.8rem;
+  }
+
+  .item-title {
+    font-size: 1.1rem;
+  }
+
+  .item-price {
+    font-size: 1.2rem;
+  }
+
+  .item-brand {
+    padding: 2px 5px;
+  }
+
+  .quantity-btn {
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+  }
+
+  .quantity {
+    font-size: 1rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .form-row .form-group {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .payment-form {
+    padding: 0;
+  }
+
+  .payment-row:nth-child(1) .service-name {
+    display: none;
+  }
+}
+
+/* Responsive adjustments for 500px to 767px */
+@media (min-width: 500px) and (max-width: 767px) {
+  .cart-header h2 {
+    font-size: 3rem;
+  }
+
+  /* Make card number input 100% width */
+  #card-form .form-row:nth-child(1) .form-group {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  /* Adjust width of CVV and expiry date inputs in card form to fit within container */
+  #card-form .form-row:nth-child(2) {
+    gap: 10px;
+  }
+
+  #card-form .form-row:nth-child(2) .form-group {
+    flex: 1 1 calc(50% - 5px);
+    max-width: calc(50% - 5px);
+  }
+}
