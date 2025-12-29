@@ -1,0 +1,3208 @@
+[
+  {
+    "id": "1001",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za pse",
+    "potkategorija2": "Suva hrana",
+    "naslov": "Royal Canin Medium Adult - Suva hrana za srednje pse",
+    "opis": "Royal Canin Medium Adult je kompletna i uravnotežena hrana za odrasle pse srednje veličine (11-25 kg). Sadrži sve potrebne hranljive materije za održavanje optimalnog zdravlja vašeg ljubimca. Formulacija je posebno prilagođena za pse srednje veličine sa specifičnim nutritivnim potrebama.",
+    "brend": "Royal Canin",
+    "sifra": "1001",
+    "cena": "4.250",
+    "akcijskaCena": "3.820",
+    "usteda": "430",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (kg):",
+        "Starosna grupa:",
+        "Veličina psa:",
+        "Vrsta hrane:",
+        "Sastav:",
+        "Analitički sastav:",
+        "Dodaci po kg:"
+      ],
+      "karakteristike": [
+        "12",
+        "Odrasli (1-7 godina)",
+        "Srednja (11-25 kg)",
+        "Suva hrana",
+        "Žitarice, meso i mesni derivati, biljni derivati, ulja i masti",
+        "Proteini: 25%, Masti: 16%, Vlakna: 1.3%, Pepео: 5.5%",
+        "Vitamin A: 15500 IU, Vitamin D3: 1000 IU, Željezo: 42 mg"
+      ]
+    }
+  },
+  {
+    "id": "1002",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za mačke",
+    "potkategorija2": "Vlažna hrana",
+    "naslov": "Whiskas Tuna - Konzervirana hrana za mačke",
+    "opis": "Whiskas Tuna je ukusna konzervirana hrana za mačke sa tunom u želeu. Sadrži visokokvalitetne proteine iz tune, vitaminе i minerale koji podržavaju zdravlje vašeg ljubimca. Idealna je za svakodnevnu ishranu ili kao poslastica.",
+    "brend": "Whiskas",
+    "sifra": "1002",
+    "cena": "180",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina konzerve (g):",
+        "Vrsta mesa:",
+        "Starosna grupa:",
+        "Sastav:",
+        "Analitički sastav:",
+        "Dodaci:"
+      ],
+      "karakteristike": [
+        "85",
+        "Tuna",
+        "Sve starosne grupe",
+        "Meso i mesni derivati (tuna 4%), žitarice, minerali",
+        "Proteini: 9%, Masti: 4%, Vlakna: 0.5%, Pepео: 2.5%",
+        "Vitamin D3: 200 IU, Željezo: 9.6 mg, Bakar: 1 mg"
+      ]
+    }
+  },
+  {
+    "id": "1003",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za pse",
+    "potkategorija2": "Žvakaće igračke",
+    "naslov": "Kong Classic - Gumenа žvakaća igračka za pse",
+    "opis": "Kong Classic je klasična gumena igračka za pse koja pruža sate zabave i zdravog žvakanja. Napravljena je od prirodne gume koja je sigurna za pse i pomaže u čišćenju zuba. Može se napuniti hranom ili poslasticom za dodatnu zabavu.",
+    "brend": "Kong",
+    "sifra": "1003",
+    "cena": "1.290",
+    "akcijskaCena": "1.160",
+    "usteda": "130",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Materijal:",
+        "Prečnik (cm):",
+        "Visina (cm):",
+        "Težina (g):",
+        "Preporučena veličina psa:",
+        "Boja:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "Prirodna guma",
+        "7",
+        "7",
+        "85",
+        "Svih veličina",
+        "Crvena",
+        "Žvakanje, igra, trening"
+      ]
+    }
+  },
+  {
+    "id": "1004",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Šamponi",
+    "potkategorija2": "Šamponi za pse",
+    "naslov": "Bio-Groom Protein Lanolin Šampon za pse",
+    "opis": "Bio-Groom Protein Lanolin Šampon je profesionalni šampon za pse koji dubinski čisti i hidrira kožu i krzno. Sadrži lanolin koji pomaže u održavanju prirodne vlage kože, dok proteini jačaju krzno. Pogodan za sve tipove dlake.",
+    "brend": "Bio-Groom",
+    "sifra": "1004",
+    "cena": "850",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Vrsta životinje:",
+        "Tip kože/dlaka:",
+        "Sastav:",
+        "pH vrednost:",
+        "Upotreba:",
+        "Miris:"
+      ],
+      "karakteristike": [
+        "355",
+        "Psi",
+        "Sve tipove",
+        "Voda, surfaktanti, lanolin, proteini, mirisi",
+        "6.5-7.5",
+        "Spoljašnja upotreba",
+        "Neutralan"
+      ]
+    }
+  },
+  {
+    "id": "1005",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Kreveti i ležajevi",
+    "potkategorija2": "Kreveti za pse",
+    "naslov": "Ferplast Comfort Bed - Krevet za pse srednje veličine",
+    "opis": "Ferplast Comfort Bed je udoban krevet za pse srednje veličine sa mekanim jastukom i vodootpornom podlogom. Napravljen je od kvalitetnih materijala koji su laki za čišćenje. Pruža vašem ljubimcu udoban prostor za odmor.",
+    "brend": "Ferplast",
+    "sifra": "1005",
+    "cena": "3.950",
+    "akcijskaCena": "3.555",
+    "usteda": "395",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Preporučena težina psa:",
+        "Materijal:",
+        "Boja:",
+        "Težina proizvoda (kg):",
+        "Perivo:"
+      ],
+      "karakteristike": [
+        "70 x 50 x 15",
+        "10-20 kg",
+        "Poliester, polipropilen",
+        "Siva",
+        "2.5",
+        "Da, na 30°C"
+      ]
+    }
+  },
+  {
+    "id": "1006",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za ptice",
+    "potkategorija2": "Seme za ptice",
+    "naslov": "Vitakraft Menu Vital - Seme za papagaje",
+    "opis": "Vitakraft Menu Vital je kompletna mešavina semena za papagaje koja sadrži suncokret, različite žitarice i orašaste plodove. Obogaćena je vitaminima i mineralima za zdravlje vašeg papagaja. Idealna za svakodnevnu ishranu.",
+    "brend": "Vitakraft",
+    "sifra": "1006",
+    "cena": "720",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta ptice:",
+        "Sastav:",
+        "Dodaci:",
+        "Način čuvanja:",
+        "Rok trajanja:"
+      ],
+      "karakteristike": [
+        "750",
+        "Papagaji",
+        "Suncokret, proso, ovsena kaša, semenke lana",
+        "Vitamini, minerali, aminokiseline",
+        "Suvo i hladno mesto",
+        "12 meseci"
+      ]
+    }
+  },
+  {
+    "id": "1007",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Kutije i toaleti",
+    "potkategorija2": "Toalet kutije za mačke",
+    "naslov": "Catit Design Sifting Cat Pan - Toalet kutija za mačke",
+    "opis": "Catit Design Sifting Cat Pan je moderna toalet kutija za mačke sa sistemom za prosijavanje peska. Lakše je održavanje jer možete izdvojiti samo prljavi pesak, a čist ostaviti. Napravljena je od kvalitetne plastike koja je otporna na ogrebotine.",
+    "brend": "Catit",
+    "sifra": "1007",
+    "cena": "2.890",
+    "akcijskaCena": "2.601",
+    "usteda": "289",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Kapacitet peska (l):",
+        "Visina ulaza (cm):",
+        "Težina (kg):",
+        "Boja:"
+      ],
+      "karakteristike": [
+        "39 x 49 x 46",
+        "Plastika",
+        "7",
+        "14",
+        "1.8",
+        "Bela"
+      ]
+    }
+  },
+  {
+    "id": "1008",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za ribe",
+    "potkategorija2": "Hranа za slatkovodne ribe",
+    "naslov": "TetraMin - Granularna hrana za tropske ribe",
+    "opis": "TetraMin je visokokvalitetna granularna hrana za tropske slatkovodne ribe. Sadrži sve potrebne hranljive materije, vitamine i minerale za zdrav rast i boju riba. Granule polako tonu što omogućava svim ribama da jedu.",
+    "brend": "Tetra",
+    "sifra": "1008",
+    "cena": "890",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta ribe:",
+        "Oblik hrane:",
+        "Sastav:",
+        "Proteini (%):",
+        "Masti (%):",
+        "Vlakna (%):"
+      ],
+      "karakteristike": [
+        "250",
+        "Tropske slatkovodne",
+        "Granule",
+        "Ribe i riblji derivati, žitarice, biljni ekstrakti",
+        "47",
+        "8",
+        "2"
+      ]
+    }
+  },
+  {
+    "id": "1009",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za mačke",
+    "potkategorija2": "Laserske igračke",
+    "naslov": "Cat Laser Pointer - Laserska igračka za mačke",
+    "opis": "Cat Laser Pointer je zabavna laserska igračka koja će vašoj mački pružiti sate aktivnosti. Crveni laser stimuliše prirodni instinkt lova kod mačaka. Dolazi sa sigurnosnim prekidačem i dugmetom za uključivanje/isključivanje.",
+    "brend": "Generic",
+    "sifra": "1009",
+    "cena": "450",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Vrsta baterije:",
+        "Snaga lasera:",
+        "Boja lasera:",
+        "Dimenzije (cm):",
+        "Težina (g):",
+        "Sigurnosne funkcije:"
+      ],
+      "karakteristike": [
+        "2x AAA",
+        "Klasa 2 (<1mW)",
+        "Crvena",
+        "15 x 1.5 x 1.5",
+        "25",
+        "Sigurnosni prekidač, automatsko isključivanje"
+      ]
+    }
+  },
+  {
+    "id": "1010",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Posude i hranilice",
+    "potkategorija2": "Automatske hranilice",
+    "naslov": "PetSafe Drinkwell Platinum - Automatska hranilica za pse",
+    "opis": "PetSafe Drinkwell Platinum je automatska hranilica koja može da izdaje hranu u programirano vreme. Ima veliki rezervoar za hranu i može se programirati za više obroka dnevno. Idealna za pse koji jedu u redovno vreme ili kada niste kod kuće.",
+    "brend": "PetSafe",
+    "sifra": "1010",
+    "cena": "12.500",
+    "akcijskaCena": "11.250",
+    "usteda": "1.250",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Kapacitet hrane (l):",
+        "Broj obroka:",
+        "Vreme obroka:",
+        "Materijal:",
+        "Dimenzije (cm):",
+        "Težina (kg):",
+        "Podešavanje porcija:"
+      ],
+      "karakteristike": [
+        "6",
+        "4 obroka dnevno",
+        "Programabilno",
+        "Plastika, metal",
+        "30 x 25 x 40",
+        "3.5",
+        "Da, podešavanje veličine porcije"
+      ]
+    }
+  },
+  {
+    "id": "1011",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za pse",
+    "potkategorija2": "Vlažna hrana",
+    "naslov": "Pedigree Pouch Beef - Konzervirana hrana za pse",
+    "opis": "Pedigree Pouch Beef je ukusna konzervirana hrana za pse sa goveđim mesom. Sadrži visokokvalitetne proteine, vitamine i minerale koji podržavaju zdravlje vašeg psa. Pogodna za sve rase i starosne grupe.",
+    "brend": "Pedigree",
+    "sifra": "1011",
+    "cena": "120",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina konzerve (g):",
+        "Vrsta mesa:",
+        "Starosna grupa:",
+        "Sastav:",
+        "Analitički sastav:",
+        "Dodaci:"
+      ],
+      "karakteristike": [
+        "100",
+        "Goveđe meso",
+        "Sve starosne grupe",
+        "Meso i mesni derivati, žitarice, minerali",
+        "Proteini: 8%, Masti: 5%, Vlakna: 0.5%, Pepео: 2%",
+        "Vitamin A: 1500 IU, Željezo: 7 mg"
+      ]
+    }
+  },
+  {
+    "id": "1012",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Četke i češljevi",
+    "potkategorija2": "Češljevi za pse",
+    "naslov": "Andis Steel Comb - Čelik češalj za pse",
+    "opis": "Andis Steel Comb je profesionalni čelik češalj za pse sa finim i retkim zupcima. Koristi se za precizno češljanje i uklanjanje čvorova iz dlake. Izdržljiv je i dugotrajnog kvaliteta.",
+    "brend": "Andis",
+    "sifra": "1012",
+    "cena": "680",
+    "akcijskaCena": "612",
+    "usteda": "68",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Materijal:",
+        "Dužina zupaca (mm):",
+        "Razmak zupaca (mm):",
+        "Dužina češlja (cm):",
+        "Težina (g):",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "Nehrđajući čelik",
+        "15",
+        "3",
+        "18",
+        "45",
+        "Češljanje, uklanjanje čvorova"
+      ]
+    }
+  },
+  {
+    "id": "1013",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Ogrlice i povoci",
+    "potkategorija2": "Ogrlice za pse",
+    "naslov": "Flexi New Classic - Automatski povodac za pse",
+    "opis": "Flexi New Classic je automatski povodac koji se sam namotava i pruža vašem psu slobodu kretanja. Ima ergonomsku ručku i sistem za brzo zaustavljanje. Pogodan za pse težine do 15 kg.",
+    "brend": "Flexi",
+    "sifra": "1013",
+    "cena": "2.850",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dužina povoca (m):",
+        "Preporučena težina psa (kg):",
+        "Materijal:",
+        "Težina (g):",
+        "Boja:",
+        "Funkcije:"
+      ],
+      "karakteristike": [
+        "5",
+        "do 15",
+        "Nylon, plastika",
+        "220",
+        "Crna",
+        "Automatsko namotavanje, brzo zaustavljanje"
+      ]
+    }
+  },
+  {
+    "id": "1014",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za mačke",
+    "potkategorija2": "Suva hrana",
+    "naslov": "Purina ONE Adult Chicken - Suva hrana za mačke",
+    "opis": "Purina ONE Adult Chicken je kompletna i uravnotežena suva hrana za odrasle mačke sa ukusom pilećeg mesa. Sadrži visokokvalitetne proteine, omega-3 masne kiseline i probiotike za zdravlje probave.",
+    "brend": "Purina",
+    "sifra": "1014",
+    "cena": "1.950",
+    "akcijskaCena": "1.755",
+    "usteda": "195",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (kg):",
+        "Starosna grupa:",
+        "Sastav:",
+        "Analitički sastav:",
+        "Dodaci po kg:"
+      ],
+      "karakteristike": [
+        "3",
+        "Odrasle mačke",
+        "Pileće meso, žitarice, riblje ulje",
+        "Proteini: 34%, Masti: 14%, Vlakna: 3%, Pepео: 7%",
+        "Vitamin A: 10000 IU, Omega-3: 0.2%"
+      ]
+    }
+  },
+  {
+    "id": "1015",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za pse",
+    "potkategorija2": "Loptice i frizbiji",
+    "naslov": "Chuckit! Ultra Ball - Tvrda lopta za pse",
+    "opis": "Chuckit! Ultra Ball je ultra-tvrda lopta napravljena od prirodne gume koja je otporna na žvakanje. Dizajnirana je za dugotrajnu upotrebu i pruža maksimalnu zabavu vašem psu. Odskočna je i lako se baca.",
+    "brend": "Chuckit",
+    "sifra": "1015",
+    "cena": "890",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Prečnik (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Boja:",
+        "Otpornost na žvakanje:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "6.5",
+        "Prirodna guma",
+        "70",
+        "Narandžasta",
+        "Visoka",
+        "Bacanje, žvakanje, igra"
+      ]
+    }
+  },
+  {
+    "id": "1016",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Kavezi i transporteri",
+    "potkategorija2": "Transporteri za mačke",
+    "naslov": "Petmate Aspen - Transporter za mačke",
+    "opis": "Petmate Aspen je prostrani transporter za mačke sa mrežastim panelima za ventilaciju i sigurnosnim bravama. Ima mekano postavljeno dno za udobnost vašeg ljubimca. Savršen za putovanja i posete veterinaru.",
+    "brend": "Petmate",
+    "sifra": "1016",
+    "cena": "3.200",
+    "akcijskaCena": "2.880",
+    "usteda": "320",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije unutrašnje (cm):",
+        "Materijal:",
+        "Težina (kg):",
+        "Broj vrata:",
+        "Ventilacija:",
+        "Perivo:"
+      ],
+      "karakteristike": [
+        "48 x 30 x 33",
+        "Plastika, metal",
+        "2.8",
+        "2",
+        "Mrežasti paneli",
+        "Da, na 30°C"
+      ]
+    }
+  },
+  {
+    "id": "1017",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za ptice",
+    "potkategorija2": "Mešavine semena",
+    "naslov": "Versele-Laga Prestige - Premium hrana za papagaje",
+    "opis": "Versele-Laga Prestige je premium mešavina semena i peletirane hrane za papagaje. Sadrži više od 50 sastojaka uključujući semenke, orašaste plodove i pelete sa vitaminima. Pruža potpunu i uravnoteženu ishranu.",
+    "brend": "Versele-Laga",
+    "sifra": "1017",
+    "cena": "1.450",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (kg):",
+        "Vrsta ptice:",
+        "Sastav:",
+        "Proteini (%):",
+        "Masti (%):",
+        "Dodaci:"
+      ],
+      "karakteristike": [
+        "1",
+        "Veliki papagaji",
+        "Semenke, pelete, orašasti plodovi",
+        "16",
+        "12",
+        "Vitamini, minerali, aminokiseline"
+      ]
+    }
+  },
+  {
+    "id": "1018",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Šamponi",
+    "potkategorija2": "Šamponi za mačke",
+    "naslov": "Beaphar Anti-Parasite Šampon za mačke",
+    "opis": "Beaphar Anti-Parasite Šampon je šampon protiv buva i krpelja za mačke. Sadrži prirodne sastojke kao što je piretrum i ulje neem-a. Efektivan je protiv spoljašnjih parazita i ostavlja krzno mekim i sjajnim.",
+    "brend": "Beaphar",
+    "sifra": "1018",
+    "cena": "1.050",
+    "akcijskaCena": "945",
+    "usteda": "105",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Vrsta životinje:",
+        "Aktivni sastojci:",
+        "pH vrednost:",
+        "Miris:",
+        "Način upotrebe:"
+      ],
+      "karakteristike": [
+        "250",
+        "Mačke",
+        "Piretrum, neem ulje",
+        "7.0",
+        "Blagi biljni miris",
+        "Nanositi na mokru dlaku, masirati i isprati"
+      ]
+    }
+  },
+  {
+    "id": "1019",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Posude i hranilice",
+    "potkategorija2": "Hranilice za pse",
+    "naslov": "Ferplast Dog Bowl - Keramička hranilica za pse",
+    "opis": "Ferplast Dog Bowl je elegantna keramička hranilica za pse sa anti-kliznim dnom. Napravljena je od visokokvalitetne keramike koja je laka za čišćenje i otporna na ogrebotine. Dolazi u različitim veličinama i bojama.",
+    "brend": "Ferplast",
+    "sifra": "1019",
+    "cena": "780",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Prečnik (cm):",
+        "Materijal:",
+        "Kapacitet (ml):",
+        "Težina (g):",
+        "Boja:",
+        "Anti-klizno dno:"
+      ],
+      "karakteristike": [
+        "18",
+        "Keramika",
+        "550",
+        "320",
+        "Bela",
+        "Da"
+      ]
+    }
+  },
+  {
+    "id": "1020",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za mačke",
+    "potkategorija2": "Miševi i igračke sa paperjem",
+    "naslov": "Yeowww! Catnip Toy - Igračka sa mačjom travom",
+    "opis": "Yeowww! Catnip Toy je mekana igračka punjena mačjom travom koja stimuliše prirodne instinkte vaše mačke. Napravljena je od kvalitetnih materijala i ima zvečku unutra za dodatnu zabavu. Savršena za igru i trening.",
+    "brend": "Yeowww",
+    "sifra": "1020",
+    "cena": "350",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Punjenje:",
+        "Težina (g):",
+        "Boja:",
+        "Zvuk:"
+      ],
+      "karakteristike": [
+        "10 x 5 x 5",
+        "Plušan materijal",
+        "Mačja trava",
+        "25",
+        "Siva",
+        "Zvečarka unutra"
+      ]
+    }
+  },
+  {
+    "id": "1021",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za hrčke",
+    "potkategorija2": "Mešavine semena",
+    "naslov": "Vitakraft Hamster Nature - Hrana za hrčke",
+    "opis": "Vitakraft Hamster Nature je prirodna mešavina semena i žitarica za hrčke. Sadrži više od 10 vrsta semena, žitarica i povrća. Obogaćena je vitaminima i mineralima za zdravlje vašeg hrčka.",
+    "brend": "Vitakraft",
+    "sifra": "1021",
+    "cena": "580",
+    "akcijskaCena": "522",
+    "usteda": "58",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta životinje:",
+        "Sastav:",
+        "Dodaci:",
+        "Rok trajanja:",
+        "Način čuvanja:"
+      ],
+      "karakteristike": [
+        "500",
+        "Hrčci",
+        "Semenke suncokreta, proso, ovsena kaša",
+        "Vitamini, minerali",
+        "12 meseci",
+        "Suvo i hladno mesto"
+      ]
+    }
+  },
+  {
+    "id": "1022",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Kavezi i kućice",
+    "potkategorija2": "Kavezi za hrčke",
+    "naslov": "Savic Hamster Cage - Kavez za hrčke",
+    "opis": "Savic Hamster Cage je prostran kavez za hrčke sa više spratova i mnogo prostora za igru. Ima sigurne brave, hranilicu i pojilicu. Napravljen je od kvalitetne plastike koja je laka za čišćenje.",
+    "brend": "Savic",
+    "sifra": "1022",
+    "cena": "4.200",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Broj spratova:",
+        "Materijal:",
+        "Težina (kg):",
+        "Dodatna oprema:",
+        "Perivo:"
+      ],
+      "karakteristike": [
+        "80 x 50 x 80",
+        "2",
+        "Plastika, metal",
+        "3.2",
+        "Hranilica, pojilica, točak",
+        "Da, na 40°C"
+      ]
+    }
+  },
+  {
+    "id": "1023",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za ribe",
+    "potkategorija2": "Hranа za zlatne ribice",
+    "naslov": "JBL Novo Gold - Hrana za zlatne ribice",
+    "opis": "JBL Novo Gold je specijalna hrana za zlatne ribice sa optimalnim odnosom proteina i ugljenih hidrata. Sadrži spirulinu za intenzivnu boju i zdrave ljuske. Hrana je lako svarljiva i ne zagađuje vodu.",
+    "brend": "JBL",
+    "sifra": "1023",
+    "cena": "750",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta ribe:",
+        "Oblik hrane:",
+        "Sastav:",
+        "Proteini (%):",
+        "Masti (%):"
+      ],
+      "karakteristike": [
+        "100",
+        "Zlatne ribice",
+        "Pelete",
+        "Riblje brašno, spirulina, žitarice",
+        "36",
+        "6"
+      ]
+    }
+  },
+  {
+    "id": "1024",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Nega noktiju",
+    "potkategorija2": "Makaze za nokte",
+    "naslov": "Millers Forge - Makaze za nokte pasa i mačaka",
+    "opis": "Millers Forge makaze su profesionalne makaze za podrezivanje noktiju pasa i mačaka. Ima sigurnosni zaustavljač koji sprečava preterano podrezivanje. Ergonomska ručka pruža udoban hvat i preciznu kontrolu.",
+    "brend": "Millers Forge",
+    "sifra": "1024",
+    "cena": "1.250",
+    "akcijskaCena": "1.125",
+    "usteda": "125",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Materijal:",
+        "Dužina (cm):",
+        "Težina (g):",
+        "Sigurnosni zaustavljač:",
+        "Ergonomska ručka:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "Nehrđajući čelik",
+        "15",
+        "85",
+        "Da",
+        "Da",
+        "Podrezivanje noktiju pasa i mačaka"
+      ]
+    }
+  },
+  {
+    "id": "1025",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za ptice",
+    "potkategorija2": "Zvončići i zvona",
+    "naslov": "Prevue Pet Products Bell - Zvončić za ptice",
+    "opis": "Prevue Pet Products Bell je zabavan zvončić za ptice koji stimuliše prirodne instinkte vašeg ljubimca. Napravljen je od sigurnih materijala i ima jarku boju koja privlači pažnju ptica. Savršen za obogaćivanje kaveza.",
+    "brend": "Prevue Pet Products",
+    "sifra": "1025",
+    "cena": "420",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Prečnik (cm):",
+        "Materijal:",
+        "Boja:",
+        "Težina (g):",
+        "Sigurnosno kačenje:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "8",
+        "Plastika, metal",
+        "Žuta",
+        "30",
+        "Da",
+        "Igra, stimulacija"
+      ]
+    }
+  },
+  {
+    "id": "1026",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Akvarijumi",
+    "potkategorija2": "Akvarijumi za slatkovodne ribe",
+    "naslov": "Tetra AquaArt - Akvarijum 60 litara",
+    "opis": "Tetra AquaArt je kompletan akvarijum od 60 litara sa filterom, osvetljenjem i poklopcem. Napravljen je od kvalitetnog stakla i ima moderan dizajn. Idealno rešenje za početnike u akvaristici.",
+    "brend": "Tetra",
+    "sifra": "1026",
+    "cena": "8.900",
+    "akcijskaCena": "8.010",
+    "usteda": "890",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (l):",
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Filter:",
+        "Osvetljenje:",
+        "Poklopac:"
+      ],
+      "karakteristike": [
+        "60",
+        "60 x 30 x 40",
+        "Staklo",
+        "Unutrašnji filter",
+        "LED svetla",
+        "Sa poklopcem"
+      ]
+    }
+  },
+  {
+    "id": "1027",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za zečeve",
+    "potkategorija2": "Granularna hrana",
+    "naslov": "Burgess Excel - Hrana za zečeve",
+    "opis": "Burgess Excel je potpuna granularna hrana za zečeve koja sadrži sve potrebne hranljive materije. Obogaćena je vitaminima, mineralima i vlaknima za zdravlje probave. Pomaže u održavanju zdravih zuba i dobrog varenja.",
+    "brend": "Burgess",
+    "sifra": "1027",
+    "cena": "1.890",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (kg):",
+        "Vrsta životinje:",
+        "Sastav:",
+        "Proteini (%):",
+        "Vlakna (%):",
+        "Dodaci:"
+      ],
+      "karakteristike": [
+        "2.5",
+        "Zečevi",
+        "Žitarice, biljni ekstrakti, vitamini",
+        "14",
+        "18",
+        "Vitamini, minerali, probiotici"
+      ]
+    }
+  },
+  {
+    "id": "1028",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Balzami za usne",
+    "potkategorija2": "Balzami za šape",
+    "naslov": "Pet Head Paw Balm - Balzam za šape pasa",
+    "opis": "Pet Head Paw Balm je hidratantni balzam za šape pasa koji štiti od soli, leda i drugih nadražaja. Sadrži prirodne sastojke kao što su shea maslac i pčelinji vosak. Brzo se upija i ostavlja šape mekim i zaštićenim.",
+    "brend": "Pet Head",
+    "sifra": "1028",
+    "cena": "950",
+    "akcijskaCena": "855",
+    "usteda": "95",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (g):",
+        "Vrsta životinje:",
+        "Aktivni sastojci:",
+        "Miris:",
+        "Način upotrebe:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "50",
+        "Psi",
+        "Shea maslac, pčelinji vosak, vitamin E",
+        "Bez mirisa",
+        "Nanositi na šape",
+        "Siguran za lizanje"
+      ]
+    }
+  },
+  {
+    "id": "1029",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Kreveti i ležajevi",
+    "potkategorija2": "Kreveti za mačke",
+    "naslov": "MidWest Cat Scratch Box - Krevet sa strugačem za mačke",
+    "opis": "MidWest Cat Scratch Box je kombinacija kreveta i strugača za mačke. Ima mekanu postavu za spavanje i sisal konopac za struganje. Pomaže u održavanju noktiju vaše mačke i pruža udoban prostor za odmor.",
+    "brend": "MidWest",
+    "sifra": "1029",
+    "cena": "2.400",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Težina (kg):",
+        "Boja:",
+        "Perivo:",
+        "Dvostruka funkcija:"
+      ],
+      "karakteristike": [
+        "45 x 30 x 10",
+        "Sisal konopac, tkanina",
+        "1.5",
+        "Bež",
+        "Da",
+        "Krevet i strugač"
+      ]
+    }
+  },
+  {
+    "id": "1030",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za hrčke",
+    "potkategorija2": "Točkovi za trčanje",
+    "naslov": "Savic Hamster Wheel - Tiho točak za hrčke",
+    "opis": "Savic Hamster Wheel je tiho točak za trčanje hrčaka sa sigurnim mehanizmom zaustavljanja. Napravljen je od plastike i metala, sa površinom koja ne klizi. Pruža vašem hrčku mogućnost za svakodnevno vežbanje.",
+    "brend": "Savic",
+    "sifra": "1030",
+    "cena": "680",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotok": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Prečnik (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Sigurnosni mehanizam:",
+        "Nivo buke:",
+        "Montiranje:"
+      ],
+      "karakteristike": [
+        "20",
+        "Plastika, metal",
+        "180",
+        "Da",
+        "Tiho",
+        "Na rešetke kaveza"
+      ]
+    }
+  },
+  {
+    "id": "1031",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za kornjače",
+    "potkategorija2": "Suhа hranа",
+    "naslov": "Tetra ReptoMin - Hrana za vodene kornjače",
+    "opis": "Tetra ReptoMin je kompletna hrana za vodene kornjače u formi štapića koji plivaju. Sadrži visokokvalitetne proteine, vitamine i minerale. Pomaže u održavanju zdrave ljuske i dobrog zdravlja.",
+    "brend": "Tetra",
+    "sifra": "1031",
+    "cena": "890",
+    "akcijskaCena": "801",
+    "usteda": "89",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta životinje:",
+        "Oblik hrane:",
+        "Sastav:",
+        "Proteini (%):",
+        "Dodaci:"
+      ],
+      "karakteristike": [
+        "85",
+        "Vodene kornjače",
+        "Štapići",
+        "Riblje brašno, žitarice, spirulina",
+        "45",
+        "Vitamini, minerali"
+      ]
+    }
+  },
+  {
+    "id": "1032",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Terarijumi",
+    "potkategorija2": "Terarijumi za kornjače",
+    "naslov": "Exo Terra Terrarium - Terarijum za kornjače",
+    "opis": "Exo Terra Terrarium je potpuno opremljen terarijum za kopnene kornjače sa poklopcem, podlogom i osvetljenjem. Napravljen je od kvalitetne plastike i ima ventilacione otvore. Pruža idealne uslove za vašeg ljubimca.",
+    "brend": "Exo Terra",
+    "sifra": "1032",
+    "cena": "12.500",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (l):",
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Ventilacija:",
+        "Osvetljenje:",
+        "Podloga:"
+      ],
+      "karakteristike": [
+        "40",
+        "60 x 30 x 30",
+        "Plastika",
+        "Ventilacioni otvori",
+        "UV svetla uključena",
+        "Uključena podloga"
+      ]
+    }
+  },
+  {
+    "id": "1033",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Losioni i sprejevi",
+    "potkategorija2": "Sprejevi protiv buva",
+    "naslov": "Frontline Spray - Sprej protiv buva i krpelja",
+    "opis": "Frontline Spray je efikasan sprej protiv buva i krpelja za pse i mačke. Sadrži fipronil koji ubija parazite i sprečava njihovo ponovno pojavljivanje. Deluje do 3 meseca i siguran je za upotrebu.",
+    "brend": "Frontline",
+    "sifra": "1033",
+    "cena": "2.100",
+    "akcijskaCena": "1.890",
+    "usteda": "210",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Aktivni sastojak:",
+        "Vrsta životinje:",
+        "Trajanje zaštite:",
+        "Način upotrebe:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "250",
+        "Fipronil",
+        "Psi i mačke",
+        "3 meseca",
+        "Prskati na krzno",
+        "Siguran za kućne ljubimce"
+      ]
+    }
+  },
+  {
+    "id": "1034",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za zečeve",
+    "potkategorija2": "Tuneli i kućice",
+    "naslov": "Savic Rabbit Tunnel - Tunel za zečeve",
+    "opis": "Savic Rabbit Tunnel je zabavan tunel za zečeve napravljen od kvalitetne plastike. Ima različite ulaze i izlaze što stimuliše prirodne instinkte vašeg zeca. Lako se čisti i može se kombinovati sa drugim igračkama.",
+    "brend": "Savic",
+    "sifra": "1034",
+    "cena": "950",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dužina (cm):",
+        "Prečnik (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Boja:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "45",
+        "15",
+        "Plastika",
+        "250",
+        "Zelena",
+        "Igra, skrivanje"
+      ]
+    }
+  },
+  {
+    "id": "1035",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Posude i hranilice",
+    "potkategorija2": "Pojilice",
+    "naslov": "Ferplast Drinking Bottle - Plastika pojilica",
+    "opis": "Ferplast Drinking Bottle je praktična plastika pojilica za male životinje kao što su hrčci, zečevi i kornjače. Ima sigurnosni mehanizam koji sprečava curenje i lako se puni. Montira se na rešetke kaveza.",
+    "brend": "Ferplast",
+    "sifra": "1035",
+    "cena": "320",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Materijal:",
+        "Težina (g):",
+        "Sigurnosni ventil:",
+        "Montiranje:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "250",
+        "Plastika",
+        "45",
+        "Da",
+        "Na rešetke",
+        "Za male životinje"
+      ]
+    }
+  },
+  {
+    "id": "1036",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za glodare",
+    "potkategorija2": "Hrana za miševe",
+    "naslov": "Vitakraft Mouse Menu - Hrana za miševe",
+    "opis": "Vitakraft Mouse Menu je potpuna hrana za miševe koja sadrži više od 40 sastojaka. Uključuje semenke, žitarice, povrće i voće. Obogaćena je vitaminima i mineralima za zdravlje vaših miševa.",
+    "brend": "Vitakraft",
+    "sifra": "1036",
+    "cena": "450",
+    "akcijskaCena": "405",
+    "usteda": "45",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta životinje:",
+        "Sastav:",
+        "Dodaci:",
+        "Rok trajanja:",
+        "Način čuvanja:"
+      ],
+      "karakteristike": [
+        "350",
+        "Miševi",
+        "Semenke, žitarice, povrće",
+        "Vitamini, minerali",
+        "12 meseci",
+        "Suvo i hladno mesto"
+      ]
+    }
+  },
+  {
+    "id": "1037",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Dodaci ishrani",
+    "potkategorija2": "Vitamini za pse",
+    "naslov": "Beaphar Duo Tabs - Vitamini za pse",
+    "opis": "Beaphar Duo Tabs su vitaminski i mineralni dodaci za pse svih veličina. Sadrže kalcijum, fosfor i vitamin D3 za zdravlje kostiju i zuba. Pomažu u prevenciji nedostataka hranljivih materija.",
+    "brend": "Beaphar",
+    "sifra": "1037",
+    "cena": "1.200",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Broj tableta:",
+        "Vrsta životinje:",
+        "Aktivni sastojci:",
+        "Doziranje:",
+        "Način upotrebe:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "100",
+        "Psi",
+        "Kalcijum, fosfor, vitamin D3",
+        "1 tableta dnevno po 10kg težine",
+        "Dodati u hranu",
+        "Siguran za sve pse"
+      ]
+    }
+  },
+  {
+    "id": "1038",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Kavezi i transporteri",
+    "potkategorija2": "Kavezi za ptice",
+    "naslov": "Ferplast Bird Cage - Kavez za ptice",
+    "opis": "Ferplast Bird Cage je prostran kavez za ptice sa više spratova i mnogo prostora za let. Ima hranilicu, pojilicu i igračke. Napravljen je od kvalitetne plastike i metala, lak za čišćenje.",
+    "brend": "Ferplast",
+    "sifra": "1038",
+    "cena": "6.800",
+    "akcijskaCena": "6.120",
+    "usteda": "680",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Težina (kg):",
+        "Broj spratova:",
+        "Dodatna oprema:",
+        "Perivo:"
+      ],
+      "karakteristike": [
+        "50 x 40 x 120",
+        "Plastika, metal",
+        "4.5",
+        "3",
+        "Hranilica, pojilica, igračke",
+        "Da"
+      ]
+    }
+  },
+  {
+    "id": "1039",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za ribe",
+    "potkategorija2": "Dekoracije za akvarijum",
+    "naslov": "Tetra Decor - Veštačka biljka za akvarijum",
+    "opis": "Tetra Decor je veštačka biljka za akvarijum koja pruža prirodno okruženje za vaše ribe. Napravljena je od sigurnih materijala koji ne utiču na kvalitet vode. Pomaže u smanjenju stresa kod riba.",
+    "brend": "Tetra",
+    "sifra": "1039",
+    "cena": "650",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Visina (cm):",
+        "Materijal:",
+        "Boja:",
+        "Težina (g):",
+        "Sigurnost:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "25",
+        "Plastika",
+        "Zelena",
+        "40",
+        "Sigurna za ribe",
+        "Dekoracija akvarijuma"
+      ]
+    }
+  },
+  {
+    "id": "1040",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Čistači i održavanje",
+    "potkategorija2": "Sredstva za čišćenje",
+    "naslov": "Beaphar Litter Deodorant - Dezodorans za pesak",
+    "opis": "Beaphar Litter Deodorant je dezodorans za pesak mačaka koji neutrališe neprijatne mirise. Sadrži prirodne sastojke i enzime koji razgrađuju bakterije. Lako se koristi i dugotrajnog je dejstva.",
+    "brend": "Beaphar",
+    "sifra": "1040",
+    "cena": "720",
+    "akcijskaCena": "648",
+    "usteda": "72",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Vrsta životinje:",
+        "Aktivni sastojci:",
+        "Miris:",
+        "Način upotrebe:",
+        "Trajanje:"
+      ],
+      "karakteristike": [
+        "500",
+        "Mačke",
+        "Enzimi, prirodni ekstrakti",
+        "Svež miris",
+        "Dodati u pesak",
+        "4 nedelje"
+      ]
+    }
+  },
+  {
+    "id": "1041",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za pse",
+    "potkategorija2": "Suva hrana",
+    "naslov": "Eukanuba Adult Large Breed - Suva hrana za velike pse",
+    "opis": "Eukanuba Adult Large Breed je specijalizovana hrana za odrasle pse velikih rasa (preko 25 kg). Sadrži optimalan odnos kalcijuma i fosfora za zdravlje kostiju i zglobova. Obogaćena je omega-3 masnim kiselinama za zdravu kožu i krzno.",
+    "brend": "Eukanuba",
+    "sifra": "1041",
+    "cena": "6.500",
+    "akcijskaCena": "5.850",
+    "usteda": "650",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (kg):",
+        "Starosna grupa:",
+        "Veličina psa:",
+        "Sastav:",
+        "Analitički sastav:",
+        "Dodaci po kg:"
+      ],
+      "karakteristike": [
+        "15",
+        "Odrasli (1-5 godina)",
+        "Velika (25+ kg)",
+        "Pileće meso, žitarice, riblje ulje",
+        "Proteini: 24%, Masti: 13%, Vlakna: 2.2%, Pepео: 6.5%",
+        "Vitamin A: 17500 IU, Omega-3: 0.35%"
+      ]
+    }
+  },
+  {
+    "id": "1042",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Šamponi",
+    "potkategorija2": "Šamponi za pse",
+    "naslov": "Iv San Bernard - Šampon za belu dlaku pasa",
+    "opis": "Iv San Bernard je profesionalni šampon za pse sa belom dlakom koji uklanja žute mrlje i vraća prirodnu belinu. Sadrži optičke izbjeljivače i UV zaštitu. Pogodan za pudlice, maltežane i druge bele rase.",
+    "brend": "Iv San Bernard",
+    "sifra": "1042",
+    "cena": "1.450",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotok": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Vrsta životinje:",
+        "Tip dlake:",
+        "Aktivni sastojci:",
+        "pH vrednost:",
+        "Miris:"
+      ],
+      "karakteristike": [
+        "250",
+        "Psi",
+        "Bela dlaka",
+        "Optički izbjeljivači, UV filter",
+        "7.0",
+        "Neutralan"
+      ]
+    }
+  },
+  {
+    "id": "1043",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za pse",
+    "potkategorija2": "Plišane igračke",
+    "naslov": "Kong Teddy Bear - Plišana igračka za pse",
+    "opis": "Kong Teddy Bear je mekana plišana igračka u obliku medvedića napunjena komadićima tkanine. Dizajnirana je za žvakanje i bacanje, sa šavovima koji izdržavaju napade pasa. Pomaže u čišćenju zuba.",
+    "brend": "Kong",
+    "sifra": "1043",
+    "cena": "950",
+    "akcijskaCena": "855",
+    "usteda": "95",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Punjenje:",
+        "Težina (g):",
+        "Preporučena veličina psa:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "20 x 10 x 10",
+        "Pliš, tkanina",
+        "Komadići tkanine",
+        "120",
+        "Sve veličine",
+        "Žvakanje, igra"
+      ]
+    }
+  },
+  {
+    "id": "1044",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Ogrlice i povoci",
+    "potkategorija2": "Ogrlice za pse",
+    "naslov": "Halt! Anti-Bark Collar - Ogorčica protiv lajanja",
+    "opis": "Halt! Anti-Bark Collar je elektronska ogrlica koja pomaže u kontroli prekomernog lajanja kod pasa. Koristi ultrazvučne tonove i vibracije umesto električnih impulsa. Laka je za podešavanje i sigurna za upotrebu.",
+    "brend": "Halt",
+    "sifra": "1044",
+    "cena": "3.200",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Prečnik (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Način rada:",
+        "Baterija:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "15-55",
+        "Plastika, metal",
+        "65",
+        "Ultrazvuk, vibracije",
+        "2x AAA",
+        "Bez električnih impulsa"
+      ]
+    }
+  },
+  {
+    "id": "1045",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za mačke",
+    "potkategorija2": "Suva hrana",
+    "naslov": "Hill's Science Plan Adult - Suva hrana za odrasle mačke",
+    "opis": "Hill's Science Plan Adult je veterinarska hrana za odrasle mačke koja podržava zdravlje urinarnog sistema. Sadrži optimalan balans hranljivih materija, antioksidante i omega-3 masne kiseline za zdravu kožu i krzno.",
+    "brend": "Hill's",
+    "sifra": "1045",
+    "cena": "3.800",
+    "akcijskaCena": "3.420",
+    "usteda": "380",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (kg):",
+        "Starosna grupa:",
+        "Sastav:",
+        "Analitički sastav:",
+        "Dodaci po kg:"
+      ],
+      "karakteristike": [
+        "2",
+        "Odrasle mačke (1-6 godina)",
+        "Pileće meso, žitarice, riblje ulje",
+        "Proteini: 32%, Masti: 21%, Vlakna: 1%, Pepео: 5.5%",
+        "Vitamin E: 600 IU, Omega-3: 0.4%"
+      ]
+    }
+  },
+  {
+    "id": "1046",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Kondicioneri",
+    "potkategorija2": "Kondicioneri za pse",
+    "naslov": "Bio-Groom Silk Conditioner - Svilenkast kondicioner za pse",
+    "opis": "Bio-Groom Silk Conditioner je profesionalni kondicioner koji vraća sjaj i mekoću dlaci vašeg psa. Sadrži svilu i vitamin E za dubinsku hidrataciju. Ostavlja dlaku mekanom, sjajnom i lakom za češljanje.",
+    "brend": "Bio-Groom",
+    "sifra": "1046",
+    "cena": "890",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Vrsta životinje:",
+        "Aktivni sastojci:",
+        "Miris:",
+        "Način upotrebe:",
+        "Rezultati:"
+      ],
+      "karakteristike": [
+        "355",
+        "Psi",
+        "Svila, vitamin E, proteini",
+        "Blagi cvetni",
+        "Nanositi nakon šampona",
+        "Sjajna, meka dlaka"
+      ]
+    }
+  },
+  {
+    "id": "1047",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za mačke",
+    "potkategorija2": "Interaktivne igračke",
+    "naslov": "Petstages Tower of Tracks - Interaktivna igračka za mačke",
+    "opis": "Petstages Tower of Tracks je interaktivna igračka sa kuglicama koje se kotrljaju kroz lavirint. Stimuliše prirodne instinkte lova kod mačaka i pruža sate zabave. Može se napuniti poslasticama za dodatnu motivaciju.",
+    "brend": "Petstages",
+    "sifra": "1047",
+    "cena": "1.800",
+    "akcijskaCena": "1.620",
+    "usteda": "180",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Broj kuglica:",
+        "Težina (g):",
+        "Sigurnost:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "25 x 15 x 15",
+        "Plastika, metal",
+        "3",
+        "450",
+        "Bez oštrih ivica",
+        "Interaktivna igra"
+      ]
+    }
+  },
+  {
+    "id": "1048",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Kreveti i ležajevi",
+    "potkategorija2": "Kreveti za pse",
+    "naslov": "Armarkat Luxury Dog Bed - Luksuzni krevet za pse",
+    "opis": "Armarkat Luxury Dog Bed je luksuzni krevet za pse sa memorijskom penom i vodootpornom tkaninom. Ima visoke ivice za potporu i skidajući jastuk za pranje. Pruža maksimalnu udobnost vašem ljubimcu.",
+    "brend": "Armarkat",
+    "sifra": "1048",
+    "cena": "15.900",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Težina (kg):",
+        "Boja:",
+        "Perivo:",
+        "Komfor:"
+      ],
+      "karakteristike": [
+        "120 x 80 x 25",
+        "Memorijska pena, tkanina",
+        "8.5",
+        "Siva",
+        "Da",
+        "Visoki komfor"
+      ]
+    }
+  },
+  {
+    "id": "1049",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za ptice",
+    "potkategorija2": "Seme za kanarince",
+    "naslov": "Versele-Laga Canary - Premium hrana za kanarince",
+    "opis": "Versele-Laga Canary je specijalizovana mešavina semena za kanarince koja sadrži više od 10 vrsta semena i žitarica. Obogaćena je vitaminima i mineralima za zdravlje i boju perja. Pomaže u održavanju optimalne kondicije.",
+    "brend": "Versele-Laga",
+    "sifra": "1049",
+    "cena": "950",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (kg):",
+        "Vrsta ptice:",
+        "Sastav:",
+        "Proteini (%):",
+        "Dodaci:",
+        "Način čuvanja:"
+      ],
+      "karakteristike": [
+        "1",
+        "Kanarinci",
+        "Suncokret, proso, semenke lana",
+        "15",
+        "Vitamini, minerali",
+        "Suvo i hladno mesto"
+      ]
+    }
+  },
+  {
+    "id": "1050",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Četke i češljevi",
+    "potkategorija2": "Furminatori",
+    "naslov": "Furminator Undercoat Rake - Češalj za uklanjanje poddlake",
+    "opis": "Furminator Undercoat Rake je specijalni češalj za uklanjanje mrtve poddlake kod pasa i mačaka. Smanjuje linjanje do 90% i sprečava formiranje čvorova. Pogodan za sve tipove dlake sa poddlakom.",
+    "brend": "Furminator",
+    "sifra": "1050",
+    "cena": "2.200",
+    "akcijskaCena": "1.980",
+    "usteda": "220",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dužina zupaca (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Preporučena veličina:",
+        "Efekat:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "7",
+        "Nehrđajući čelik",
+        "85",
+        "Srednje veličine",
+        "90% manje linjanje",
+        "Redovno češljanje"
+      ]
+    }
+  },
+  {
+    "id": "1051",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za pse",
+    "potkategorija2": "Kong igračke",
+    "naslov": "Kong Extreme - Ekstremna žvakaća igračka",
+    "opis": "Kong Extreme je ultra-tvrda igračka napravljena od prirodne gume za najagresivnije žvakače. Dizajnirana je da izdrži intenzivno žvakanje i pruža maksimalnu zabavu. Može se napuniti hranom ili poslasticom.",
+    "brend": "Kong",
+    "sifra": "1051",
+    "cena": "1.450",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Prečnik (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Otpornost:",
+        "Upotreba:",
+        "Punjenje:"
+      ],
+      "karakteristike": [
+        "9",
+        "Prirodna guma",
+        "200",
+        "Ekstremna",
+        "Žvakanje, igra",
+        "Moguće poslasticom"
+      ]
+    }
+  },
+  {
+    "id": "1052",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Kutije i toaleti",
+    "potkategorija2": "Toalet kutije za mačke",
+    "naslov": "Litter Robot 3 - Automatska toalet kutija za mačke",
+    "opis": "Litter Robot 3 je revolucionarna automatska toalet kutija koja sama čisti pesak. Koristi senzor da detektuje kada mačka uđe, a zatim automatski separeše prljavi pesak. Smanjuje neugodne mirise i održava higijenu.",
+    "brend": "Litter Robot",
+    "sifra": "1052",
+    "cena": "45.000",
+    "akcijskaCena": "40.500",
+    "usteda": "4.500",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Kapacitet peska (l):",
+        "Težina (kg):",
+        "Dimenzije (cm):",
+        "Način rada:",
+        "Baterija:",
+        "Čišćenje:"
+      ],
+      "karakteristike": [
+        "8",
+        "10.5",
+        "61 x 61 x 58",
+        "Automatski",
+        "Adapter 220V",
+        "Samo praznjenje otpada"
+      ]
+    }
+  },
+  {
+    "id": "1053",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za hrčke",
+    "potkategorija2": "Granularna hrana",
+    "naslov": "Burgess Hamster Excel - Potpuna hrana za hrčke",
+    "opis": "Burgess Hamster Excel je potpuna granularna hrana za hrčke koja sadrži sve potrebne hranljive materije. Uključuje žitarice, semenke, povrće i voće. Obogaćena je vitaminima za zdravlje i energiju vašeg hrčka.",
+    "brend": "Burgess",
+    "sifra": "1053",
+    "cena": "720",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta životinje:",
+        "Sastav:",
+        "Proteini (%):",
+        "Dodaci:",
+        "Rok trajanja:"
+      ],
+      "karakteristike": [
+        "500",
+        "Hrčci",
+        "Žitarice, semenke, povrće",
+        "16",
+        "Vitamini, minerali",
+        "12 meseci"
+      ]
+    }
+  },
+  {
+    "id": "1054",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Losioni i sprejevi",
+    "potkategorija2": "Sprejevi za krzno",
+    "naslov": "Show Tech Plus - Sprej za sjaj krzna pasa",
+    "opis": "Show Tech Plus je profesionalni sprej za sjaj krzna pasa koji naglašava prirodnu boju i teksturu dlake. Sadrži prirodne sastojke i UV zaštitu. Koristi se pre izložbi ili za svakodnevnu negu.",
+    "brend": "Show Tech",
+    "sifra": "1054",
+    "cena": "1.650",
+    "akcijskaCena": "1.485",
+    "usteda": "165",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Vrsta životinje:",
+        "Aktivni sastojci:",
+        "Efekat:",
+        "Način upotrebe:",
+        "Rezultati:"
+      ],
+      "karakteristike": [
+        "500",
+        "Psi",
+        "Prirodni ekstrakti, UV filter",
+        "Sjaj i volumen",
+        "Prskati na četkanu dlaku",
+        "Sjajno krzno, UV zaštita"
+      ]
+    }
+  },
+  {
+    "id": "1055",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za ptice",
+    "potkategorija2": "Ogledala i zvona",
+    "naslov": "Prevue Pet Products Bird Mirror - Ogledalo za ptice",
+    "opis": "Prevue Pet Products Bird Mirror je zabavno ogledalo za ptice koje stimuliše njihovu radoznalost i pomaže u prevenciji usamljenosti. Napravljeno je od sigurnih materijala sa reflektujućom površinom. Savršeno za obogaćivanje kaveza.",
+    "brend": "Prevue Pet Products",
+    "sifra": "1055",
+    "cena": "380",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Prečnik (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Sigurnosno kačenje:",
+        "Upotreba:",
+        "Boja:"
+      ],
+      "karakteristike": [
+        "10",
+        "Plastika, staklo",
+        "50",
+        "Da",
+        "Stimulacija, zabava",
+        "Srebrno ogledalo"
+      ]
+    }
+  },
+  {
+    "id": "1056",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Akvarijumi",
+    "potkategorija2": "Akvarijumi za morske ribe",
+    "naslov": "Juwel Rio 125 - Akvarijum 125 litara",
+    "opis": "Juwel Rio 125 je moderan akvarijum za slatkovodne ribe sa integrisanim filterom i osvetljenjem. Ima sigurnosno staklo i lak je za održavanje. Dolazi sa poklopcem i pozadinskom folijom za potpunu opremljenost.",
+    "brend": "Juwel",
+    "sifra": "1056",
+    "cena": "25.000",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (l):",
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Filter:",
+        "Osvetljenje:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "125",
+        "81 x 36 x 51",
+        "Staklo",
+        "Unutrašnji filter",
+        "LED svetla",
+        "Sigurnosno staklo"
+      ]
+    }
+  },
+  {
+    "id": "1057",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za zečeve",
+    "potkategorija2": "Seno i trava",
+    "naslov": "Burgess Timothy Hay - Seno za zečeve",
+    "opis": "Burgess Timothy Hay je visokokvalitetno timotijino seno za zečeve koje pomaže u održavanju zdravlja zuba i probave. Prirodno je suvo i bogato vlaknima. Idealno je za svakodnevnu ishranu malih životinja.",
+    "brend": "Burgess",
+    "sifra": "1057",
+    "cena": "650",
+    "akcijskaCena": "585",
+    "usteda": "65",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (kg):",
+        "Vrsta životinje:",
+        "Sastav:",
+        "Vlakna (%):",
+        "Način čuvanja:",
+        "Rok trajanja:"
+      ],
+      "karakteristike": [
+        "0.5",
+        "Zečevi, hrčci",
+        "Timotijino seno",
+        "30+",
+        "Suvo i hladno mesto",
+        "24 meseca"
+      ]
+    }
+  },
+  {
+    "id": "1058",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Nega noktiju",
+    "potkategorija2": "Turpije za nokte",
+    "naslov": "Dremel Rotary Tool Kit - Elektronska turpija za nokte",
+    "opis": "Dremel Rotary Tool Kit je profesionalni set za turpijanje noktiju pasa i mačaka. Uključuje rotirajući alat sa različitim nastavcima i brzine. Omogućava precizno i bezbolno turpijanje noktiju bez stresa za životinju.",
+    "brend": "Dremel",
+    "sifra": "1058",
+    "cena": "3.900",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Brzine (RPM):",
+        "Napajanje:",
+        "Nastavci:",
+        "Težina (g):",
+        "Upotreba:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "5000-35000",
+        "Baterijsko",
+        "Turpija, brusni kamen",
+        "550",
+        "Nokti pasa i mačaka",
+        "Bezbedno turpijanje"
+      ]
+    }
+  },
+  {
+    "id": "1059",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za hrčke",
+    "potkategorija2": "Kugle i lopte",
+    "naslov": "Savic Hamster Ball - Kugla za šetnju hrčka",
+    "opis": "Savic Hamster Ball je providna kugla koja omogućava vašem hrčku da se kreće po kući bez bekstva. Ima ventilacione otvore i sigurnosni zatvarač. Pruža zabavu i vežbanje uz nadzor.",
+    "brend": "Savic",
+    "sifra": "1059",
+    "cena": "850",
+    "akcijskaCena": "765",
+    "usteda": "85",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Prečnik (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Ventilacija:",
+        "Sigurnost:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "20",
+        "Plastika",
+        "180",
+        "Ventilacioni otvori",
+        "Sigurnosni zatvarač",
+        "Šetnja po kući"
+      ]
+    }
+  },
+  {
+    "id": "1060",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Terarijumi",
+    "potkategorija2": "Terarijumi za zmije",
+    "naslov": "Exo Terra Snake Cave - Pećina za zmije",
+    "opis": "Exo Terra Snake Cave je veštačka pećina za zmije koja pruža sigurno sklonište i pomaže u regulaciji vlažnosti. Napravljena je od sigurnih materijala koji zadržavaju toplotu. Savršena za terarijume sa zmijama.",
+    "brend": "Exo Terra",
+    "sifra": "1060",
+    "cena": "2.200",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Upotreba:",
+        "Sigurnost:",
+        "Održavanje:"
+      ],
+      "karakteristike": [
+        "20 x 15 x 10",
+        "Plastika",
+        "250",
+        "Sklonište za zmije",
+        "Bez oštrih ivica",
+        "Lako čišćenje"
+      ]
+    }
+  },
+  {
+    "id": "1061",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za kornjače",
+    "potkategorija2": "Peletirana hrana",
+    "naslov": "Zoo Med Aquatic Turtle Food - Hrana za vodene kornjače",
+    "opis": "Zoo Med Aquatic Turtle Food je potpuna peletirana hrana za vodene kornjače koja tone i stimuliše prirodno hranjenje. Sadrži spirulinu za boju i vitamin C za zdravlje. Idealna za sve vrste vodnih kornjača.",
+    "brend": "Zoo Med",
+    "sifra": "1061",
+    "cena": "1.050",
+    "akcijskaCena": "945",
+    "usteda": "105",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta životinje:",
+        "Oblik hrane:",
+        "Sastav:",
+        "Proteini (%):",
+        "Dodaci:"
+      ],
+      "karakteristike": [
+        "85",
+        "Vodene kornjače",
+        "Pelete",
+        "Riba, spirulina, povrće",
+        "40",
+        "Vitamin C, minerali"
+      ]
+    }
+  },
+  {
+    "id": "1062",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Dodaci ishrani",
+    "potkategorija2": "Vitamini za mačke",
+    "naslov": "Beaphar Duo Tabs Cat - Vitamini za mačke",
+    "opis": "Beaphar Duo Tabs Cat su vitaminski i mineralni dodaci za mačke svih uzrasta. Sadrže taurin, vitamin A i kalcijum za zdravlje očiju, kostiju i imunog sistema. Pomažu u prevenciji nedostataka hranljivih materija.",
+    "brend": "Beaphar",
+    "sifra": "1062",
+    "cena": "1.350",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Broj tableta:",
+        "Vrsta životinje:",
+        "Aktivni sastojci:",
+        "Doziranje:",
+        "Način upotrebe:",
+        "Prednosti:"
+      ],
+      "karakteristike": [
+        "100",
+        "Mačke",
+        "Taurin, vitamin A, kalcijum",
+        "1 tableta dnevno",
+        "Dodati u hranu",
+        "Zdravlje očiju i kostiju"
+      ]
+    }
+  },
+  {
+    "id": "1063",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za zečeve",
+    "potkategorija2": "Žvakaće igračke",
+    "naslov": "Savic Rabbit Chew Toys - Žvakaće igračke za zečeve",
+    "opis": "Savic Rabbit Chew Toys su set žvakaćih igračaka za zečeve napravljenih od prirodnih materijala. Pomažu u održavanju zdravih zuba i pružaju zabavu. Uključuju različite teksture za različite potrebe žvakanja.",
+    "brend": "Savic",
+    "sifra": "1063",
+    "cena": "580",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Broj komada:",
+        "Materijal:",
+        "Težina (g):",
+        "Sigurnost:",
+        "Upotreba:",
+        "Prednosti:"
+      ],
+      "karakteristike": [
+        "3",
+        "Prirodno drvo, sisal",
+        "150",
+        "Bez hemikalija",
+        "Žvakanje, igra",
+        "Zdravi zubi"
+      ]
+    }
+  },
+  {
+    "id": "1064",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Posude i hranilice",
+    "potkategorija2": "Automatske hranilice",
+    "naslov": "PetSafe Slim Cat Feeder - Automatska hranilica za mačke",
+    "opis": "PetSafe Slim Cat Feeder je automatska hranilica za mačke sa velikim rezervoarom za hranu i programabilnim tajmerom. Može se programirati za više obroka dnevno. Idealna za mačke koje jedu u redovno vreme.",
+    "brend": "PetSafe",
+    "sifra": "1064",
+    "cena": "8.500",
+    "akcijskaCena": "7.650",
+    "usteda": "850",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Kapacitet hrane (l):",
+        "Broj obroka:",
+        "Dimenzije (cm):",
+        "Način napajanja:",
+        "Težina (kg):",
+        "LCD ekran:"
+      ],
+      "karakteristike": [
+        "5",
+        "4 obroka dnevno",
+        "40 x 20 x 35",
+        "Baterije + adapter",
+        "2.8",
+        "Da"
+      ]
+    }
+  },
+  {
+    "id": "1065",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za ribe",
+    "potkategorija2": "Hranа za diskus ribe",
+    "naslov": "Tetra Discus - Specijalna hrana za diskus ribe",
+    "opis": "Tetra Discus je specijalizovana hrana za diskus ribe u formi pahuljica koje polako tonu. Sadrži spirulinu za intenzivnu boju i vitamin C za zdravlje. Pomaže u održavanju optimalne kondicije diskus riba.",
+    "brend": "Tetra",
+    "sifra": "1065",
+    "cena": "1.200",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta ribe:",
+        "Oblik hrane:",
+        "Sastav:",
+        "Proteini (%):",
+        "Dodaci:"
+      ],
+      "karakteristike": [
+        "50",
+        "Diskus ribe",
+        "Pahuljice",
+        "Riblje brašno, spirulina",
+        "45",
+        "Vitamin C, karotenoidi"
+      ]
+    }
+  },
+  {
+    "id": "1066",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Balzami za usne",
+    "potkategorija2": "Balzami za nos",
+    "naslov": "Pet Head Nose Balm - Balzam za nos pasa",
+    "opis": "Pet Head Nose Balm je hidratantni balzam za nos i jastučiće šapa pasa koji sprečava pucanje i iritaciju. Sadrži prirodne sastojke kao što su pčelinji vosak i vitamin E. Posebno koristan zimi kada je vazduh suv.",
+    "brend": "Pet Head",
+    "sifra": "1066",
+    "cena": "850",
+    "akcijskaCena": "765",
+    "usteda": "85",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (g):",
+        "Vrsta životinje:",
+        "Aktivni sastojci:",
+        "Miris:",
+        "Način upotrebe:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "50",
+        "Psi",
+        "Pčelinji vosak, vitamin E",
+        "Bez mirisa",
+        "Nanositi na nos i šape",
+        "Siguran za lizanje"
+      ]
+    }
+  },
+  {
+    "id": "1067",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za miševe",
+    "potkategorija2": "Točkovi i tuneli",
+    "naslov": "Savic Mouse Wheel - Točak za miševe",
+    "opis": "Savic Mouse Wheel je tiho točak za trčanje miševa sa sigurnosnim mehanizmom zaustavljanja. Napravljen je od plastike i ima površinu koja ne klizi. Pruža miševima mogućnost za svakodnevno vežbanje u kavezu.",
+    "brend": "Savic",
+    "sifra": "1067",
+    "cena": "450",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Prečnik (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Sigurnosni mehanizam:",
+        "Nivo buke:",
+        "Montiranje:"
+      ],
+      "karakteristike": [
+        "12",
+        "Plastika",
+        "80",
+        "Da",
+        "Tiho",
+        "Na rešetke kaveza"
+      ]
+    }
+  },
+  {
+    "id": "1068",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Kavezi i kućice",
+    "potkategorija2": "Kućice za kuniće",
+    "naslov": "Savic Rabbit Hutch - Kućica za kuniće",
+    "opis": "Savic Rabbit Hutch je prostrana kućica za kuniće sa više spratova i otvorenim delom za igru. Ima sigurnosne brave i podlogu koja se može izvaditi. Pruža udoban prostor za život vašem kuniću.",
+    "brend": "Savic",
+    "sifra": "1068",
+    "cena": "18.500",
+    "akcijskaCena": "16.650",
+    "usteda": "1.850",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Broj spratova:",
+        "Materijal:",
+        "Težina (kg):",
+        "Sigurnost:",
+        "Održavanje:"
+      ],
+      "karakteristike": [
+        "120 x 60 x 100",
+        "2",
+        "Drvo, metal",
+        "25",
+        "Sigurnosne brave",
+        "Lako čišćenje"
+      ]
+    }
+  },
+  {
+    "id": "1069",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za glodare",
+    "potkategorija2": "Hrana za kuniće",
+    "naslov": "Burgess Rabbit Excel - Potpuna hrana za kuniće",
+    "opis": "Burgess Rabbit Excel je potpuna hrana za kuniće koja sadrži pelete, seno i povrće. Obogaćena je probioticima za zdravlje probave i vitaminima za jači imuni sistem. Pomaže u održavanju optimalne težine i zdravlja.",
+    "brend": "Burgess",
+    "sifra": "1069",
+    "cena": "2.100",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (kg):",
+        "Vrsta životinje:",
+        "Sastav:",
+        "Proteini (%):",
+        "Vlakna (%):",
+        "Dodaci:"
+      ],
+      "karakteristike": [
+        "2.5",
+        "Kunići",
+        "Pelete, seno, povrće",
+        "14",
+        "20",
+        "Probiotici, vitamini"
+      ]
+    }
+  },
+  {
+    "id": "1070",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Čistači i održavanje",
+    "potkategorija2": "Filteri za akvarijum",
+    "naslov": "Tetra EasyCrystal - Filter za akvarijum",
+    "opis": "Tetra EasyCrystal je efikasan unutrašnji filter za akvarijume do 60 litara. Ima višestepeni sistem filtracije sa aktivnim ugljem i biološkim filterom. Jednostavan je za montažu i održavanje.",
+    "brend": "Tetra",
+    "sifra": "1070",
+    "cena": "2.800",
+    "akcijskaCena": "2.520",
+    "usteda": "280",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Kapacitet (l/h):",
+        "Za akvarijume do (l):",
+        "Način filtracije:",
+        "Težina (g):",
+        "Napajanje:",
+        "Održavanje:"
+      ],
+      "karakteristike": [
+        "500",
+        "60",
+        "Mehanička, hemijska, biološka",
+        "450",
+        "Adapter",
+        "Mesečno čišćenje"
+      ]
+    }
+  },
+  {
+    "id": "1071",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za pse",
+    "potkategorija2": "Suva hrana",
+    "naslov": "Acana Heritage - Suva hrana za pse",
+    "opis": "Acana Heritage je hrana sa visokim udelom svežeg mesa za pse svih veličina. Sadrži 60% mesa i ribe, bez žitarica, sa povrćem i voćem. Pruža optimalnu ishranu blisku prirodnoj prehrani predaka pasa.",
+    "brend": "Acana",
+    "sifra": "1071",
+    "cena": "7.200",
+    "akcijskaCena": "6.480",
+    "usteda": "720",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (kg):",
+        "Starosna grupa:",
+        "Sastav:",
+        "Proteini (%):",
+        "Masti (%):",
+        "Dodaci po kg:"
+      ],
+      "karakteristike": [
+        "11.4",
+        "Sve starosne grupe",
+        "Pileće meso, ćuretina, riba",
+        "29",
+        "17",
+        "Vitamin A: 18000 IU, Omega-3: 0.8%"
+      ]
+    }
+  },
+  {
+    "id": "1072",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Šamponi",
+    "potkategorija2": "Šamponi za mačke",
+    "naslov": "Anju Beau - Šampon za mačke sa lavandom",
+    "opis": "Anju Beau je prirodni šampon za mačke sa mirisom lavande koji nežno čisti i hidrira krzno. Sadrži prirodne sastojke bez sulfata i parabena. Ostavlja krzno mekim i sjajnim sa prijatnim mirisom.",
+    "brend": "Anju Beau",
+    "sifra": "1072",
+    "cena": "1.200",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Vrsta životinje:",
+        "Aktivni sastojci:",
+        "pH vrednost:",
+        "Miris:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "250",
+        "Mačke",
+        "Lavanda, aloe vera",
+        "6.5",
+        "Lavanda",
+        "Bez sulfata, parabena"
+      ]
+    }
+  },
+  {
+    "id": "1073",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za pse",
+    "potkategorija2": "Interaktivne igračke",
+    "naslov": "Nina Ottosson Dog Brick - Interaktivna igračka",
+    "opis": "Nina Ottosson Dog Brick je interaktivna igračka za pse koja stimuliše mozak i nagrađuje inteligenciju. Ima više nivoa težine sa skrivenim poslastima. Pomaže u prevenciji dosade i destruktivnog ponašanja.",
+    "brend": "Nina Ottosson",
+    "sifra": "1073",
+    "cena": "3.800",
+    "akcijskaCena": "3.420",
+    "usteda": "380",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Nivoi težine:",
+        "Upotreba:",
+        "Prednosti:"
+      ],
+      "karakteristike": [
+        "25 x 20 x 5",
+        "Plastika",
+        "800",
+        "3 nivoa",
+        "Mentalna stimulacija",
+        "Prevencija dosade"
+      ]
+    }
+  },
+  {
+    "id": "1074",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Ogrlice i povoci",
+    "potkategorija2": "Fluorescentne ogrlice",
+    "naslov": "Petzl LED Collar - Fluorescentna ogrlica za pse",
+    "opis": "Petzl LED Collar je fluorescentna ogrlica sa LED svetlima za sigurnost pasa u mraku. Ima više režima svetla i dugotrajnu bateriju. Vidljiva je sa velikog rastojanja i povećava bezbednost tokom šetnji noću.",
+    "brend": "Petzl",
+    "sifra": "1074",
+    "cena": "2.900",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dužina (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Trajanje baterije (h):",
+        "Režimi svetla:",
+        "Vidljivost (m):"
+      ],
+      "karakteristike": [
+        "30-55",
+        "Nylon, LED",
+        "120",
+        "100",
+        "Stalno, blink, auto",
+        "200"
+      ]
+    }
+  },
+  {
+    "id": "1075",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za mačke",
+    "potkategorija2": "Vlažna hrana",
+    "naslov": "Gourmet Gold - Konzervirana hrana za mačke",
+    "opis": "Gourmet Gold je premium konzervirana hrana za mačke sa ukusom tunjevine u želeu. Sadrži visokokvalitetne proteine i omega-3 masne kiseline za zdravu kožu i krzno. Bez veštačkih boja i aroma.",
+    "brend": "Gourmet",
+    "sifra": "1075",
+    "cena": "250",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina konzerve (g):",
+        "Vrsta mesa:",
+        "Sastav:",
+        "Proteini (%):",
+        "Dodaci:",
+        "Bez konzervansa:"
+      ],
+      "karakteristike": [
+        "85",
+        "Tunjevina",
+        "Tuna, voda, žele",
+        "11",
+        "Omega-3, vitamini",
+        "Da"
+      ]
+    }
+  },
+  {
+    "id": "1076",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Četke i češljevi",
+    "potkategorija2": "Četke za pse",
+    "naslov": "Chris Christensen Spectrum Brush - Profesionalna četka",
+    "opis": "Chris Christensen Spectrum Brush je profesionalna četka za pse sa prirodnim svinjskim čekinjama. Dizajnirana je za uklanjanje mrtve dlake i masažu kože. Savršena za sve tipove dlake, posebno dugu i talasastu.",
+    "brend": "Chris Christensen",
+    "sifra": "1076",
+    "cena": "2.500",
+    "akcijskaCena": "2.250",
+    "usteda": "250",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dužina čekinja (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Drška:",
+        "Upotreba:",
+        "Održavanje:"
+      ],
+      "karakteristike": [
+        "3",
+        "Prirodne svinjske čekinje",
+        "180",
+        "Drvena",
+        "Češljanje, masaža",
+        "Čišćenje četkom"
+      ]
+    }
+  },
+  {
+    "id": "1077",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za mačke",
+    "potkategorija2": "Laser igračke",
+    "naslov": "Cat Dancer Wand - Šipka sa perima za mačke",
+    "opis": "Cat Dancer Wand je interaktivna igračka sa perima na fleksibilnoj šipki koja imitira kretanje plena. Stimuliše prirodne instinkte lova kod mačaka. Pruža zabavu i vežbanje bez potrebe za baterijama.",
+    "brend": "Generic",
+    "sifra": "1077",
+    "cena": "480",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotok": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dužina šipke (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Sigurnost:",
+        "Upotreba:",
+        "Prednosti:"
+      ],
+      "karakteristike": [
+        "60",
+        "Plastika, pera",
+        "50",
+        "Bez oštrih delova",
+        "Interaktivna igra",
+        "Vežbanje instinkata"
+      ]
+    }
+  },
+  {
+    "id": "1078",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Kreveti i ležajevi",
+    "potkategorija2": "Kreveti za mačke",
+    "naslov": "MidWest Feline Nuvo - Krevet za mačke",
+    "opis": "MidWest Feline Nuvo je moderan krevet za mačke sa visokim ivicama i mekanom podlogom. Ima skidajući jastuk za pranje i čvrstu konstrukciju. Pruža udoban prostor za odmor vašoj mački.",
+    "brend": "MidWest",
+    "sifra": "1078",
+    "cena": "4.200",
+    "akcijskaCena": "3.780",
+    "usteda": "420",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Težina (kg):",
+        "Boja:",
+        "Perivo:",
+        "Konstrukcija:"
+      ],
+      "karakteristike": [
+        "50 x 40 x 15",
+        "Pliš, pena",
+        "2.5",
+        "Siva",
+        "Da",
+        "Čvrsta konstrukcija"
+      ]
+    }
+  },
+  {
+    "id": "1079",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za ptice",
+    "potkategorija2": "Mešavine semena",
+    "naslov": "Rodeo Parakeet Mix - Hrana za papagajčiće",
+    "opis": "Rodeo Parakeet Mix je specijalizovana mešavina semena za papagajčiće sa više od 15 vrsta semena i žitarica. Uključuje semenke suncokreta, proso i orašaste plodove. Obogaćena vitaminima za zdravlje perja.",
+    "brend": "Rodeo",
+    "sifra": "1079",
+    "cena": "680",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (kg):",
+        "Vrsta ptice:",
+        "Sastav:",
+        "Proteini (%):",
+        "Dodaci:",
+        "Način čuvanja:"
+      ],
+      "karakteristike": [
+        "1",
+        "Papagajčići",
+        "Suncokret, proso, ovsena kaša",
+        "12",
+        "Vitamini, minerali",
+        "Suvo i hladno mesto"
+      ]
+    }
+  },
+  {
+    "id": "1080",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Losioni i sprejevi",
+    "potkategorija2": "Sprejevi protiv buva",
+    "naslov": "Advantix - Sprej protiv buva i krpelja",
+    "opis": "Advantix je efikasan sprej protiv buva, krpelja i komaraca za pse. Sadrži permetrin i imidakloprid za dugotrajnu zaštitu. Deluje do 4 nedelje i siguran je za pse starije od 7 nedelja.",
+    "brend": "Advantix",
+    "sifra": "1080",
+    "cena": "3.500",
+    "akcijskaCena": "3.150",
+    "usteda": "350",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Aktivni sastojci:",
+        "Vrsta životinje:",
+        "Trajanje zaštite:",
+        "Način upotrebe:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "250",
+        "Imidakloprid, permetrin",
+        "Psi",
+        "4 nedelje",
+        "Prskati na krzno",
+        "Za pse preko 7 nedelja"
+      ]
+    }
+  },
+  {
+    "id": "1081",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za hrčke",
+    "potkategorija2": "Tuneli i kućice",
+    "naslov": "Savic Hamster Igloo - Kućica za hrčke",
+    "opis": "Savic Hamster Igloo je prostrana kućica u obliku igloa za hrčke koja pruža privatnost i sigurnost. Napravljena je od kvalitetne plastike sa ventilacionim otvorima. Savršeno se uklapa u kavez i pomaže u smanjenju stresa.",
+    "brend": "Savic",
+    "sifra": "1081",
+    "cena": "720",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Ventilacija:",
+        "Upotreba:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "15 x 15 x 12",
+        "Plastika",
+        "200",
+        "Ventilacioni otvori",
+        "Sklonište, odmor",
+        "Bez oštrih ivica"
+      ]
+    }
+  },
+  {
+    "id": "1082",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Posude i hranilice",
+    "potkategorija2": "Hranilice za ptice",
+    "naslov": "Gardman Window Bird Feeder - Prozorska hranilica",
+    "opis": "Gardman Window Bird Feeder je hranilica koja se montira na prozor i omogućava posmatranje ptica izbliza. Ima prozirne panele i dva hranilica. Pruža ptice hranom tokom cele godine i pomaže u njihovom očuvanju.",
+    "brend": "Gardman",
+    "sifra": "1082",
+    "cena": "1.800",
+    "akcijskaCena": "1.620",
+    "usteda": "180",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Kapacitet (ml):",
+        "Montiranje:",
+        "Težina (g):",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "25 x 20 x 8",
+        "Plastika, staklo",
+        "400",
+        "Na prozor (sisaljke)",
+        "500",
+        "Hranjenje ptica"
+      ]
+    }
+  },
+  {
+    "id": "1083",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za ribe",
+    "potkategorija2": "Hranа za ciklide",
+    "naslov": "Sera Cichlid Gran - Granularna hrana za ciklide",
+    "opis": "Sera Cichlid Gran je specijalizovana granularna hrana za afričke ciklide koja stimuliše prirodno hranjenje. Sadrži visok udeo proteina i spirulinu za intenzivnu boju. Pomaže u održavanju zdravlja i vitalnosti ciklida.",
+    "brend": "Sera",
+    "sifra": "1083",
+    "cena": "950",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta ribe:",
+        "Oblik hrane:",
+        "Proteini (%):",
+        "Masti (%):",
+        "Dodaci:"
+      ],
+      "karakteristike": [
+        "100",
+        "Afričke ciklide",
+        "Granule",
+        "47",
+        "8",
+        "Spirulina, karotenoidi"
+      ]
+    }
+  },
+  {
+    "id": "1084",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Dodaci ishrani",
+    "potkategorija2": "Omega-3 za pse",
+    "naslov": "Vitakraft Omega 3 - Ulje lososa za pse",
+    "opis": "Vitakraft Omega 3 je ulje lososa bogato omega-3 masnim kiselinama za pse. Pomaže u održavanju zdrave kože i krzna, smanjuje upale zglobova i jača imuni sistem. Lako se dodaje u hranu.",
+    "brend": "Vitakraft",
+    "sifra": "1084",
+    "cena": "1.450",
+    "akcijskaCena": "1.305",
+    "usteda": "145",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Aktivni sastojci:",
+        "Doziranje:",
+        "Način upotrebe:",
+        "Prednosti:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "250",
+        "Omega-3, vitamin E",
+        "1 ml po 5 kg težine",
+        "Dodati u hranu",
+        "Koža, zglobovi, imunitet",
+        "Bez konzervansa"
+      ]
+    }
+  },
+  {
+    "id": "1085",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za zečeve",
+    "potkategorija2": "Lopte i igračke",
+    "naslov": "Savic Rabbit Ball - Lopta sa zvoncem za zečeve",
+    "opis": "Savic Rabbit Ball je lopta sa zvoncem unutra koja privlači pažnju zečeva i stimuliše igru. Napravljena je od sigurne plastike koja ne može da se žvaće. Pomaže u prevenciji dosade i pruža fizičku aktivnost.",
+    "brend": "Savic",
+    "sifra": "1085",
+    "cena": "350",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Prečnik (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Zvuk:",
+        "Sigurnost:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "8",
+        "Plastika",
+        "60",
+        "Zvončić",
+        "Bez oštrih delova",
+        "Igra, aktivnost"
+      ]
+    }
+  },
+  {
+    "id": "1086",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Akvarijumi",
+    "potkategorija2": "Dekoracije za akvarijum",
+    "naslov": "Tetra Deco Plus - Dekorativni elementi za akvarijum",
+    "opis": "Tetra Deco Plus je set dekorativnih elemenata za akvarijum koji uključuje veštačke biljke, pećine i korale. Napravljeni su od sigurnih materijala koji ne utiču na kvalitet vode. Pružaju prirodno okruženje za ribe.",
+    "brend": "Tetra",
+    "sifra": "1086",
+    "cena": "2.200",
+    "akcijskaCena": "1.980",
+    "usteda": "220",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Broj komada:",
+        "Materijal:",
+        "Visina (cm):",
+        "Težina (g):",
+        "Sigurnost:",
+        "Upotreba:"
+      ],
+      "karakteristike": [
+        "5",
+        "Plastika, kamen",
+        "15-25",
+        "800",
+        "Siguran za ribe",
+        "Dekoracija akvarijuma"
+      ]
+    }
+  },
+  {
+    "id": "1087",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za glodare",
+    "potkategorija2": "Hrana za miševe",
+    "naslov": "Beaphar Mouse Food - Potpuna hrana za miševe",
+    "opis": "Beaphar Mouse Food je potpuna hrana za miševe koja sadrži više od 20 sastojaka uključujući žitarice, semenke i povrće. Obogaćena je vitaminima i mineralima za zdravlje i vitalnost. Idealna za sve vrste miševa.",
+    "brend": "Beaphar",
+    "sifra": "1087",
+    "cena": "520",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta životinje:",
+        "Sastav:",
+        "Proteini (%):",
+        "Dodaci:",
+        "Rok trajanja:"
+      ],
+      "karakteristike": [
+        "400",
+        "Miševi",
+        "Žitarice, semenke, povrće",
+        "15",
+        "Vitamini, minerali",
+        "12 meseci"
+      ]
+    }
+  },
+  {
+    "id": "1088",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Nega noktiju",
+    "potkategorija2": "Pilice za nokte",
+    "naslov": "Mikki Nail Clipper - Pila za nokte pasa i mačaka",
+    "opis": "Mikki Nail Clipper je ergonomska pila za nokte pasa i mačaka sa sigurnosnim zaustavljačem. Ima fino zrno za precizno turpijanje bez oštećivanja nokta. Laka je za upotrebu i bezbedna za kućne ljubimce.",
+    "brend": "Mikki",
+    "sifra": "1088",
+    "cena": "890",
+    "akcijskaCena": "801",
+    "usteda": "89",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dužina (cm):",
+        "Materijal:",
+        "Zrno:",
+        "Sigurnosni zaustavljač:",
+        "Upotreba:",
+        "Održavanje:"
+      ],
+      "karakteristike": [
+        "12",
+        "Nehrđajući čelik",
+        "Fino",
+        "Da",
+        "Turpijanje noktiju",
+        "Čišćenje nakon upotrebe"
+      ]
+    }
+  },
+  {
+    "id": "1089",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za ribe",
+    "potkategorija2": "Igračke za akvarijum",
+    "naslov": "Marina Betta Log - Igračka za betta ribe",
+    "opis": "Marina Betta Log je veštačka pećina sa biljkama koja služi kao sklonište i igračka za betta ribe. Napravljena je od sigurne plastike koja ne utiče na vodu. Pomaže u smanjenju stresa i pruža prirodno okruženje.",
+    "brend": "Marina",
+    "sifra": "1089",
+    "cena": "580",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Sigurnost:",
+        "Upotreba:",
+        "Prednosti:"
+      ],
+      "karakteristike": [
+        "15 x 8 x 8",
+        "Plastika",
+        "80",
+        "Siguran za ribe",
+        "Sklonište, igra",
+        "Smanjenje stresa"
+      ]
+    }
+  },
+  {
+    "id": "1090",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Terarijumi",
+    "potkategorija2": "Terarijumi za guštere",
+    "naslov": "Exo Terra Natural Terrarium - Terarijum za guštere",
+    "opis": "Exo Terra Natural Terrarium je potpuno opremljen terarijum za guštere sa staklenim zidovima i ventilacijom. Uključuje podlogu, osvetljenje i grejanje. Pruža idealne uslove za različite vrste guštera.",
+    "brend": "Exo Terra",
+    "sifra": "1090",
+    "cena": "18.500",
+    "akcijskaCena": "16.650",
+    "usteda": "1.850",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (l):",
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Ventilacija:",
+        "Osvetljenje:",
+        "Grejanje:"
+      ],
+      "karakteristike": [
+        "60",
+        "60 x 45 x 45",
+        "Staklo, plastika",
+        "Ventilacioni otvori",
+        "UV svetla",
+        "Grejac uključen"
+      ]
+    }
+  },
+  {
+    "id": "1091",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za kornjače",
+    "potkategorija2": "Suva hrana",
+    "naslov": "Zoo Med Repti Sticks - Hrana za kopnene kornjače",
+    "opis": "Zoo Med Repti Sticks je potpuna štapićasta hrana za kopnene kornjače sa visokim udelom proteina. Sadrži spirulinu i kalcijum za zdravlje ljuske. Pomaže u održavanju optimalne kondicije kornjača.",
+    "brend": "Zoo Med",
+    "sifra": "1091",
+    "cena": "1.200",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta životinje:",
+        "Oblik hrane:",
+        "Proteini (%):",
+        "Kalcijum (%):",
+        "Dodaci:"
+      ],
+      "karakteristike": [
+        "85",
+        "Kopnene kornjače",
+        "Štapići",
+        "35",
+        "10",
+        "Spirulina, vitamini"
+      ]
+    }
+  },
+  {
+    "id": "1092",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Balzami za usne",
+    "potkategorija2": "Balzami za jastučiće",
+    "naslov": "Pet Head Paw & Nose Balm - Balzam za šape i nos",
+    "opis": "Pet Head Paw & Nose Balm je hidratantni balzam za šape i nos pasa koji štiti od soli, leda i suvog vazduha. Sadrži prirodne sastojke i vitamin E. Brzo se upija i ostavlja zaštitni sloj bez masnoće.",
+    "brend": "Pet Head",
+    "sifra": "1092",
+    "cena": "1.050",
+    "akcijskaCena": "945",
+    "usteda": "105",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (g):",
+        "Aktivni sastojci:",
+        "Miris:",
+        "Način upotrebe:",
+        "Sigurnost:",
+        "Rezultati:"
+      ],
+      "karakteristike": [
+        "60",
+        "Pčelinji vosak, vitamin E",
+        "Bez mirisa",
+        "Nanositi na šape i nos",
+        "Siguran za lizanje",
+        "Zaštita i hidratacija"
+      ]
+    }
+  },
+  {
+    "id": "1093",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za kuniće",
+    "potkategorija2": "Žvakaće igračke",
+    "naslov": "Savic Bunny Chew Toys - Žvakaće igračke za kuniće",
+    "opis": "Savic Bunny Chew Toys su set žvakaćih igračaka za kuniće napravljenih od prirodnih materijala. Pomažu u održavanju zdravih zuba i pružaju zabavu. Uključuju različite teksture za različite potrebe žvakanja.",
+    "brend": "Savic",
+    "sifra": "1093",
+    "cena": "650",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotok": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Broj komada:",
+        "Materijal:",
+        "Težina (g):",
+        "Sigurnost:",
+        "Upotreba:",
+        "Prednosti:"
+      ],
+      "karakteristike": [
+        "4",
+        "Prirodno drvo, sisal",
+        "180",
+        "Bez hemikalija",
+        "Žvakanje, igra",
+        "Zdravi zubi"
+      ]
+    }
+  },
+  {
+    "id": "1094",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Kavezi i kućice",
+    "potkategorija2": "Kavezi za ptice",
+    "naslov": "Prevue Pet Products Flight Cage - Veliki kavez za ptice",
+    "opis": "Prevue Pet Products Flight Cage je prostran kavez za ptice sa više spratova i mnogo prostora za let. Ima više hranilica, pojilica i igračaka. Napravljen je od kvalitetne plastike i metala za dugotrajnu upotrebu.",
+    "brend": "Prevue Pet Products",
+    "sifra": "1094",
+    "cena": "12.500",
+    "akcijskaCena": "11.250",
+    "usteda": "1.250",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dimenzije (cm):",
+        "Materijal:",
+        "Težina (kg):",
+        "Broj spratova:",
+        "Dodatna oprema:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "90 x 45 x 120",
+        "Plastika, metal",
+        "8.5",
+        "3",
+        "Hranilica, pojilica, igračke",
+        "Sigurnosne brave"
+      ]
+    }
+  },
+  {
+    "id": "1095",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za glodare",
+    "potkategorija": "Hrana za hrčke",
+    "naslov": "Harry Hamster - Premium hrana za hrčke",
+    "opis": "Harry Hamster je premium hrana za hrčke sa više od 30 sastojaka uključujući semenke, žitarice i suvo voće. Obogaćena je probioticima i vitaminima za zdravlje probave. Pomaže u održavanju vitalnosti i sjajnog krzna.",
+    "brend": "Harry",
+    "sifra": "1095",
+    "cena": "850",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta životinje:",
+        "Sastav:",
+        "Proteini (%):",
+        "Dodaci:",
+        "Rok trajanja:"
+      ],
+      "karakteristike": [
+        "500",
+        "Hrčci",
+        "Semenke, žitarice, suvo voće",
+        "16",
+        "Probiotici, vitamini",
+        "12 meseci"
+      ]
+    }
+  },
+  {
+    "id": "1096",
+    "kategorija": "Kozmetika za životinje",
+    "potkategorija": "Šamponi",
+    "potkategorija2": "Šamponi za pse",
+    "naslov": "TropiClean Hypo-Allergenic - Šampon za alergične pse",
+    "opis": "TropiClean Hypo-Allergenic je blagi šampon za pse sa alergijama i osetljivom kožom. Sadrži prirodne sastojke bez mirisa, boja i parabena. Nežno čisti i hidrira bez iritacije kože.",
+    "brend": "TropiClean",
+    "sifra": "1096",
+    "cena": "1.350",
+    "akcijskaCena": "1.215",
+    "usteda": "135",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Vrsta životinje:",
+        "Sastav:",
+        "pH vrednost:",
+        "Miris:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "355",
+        "Psi",
+        "Prirodni ekstrakti, aloe vera",
+        "6.0-7.0",
+        "Bez mirisa",
+        "Za alergičnu kožu"
+      ]
+    }
+  },
+  {
+    "id": "1097",
+    "kategorija": "Igračke za životinje",
+    "potkategorija": "Igračke za pse",
+    "potkategorija2": "Tug igračke",
+    "naslov": "Tuffy Tug - Čupava vučna igračka za pse",
+    "opis": "Tuffy Tug je izuzetno čvrsta vučna igračka za pse sa više ručki za hvatanje. Dizajnirana je za intenzivne igre povlačenja i bacanja. Otporna je na žvakanje i pruža sate zabave jakim psima.",
+    "brend": "Tuffy",
+    "sifra": "1097",
+    "cena": "1.950",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Dužina (cm):",
+        "Materijal:",
+        "Težina (g):",
+        "Otpornost:",
+        "Upotreba:",
+        "Sigurnost:"
+      ],
+      "karakteristike": [
+        "35",
+        "Ultra-tvrda guma",
+        "250",
+        "Ekstremna",
+        "Vučna igra, bacanje",
+        "Bez oštrih delova"
+      ]
+    }
+  },
+  {
+    "id": "1098",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Posude i hranilice",
+    "potkategorija2": "Pojilice",
+    "naslov": "Drinkwell Platinum - Fontanska pojilica za mačke",
+    "opis": "Drinkwell Platinum je električna fontanska pojilica za mačke koja pruža svežu, tekuću vodu 24/7. Ima filter za uklanjanje nečistoća i tiho pumpa vodu. Podstiče mačke da piju više vode i pomaže u prevenciji urinarnih problema.",
+    "brend": "Drinkwell",
+    "sifra": "1098",
+    "cena": "8.900",
+    "akcijskaCena": "8.010",
+    "usteda": "890",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Kapacitet (l):",
+        "Dimenzije (cm):",
+        "Način napajanja:",
+        "Filter:",
+        "Težina (kg):",
+        "Buka:"
+      ],
+      "karakteristike": [
+        "2.8",
+        "30 x 30 x 15",
+        "Adapter 220V",
+        "Ugrađeni filter",
+        "2.2",
+        "Tiha"
+      ]
+    }
+  },
+  {
+    "id": "1099",
+    "kategorija": "Hrana za životinje",
+    "potkategorija": "Hrana za ribe",
+    "potkategorija2": "Hranа za zlatne ribice",
+    "naslov": "Hikari Fancy Gold - Premium hrana za zlatne ribice",
+    "opis": "Hikari Fancy Gold je premium hrana za zlatne ribice koja stimuliše prirodno hranjenje i pomaže u održavanju zdravlja. Sadrži spirulinu za boju i vitamin C za imunitet. Pomaže u prevenciji probavnih problema.",
+    "brend": "Hikari",
+    "sifra": "1099",
+    "cena": "1.350",
+    "akcijskaCena": "/",
+    "usteda": "/",
+    "postotak": "/",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Težina pakovanja (g):",
+        "Vrsta ribe:",
+        "Oblik hrane:",
+        "Proteini (%):",
+        "Masti (%):",
+        "Dodaci:"
+      ],
+      "karakteristike": [
+        "50",
+        "Zlatne ribice",
+        "Pelete",
+        "32",
+        "6",
+        "Spirulina, vitamin C"
+      ]
+    }
+  },
+  {
+    "id": "1100",
+    "kategorija": "Oprema za kućne ljubimce",
+    "potkategorija": "Čistači i održavanje",
+    "potkategorija2": "Sredstva za čišćenje",
+    "naslov": "Simple Solution Stain & Odor Remover - Sredstvo za uklanjanje mrlja",
+    "opis": "Simple Solution Stain & Odor Remover je enzimsko sredstvo za uklanjanje mrlja i mirisa od mokraće, povraćanja i drugih nečistoća. Sadrži prirodne enzime koji razgrađuju organske materije. Siguran je za upotrebu u kući sa kućnim ljubimcima.",
+    "brend": "Simple Solution",
+    "sifra": "1100",
+    "cena": "1.800",
+    "akcijskaCena": "1.620",
+    "usteda": "180",
+    "postotak": "10%",
+    "tehnickiPodatci": {
+      "podaciDesc": [
+        "Zapremina (ml):",
+        "Aktivni sastojci:",
+        "Vrsta površine:",
+        "Način upotrebe:",
+        "Sigurnost:",
+        "Rezultati:"
+      ],
+      "karakteristike": [
+        "946",
+        "Prirodni enzimi",
+        "Sve površine",
+        "Nanositi i ostaviti da deluje",
+        "Siguran za ljubimce",
+        "Uklanja mrlje i mirise"
+      ]
+    }
+  }
+]

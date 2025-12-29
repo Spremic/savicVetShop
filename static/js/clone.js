@@ -19,44 +19,415 @@ document.addEventListener("DOMContentLoaded", function () {
               <li class="dropdown">
                 <a href="/products">Products</a>
                 <div class="mega-dropdown">
-                  <div class="mega-dropdown-content">
-                    <div class="mega-column">
-                      <h4><span class="material-symbols-outlined">restaurant</span> Food</h4>
-                      <a href="/products?cat=dogs">Dog food</a>
-                      <a href="/products?cat=cats">Cat food</a>
-                      <a href="/products?cat=birds">Bird food</a>
-                      <a href="/products?cat=rodents">Rodent food</a>
+                  <div class="mega-dropdown-wrapper">
+                    <!-- Left Sidebar: Categories List -->
+                    <div class="categories-sidebar">
+                      <button class="category-btn active" data-category="hrana">
+                        <span class="material-symbols-outlined">restaurant</span>
+                        <span>Hrana za životinje</span>
+                      </button>
+                      <button class="category-btn" data-category="igracke">
+                        <span class="material-symbols-outlined">toys</span>
+                        <span>Igračke za životinje</span>
+                      </button>
+                      <button class="category-btn" data-category="oprema">
+                        <span class="material-symbols-outlined">pets</span>
+                        <span>Oprema za životinje</span>
+                      </button>
+                      <button class="category-btn" data-category="higijena">
+                        <span class="material-symbols-outlined">soap</span>
+                        <span>Higijena & Zdravlje</span>
+                      </button>
+                      <button class="category-btn" data-category="posude">
+                        <span class="material-symbols-outlined">bowl</span>
+                        <span>Posude i čaše</span>
+                      </button>
+                      <button class="category-btn" data-category="transport">
+                        <span class="material-symbols-outlined">luggage</span>
+                        <span>Transport i putovanje</span>
+                      </button>
+                      <button class="category-btn" data-category="odjeca">
+                        <span class="material-symbols-outlined">checkroom</span>
+                        <span>Odjeća i modni dodaci</span>
+                      </button>
+                      <button class="category-btn" data-category="kreveti">
+                        <span class="material-symbols-outlined">bed</span>
+                        <span>Kreveti i ležajevi</span>
+                      </button>
+                      <button class="category-btn" data-category="ogrebala">
+                        <span class="material-symbols-outlined">stairs</span>
+                        <span>Ogrebala i kule</span>
+                      </button>
+                      <button class="category-btn" data-category="male">
+                        <span class="material-symbols-outlined">cruelty_free</span>
+                        <span>Male životinje</span>
+                      </button>
+                      <button class="category-btn" data-category="akvarijumi">
+                        <span class="material-symbols-outlined">water_drop</span>
+                        <span>Akvarijumi i ribice</span>
+                      </button>
+                      <button class="category-btn" data-category="ptice">
+                        <span class="material-symbols-outlined">nest</span>
+                        <span>Ptičje kavezi</span>
+                      </button>
+                      <button class="category-btn" data-category="obuka">
+                        <span class="material-symbols-outlined">school</span>
+                        <span>Obuka i trening</span>
+                      </button>
+                      <button class="category-btn" data-category="knjige">
+                        <span class="material-symbols-outlined">menu_book</span>
+                        <span>Knjige i edukacija</span>
+                      </button>
                     </div>
-                    <div class="mega-column">
-                      <h4><span class="material-symbols-outlined">pets</span> Gear</h4>
-                      <a href="/products?cat=leashes">Leashes & collars</a>
-                      <a href="/products?cat=carriers">Carriers</a>
-                      <a href="/products?cat=cages">Cages</a>
-                      <a href="/products?cat=dishes">Bowls & waterers</a>
-                    </div>
-                    <div class="mega-column">
-                      <h4><span class="material-symbols-outlined">soap</span> Hygiene</h4>
-                      <a href="/products?cat=shampoo">Shampoos</a>
-                      <a href="/products?cat=brushes">Brushes</a>
-                      <a href="/products?cat=litter">Cat litter</a>
-                      <a href="/products?cat=other">Other</a>
-                    </div>
-                    <div class="mega-column">
-                      <h4><span class="material-symbols-outlined">toys</span> Toys</h4>
-                      <a href="/products?cat=dog-toys">Dog toys</a>
-                      <a href="/products?cat=cat-toys">Cat toys</a>
-                      <a href="/products?cat=interactive">Interactive toys</a>
-                      <a href="/products?cat=balls">Balls & frisbees</a>
-                    </div>
-                    <div class="mega-column featured-column">
-                        <div class="featured-image-container">
-                          <img src="/img/dropdownImg.png" alt="Dropdown image" loading="lazy" />
-                          <div class="featured-overlay">
-                            <h5>New Collection</h5>
-                            <p>Premium quality for your pets</p>
-                            <a href="/products?new=true" class="featured-btn">Shop Now <span class="material-symbols-outlined">arrow_forward</span></a>
+
+                    <!-- Right Content Area: Subcategories -->
+                    <div class="categories-content">
+                      <!-- Category 1: Hrana za životinje -->
+                      <div class="category-panel active" data-category="hrana">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">restaurant</span>
+                            Hrana za životinje
+                          </h3>
+                          <a href="/products?cat=Hrana za životinje" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Hrana za pse</h4>
+                            <a href="/products?cat=Hrana za životinje&subcat=Hrana za pse&subcat2=Suva hrana">Suva hrana</a>
+                            <a href="/products?cat=Hrana za životinje&subcat=Hrana za pse&subcat2=Vlažna hrana">Vlažna hrana</a>
+                            <a href="/products?cat=Hrana za životinje&subcat=Hrana za pse&subcat2=Poslastice">Poslastice</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Hrana za mačke</h4>
+                            <a href="/products?cat=Hrana za životinje&subcat=Hrana za mačke&subcat2=Suva hrana">Suva hrana</a>
+                            <a href="/products?cat=Hrana za životinje&subcat=Hrana za mačke&subcat2=Vlažna hrana">Vlažna hrana</a>
+                            <a href="/products?cat=Hrana za životinje&subcat=Hrana za mačke&subcat2=Poslastice">Poslastice</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Hrana za ptice</h4>
+                            <a href="/products?cat=Hrana za životinje&subcat=Hrana za ptice&subcat2=Seme">Seme</a>
+                            <a href="/products?cat=Hrana za životinje&subcat=Hrana za ptice&subcat2=Peleti">Peleti</a>
                           </div>
                         </div>
+                      </div>
+
+                      <!-- Category 2: Igračke za životinje -->
+                      <div class="category-panel" data-category="igracke">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">toys</span>
+                            Igračke za životinje
+                          </h3>
+                          <a href="/products?cat=Igračke za životinje" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Igračke za pse</h4>
+                            <a href="/products?cat=Igračke za životinje&subcat=Igračke za pse&subcat2=Žvakaće igračke">Žvakaće igračke</a>
+                            <a href="/products?cat=Igračke za životinje&subcat=Igračke za pse&subcat2=Lopte">Lopte</a>
+                            <a href="/products?cat=Igračke za životinje&subcat=Igračke za pse&subcat2=Plišane igračke">Plišane igračke</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Igračke za mačke</h4>
+                            <a href="/products?cat=Igračke za životinje&subcat=Igračke za mačke&subcat2=Miševi">Miševi</a>
+                            <a href="/products?cat=Igračke za životinje&subcat=Igračke za mačke&subcat2=Perje">Perje</a>
+                            <a href="/products?cat=Igračke za životinje&subcat=Igračke za mačke&subcat2=Laser">Laser</a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Category 3: Oprema za životinje -->
+                      <div class="category-panel" data-category="oprema">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">pets</span>
+                            Oprema za životinje
+                          </h3>
+                          <a href="/products?cat=Oprema za životinje" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Oprema za pse</h4>
+                            <a href="/products?cat=Oprema za životinje&subcat=Oprema za pse&subcat2=Okovratnici">Okovratnici</a>
+                            <a href="/products?cat=Oprema za životinje&subcat=Oprema za pse&subcat2=Povodci">Povodci</a>
+                            <a href="/products?cat=Oprema za životinje&subcat=Oprema za pse&subcat2=Koševi">Koševi</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Oprema za mačke</h4>
+                            <a href="/products?cat=Oprema za životinje&subcat=Oprema za mačke&subcat2=Ogrebala">Ogrebala</a>
+                            <a href="/products?cat=Oprema za životinje&subcat=Oprema za mačke&subcat2=Krevetići">Krevetići</a>
+                            <a href="/products?cat=Oprema za životinje&subcat=Oprema za mačke&subcat2=Toaleti">Toaleti</a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Category 4: Higijena & Zdravlje -->
+                      <div class="category-panel" data-category="higijena">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">soap</span>
+                            Higijena & Zdravlje
+                          </h3>
+                          <a href="/products?cat=Higijena&subcat=Zdravlje" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Higijena</h4>
+                            <a href="/products?cat=Higijena&subcat=Šamponi">Šamponi</a>
+                            <a href="/products?cat=Higijena&subcat=Četke">Četke</a>
+                            <a href="/products?cat=Higijena&subcat=Toalet potrepštine">Toalet potrepštine</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Zdravlje</h4>
+                            <a href="/products?cat=Zdravlje&subcat=Vitamini">Vitamini</a>
+                            <a href="/products?cat=Zdravlje&subcat=Antiparazitici">Antiparazitici</a>
+                            <a href="/products?cat=Zdravlje&subcat=Dodaci ishrani">Dodaci ishrani</a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Category 5: Posude i čaše -->
+                      <div class="category-panel" data-category="posude">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">bowl</span>
+                            Posude i čaše
+                          </h3>
+                          <a href="/products?cat=Posude i čaše" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Hranilice</h4>
+                            <a href="/products?cat=Posude i čaše&subcat=Hranilice&subcat2=Keramičke">Keramičke</a>
+                            <a href="/products?cat=Posude i čaše&subcat=Hranilice&subcat2=Staklene">Staklene</a>
+                            <a href="/products?cat=Posude i čaše&subcat=Hranilice&subcat2=Plastične">Plastične</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Posude za vodu</h4>
+                            <a href="/products?cat=Posude i čaše&subcat=Posude za vodu&subcat2=Fontane">Fontane</a>
+                            <a href="/products?cat=Posude i čaše&subcat=Posude za vodu&subcat2=Čaše">Čaše</a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Category 6: Transport i putovanje -->
+                      <div class="category-panel" data-category="transport">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">luggage</span>
+                            Transport i putovanje
+                          </h3>
+                          <a href="/products?cat=Transport i putovanje" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Nosiljke</h4>
+                            <a href="/products?cat=Transport i putovanje&subcat=Nosiljke&subcat2=Za pse">Za pse</a>
+                            <a href="/products?cat=Transport i putovanje&subcat=Nosiljke&subcat2=Za mačke">Za mačke</a>
+                            <a href="/products?cat=Transport i putovanje&subcat=Nosiljke&subcat2=Univerzalne">Univerzalne</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Auto oprema</h4>
+                            <a href="/products?cat=Transport i putovanje&subcat=Auto oprema&subcat2=Sedišta">Sedišta</a>
+                            <a href="/products?cat=Transport i putovanje&subcat=Auto oprema&subcat2=Sigurnosni pojasevi">Sigurnosni pojasevi</a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Category 7: Odjeća i modni dodaci -->
+                      <div class="category-panel" data-category="odjeca">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">checkroom</span>
+                            Odjeća i modni dodaci
+                          </h3>
+                          <a href="/products?cat=Odjeća i modni dodaci" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Odjeća</h4>
+                            <a href="/products?cat=Odjeća i modni dodaci&subcat=Odjeća&subcat2=Kaputići">Kaputići</a>
+                            <a href="/products?cat=Odjeća i modni dodaci&subcat=Odjeća&subcat2=Haljine">Haljine</a>
+                            <a href="/products?cat=Odjeća i modni dodaci&subcat=Odjeća&subcat2=Majice">Majice</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Dodaci</h4>
+                            <a href="/products?cat=Odjeća i modni dodaci&subcat=Dodaci&subcat2=Ogrtaci">Ogrtaci</a>
+                            <a href="/products?cat=Odjeća i modni dodaci&subcat=Dodaci&subcat2=Kape">Kape</a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Category 8: Kreveti i ležajevi -->
+                      <div class="category-panel" data-category="kreveti">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">bed</span>
+                            Kreveti i ležajevi
+                          </h3>
+                          <a href="/products?cat=Kreveti i ležajevi" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Kreveti za pse</h4>
+                            <a href="/products?cat=Kreveti i ležajevi&subcat=Kreveti za pse&subcat2=Ortopedski">Ortopedski</a>
+                            <a href="/products?cat=Kreveti i ležajevi&subcat=Kreveti za pse&subcat2=Plišani">Plišani</a>
+                            <a href="/products?cat=Kreveti i ležajevi&subcat=Kreveti za pse&subcat2=Podignuti">Podignuti</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Kreveti za mačke</h4>
+                            <a href="/products?cat=Kreveti i ležajevi&subcat=Kreveti za mačke&subcat2=Zatvoreni">Zatvoreni</a>
+                            <a href="/products?cat=Kreveti i ležajevi&subcat=Kreveti za mačke&subcat2=Otvoreni">Otvoreni</a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Category 9: Ogrebala i kule -->
+                      <div class="category-panel" data-category="ogrebala">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">stairs</span>
+                            Ogrebala i kule
+                          </h3>
+                          <a href="/products?cat=Ogrebala i kule" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Ogrebala</h4>
+                            <a href="/products?cat=Ogrebala i kule&subcat=Ogrebala&subcat2=Vertikalna">Vertikalna</a>
+                            <a href="/products?cat=Ogrebala i kule&subcat=Ogrebala&subcat2=Horizontalna">Horizontalna</a>
+                            <a href="/products?cat=Ogrebala i kule&subcat=Ogrebala&subcat2=Kombinovana">Kombinovana</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Kule i kompleti</h4>
+                            <a href="/products?cat=Ogrebala i kule&subcat=Kule i kompleti&subcat2=Visoke kule">Visoke kule</a>
+                            <a href="/products?cat=Ogrebala i kule&subcat=Kule i kompleti&subcat2=Kompleti">Kompleti</a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Category 10: Male životinje -->
+                      <div class="category-panel" data-category="male">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">cruelty_free</span>
+                            Male životinje
+                          </h3>
+                          <a href="/products?cat=Male životinje" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Hrana</h4>
+                            <a href="/products?cat=Male životinje&subcat=Hrana&subcat2=Za zeke">Za zeke</a>
+                            <a href="/products?cat=Male životinje&subcat=Hrana&subcat2=Za hrčke">Za hrčke</a>
+                            <a href="/products?cat=Male životinje&subcat=Hrana&subcat2=Za zamorce">Za zamorce</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Oprema</h4>
+                            <a href="/products?cat=Male životinje&subcat=Oprema&subcat2=Kavezi">Kavezi</a>
+                            <a href="/products?cat=Male životinje&subcat=Oprema&subcat2=Igračke">Igračke</a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Category 11: Akvarijumi i ribice -->
+                      <div class="category-panel" data-category="akvarijumi">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">water_drop</span>
+                            Akvarijumi i ribice
+                          </h3>
+                          <a href="/products?cat=Akvarijumi i ribice" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Akvarijumi</h4>
+                            <a href="/products?cat=Akvarijumi i ribice&subcat=Akvarijumi&subcat2=Mali">Mali</a>
+                            <a href="/products?cat=Akvarijumi i ribice&subcat=Akvarijumi&subcat2=Srednji">Srednji</a>
+                            <a href="/products?cat=Akvarijumi i ribice&subcat=Akvarijumi&subcat2=Veliki">Veliki</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Oprema</h4>
+                            <a href="/products?cat=Akvarijumi i ribice&subcat=Oprema&subcat2=Filteri">Filteri</a>
+                            <a href="/products?cat=Akvarijumi i ribice&subcat=Oprema&subcat2=Grejanje">Grejanje</a>
+                            <a href="/products?cat=Akvarijumi i ribice&subcat=Oprema&subcat2=Hrana">Hrana</a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Category 12: Ptičje kavezi -->
+                      <div class="category-panel" data-category="ptice">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">nest</span>
+                            Ptičje kavezi
+                          </h3>
+                          <a href="/products?cat=Ptičje kavezi" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Kavezi</h4>
+                            <a href="/products?cat=Ptičje kavezi&subcat=Kavezi&subcat2=Mali">Mali</a>
+                            <a href="/products?cat=Ptičje kavezi&subcat=Kavezi&subcat2=Srednji">Srednji</a>
+                            <a href="/products?cat=Ptičje kavezi&subcat=Kavezi&subcat2=Veliki">Veliki</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Oprema</h4>
+                            <a href="/products?cat=Ptičje kavezi&subcat=Oprema&subcat2=Stolice">Stolice</a>
+                            <a href="/products?cat=Ptičje kavezi&subcat=Oprema&subcat2=Ogledala">Ogledala</a>
+                            <a href="/products?cat=Ptičje kavezi&subcat=Oprema&subcat2=Igračke">Igračke</a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Category 13: Obuka i trening -->
+                      <div class="category-panel" data-category="obuka">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">school</span>
+                            Obuka i trening
+                          </h3>
+                          <a href="/products?cat=Obuka i trening" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Trening oprema</h4>
+                            <a href="/products?cat=Obuka i trening&subcat=Trening oprema&subcat2=Klikeri">Klikeri</a>
+                            <a href="/products?cat=Obuka i trening&subcat=Trening oprema&subcat2=Nagrade">Nagrade</a>
+                            <a href="/products?cat=Obuka i trening&subcat=Trening oprema&subcat2=Agilnost">Agilnost</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Knjige i vodiči</h4>
+                            <a href="/products?cat=Obuka i trening&subcat=Knjige i vodiči&subcat2=Obuka">Obuka</a>
+                            <a href="/products?cat=Obuka i trening&subcat=Knjige i vodiči&subcat2=Ponašanje">Ponašanje</a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Category 14: Knjige i edukacija -->
+                      <div class="category-panel" data-category="knjige">
+                        <div class="category-header">
+                          <h3>
+                            <span class="material-symbols-outlined">menu_book</span>
+                            Knjige i edukacija
+                          </h3>
+                          <a href="/products?cat=Knjige i edukacija" class="view-all-link">Pogledaj sve →</a>
+                        </div>
+                        <div class="subcategories-grid">
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Knjige</h4>
+                            <a href="/products?cat=Knjige i edukacija&subcat=Knjige&subcat2=Nega">Nega</a>
+                            <a href="/products?cat=Knjige i edukacija&subcat=Knjige&subcat2=Zdravlje">Zdravlje</a>
+                            <a href="/products?cat=Knjige i edukacija&subcat=Knjige&subcat2=Obuka">Obuka</a>
+                          </div>
+                          <div class="subcategory-column">
+                            <h4 class="subcategory-title">Vodiči</h4>
+                            <a href="/products?cat=Knjige i edukacija&subcat=Vodiči&subcat2=Za početnike">Za početnike</a>
+                            <a href="/products?cat=Knjige i edukacija&subcat=Vodiči&subcat2=Napredni">Napredni</a>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -232,6 +603,27 @@ document.addEventListener("DOMContentLoaded", function () {
               }
           }
       });
+  });
+
+  // ========== CATEGORY SWITCHING LOGIC ==========
+  const categoryBtns = document.querySelectorAll('.category-btn');
+  const categoryPanels = document.querySelectorAll('.category-panel');
+
+  categoryBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-category');
+      
+      // Remove active class from all buttons and panels
+      categoryBtns.forEach(b => b.classList.remove('active'));
+      categoryPanels.forEach(p => p.classList.remove('active'));
+      
+      // Add active class to clicked button and corresponding panel
+      btn.classList.add('active');
+      const targetPanel = document.querySelector(`.category-panel[data-category="${category}"]`);
+      if (targetPanel) {
+        targetPanel.classList.add('active');
+      }
+    });
   });
 
   // ========== CART DRAWER LOGIC ==========
