@@ -605,6 +605,65 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 
+  // Desktop mega dropdown positioning + overflow guard (before hamburger kicks in)
+  const productsDropdown = document.querySelector("header ul li.dropdown");
+  const megaDropdown = productsDropdown?.querySelector(".mega-dropdown");
+
+  function resetMegaDropdownStyles() {
+    if (!megaDropdown) return;
+    megaDropdown.style.left = "";
+    megaDropdown.style.right = "";
+    megaDropdown.style.transform = "";
+    megaDropdown.style.maxHeight = "";
+    megaDropdown.style.overflowY = "";
+    megaDropdown.classList.remove("enable-scroll");
+  }
+
+  function adjustMegaDropdownPosition() {
+    if (!megaDropdown || !productsDropdown) return;
+
+    // Do not override mobile layout
+    if (window.innerWidth <= 1024) {
+      resetMegaDropdownStyles();
+      return;
+    }
+
+    // Start from the centered default so measurements are correct
+    megaDropdown.style.left = "50%";
+    megaDropdown.style.transform = "translateX(-50%)";
+    megaDropdown.style.right = "";
+    megaDropdown.classList.remove("enable-scroll");
+
+    const triggerRect = productsDropdown.getBoundingClientRect();
+    const dropdownWidth = megaDropdown.offsetWidth;
+    const viewportWidth = window.innerWidth;
+    const safePadding = 16;
+
+    const idealLeft = triggerRect.left + triggerRect.width / 2 - dropdownWidth / 2;
+    const clampedLeft = Math.max(
+      safePadding,
+      Math.min(idealLeft, viewportWidth - dropdownWidth - safePadding)
+    );
+    const relativeLeft = clampedLeft - triggerRect.left;
+
+    megaDropdown.style.left = `${relativeLeft}px`;
+    megaDropdown.style.transform = "translateX(0)";
+
+    const headerBottom = header?.getBoundingClientRect().bottom || 0;
+    const availableHeight = Math.max(260, window.innerHeight - headerBottom - safePadding);
+    const needsScroll = megaDropdown.scrollHeight > availableHeight;
+
+    megaDropdown.style.maxHeight = `${availableHeight}px`;
+    megaDropdown.classList.toggle("enable-scroll", needsScroll);
+  }
+
+  if (productsDropdown && megaDropdown) {
+    productsDropdown.addEventListener("mouseenter", adjustMegaDropdownPosition);
+    productsDropdown.addEventListener("focusin", adjustMegaDropdownPosition);
+  }
+
+  window.addEventListener("resize", adjustMegaDropdownPosition);
+
   // ========== CATEGORY SWITCHING LOGIC ==========
   const categoryBtns = document.querySelectorAll('.category-btn');
   const categoryPanels = document.querySelectorAll('.category-panel');

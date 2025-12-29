@@ -155,8 +155,9 @@ header ul li.dropdown .mega-dropdown {
   border-radius: 24px;
   padding: 0;
   width: 1200px;
-  max-width: 95vw;
-  max-height: 80vh;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 120px);
+  min-height: 400px;
   opacity: 0;
   visibility: hidden;
   display: block;
@@ -165,6 +166,27 @@ header ul li.dropdown .mega-dropdown {
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
   z-index: 9999;
   overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+header ul li.dropdown .mega-dropdown.enable-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 153, 0, 0.45) rgba(255, 255, 255, 0.05);
+}
+
+header ul li.dropdown .mega-dropdown.enable-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+header ul li.dropdown .mega-dropdown.enable-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 153, 0, 0.45);
+  border-radius: 12px;
+}
+
+header ul li.dropdown .mega-dropdown.enable-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 /* Invisible bridge to prevent hover loss */
@@ -185,23 +207,36 @@ header ul li.dropdown:hover .mega-dropdown {
   transform: translateX(-50%) translateY(0);
 }
 
+/* Ensure dropdown doesn't overflow viewport on smaller screens */
+@media only screen and (max-width: 1100px) {
+  header ul li.dropdown .mega-dropdown {
+    /* Adjust positioning to prevent overflow */
+    left: clamp(20px, 50%, calc(100% - 20px));
+    transform: translateX(-50%);
+  }
+}
+
 /* Wrapper for sidebar + content */
 .mega-dropdown-wrapper {
   display: flex;
   height: 100%;
-  min-height: 500px;
-  max-height: 80vh;
+  min-height: 400px;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 /* Left Sidebar: Categories List */
 .categories-sidebar {
   width: 280px;
-  min-width: 280px;
+  min-width: 200px;
+  max-width: 280px;
   background: rgba(0, 0, 0, 0.4);
   border-right: 1px solid rgba(0, 153, 0, 0.2);
   padding: 20px 0;
   overflow-y: auto;
   overflow-x: hidden;
+  flex-shrink: 0;
+  max-height: 100%;
 }
 
 /* Custom Scrollbar for Sidebar */
@@ -222,6 +257,12 @@ header ul li.dropdown:hover .mega-dropdown {
   background: rgba(0, 153, 0, 0.5);
 }
 
+/* Firefox scrollbar for sidebar */
+.categories-sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 153, 0, 0.3) rgba(0, 0, 0, 0.2);
+}
+
 /* Custom Scrollbar for Content */
 .categories-content::-webkit-scrollbar {
   width: 8px;
@@ -238,6 +279,12 @@ header ul li.dropdown:hover .mega-dropdown {
 
 .categories-content::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 153, 0, 0.5);
+}
+
+/* Firefox scrollbar for content */
+.categories-content {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 153, 0, 0.3) rgba(0, 0, 0, 0.2);
 }
 
 .category-btn {
@@ -315,6 +362,8 @@ header ul li.dropdown:hover .mega-dropdown {
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
+  max-height: 100%;
+  min-width: 0;
 }
 
 .category-panel {
@@ -781,6 +830,7 @@ body.no-scroll {
 @media only screen and (max-width: 1600px) {
   header ul li.dropdown .mega-dropdown {
     width: 1300px;
+    max-width: calc(100vw - 40px);
   }
   
   header ul li.dropdown .mega-dropdown-content {
@@ -791,6 +841,7 @@ body.no-scroll {
 @media only screen and (max-width: 1500px) {
   header ul li.dropdown .mega-dropdown {
     width: 1200px;
+    max-width: calc(100vw - 40px);
   }
   
   header ul li.dropdown .mega-dropdown-content {
@@ -819,6 +870,97 @@ body.no-scroll {
   header .right button svg {
     width: 28px;
     height: 28px;
+  }
+}
+
+/* Medium screens - between desktop and mobile hamburger */
+@media only screen and (max-width: 1400px) {
+  header ul li.dropdown .mega-dropdown {
+    width: 1100px;
+    max-width: calc(100vw - 30px);
+    max-height: calc(100vh - 100px);
+  }
+  
+  .categories-sidebar {
+    width: 240px;
+    min-width: 180px;
+    max-width: 240px;
+    padding: 15px 0;
+  }
+  
+  .categories-content {
+    padding: 25px 30px;
+  }
+  
+  .category-btn {
+    padding: 12px 18px;
+    font-size: 0.9rem;
+  }
+  
+  .category-btn .material-symbols-outlined {
+    font-size: 1.3rem;
+  }
+  
+  .subcategories-grid {
+    gap: 25px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  header ul li.dropdown .mega-dropdown {
+    width: 1000px;
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 90px);
+  }
+  
+  .categories-sidebar {
+    width: 220px;
+    min-width: 160px;
+    max-width: 220px;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  header ul li.dropdown .mega-dropdown {
+    width: 95vw;
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 80px);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .mega-dropdown-wrapper {
+    min-height: 350px;
+  }
+  
+  .categories-sidebar {
+    width: 200px;
+    min-width: 150px;
+    max-width: 200px;
+  }
+}
+
+/* Handle small viewport heights */
+@media only screen and (max-height: 700px) {
+  header ul li.dropdown .mega-dropdown {
+    max-height: calc(100vh - 60px);
+    min-height: 300px;
+  }
+  
+  .mega-dropdown-wrapper {
+    min-height: 300px;
+  }
+}
+
+/* Handle very small viewport heights */
+@media only screen and (max-height: 500px) {
+  header ul li.dropdown .mega-dropdown {
+    max-height: calc(100vh - 40px);
+    min-height: 250px;
+  }
+  
+  .mega-dropdown-wrapper {
+    min-height: 250px;
   }
 }
 
@@ -1267,7 +1409,6 @@ body.no-scroll {
   font-weight: 500;
   -moz-appearance: textfield;
   outline: none;
-  focus: none;
 }
 
 .qty-control input:focus {
