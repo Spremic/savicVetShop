@@ -390,6 +390,14 @@ document.addEventListener("DOMContentLoaded", async function () {
   if (productsDropdown && megaDropdown) {
     productsDropdown.addEventListener("mouseenter", adjustMegaDropdownPosition);
     productsDropdown.addEventListener("focusin", adjustMegaDropdownPosition);
+
+    // Prevent default click behavior on products link
+    const productsLink = productsDropdown.querySelector('a');
+    if (productsLink) {
+      productsLink.addEventListener('click', function(e) {
+        e.preventDefault();
+      });
+    }
   }
 
   window.addEventListener("resize", adjustMegaDropdownPosition);
