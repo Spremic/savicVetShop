@@ -347,6 +347,22 @@ document.addEventListener("DOMContentLoaded", async function () {
     megaDropdown.style.maxHeight = "";
     megaDropdown.style.overflowY = "";
     megaDropdown.classList.remove("enable-scroll");
+    
+    // Reset wrapper styles
+    const wrapper = megaDropdown.querySelector('.mega-dropdown-wrapper');
+    if (wrapper) {
+      wrapper.style.height = "";
+      wrapper.style.maxHeight = "";
+    }
+    
+    // Reset sidebar styles
+    const sidebar = megaDropdown.querySelector('.categories-sidebar');
+    if (sidebar) {
+      sidebar.style.height = "";
+      sidebar.style.maxHeight = "";
+      sidebar.style.overflowY = "";
+      sidebar.style.overflowX = "";
+    }
   }
 
   function adjustMegaDropdownPosition() {
@@ -379,17 +395,53 @@ document.addEventListener("DOMContentLoaded", async function () {
     megaDropdown.style.left = `${relativeLeft}px`;
     megaDropdown.style.transform = "translateX(0)";
 
-    const headerBottom = header?.getBoundingClientRect().bottom || 0;
-    const availableHeight = Math.max(260, window.innerHeight - headerBottom - safePadding);
-    const needsScroll = megaDropdown.scrollHeight > availableHeight;
+    // Available height based on dropdown trigger position
+    const availableHeight = Math.max(
+      200,
+      window.innerHeight - triggerRect.bottom - safePadding
+    );
 
+    // Limit overall dropdown height
     megaDropdown.style.maxHeight = `${availableHeight}px`;
+
+    // Use availableHeight directly for children so they don't exceed viewport
+    const usableHeight = availableHeight;
+
+    const needsScroll = megaDropdown.scrollHeight > usableHeight;
     megaDropdown.classList.toggle("enable-scroll", needsScroll);
+
+    // Set height for wrapper and sidebar to enable overflow when needed
+    const wrapper = megaDropdown.querySelector('.mega-dropdown-wrapper');
+    const sidebar = megaDropdown.querySelector('.categories-sidebar');
+    
+    if (wrapper) {
+      wrapper.style.height = `${usableHeight}px`;
+      wrapper.style.maxHeight = `${usableHeight}px`;
+    }
+    
+    if (sidebar) {
+      // Match the dropdown height so the scrollbar appears whenever needed
+      sidebar.style.height = `${usableHeight}px`;
+      sidebar.style.maxHeight = `${usableHeight}px`;
+      sidebar.style.overflowY = 'auto';
+      sidebar.style.overflowX = 'hidden';
+    }
   }
 
   if (productsDropdown && megaDropdown) {
-    productsDropdown.addEventListener("mouseenter", adjustMegaDropdownPosition);
-    productsDropdown.addEventListener("focusin", adjustMegaDropdownPosition);
+    // Wrap adjustMegaDropdownPosition to ensure it runs after render
+    const adjustMegaDropdownPositionDelayed = () => {
+      requestAnimationFrame(() => {
+        adjustMegaDropdownPosition();
+        // Call again after a short delay to ensure it works after CSS transitions
+        setTimeout(() => {
+          adjustMegaDropdownPosition();
+        }, 50);
+      });
+    };
+    
+    productsDropdown.addEventListener("mouseenter", adjustMegaDropdownPositionDelayed);
+    productsDropdown.addEventListener("focusin", adjustMegaDropdownPositionDelayed);
 
     // Prevent default click behavior on products link
     const productsLink = productsDropdown.querySelector('a');

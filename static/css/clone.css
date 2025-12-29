@@ -218,10 +218,10 @@ header ul li.dropdown:hover .mega-dropdown {
 /* Wrapper for sidebar + content */
 .mega-dropdown-wrapper {
   display: flex;
-  height: 100%;
+  align-items: stretch;
   min-height: 400px;
-  max-height: 100%;
   overflow: hidden;
+  /* Height will be set dynamically by JavaScript */
 }
 
 /* Left Sidebar: Categories List */
@@ -235,7 +235,7 @@ header ul li.dropdown:hover .mega-dropdown {
   overflow-y: auto;
   overflow-x: hidden;
   flex-shrink: 0;
-  max-height: 100%;
+  /* Height will be set dynamically by JavaScript */
 }
 
 /* Custom Scrollbar for Sidebar */
