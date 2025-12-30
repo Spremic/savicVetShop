@@ -14,7 +14,214 @@ window.addEventListener('unhandledrejection', function(e) {
   }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
+const fallbackImages = [
+  "/img/granula.jpg",
+  "/img/pas1.jpg",
+  "/img/pas2.jpg",
+  "/img/pas3.jpg",
+  "/img/pansion.jpg",
+  "/img/pansionSlika.jpg",
+  "/img/zec.jpg",
+  "/img/papagaj.png",
+  "/img/pasPozadina.jpg",
+  "/img/pozadinaMacka.jpg",
+  "/img/galerija/lokal1.jpg",
+  "/img/galerija/lokal2.jpg",
+  "/img/galerija/lokal3.jpg",
+  "/img/galerija/lokal4.jpg",
+  "/img/galerija/lokal5.jpg",
+  "/img/galerija/lokal6.jpg"
+];
+
+async function loadProductsData() {
+  try {
+    const response = await fetch("/json/product.json");
+    if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error("Greška pri učitavanju product.json:", error);
+    return [];
+  }
+}
+
+function decodeSlug(value) {
+  if (!value) return "";
+  return decodeURIComponent(value.replace(/-/g, " "));
+}
+
+function slugify(value) {
+  if (!value) return "";
+
+  const cyrToLat = {
+    а: "a", б: "b", в: "v", г: "g", д: "d", ђ: "dj", е: "e", ж: "z",
+    з: "z", и: "i", ј: "j", к: "k", л: "l", љ: "lj", м: "m", н: "n",
+    њ: "nj", о: "o", п: "p", р: "r", с: "s", т: "t", ћ: "c", у: "u",
+    ф: "f", х: "h", ц: "c", ч: "c", џ: "dz", ш: "s",
+    А: "a", Б: "b", В: "v", Г: "g", Д: "d", Ђ: "dj", Е: "e", Ж: "z",
+    З: "z", И: "i", Ј: "j", К: "k", Л: "l", Љ: "lj", М: "m", Н: "n",
+    Њ: "nj", О: "o", П: "p", Р: "r", С: "s", Т: "t", Ћ: "c", У: "u",
+    Ф: "f", Х: "h", Ц: "c", Ч: "c", Џ: "dz", Ш: "s"
+  };
+
+  let result = value.toString();
+  result = result.replace(/[а-яА-ЯђЂљЉњЊћЋџЏ]/g, ch => cyrToLat[ch] || ch);
+  result = result.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  result = result
+    .replace(/đ/g, "dj").replace(/Đ/g, "dj")
+    .replace(/ž/g, "z").replace(/Ž/g, "z")
+    .replace(/č/g, "c").replace(/Č/g, "c")
+    .replace(/ć/g, "c").replace(/Ć/g, "c")
+    .replace(/š/g, "s").replace(/Š/g, "s");
+
+  result = result
+    .replace(/[^a-zA-Z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .toLowerCase();
+
+  return result;
+}
+
+function getSelectionFromUrl() {
+  // Koristi window.location.pathname koji je već dekodovan od strane browsera
+  // Ali ako ima URL-encoded karaktere, dekoduj ih
+  const pathname = window.location.pathname;
+  const parts = pathname.split("/").filter(Boolean);
+  // Skip known routes like 'about', 'gallery', 'legal', etc.
+  const knownRoutes = ['about', 'gallery', 'legal', 'shopping-cart', 'product'];
+  const filteredParts = parts.filter(p => !knownRoutes.includes(p.toLowerCase()));
+  
+  // Dekoduj URL-encoded karaktere (npr. %D0%B0 -> а)
+  // window.location.pathname bi trebalo da bude već dekodovan, ali proveri
+  const decodeSlug = (str) => {
+    if (!str) return "";
+    // Ako string sadrži % karaktere, pokušaj da dekoduješ
+    if (str.includes('%')) {
+      try {
+        return decodeURIComponent(str);
+      } catch (e) {
+        // Ako ne uspe, vrati original
+        return str;
+      }
+    }
+    return str;
+  };
+  
+  let slugCat = decodeSlug(filteredParts[0] || "");
+  let slugSub = decodeSlug(filteredParts[1] || "");
+  let slugSub2 = decodeSlug(filteredParts[2] || "");
+
+  console.log("🌐 URL PARSIRANJE:", {
+    pathname,
+    parts,
+    filteredParts,
+    decoded: { slugCat, slugSub, slugSub2 }
+  });
+
+  return {
+    slugCat,
+    slugSub,
+    slugSub2
+  };
+}
+
+function filterBySelection(products, selection) {
+  const { slugCat, slugSub, slugSub2 } = selection;
+  // Normalizuj URL slug-ove pre poređenja
+  const normalizedCat = slugCat ? slugify(slugCat) : "";
+  const normalizedSub = slugSub ? slugify(slugSub) : "";
+  const normalizedSub2 = slugSub2 ? slugify(slugSub2) : "";
+  
+  console.log("🔍 FILTRIRANJE:", {
+    urlSlugs: { slugCat, slugSub, slugSub2 },
+    normalized: { normalizedCat, normalizedSub, normalizedSub2 }
+  });
+  
+  const filtered = products.filter((p) => {
+    const pCat = slugify(p.kategorija || "");
+    const pSub = slugify(p.potkategorija || "");
+    const pSub2 = slugify(p.potkategorija2 || "");
+    const matchCat = !normalizedCat || pCat === normalizedCat;
+    const matchSub = !normalizedSub || pSub === normalizedSub;
+    const matchSub2 = !normalizedSub2 || pSub2 === normalizedSub2;
+    
+    // Debug za proizvode sa "Hrana za ribe" i "ciklide"
+    if (p.potkategorija && p.potkategorija.includes("ribe") && p.potkategorija2 && p.potkategorija2.includes("ciklide")) {
+      console.log("🐟 Proizvod sa ribama/ciklidama:", {
+        id: p.id,
+        kategorija: p.kategorija,
+        potkategorija: p.potkategorija,
+        potkategorija2: p.potkategorija2,
+        slugs: { pCat, pSub, pSub2 },
+        matches: { matchCat, matchSub, matchSub2 }
+      });
+    }
+    
+    return matchCat && matchSub && matchSub2;
+  });
+  
+  console.log(`📊 Pronađeno ${filtered.length} proizvoda od ${products.length} ukupno`);
+  return filtered;
+}
+
+function pickImage(product) {
+  if (product.slika) return product.slika;
+  // Stable pseudo-random pick based on product id/name to keep image consistent
+  const key = `${product.id || ""}-${product.naslov || ""}`;
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  }
+  const idx = hash % fallbackImages.length;
+  return fallbackImages[idx] || "/img/customPageBcg.png";
+}
+
+function formatPrice(product) {
+  const akcijska = product.akcijskaCena && product.akcijskaCena !== "/";
+  const base = (product.cena || "").trim();
+  const promo = akcijska ? (product.akcijskaCena || "").trim() : "";
+  if (promo) {
+    return `<span class="price-range akcijska">${promo} RSD</span> <span class="price-old">${base} RSD</span>`;
+  }
+  return `<span class="price-range">${base} RSD</span>`;
+}
+
+function createProductCard(product) {
+  const card = document.createElement("div");
+  card.className = "product-card";
+  card.setAttribute("data-category", product.kategorija);
+  card.setAttribute("data-subcategory", product.potkategorija);
+  card.setAttribute("data-subcategory2", product.potkategorija2 || "");
+
+  const badge = product.postotak && product.postotak !== "/" ? `<div class="product-badge">-${product.postotak}</div>` : "";
+
+  card.innerHTML = `
+    <div class="product-image">
+      <img src="${pickImage(product)}" alt="${product.naslov}" loading="lazy" />
+      ${badge}
+    </div>
+    <div class="product-info">
+      <div class="product-brand">${product.brend || ""}</div>
+      <h3 class="product-title">${product.naslov}</h3>
+      <div class="product-price">
+        ${formatPrice(product)}
+      </div>
+      <p class="product-description">${product.opis || ""}</p>
+      <div class="product-buttons">
+        <button class="import-btn">
+          <span class="material-symbols-outlined">shopping_bag</span>
+          Buy Now
+        </button>
+        <button class="cart-icon-btn">
+          <span class="material-symbols-outlined">add_shopping_cart</span>
+        </button>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+document.addEventListener("DOMContentLoaded", async function () {
   // Header scroll effect
   window.addEventListener("scroll", function () {
     const header = document.querySelector("header");
@@ -27,658 +234,368 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Intersection Observer for Scroll Animations - DISABLED
-  // const observerOptions = {
-  //   root: null,
-  //   rootMargin: "0px",
-  //   threshold: 0.1,
-  // };
-
-  // const observer = new IntersectionObserver((entries, observer) => {
-  //   entries.forEach((entry) => {
-  //     if (entry.isIntersecting) {
-  //       entry.target.classList.add("active");
-  //       observer.unobserve(entry.target);
-  //     }
-  //   });
-  // }, observerOptions);
-
-  // const revealElements = document.querySelectorAll(".reveal");
-  // revealElements.forEach((el) => observer.observe(el));
-
-  // Add active class immediately without scroll animation
-  const revealElements = document.querySelectorAll(".reveal");
-  revealElements.forEach((el) => {
-    el.classList.add("active");
-  });
-
-  // Hero Categories Click Handler
-  const heroCategoryItems = document.querySelectorAll(".hero-category-item");
-  heroCategoryItems.forEach((item) => {
-    item.addEventListener("click", function () {
-      const category = this.getAttribute("data-category");
-      
-      // Update category filter checkboxes
-      const categoryCheckboxes = document.querySelectorAll(
-        'input[name="category"]'
-      );
-      categoryCheckboxes.forEach((cb) => {
-        if (category === "all") {
-          cb.checked = cb.value === "all";
-        } else {
-          cb.checked = cb.value === category || cb.value === "all";
-          if (cb.value === "all") cb.checked = false;
-        }
-      });
-
-      // Trigger filter
-      filterProducts();
-      
-      // Scroll to products
-      document.querySelector(".products-grid")?.scrollIntoView({ 
-        behavior: "smooth",
-        block: "start"
-      });
-    });
-  });
-
-
-  // Filter and Search Functionality
   const searchInput = document.getElementById("searchInput");
-  const productCards = document.querySelectorAll(".product-card");
   const filterToggleBtn = document.getElementById("filterToggleBtn");
   const closeSidebarBtn = document.getElementById("closeSidebarBtn");
   const filtersSidebar = document.getElementById("filtersSidebar");
   const sidebarOverlay = document.getElementById("sidebarOverlay");
-  const clearFiltersBtn = document.getElementById("clearFiltersBtn");
-  const filterCheckboxes = document.querySelectorAll(".filter-checkbox");
-
-  // Sidebar Toggle
-  function toggleSidebar() {
-    filtersSidebar.classList.toggle("active");
-    sidebarOverlay.classList.toggle("active");
-    document.body.classList.toggle("filters-active");
-    document.body.style.overflow = filtersSidebar.classList.contains("active")
-      ? "hidden"
-      : "";
-  }
-
-  function closeSidebar() {
-    filtersSidebar.classList.remove("active");
-    sidebarOverlay.classList.remove("active");
-    document.body.classList.remove("filters-active");
-    document.body.style.overflow = "";
-  }
-
-  if (filterToggleBtn) {
-    filterToggleBtn.addEventListener("click", toggleSidebar);
-  }
-
-  if (closeSidebarBtn) {
-    closeSidebarBtn.addEventListener("click", closeSidebar);
-  }
-
-  if (sidebarOverlay) {
-    sidebarOverlay.addEventListener("click", closeSidebar);
-  }
-
-  // Filter Products Function
-  function filterProducts() {
-    const searchTerm = searchInput.value.toLowerCase().trim();
-
-    // Get selected categories
-    const selectedCategories = Array.from(
-      document.querySelectorAll('input[name="category"]:checked')
-    ).map((cb) => cb.value);
-
-    // Get selected prices
-    const selectedPrices = Array.from(
-      document.querySelectorAll('input[name="price"]:checked')
-    ).map((cb) => cb.value);
-
-    // Get selected ratings
-    const selectedRatings = Array.from(
-      document.querySelectorAll('input[name="rating"]:checked')
-    ).map((cb) => cb.value);
-
-    productCards.forEach((card) => {
-      const title = card
-        .querySelector(".product-title")
-        .textContent.toLowerCase();
-      const brand = card
-        .querySelector(".product-brand")
-        .textContent.toLowerCase();
-      const tags = Array.from(card.querySelectorAll(".tag")).map((tag) =>
-        tag.textContent.toLowerCase()
-      );
-      const category = card.getAttribute("data-category");
-      const price = card.getAttribute("data-price");
-
-      // Get rating from card
-      const rating = parseFloat(card.getAttribute("data-rating")) || 0;
-
-      // Search match
-      const matchesSearch =
-        searchTerm === "" ||
-        title.includes(searchTerm) ||
-        brand.includes(searchTerm) ||
-        tags.some((tag) => tag.includes(searchTerm));
-
-      // Category match
-      const matchesCategory =
-        selectedCategories.includes("all") ||
-        selectedCategories.length === 0 ||
-        selectedCategories.includes(category);
-
-      // Price match
-      const matchesPrice =
-        selectedPrices.includes("all") ||
-        selectedPrices.length === 0 ||
-        selectedPrices.includes(price);
-
-      // Rating match
-      let matchesRating = true;
-      if (!selectedRatings.includes("all") && selectedRatings.length > 0) {
-        matchesRating = selectedRatings.some((r) => {
-          const minRating = parseFloat(r);
-          return rating >= minRating;
-        });
-      }
-
-      if (
-        matchesSearch &&
-        matchesCategory &&
-        matchesPrice &&
-        matchesRating
-      ) {
-        card.classList.remove("hidden");
-      } else {
-        card.classList.add("hidden");
-      }
-    });
-  }
-
-  // Event Listeners
-  if (searchInput) {
-    searchInput.addEventListener("input", filterProducts);
-  }
-
-  // Checkbox change listeners
-  filterCheckboxes.forEach((checkbox) => {
-    checkbox.addEventListener("change", function () {
-      // If "all" is checked, uncheck others in the same group
-      if (this.value === "all" && this.checked) {
-        const sameGroup = document.querySelectorAll(
-          `input[name="${this.name}"]:not([value="all"])`
-        );
-        sameGroup.forEach((cb) => (cb.checked = false));
-      } else if (this.checked && this.value !== "all") {
-        // If a specific option is checked, uncheck "all"
-        const allCheckbox = document.querySelector(
-          `input[name="${this.name}"][value="all"]`
-        );
-        if (allCheckbox) allCheckbox.checked = false;
-      }
-      filterProducts();
-    });
-  });
-
-  // Clear Filters
-  if (clearFiltersBtn) {
-    clearFiltersBtn.addEventListener("click", function () {
-      filterCheckboxes.forEach((cb) => {
-        if (cb.value === "all") {
-          cb.checked = true;
-        } else {
-          cb.checked = false;
-        }
-      });
-      if (searchInput) {
-        searchInput.value = "";
-      }
-      filterProducts();
-    });
-  }
-
-  // Buy Now buttons - no animation for these buttons
-  const importButtons = document.querySelectorAll(".import-btn");
-
-  if (importButtons.length > 0) {
-    importButtons.forEach((button) => {
-      button.addEventListener("click", function (e) {
-        console.log("Buy Now button clicked - preventing animation");
-        e.preventDefault();
-        e.stopImmediatePropagation();
-
-        // Simple button press animation only
-        button.style.transform = "scale(0.95)";
-        setTimeout(() => {
-          button.style.transform = "";
-        }, 150);
-
-        // Prevent any other animations
-        return false;
-      });
-    });
-  }
-
-  // Add to cart animation for cart-icon-btn (small icon button)
-  const cartIconButtons = document.querySelectorAll(".cart-icon-btn");
-  const cartIconHeader = document.querySelector("#openCart");
-
-  if (cartIconButtons.length > 0 && cartIconHeader) {
-    cartIconButtons.forEach((button) => {
-      button.addEventListener("click", function (e) {
-        e.stopPropagation();
-
-        // Get button position
-        const buttonRect = button.getBoundingClientRect();
-        const buttonX = buttonRect.left + buttonRect.width / 2;
-        const buttonY = buttonRect.top + buttonRect.height / 2;
-
-        // Get cart position
-        const cartRect = cartIconHeader.getBoundingClientRect();
-        const cartX = cartRect.left + cartRect.width / 2;
-        const cartY = cartRect.top + cartRect.height / 2;
-
-        // Create flying element
-        const flyingElement = document.createElement("div");
-        flyingElement.className = "flying-item";
-        flyingElement.innerHTML = '<span class="material-symbols-outlined">add_shopping_cart</span>';
-
-        // Add styles for flying item (if not already added)
-        if (!document.querySelector('style[data-flying-item]')) {
-          const style = document.createElement("style");
-          style.setAttribute("data-flying-item", "true");
-          style.textContent = `
-            .flying-item {
-              display: grid;
-              place-content: center;
-              width: 40px;
-              height: 40px;
-              background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), rgba(0, 153, 0, 0.1));
-              border: 2px solid #009900;
-              border-radius: 50%;
-            }
-            .flying-item .material-symbols-outlined {
-              font-size: 24px;
-              color: #009900;
-              filter: drop-shadow(0 0 8px rgba(0, 153, 0, 0.6));
-            }
-            @keyframes cartNotify {
-              0%, 100% { transform: scale(1); }
-              50% { transform: scale(1.15); }
-            }
-          `;
-          document.head.appendChild(style);
-        }
-
-        document.body.appendChild(flyingElement);
-
-        // Set initial position
-        flyingElement.style.position = "fixed";
-        flyingElement.style.left = buttonX + "px";
-        flyingElement.style.top = buttonY + "px";
-        flyingElement.style.pointerEvents = "none";
-        flyingElement.style.zIndex = "9999";
-
-        // Trigger animation
-        setTimeout(() => {
-          flyingElement.style.transition =
-            "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-          flyingElement.style.left = cartX + "px";
-          flyingElement.style.top = cartY + "px";
-          flyingElement.style.opacity = "0";
-          flyingElement.style.transform = "scale(0.3)";
-        }, 10);
-
-        // Add button animation
-        button.style.transform = "scale(0.95)";
-        setTimeout(() => {
-          button.style.transform = "";
-        }, 150);
-
-        // Add pulse effect to cart
-        cartIconHeader.style.animation = "cartNotify 0.6s ease";
-        setTimeout(() => {
-          cartIconHeader.style.animation = "";
-        }, 600);
-
-        // Remove flying element after animation
-        setTimeout(() => {
-          flyingElement.remove();
-        }, 800);
-      });
-    });
-  }
-
-  // Pagination functionality
   const productsGrid = document.querySelector(".products-grid");
   const paginationNumbers = document.getElementById("paginationNumbers");
   const prevBtn = document.getElementById("prevPageBtn");
   const nextBtn = document.getElementById("nextPageBtn");
-  let currentPage = 1;
-  
-  // Function to get items per page based on screen width
-  const getItemsPerPage = () => {
-    return window.innerWidth < 500 ? 10 : 9;
-  };
-  
-  let itemsPerPage = getItemsPerPage();
-  const totalProducts = 54; // Total number of products (9 per page * 6 pages)
-  let totalPages = Math.ceil(totalProducts / itemsPerPage);
+  const paginationContainer = document.querySelector(".pagination-container");
 
-  // Generate product data for all pages
-  const generateProductData = (page) => {
-    const products = [];
-    const categories = ["food", "toys", "equipment", "accessories"];
-    const brands = ["Royal Canin", "Monge", "Premil", "Happy Pets", "Travel Pro", "Comfort Fit", "Purina Pro", "Play Time", "Secure Walk", "PetCo", "FurReal", "Whiskers", "Pawfect", "BarkBox", "CatNip", "DogZone", "PetLife", "AnimalCare"];
-    const foodTitles = ["Premium Dog Food", "Natural Cat Food", "Superpremium Granules", "Complete Nutrition", "Grain Free Formula", "Puppy Starter", "Senior Diet", "Weight Control", "Sensitive Stomach"];
-    const toyTitles = ["Interactive Toy Set", "Feather Wand", "Chew Toy", "Puzzle Game", "Ball Set", "Rope Toy", "Squeaky Toy", "Laser Pointer", "Fetch Stick"];
-    const equipmentTitles = ["Pet Carrier", "Travel Bag", "Dog Bed", "Cat Tree", "Litter Box", "Water Bowl", "Food Dispenser", "Crate", "Playpen"];
-    const accessoryTitles = ["Leather Collar", "Retractable Leash", "Name Tag", "Harness", "Dog Coat", "Cat Scratching Post", "Pet Grooming Kit", "Travel Bottle", "ID Tag"];
-    const prices = ["1,890", "2,100", "2,450", "2,800", "3,200", "3,500", "4,200", "4,500", "5,800"];
-    const images = ["/img/pansion.jpg", "/img/granula.jpg", "/img/pas1.jpg", "/img/pas2.jpg", "/img/pas3.jpg", "/img/zec.jpg", "/img/pansionSlika.jpg"];
+  // Slider controls (shown only kada ima potrebe)
+  let sliderMode = false;
+  let sliderControls = null;
+  const createSliderControls = () => {
+    if (!productsGrid || sliderControls) return;
+    sliderControls = document.createElement("div");
+    sliderControls.className = "products-slider-controls hidden";
+    sliderControls.innerHTML = `
+      <button class="slider-arrow slider-prev" aria-label="Prethodni proizvodi">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button class="slider-arrow slider-next" aria-label="Sledeći proizvodi">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    `;
+    productsGrid.insertAdjacentElement("beforebegin", sliderControls);
 
-    for (let i = 0; i < itemsPerPage; i++) {
-      const globalIndex = (page - 1) * itemsPerPage + i;
-      
-      // Stop if we've reached the total number of products
-      if (globalIndex >= totalProducts) {
-        break;
-      }
-      
-      const category = categories[globalIndex % categories.length];
-      let title = "";
-      if (category === "food") title = foodTitles[globalIndex % foodTitles.length];
-      else if (category === "toys") title = toyTitles[globalIndex % toyTitles.length];
-      else if (category === "equipment") title = equipmentTitles[globalIndex % equipmentTitles.length];
-      else title = accessoryTitles[globalIndex % accessoryTitles.length];
-
-      products.push({
-        brand: brands[globalIndex % brands.length],
-        title: title,
-        price: prices[globalIndex % prices.length],
-        category: category,
-        rating: (4.5 + Math.random() * 0.5).toFixed(1),
-        priceRange: globalIndex % 3 === 0 ? "low" : globalIndex % 3 === 1 ? "medium" : "high",
-        image: images[globalIndex % images.length],
-        description: `Premium quality product designed for your pet's comfort and wellbeing. Features high-quality materials and thoughtful design that ensures durability and functionality.`
+    const scrollByCards = (direction) => {
+      const firstCard = productsGrid.querySelector(".product-card");
+      const gap =
+        parseFloat(getComputedStyle(productsGrid).columnGap || "16") ||
+        parseFloat(getComputedStyle(productsGrid).gap || "16") ||
+        16;
+      const cardWidth = firstCard
+        ? firstCard.getBoundingClientRect().width + gap
+        : 320;
+      productsGrid.scrollBy({
+        left: direction * cardWidth * 2,
+        behavior: "smooth",
       });
+    };
+
+    sliderControls
+      .querySelector(".slider-prev")
+      ?.addEventListener("click", () => scrollByCards(-1));
+    sliderControls
+      .querySelector(".slider-next")
+      ?.addEventListener("click", () => scrollByCards(1));
+  };
+
+  // Sidebar Toggle (kept for mobile filters UX)
+  const toggleSidebar = () => {
+    filtersSidebar?.classList.toggle("active");
+    sidebarOverlay?.classList.toggle("active");
+    document.body.classList.toggle("filters-active");
+    document.body.style.overflow = filtersSidebar?.classList.contains("active") ? "hidden" : "";
+  };
+  const closeSidebar = () => {
+    filtersSidebar?.classList.remove("active");
+    sidebarOverlay?.classList.remove("active");
+    document.body.classList.remove("filters-active");
+    document.body.style.overflow = "";
+  };
+  filterToggleBtn?.addEventListener("click", toggleSidebar);
+  closeSidebarBtn?.addEventListener("click", closeSidebar);
+  sidebarOverlay?.addEventListener("click", closeSidebar);
+
+  const selection = getSelectionFromUrl();
+  
+  // Zameni URL sa dekodovanom verzijom (bez % karaktera)
+  const normalizeUrl = () => {
+    if (selection.slugCat || selection.slugSub || selection.slugSub2) {
+      // Koristi slugify da bi slug-ovi bili u istom formatu kao u clone.js
+      const cleanPath = [
+        selection.slugCat,
+        selection.slugSub,
+        selection.slugSub2
+      ]
+        .filter(Boolean)
+        .map(slug => slugify(slug))
+        .join("/");
+      
+      const newPath = `/${cleanPath}`;
+      const currentPath = window.location.pathname;
+      
+      // Ako trenutni path ima URL-encoded karaktere, zameni ga
+      if (currentPath !== newPath && currentPath.includes("%")) {
+        history.replaceState(null, "", newPath);
+        console.log("🔗 URL normalizovan:", currentPath, "->", newPath);
+      }
     }
-    return products;
+  };
+  
+  normalizeUrl();
+  
+  // Hero kategorije se uvek prikazuju
+
+  const resolveName = (field, slugValue) => {
+    if (!slugValue) return "";
+    const normalizedSlug = slugify(slugValue);
+    const found = allProducts.find((p) => slugify(p[field] || "") === normalizedSlug);
+    return found ? found[field] : decodeSlug(slugValue);
   };
 
-  // Render products for current page
-  const renderProducts = (page) => {
-    const products = generateProductData(page);
-    productsGrid.innerHTML = "";
+  const selectionNames = {
+    cat: "",
+    subcat: "",
+    subcat2: ""
+  };
 
-    products.forEach((product) => {
-      const productCard = document.createElement("div");
-      productCard.className = "product-card";
-      productCard.setAttribute("data-category", product.category);
-      productCard.setAttribute("data-price", product.priceRange);
-      productCard.setAttribute("data-rating", product.rating);
+  const updateBreadcrumbs = () => {
+    const breadcrumbs = document.querySelector(".breadcrumbs");
+    if (!breadcrumbs) return;
+    const parts = [];
+    if (selectionNames.cat) {
+      const catSlug = slugify(selectionNames.cat);
+      parts.push({ label: selectionNames.cat, href: `/${catSlug}` });
+    }
+    if (selectionNames.subcat) {
+      const catSlug = slugify(selectionNames.cat);
+      const subSlug = slugify(selectionNames.subcat);
+      parts.push({ label: selectionNames.subcat, href: `/${catSlug}/${subSlug}` });
+    }
+    if (selectionNames.subcat2) parts.push({ label: selectionNames.subcat2 });
 
-      productCard.innerHTML = `
-        <div class="product-image">
-          <img src="${product.image}" alt="${product.title}" loading="lazy" />
-        </div>
-        <div class="product-info">
-          <div class="product-brand">${product.brand}</div>
-          <h3 class="product-title">${product.title}</h3>
-          <div class="product-price">
-            <span class="price-range">${product.price} RSD</span>
-          </div>
-          <p class="product-description">${product.description}</p>
-          <div class="product-buttons">
-            <button class="import-btn">
-              <span class="material-symbols-outlined">shopping_bag</span>
-              Buy Now
-            </button>
-            <button class="cart-icon-btn">
-              <span class="material-symbols-outlined">add_shopping_cart</span>
-            </button>
-          </div>
-        </div>
-      `;
+    breadcrumbs.innerHTML = parts
+      .map((part, idx) => {
+        const isLast = idx === parts.length - 1;
+        if (part.href && !isLast) {
+          return `<a href="${part.href}">${part.label}</a><span class="breadcrumb-separator">/</span>`;
+        }
+        if (isLast) {
+          return `<span class="breadcrumb-current">${part.label}</span>`;
+        }
+        return `<a href="${part.href}">${part.label}</a><span class="breadcrumb-separator">/</span>`;
+      })
+      .join(" ");
+  };
 
-      productsGrid.appendChild(productCard);
+  const updatePageTitle = () => {
+    const pageTitle = document.querySelector(".page-title");
+    const pageDescription = document.querySelector(".page-description");
+    if (!pageTitle) return;
+
+    // Prikazuje samo poslednju kategoriju u hijerarhiji
+    let title = "Product Catalog";
+    if (selectionNames.subcat2) {
+      title = selectionNames.subcat2;
+    } else if (selectionNames.subcat) {
+      title = selectionNames.subcat;
+    } else if (selectionNames.cat) {
+      title = selectionNames.cat;
+    }
+
+    pageTitle.textContent = title;
+
+    // Sakrij page-description element
+    if (pageDescription) {
+      pageDescription.style.display = "none";
+    }
+  };
+
+  const allProducts = await loadProductsData();
+  if (!productsGrid) return;
+  if (!allProducts.length) {
+    productsGrid.innerHTML = "<p class='empty-state'>Nije moguće učitati proizvode.</p>";
+    return;
+  }
+
+  selectionNames.cat = resolveName("kategorija", selection.slugCat);
+  selectionNames.subcat = resolveName("potkategorija", selection.slugSub);
+  selectionNames.subcat2 = resolveName("potkategorija2", selection.slugSub2);
+
+  updateBreadcrumbs();
+  updatePageTitle();
+
+  let filteredProducts = filterBySelection(allProducts, selection);
+  let currentPage = 1;
+  let itemsPerPage = getItemsPerPage();
+  let totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+
+  function getItemsPerPage() {
+    if (window.innerWidth < 500) return 6;
+    if (window.innerWidth < 1024) return 9;
+    return 12;
+  }
+
+  function applySearch(list) {
+    const term = (searchInput?.value || "").toLowerCase().trim();
+    if (!term) return list;
+    return list.filter((p) => {
+      const haystack = [
+        p.naslov,
+        p.brend,
+        p.kategorija,
+        p.potkategorija,
+        p.potkategorija2
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      return haystack.includes(term);
     });
+  }
 
-    // Reinitialize cart button animations for new products
-    setTimeout(() => {
-      const newImportButtons = productsGrid.querySelectorAll(".import-btn");
-      const newCartIconButtons = productsGrid.querySelectorAll(".cart-icon-btn");
-      const cartIconHeader = document.querySelector("#openCart");
+  function shouldUseSlider(count) {
+    // koristi slider kada ima dovoljno proizvoda (npr. više od 6) ili više od jedne stranice
+    return count > Math.max(6, itemsPerPage);
+  }
 
-      // Reattach event listeners for new buttons (Buy Now buttons - no animation)
-      if (newImportButtons.length > 0) {
-        newImportButtons.forEach((button) => {
-          button.addEventListener("click", function (e) {
-            console.log("New Buy Now button clicked - preventing animation");
-            e.preventDefault();
-            e.stopImmediatePropagation();
+  function refreshData() {
+    filteredProducts = applySearch(filterBySelection(allProducts, selection));
+    sliderMode = shouldUseSlider(filteredProducts.length);
+    totalPages = sliderMode
+      ? 1
+      : Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+    if (currentPage > totalPages) currentPage = totalPages;
+    renderProducts(currentPage);
+    updatePagination();
+  }
 
-            // Simple button press animation only
-            button.style.transform = "scale(0.95)";
-            setTimeout(() => {
-              button.style.transform = "";
-            }, 150);
+  function renderProducts(page) {
+    console.log("🎨 RENDER PROIZVODA:", {
+      page,
+      filteredProductsCount: filteredProducts.length,
+      sliderMode,
+      itemsPerPage,
+      totalPages
+    });
+    
+    productsGrid.innerHTML = "";
+    const start = (page - 1) * itemsPerPage;
+    const listToRender = sliderMode
+      ? filteredProducts
+      : filteredProducts.slice(start, start + itemsPerPage);
 
-            // Prevent any other animations
-            return false;
-          });
-        });
-      }
+    console.log("📦 Lista za renderovanje:", listToRender.length, "proizvoda");
 
-      if (newCartIconButtons.length > 0 && cartIconHeader) {
-        newCartIconButtons.forEach((button) => {
-          button.addEventListener("click", function (e) {
-            e.stopPropagation();
-            const buttonRect = button.getBoundingClientRect();
-            const buttonX = buttonRect.left + buttonRect.width / 2;
-            const buttonY = buttonRect.top + buttonRect.height / 2;
-            const cartRect = cartIconHeader.getBoundingClientRect();
-            const cartX = cartRect.left + cartRect.width / 2;
-            const cartY = cartRect.top + cartRect.height / 2;
-
-            const flyingElement = document.createElement("div");
-            flyingElement.className = "flying-item";
-            flyingElement.innerHTML = '<span class="material-symbols-outlined">add_shopping_cart</span>';
-
-            if (!document.querySelector('style[data-flying-item]')) {
-              const style = document.createElement("style");
-              style.setAttribute("data-flying-item", "true");
-              style.textContent = `
-                .flying-item {
-                  display: grid;
-                  place-content: center;
-                  width: 40px;
-                  height: 40px;
-                  background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), rgba(0, 153, 0, 0.1));
-                  border: 2px solid #009900;
-                  border-radius: 50%;
-                }
-                .flying-item .material-symbols-outlined {
-                  font-size: 24px;
-                  color: #009900;
-                  filter: drop-shadow(0 0 8px rgba(0, 153, 0, 0.6));
-                }
-                @keyframes cartNotify {
-                  0%, 100% { transform: scale(1); }
-                  50% { transform: scale(1.15); }
-                }
-              `;
-              document.head.appendChild(style);
-            }
-
-            document.body.appendChild(flyingElement);
-            flyingElement.style.position = "fixed";
-            flyingElement.style.left = buttonX + "px";
-            flyingElement.style.top = buttonY + "px";
-            flyingElement.style.pointerEvents = "none";
-            flyingElement.style.zIndex = "9999";
-
-            setTimeout(() => {
-              flyingElement.style.transition = "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-              flyingElement.style.left = cartX + "px";
-              flyingElement.style.top = cartY + "px";
-              flyingElement.style.opacity = "0";
-              flyingElement.style.transform = "scale(0.3)";
-            }, 10);
-
-            button.style.transform = "scale(0.95)";
-            setTimeout(() => {
-              button.style.transform = "";
-            }, 150);
-
-            cartIconHeader.style.animation = "cartNotify 0.6s ease";
-            setTimeout(() => {
-              cartIconHeader.style.animation = "";
-            }, 600);
-
-            setTimeout(() => {
-              flyingElement.remove();
-            }, 800);
-          });
-        });
-      }
-    }, 100);
-  };
-
-  // Generate pagination numbers dynamically (always show first, next, and last pages)
-  const generatePaginationNumbers = () => {
-    paginationNumbers.innerHTML = "";
-
-    if (totalPages <= 5) {
-      // If total pages <= 5, show all
-      for (let i = 1; i <= totalPages; i++) {
-        const btn = document.createElement("button");
-        btn.className = `pagination-number ${i === currentPage ? "active" : ""}`;
-        btn.setAttribute("data-page", i.toString());
-        btn.textContent = i.toString();
-        paginationNumbers.appendChild(btn);
-      }
+    if (!listToRender.length) {
+      productsGrid.innerHTML = "<p class='empty-state'>Nema proizvoda za izabrani filter.</p>";
+      console.log("❌ Nema proizvoda za renderovanje");
       return;
     }
 
-    // Always show first page (1)
-    const firstBtn = document.createElement("button");
-    firstBtn.className = `pagination-number ${1 === currentPage ? "active" : ""}`;
-    firstBtn.setAttribute("data-page", "1");
-    firstBtn.textContent = "1";
-    paginationNumbers.appendChild(firstBtn);
+    productsGrid.classList.toggle("slider-active", sliderMode);
+    createSliderControls();
+    sliderControls?.classList.toggle("hidden", !sliderMode);
+    paginationContainer?.classList.toggle("hidden", sliderMode);
 
-    // Show ellipsis after first page if current page is far from beginning
-    if (currentPage > 3) {
-      const ellipsis1 = document.createElement("span");
-      ellipsis1.className = "pagination-ellipsis";
-      ellipsis1.textContent = "...";
-      paginationNumbers.appendChild(ellipsis1);
-    }
-
-    // Show pages around current page (but not first or last)
-    const startPage = Math.max(2, Math.min(currentPage - 1, totalPages - 3));
-    const endPage = Math.min(totalPages - 1, Math.max(currentPage + 1, 4));
-
-    for (let i = startPage; i <= endPage; i++) {
-      if (i > 1 && i < totalPages) {
-        const btn = document.createElement("button");
-        btn.className = `pagination-number ${i === currentPage ? "active" : ""}`;
-        btn.setAttribute("data-page", i.toString());
-        btn.textContent = i.toString();
-        paginationNumbers.appendChild(btn);
-      }
-    }
-
-    // Show ellipsis before last page if current page is far from end
-    if (currentPage < totalPages - 2) {
-      const ellipsis2 = document.createElement("span");
-      ellipsis2.className = "pagination-ellipsis";
-      ellipsis2.textContent = "...";
-      paginationNumbers.appendChild(ellipsis2);
-    }
-
-    // Always show last page
-    const lastBtn = document.createElement("button");
-    lastBtn.className = `pagination-number ${totalPages === currentPage ? "active" : ""}`;
-    lastBtn.setAttribute("data-page", totalPages.toString());
-    lastBtn.textContent = totalPages.toString();
-    paginationNumbers.appendChild(lastBtn);
-  };
-
-  // Update pagination UI
-  const updatePagination = () => {
-    // Regenerate pagination numbers
-    generatePaginationNumbers();
+    listToRender.forEach((product) => {
+      const card = createProductCard(product);
+      productsGrid.appendChild(card);
+      console.log("✅ Dodat proizvod:", product.id, product.naslov);
+    });
     
-    // Reattach event listeners to new buttons
-    const pageNumbers = paginationNumbers.querySelectorAll(".pagination-number");
-    pageNumbers.forEach((btn) => {
+    console.log("✅ Renderovanje završeno. Dodato kartica:", productsGrid.children.length);
+  }
+
+  function updatePagination() {
+    if (!paginationNumbers || !prevBtn || !nextBtn) return;
+    if (sliderMode) {
+      paginationNumbers.innerHTML = "";
+      prevBtn.disabled = true;
+      nextBtn.disabled = true;
+      return;
+    }
+    paginationNumbers.innerHTML = "";
+
+    const addPageBtn = (page) => {
+      const btn = document.createElement("button");
+      btn.className = `pagination-number ${page === currentPage ? "active" : ""}`;
+      btn.dataset.page = page.toString();
+      btn.textContent = page.toString();
       btn.addEventListener("click", () => {
-        currentPage = parseInt(btn.getAttribute("data-page"));
+        currentPage = page;
         renderProducts(currentPage);
         updatePagination();
-        window.scrollTo({ top: productsGrid.offsetTop - 100, behavior: "smooth" });
+        window.scrollTo({ top: productsGrid.offsetTop - 80, behavior: "smooth" });
       });
-    });
-
-    // Update prev/next buttons
-    prevBtn.disabled = currentPage === 1;
-    nextBtn.disabled = currentPage === totalPages;
-  };
-
-  // Event listeners for pagination
-  if (paginationNumbers && prevBtn && nextBtn) {
-    // Prev button
-    prevBtn.addEventListener("click", () => {
-      if (currentPage > 1) {
-        currentPage--;
-        renderProducts(currentPage);
-        updatePagination();
-        window.scrollTo({ top: productsGrid.offsetTop - 100, behavior: "smooth" });
-      }
-    });
-
-    // Next button
-    nextBtn.addEventListener("click", () => {
-      if (currentPage < totalPages) {
-        currentPage++;
-        renderProducts(currentPage);
-        updatePagination();
-        window.scrollTo({ top: productsGrid.offsetTop - 100, behavior: "smooth" });
-      }
-    });
-
-    // Function to update pagination when screen size changes
-    const updatePaginationOnResize = () => {
-      const newItemsPerPage = getItemsPerPage();
-      if (newItemsPerPage !== itemsPerPage) {
-        itemsPerPage = newItemsPerPage;
-        const newTotalPages = Math.ceil(totalProducts / itemsPerPage);
-        
-        // Adjust current page if it's out of bounds
-        if (currentPage > newTotalPages) {
-          currentPage = newTotalPages;
-        }
-        
-        totalPages = newTotalPages;
-        renderProducts(currentPage);
-        updatePagination();
-      }
+      paginationNumbers.appendChild(btn);
     };
 
-    // Listen for window resize
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(updatePaginationOnResize, 250);
-    });
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) addPageBtn(i);
+    } else {
+      addPageBtn(1);
+      if (currentPage > 3) {
+        const ellipsis1 = document.createElement("span");
+        ellipsis1.className = "pagination-ellipsis";
+        ellipsis1.textContent = "...";
+        paginationNumbers.appendChild(ellipsis1);
+      }
 
-    // Initial render - render first page
-    renderProducts(1);
-    updatePagination();
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+      for (let i = start; i <= end; i++) addPageBtn(i);
+
+      if (currentPage < totalPages - 2) {
+        const ellipsis2 = document.createElement("span");
+        ellipsis2.className = "pagination-ellipsis";
+        ellipsis2.textContent = "...";
+        paginationNumbers.appendChild(ellipsis2);
+      }
+      addPageBtn(totalPages);
+    }
+
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages;
   }
+
+
+  searchInput?.addEventListener("input", () => {
+    currentPage = 1;
+    refreshData();
+  });
+
+  prevBtn?.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage -= 1;
+      renderProducts(currentPage);
+      updatePagination();
+      window.scrollTo({ top: productsGrid.offsetTop - 80, behavior: "smooth" });
+    }
+  });
+
+  nextBtn?.addEventListener("click", () => {
+    if (currentPage < totalPages) {
+      currentPage += 1;
+      renderProducts(currentPage);
+      updatePagination();
+      window.scrollTo({ top: productsGrid.offsetTop - 80, behavior: "smooth" });
+    }
+  });
+
+  let resizeTimeout;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      const newPerPage = getItemsPerPage();
+      if (newPerPage !== itemsPerPage) {
+        itemsPerPage = newPerPage;
+        refreshData();
+      }
+    }, 200);
+  });
+
+  refreshData();
+
+  // Hero category cards lead to odgovarajucu kategoriju
+  const heroCategoryItems = document.querySelectorAll(".hero-category-item");
+  const heroMap = {
+    food: "Hrana za životinje",
+    toys: "Igračke za životinje",
+    equipment: "Oprema za kućne ljubimce",
+    accessories: "Kozmetika za životinje",
+  };
+  heroCategoryItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      const catName = heroMap[item.dataset.category];
+      if (!catName) return;
+      window.location.href = `/${slugify(catName)}`;
+    });
+  });
 });

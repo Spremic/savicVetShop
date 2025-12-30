@@ -64,7 +64,30 @@ app.get("/product", (req, res) => {
   res.render("product");
 });
 
+// Custom page routes - serve custom-page.html for category URLs
 app.get("/custom-page", (req, res) => {
+  res.sendFile(path.join(__dirname, "/static/custom-page.html"));
+});
+
+app.get("/custom-page/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/static/custom-page.html"));
+});
+
+// Catch all route for category URLs - serve custom-page.html
+// This must be LAST in the routing order
+app.get("*", (req, res) => {
+  // Skip static assets
+  if (req.path.startsWith('/css/') || req.path.startsWith('/js/') || req.path.startsWith('/img/') || req.path.startsWith('/json/')) {
+    return res.status(404).send('Not Found');
+  }
+
+  // Skip existing specific routes - let them fall through to 404 if not handled above
+  const pathParts = req.path.split('/').filter(p => p);
+  if (pathParts.length === 0) {
+    return res.sendFile(path.join(__dirname, "/static/index.html"));
+  }
+
+  // For any other path, serve custom-page.html
   res.sendFile(path.join(__dirname, "/static/custom-page.html"));
 });
 

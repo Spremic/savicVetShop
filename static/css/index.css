@@ -1108,7 +1108,7 @@
 
 .objectLeft button:hover {
   background: linear-gradient(135deg, #00b300, #009900);
-  transform: translateY(-4px) scale(1.05);
+  transform: translateY(-4px);
   border-color: rgba(255, 255, 255, 0.3);
 }
 

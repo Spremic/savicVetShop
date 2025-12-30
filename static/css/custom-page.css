@@ -106,7 +106,7 @@ body {
 }
 
 .page-title {
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 15px;
@@ -116,7 +116,7 @@ body {
 }
 
 .page-description {
-  font-size: 1.15rem;
+  font-size: 1rem;
   color: #b0b0b0;
   line-height: 1.6;
   font-weight: 400;
@@ -1142,13 +1142,13 @@ body {
   }
 
   .page-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     word-wrap: break-word;
     overflow-wrap: break-word;
   }
 
   .page-description {
-    font-size: 1rem;
+    font-size: 0.9rem;
     word-wrap: break-word;
     overflow-wrap: break-word;
     max-width: 100%;
@@ -1756,3 +1756,60 @@ body {
   }
 }
 
+/* Slider helpers for dynamic product listing */
+.products-slider-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.products-slider-controls.hidden {
+  display: none;
+}
+
+.slider-arrow {
+  border: 1px solid #e4e4e4;
+  background: #fff;
+  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #131111;
+}
+
+.slider-arrow:hover {
+  border-color: #009900;
+  color: #009900;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.products-grid.slider-active {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(260px, 1fr);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 1rem;
+  padding-bottom: 8px;
+}
+
+.products-grid.slider-active .product-card {
+  scroll-snap-align: start;
+}
+
+.products-grid.slider-active::-webkit-scrollbar {
+  height: 8px;
+}
+
+.products-grid.slider-active::-webkit-scrollbar-thumb {
+  background: #c7c7c7;
+  border-radius: 10px;
+}
+
+.pagination-container.hidden {
+  display: none;
+}

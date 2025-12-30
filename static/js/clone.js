@@ -65,6 +65,37 @@ function generateDynamicDropdownHTML(categoryMap) {
   let sidebarHTML = '';
   let contentHTML = '';
 
+  const slugify = (value) => {
+    if (!value) return "";
+
+    const cyrToLat = {
+      а: "a", б: "b", в: "v", г: "g", д: "d", ђ: "dj", е: "e", ж: "z",
+      з: "z", и: "i", ј: "j", к: "k", л: "l", љ: "lj", м: "m", н: "n",
+      њ: "nj", о: "o", п: "p", р: "r", с: "s", т: "t", ћ: "c", у: "u",
+      ф: "f", х: "h", ц: "c", ч: "c", џ: "dz", ш: "s",
+      А: "a", Б: "b", В: "v", Г: "g", Д: "d", Ђ: "dj", Е: "e", Ж: "z",
+      З: "z", И: "i", Ј: "j", К: "k", Л: "l", Љ: "lj", М: "m", Н: "n",
+      Њ: "nj", О: "o", П: "p", Р: "r", С: "s", Т: "t", Ћ: "c", У: "u",
+      Ф: "f", Х: "h", Ц: "c", Ч: "c", Џ: "dz", Ш: "s"
+    };
+
+    let result = value.toString();
+    result = result.replace(/[а-яА-ЯђЂљЉњЊћЋџЏ]/g, ch => cyrToLat[ch] || ch);
+    result = result.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    result = result
+      .replace(/đ/g, "dj").replace(/Đ/g, "dj")
+      .replace(/ž/g, "z").replace(/Ž/g, "z")
+      .replace(/č/g, "c").replace(/Č/g, "c")
+      .replace(/ć/g, "c").replace(/Ć/g, "c")
+      .replace(/š/g, "s").replace(/Š/g, "s");
+
+    return result
+      .replace(/[^a-zA-Z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .toLowerCase();
+  };
+
   Object.entries(categoryMap).forEach(([categoryName, categoryData], index) => {
     const isActive = index === 0 ? 'active' : '';
     const { icon, dataAttr, subcategories } = categoryData;
@@ -91,13 +122,15 @@ function generateDynamicDropdownHTML(categoryMap) {
 
       columnSubcats.forEach(subcat => {
         const subcatData = subcategories[subcat];
-        columnHTML += `<h4 class="subcategory-title">${subcat}</h4>`;
+        const subcatHref = `/${slugify(categoryName)}/${slugify(subcat)}`;
+        columnHTML += `<a class="subcategory-title" href="${subcatHref}">${subcat}</a>`;
 
         // Sortiraj potkategorije2
         const sortedSubcat2 = Array.from(subcatData.subcategories2).sort();
 
         sortedSubcat2.forEach(subcat2 => {
-          columnHTML += `<a href="/products?cat=${encodeURIComponent(categoryName)}&subcat=${encodeURIComponent(subcat)}&subcat2=${encodeURIComponent(subcat2)}">${subcat2}</a>`;
+          const subcat2Href = `/${slugify(categoryName)}/${slugify(subcat)}/${slugify(subcat2)}`;
+          columnHTML += `<a href="${subcat2Href}">${subcat2}</a>`;
         });
       });
 
@@ -115,7 +148,7 @@ function generateDynamicDropdownHTML(categoryMap) {
             <span class="material-symbols-outlined">${icon}</span>
             ${categoryName}
           </h3>
-          <a href="/products?cat=${encodeURIComponent(categoryName)}" class="view-all-link">Pogledaj sve →</a>
+          <a href="/${slugify(categoryName)}" class="view-all-link">Pogledaj sve →</a>
         </div>
         ${subcategoriesHTML}
       </div>
