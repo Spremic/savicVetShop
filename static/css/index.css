@@ -482,9 +482,11 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 20px;
   overflow: hidden;
-  transition: all 0.4s ease;
+  transition: all 0.4s ease, opacity 0.3s ease, visibility 0.3s ease;
   position: relative;
   cursor: pointer;
+  opacity: 1;
+  visibility: visible;
 }
 
 #firstSection .custom-card::before {
@@ -2296,7 +2298,7 @@
   max-height: 100%;
   object-fit: contain;
   border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0, 153, 0, 0.3);
+  box-shadow: none;
   transform: scale(0.9);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

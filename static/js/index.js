@@ -9,6 +9,224 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Featured Products Slider
+  let featuredProducts = [];
+  let currentSlideIndex = 0;
+  const productsPerSlide = 3;
+  let showSlideFunction = null; // Will store the showSlide function
+  
+  // Available product images from img folder
+  const productImages = [
+    '/img/granula.jpg',
+    '/img/pas1.jpg',
+    '/img/pas2.jpg',
+    '/img/pas3.jpg',
+    '/img/pansion.jpg',
+    '/img/zec.jpg',
+    '/img/galerija/lokal1.jpg',
+    '/img/galerija/lokal2.jpg',
+    '/img/galerija/lokal3.jpg'
+  ];
+
+  // Load and display featured products
+  async function loadFeaturedProducts() {
+    try {
+      const response = await fetch('/json/product.json');
+      const allProducts = await response.json();
+      
+      // Shuffle array and get random products
+      const shuffled = allProducts.sort(() => 0.5 - Math.random());
+      featuredProducts = shuffled.slice(0, 9); // Get 9 products (3 slides of 3)
+      
+      renderProducts(); // setupSlider() is called inside renderProducts()
+    } catch (error) {
+      console.error('Error loading products:', error);
+    }
+  }
+
+  // Render products
+  function renderProducts() {
+    const container = document.getElementById('featuredProductsContainer');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    // Render all products (we'll show/hide based on viewport)
+    featuredProducts.forEach((product, index) => {
+      const imageIndex = index % productImages.length;
+      const imageSrc = productImages[imageIndex];
+      
+      const displayPrice = product.akcijskaCena && product.akcijskaCena !== '/' 
+        ? product.akcijskaCena 
+        : product.cena;
+      
+      const cardHTML = `
+        <div class="custom-card" data-product-id="${product.id}">
+          <div class="image-c">
+            <div class="arrow-image-left">
+              <span class="material-symbols-outlined">arrow_back_ios_new</span>
+            </div>
+            <div class="arrow-image-right">
+              <span class="material-symbols-outlined">arrow_forward_ios</span>
+            </div>
+            <div class="heart-container">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <path class="heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2"/>
+                <path class="heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0"/>
+              </svg>
+            </div>
+            <img src="${imageSrc}" alt="${product.naslov}" loading="lazy" />
+          </div>
+          <div class="content-c">
+            <span class="product-brand">${product.brend}</span>
+            <h4>${product.naslov}</h4>
+            <div class="price">${displayPrice} RSD</div>
+            <div class="btns-flex">
+              <button class="buy-now">Buy now</button>
+              <button class="add-to-cart">
+                <span class="material-symbols-outlined cart-icon">add_shopping_cart</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      container.innerHTML += cardHTML;
+    });
+
+    // Setup slider after rendering and store showSlide function
+    showSlideFunction = setupSlider();
+  }
+
+  // Setup slider functionality
+  function setupSlider() {
+    const container = document.getElementById('featuredProductsContainer');
+    const arrowLeft = document.querySelector('.arrow-l');
+    const arrowRight = document.querySelector('.arrow-r');
+    
+    if (!container) return;
+
+    // Check if we're on mobile (should show all products, no slider)
+    const isMobile = window.innerWidth <= 1023;
+    
+    if (isMobile) {
+      // On mobile, hide arrows and show all products
+      if (arrowLeft) arrowLeft.style.display = 'none';
+      if (arrowRight) arrowRight.style.display = 'none';
+      
+      // Show all cards on mobile with full opacity
+      const allCards = container.querySelectorAll('.custom-card');
+      allCards.forEach(card => {
+        card.style.display = 'block';
+        card.style.opacity = '1';
+        card.style.visibility = 'visible';
+      });
+      return;
+    }
+
+    if (!arrowLeft || !arrowRight) return;
+
+    // Show arrows on desktop
+    arrowLeft.style.display = 'grid';
+    arrowRight.style.display = 'grid';
+
+    const maxSlides = Math.ceil(featuredProducts.length / productsPerSlide);
+    
+    function showSlide(index, animate = false) {
+      currentSlideIndex = index;
+      const startIndex = currentSlideIndex * productsPerSlide;
+      const endIndex = startIndex + productsPerSlide;
+      
+      const allCards = container.querySelectorAll('.custom-card');
+      
+      if (animate) {
+        // First, fade out currently visible cards
+        allCards.forEach((card) => {
+          if (card.style.display === 'block' && card.style.opacity !== '0') {
+            card.style.opacity = '0';
+            card.style.visibility = 'hidden';
+          }
+        });
+        
+        // After fade out, hide old cards and show new ones
+        setTimeout(() => {
+          allCards.forEach((card, i) => {
+            if (i >= startIndex && i < endIndex) {
+              // Show new cards with opacity 0
+              card.style.display = 'block';
+              card.style.opacity = '0';
+              card.style.visibility = 'hidden';
+              
+              // Force reflow to ensure opacity 0 is applied
+              card.offsetHeight;
+              
+              // Then fade in
+              setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.visibility = 'visible';
+              }, 20);
+            } else {
+              // Hide old cards
+              card.style.display = 'none';
+            }
+          });
+        }, 150); // Wait for fade out to complete (half of 300ms transition)
+      } else {
+        // Initial load - no animation
+        allCards.forEach((card, i) => {
+          if (i >= startIndex && i < endIndex) {
+            card.style.display = 'block';
+            card.style.opacity = '1';
+            card.style.visibility = 'visible';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+    }
+    
+    // Store function for use in event handler
+    showSlideFunction = showSlide;
+
+    // Initialize first slide without animation
+    showSlide(0, false);
+    
+    // Return showSlide function for external use
+    return showSlide;
+  }
+
+  // Handle slider arrows with event delegation
+  document.addEventListener('click', function(e) {
+    const arrowLeft = e.target.closest('.arrow-l');
+    const arrowRight = e.target.closest('.arrow-r');
+    
+    if ((arrowLeft || arrowRight) && window.innerWidth > 1023 && showSlideFunction) {
+      e.preventDefault();
+      const maxSlides = Math.ceil(featuredProducts.length / productsPerSlide);
+      
+      if (arrowLeft) {
+        currentSlideIndex = (currentSlideIndex - 1 + maxSlides) % maxSlides;
+      } else {
+        currentSlideIndex = (currentSlideIndex + 1) % maxSlides;
+      }
+      
+      // Use the showSlide function with animation
+      showSlideFunction(currentSlideIndex, true);
+    }
+  });
+
+  // Handle window resize
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      renderProducts(); // setupSlider() is called inside renderProducts()
+    }, 250);
+  });
+
+  // Load products on page load
+  loadFeaturedProducts();
+
   // Add styles for flying item
   const style = document.createElement("style");
   style.textContent = `
@@ -38,63 +256,63 @@ document.addEventListener("DOMContentLoaded", function () {
   `;
   document.head.appendChild(style);
 
-  // Add to cart animation
-  const cartButtons = document.querySelectorAll(".add-to-cart");
+  // Add to cart animation - using event delegation for dynamically added products
   const cartIcon = document.querySelector("#openCart");
+  
+  document.addEventListener("click", function (e) {
+    const addToCartButton = e.target.closest(".add-to-cart");
+    if (!addToCartButton || !cartIcon) return;
 
-  cartButtons.forEach((button) => {
-    button.addEventListener("click", function (e) {
-      // Get button position
-      const buttonRect = button.getBoundingClientRect();
-      const buttonX = buttonRect.left + buttonRect.width / 2;
-      const buttonY = buttonRect.top + buttonRect.height / 2;
+    // Get button position
+    const buttonRect = addToCartButton.getBoundingClientRect();
+    const buttonX = buttonRect.left + buttonRect.width / 2;
+    const buttonY = buttonRect.top + buttonRect.height / 2;
 
-      // Get cart position
-      const cartRect = cartIcon.getBoundingClientRect();
-      const cartX = cartRect.left + cartRect.width / 2;
-      const cartY = cartRect.top + cartRect.height / 2;
+    // Get cart position
+    const cartRect = cartIcon.getBoundingClientRect();
+    const cartX = cartRect.left + cartRect.width / 2;
+    const cartY = cartRect.top + cartRect.height / 2;
 
-      // Create flying element
-      const flyingElement = document.createElement("div");
-      flyingElement.className = "flying-item";
-      flyingElement.innerHTML =
-        '<span class="material-symbols-outlined cart-icon">add_shopping_cart</span>';
-      document.body.appendChild(flyingElement);
+    // Create flying element
+    const flyingElement = document.createElement("div");
+    flyingElement.className = "flying-item";
+    flyingElement.innerHTML =
+      '<span class="material-symbols-outlined cart-icon">add_shopping_cart</span>';
+    document.body.appendChild(flyingElement);
 
-      // Set initial position
-      flyingElement.style.position = "fixed";
-      flyingElement.style.left = buttonX + "px";
-      flyingElement.style.top = buttonY + "px";
-      flyingElement.style.pointerEvents = "none";
-      flyingElement.style.zIndex = "9999";
+    // Set initial position
+    flyingElement.style.position = "fixed";
+    flyingElement.style.left = buttonX + "px";
+    flyingElement.style.top = buttonY + "px";
+    flyingElement.style.pointerEvents = "none";
+    flyingElement.style.zIndex = "9999";
 
-      // Trigger animation
-      setTimeout(() => {
-        flyingElement.style.transition =
-          "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-        flyingElement.style.left = cartX + "px";
-        flyingElement.style.top = cartY + "px";
-        flyingElement.style.opacity = "0";
-        flyingElement.style.transform = "scale(0.3)";
-      }, 10);
+    // Trigger animation
+    setTimeout(() => {
+      flyingElement.style.transition =
+        "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+      flyingElement.style.left = cartX + "px";
+      flyingElement.style.top = cartY + "px";
+      flyingElement.style.opacity = "0";
+      flyingElement.style.transform = "scale(0.3)";
+    }, 10);
 
-      // Add cart button animation
-      button.classList.add("adding");
-      setTimeout(() => {
-        button.classList.remove("adding");
-      }, 600);
+    // Add cart button animation
+    addToCartButton.classList.add("adding");
+    setTimeout(() => {
+      addToCartButton.classList.remove("adding");
+    }, 600);
 
-      // Add pulse effect to cart
-      cartIcon.style.animation = "cartNotify 0.6s ease";
-      setTimeout(() => {
-        cartIcon.style.animation = "";
-      }, 600);
+    // Add pulse effect to cart
+    cartIcon.style.animation = "cartNotify 0.6s ease";
+    setTimeout(() => {
+      cartIcon.style.animation = "";
+    }, 600);
 
-      // Remove flying element after animation
-      setTimeout(() => {
-        flyingElement.remove();
-      }, 800);
-    });
+    // Remove flying element after animation
+    setTimeout(() => {
+      flyingElement.remove();
+    }, 800);
   });
 
   // Intersection Observer for Scroll Animations
