@@ -39,7 +39,7 @@ async function loadProductsData() {
     if (!response.ok) throw new Error(`HTTP error ${response.status}`);
     return await response.json();
   } catch (error) {
-    console.error("Greška pri učitavanju product.json:", error);
+    console.error("Error loading product.json:", error);
     return [];
   }
 }
@@ -83,24 +83,24 @@ function slugify(value) {
 }
 
 function getSelectionFromUrl() {
-  // Koristi window.location.pathname koji je već dekodovan od strane browsera
-  // Ali ako ima URL-encoded karaktere, dekoduj ih
+  // Use window.location.pathname which is already decoded by the browser
+  // But if it has URL-encoded characters, decode them
   const pathname = window.location.pathname;
   const parts = pathname.split("/").filter(Boolean);
   // Skip known routes like 'about', 'gallery', 'legal', etc.
   const knownRoutes = ['about', 'gallery', 'legal', 'shopping-cart', 'product'];
   const filteredParts = parts.filter(p => !knownRoutes.includes(p.toLowerCase()));
   
-  // Dekoduj URL-encoded karaktere (npr. %D0%B0 -> а)
-  // window.location.pathname bi trebalo da bude već dekodovan, ali proveri
+  // Decode URL-encoded characters (e.g. %D0%B0 -> а)
+  // window.location.pathname should already be decoded, but check
   const decodeSlug = (str) => {
     if (!str) return "";
-    // Ako string sadrži % karaktere, pokušaj da dekoduješ
+    // If string contains % characters, try to decode
     if (str.includes('%')) {
       try {
         return decodeURIComponent(str);
       } catch (e) {
-        // Ako ne uspe, vrati original
+        // If it fails, return original
         return str;
       }
     }
@@ -111,7 +111,7 @@ function getSelectionFromUrl() {
   let slugSub = decodeSlug(filteredParts[1] || "");
   let slugSub2 = decodeSlug(filteredParts[2] || "");
 
-  console.log("🌐 URL PARSIRANJE:", {
+  console.log("🌐 URL PARSING:", {
     pathname,
     parts,
     filteredParts,
@@ -127,47 +127,35 @@ function getSelectionFromUrl() {
 
 function filterBySelection(products, selection) {
   const { slugCat, slugSub, slugSub2 } = selection;
-  // Normalizuj URL slug-ove pre poređenja
+  // Normalize URL slugs before comparison
   const normalizedCat = slugCat ? slugify(slugCat) : "";
   const normalizedSub = slugSub ? slugify(slugSub) : "";
   const normalizedSub2 = slugSub2 ? slugify(slugSub2) : "";
   
-  console.log("🔍 FILTRIRANJE:", {
+  console.log("🔍 FILTERING:", {
     urlSlugs: { slugCat, slugSub, slugSub2 },
     normalized: { normalizedCat, normalizedSub, normalizedSub2 }
   });
   
   const filtered = products.filter((p) => {
-    const pCat = slugify(p.kategorija || "");
-    const pSub = slugify(p.potkategorija || "");
-    const pSub2 = slugify(p.potkategorija2 || "");
+    const pCat = slugify(p.category || "");
+    const pSub = slugify(p.subcategory || "");
+    const pSub2 = slugify(p.type || "");
     const matchCat = !normalizedCat || pCat === normalizedCat;
     const matchSub = !normalizedSub || pSub === normalizedSub;
     const matchSub2 = !normalizedSub2 || pSub2 === normalizedSub2;
     
-    // Debug za proizvode sa "Hrana za ribe" i "ciklide"
-    if (p.potkategorija && p.potkategorija.includes("ribe") && p.potkategorija2 && p.potkategorija2.includes("ciklide")) {
-      console.log("🐟 Proizvod sa ribama/ciklidama:", {
-        id: p.id,
-        kategorija: p.kategorija,
-        potkategorija: p.potkategorija,
-        potkategorija2: p.potkategorija2,
-        slugs: { pCat, pSub, pSub2 },
-        matches: { matchCat, matchSub, matchSub2 }
-      });
-    }
-    
     return matchCat && matchSub && matchSub2;
   });
   
-  console.log(`📊 Pronađeno ${filtered.length} proizvoda od ${products.length} ukupno`);
+  console.log(`📊 Found ${filtered.length} products out of ${products.length} total`);
   return filtered;
 }
 
 function pickImage(product) {
-  if (product.slika) return product.slika;
+  if (product.image) return product.image;
   // Stable pseudo-random pick based on product id/name to keep image consistent
-  const key = `${product.id || ""}-${product.naslov || ""}`;
+  const key = `${product.id || ""}-${product.title || ""}`;
   let hash = 0;
   for (let i = 0; i < key.length; i++) {
     hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
@@ -177,9 +165,9 @@ function pickImage(product) {
 }
 
 function formatPrice(product) {
-  const akcijska = product.akcijskaCena && product.akcijskaCena !== "/";
-  const base = (product.cena || "").trim();
-  const promo = akcijska ? (product.akcijskaCena || "").trim() : "";
+  const onSale = product.salePrice && product.salePrice !== "/";
+  const base = (product.price || "").trim();
+  const promo = onSale ? (product.salePrice || "").trim() : "";
   if (promo) {
     return `<span class="price-range akcijska">${promo} RSD</span> <span class="price-old">${base} RSD</span>`;
   }
@@ -189,26 +177,30 @@ function formatPrice(product) {
 function createProductCard(product) {
   const card = document.createElement("div");
   card.className = "product-card";
-  card.setAttribute("data-category", product.kategorija);
-  card.setAttribute("data-subcategory", product.potkategorija);
-  card.setAttribute("data-subcategory2", product.potkategorija2 || "");
+  card.setAttribute("data-category", product.category);
+  card.setAttribute("data-subcategory", product.subcategory);
+  card.setAttribute("data-subcategory2", product.type || "");
 
-  const badge = product.postotak && product.postotak !== "/" ? `<div class="product-badge">-${product.postotak}</div>` : "";
+  const badge = product.percentage && product.percentage !== "/" ? `<div class="product-badge">-${product.percentage}</div>` : "";
+  
+  // Create slug from product title for URL
+  const productSlug = slugify(product.title);
+  const productUrl = `/product/${productSlug}`;
 
   card.innerHTML = `
     <div class="product-image">
-      <img src="${pickImage(product)}" alt="${product.naslov}" loading="lazy" />
+      <img src="${pickImage(product)}" alt="${product.title}" loading="lazy" />
       ${badge}
     </div>
     <div class="product-info">
-      <div class="product-brand">${product.brend || ""}</div>
-      <h3 class="product-title">${product.naslov}</h3>
+      <div class="product-brand">${product.brand || ""}</div>
+      <h3 class="product-title">${product.title}</h3>
       <div class="product-price">
         ${formatPrice(product)}
       </div>
-      <p class="product-description">${product.opis || ""}</p>
+      <p class="product-description">${product.description || ""}</p>
       <div class="product-buttons">
-        <button class="import-btn">
+        <button class="import-btn" data-product-url="${productUrl}">
           <span class="material-symbols-outlined">shopping_bag</span>
           Buy Now
         </button>
@@ -218,6 +210,25 @@ function createProductCard(product) {
       </div>
     </div>
   `;
+  
+  // Add click handler to navigate to product page
+  card.addEventListener("click", function(e) {
+    // Don't navigate if clicking on buttons
+    if (e.target.closest(".import-btn") || e.target.closest(".cart-icon-btn")) {
+      return;
+    }
+    window.location.href = productUrl;
+  });
+  
+  // Add click handler to Buy Now button
+  const buyNowBtn = card.querySelector(".import-btn");
+  if (buyNowBtn) {
+    buyNowBtn.addEventListener("click", function(e) {
+      e.stopPropagation();
+      window.location.href = productUrl;
+    });
+  }
+  
   return card;
 }
 
@@ -245,7 +256,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const nextBtn = document.getElementById("nextPageBtn");
   const paginationContainer = document.querySelector(".pagination-container");
 
-  // Slider controls (shown only kada ima potrebe)
+  // Slider controls (shown only when needed)
   let sliderMode = false;
   let sliderControls = null;
   const createSliderControls = () => {
@@ -253,10 +264,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     sliderControls = document.createElement("div");
     sliderControls.className = "products-slider-controls hidden";
     sliderControls.innerHTML = `
-      <button class="slider-arrow slider-prev" aria-label="Prethodni proizvodi">
+      <button class="slider-arrow slider-prev" aria-label="Previous products">
         <span class="material-symbols-outlined">chevron_left</span>
       </button>
-      <button class="slider-arrow slider-next" aria-label="Sledeći proizvodi">
+      <button class="slider-arrow slider-next" aria-label="Next products">
         <span class="material-symbols-outlined">chevron_right</span>
       </button>
     `;
@@ -304,10 +315,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const selection = getSelectionFromUrl();
   
-  // Zameni URL sa dekodovanom verzijom (bez % karaktera)
+  // Replace URL with decoded version (without % characters)
   const normalizeUrl = () => {
     if (selection.slugCat || selection.slugSub || selection.slugSub2) {
-      // Koristi slugify da bi slug-ovi bili u istom formatu kao u clone.js
+      // Use slugify so slugs are in the same format as in clone.js
       const cleanPath = [
         selection.slugCat,
         selection.slugSub,
@@ -320,17 +331,17 @@ document.addEventListener("DOMContentLoaded", async function () {
       const newPath = `/${cleanPath}`;
       const currentPath = window.location.pathname;
       
-      // Ako trenutni path ima URL-encoded karaktere, zameni ga
+      // If current path has URL-encoded characters, replace it
       if (currentPath !== newPath && currentPath.includes("%")) {
         history.replaceState(null, "", newPath);
-        console.log("🔗 URL normalizovan:", currentPath, "->", newPath);
+        console.log("🔗 URL normalized:", currentPath, "->", newPath);
       }
     }
   };
   
   normalizeUrl();
   
-  // Hero kategorije se uvek prikazuju
+  // Hero categories are always displayed
 
   const resolveName = (field, slugValue) => {
     if (!slugValue) return "";
@@ -379,7 +390,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const pageDescription = document.querySelector(".page-description");
     if (!pageTitle) return;
 
-    // Prikazuje samo poslednju kategoriju u hijerarhiji
+    // Display only the last category in the hierarchy
     let title = "Product Catalog";
     if (selectionNames.subcat2) {
       title = selectionNames.subcat2;
@@ -391,7 +402,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     pageTitle.textContent = title;
 
-    // Sakrij page-description element
+    // Hide page-description element
     if (pageDescription) {
       pageDescription.style.display = "none";
     }
@@ -400,13 +411,13 @@ document.addEventListener("DOMContentLoaded", async function () {
   const allProducts = await loadProductsData();
   if (!productsGrid) return;
   if (!allProducts.length) {
-    productsGrid.innerHTML = "<p class='empty-state'>Nije moguće učitati proizvode.</p>";
+    productsGrid.innerHTML = "<p class='empty-state'>Unable to load products.</p>";
     return;
   }
 
-  selectionNames.cat = resolveName("kategorija", selection.slugCat);
-  selectionNames.subcat = resolveName("potkategorija", selection.slugSub);
-  selectionNames.subcat2 = resolveName("potkategorija2", selection.slugSub2);
+  selectionNames.cat = resolveName("category", selection.slugCat);
+  selectionNames.subcat = resolveName("subcategory", selection.slugSub);
+  selectionNames.subcat2 = resolveName("type", selection.slugSub2);
 
   updateBreadcrumbs();
   updatePageTitle();
@@ -427,11 +438,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (!term) return list;
     return list.filter((p) => {
       const haystack = [
-        p.naslov,
-        p.brend,
-        p.kategorija,
-        p.potkategorija,
-        p.potkategorija2
+        p.title,
+        p.brand,
+        p.category,
+        p.subcategory,
+        p.type
       ]
         .filter(Boolean)
         .join(" ")
@@ -441,8 +452,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   function shouldUseSlider(count) {
-    // koristi slider kada ima dovoljno proizvoda (npr. više od 6) ili više od jedne stranice
-    return count > Math.max(6, itemsPerPage);
+    // Use pagination instead of slider for better performance with many products
+    // Slider is only used on mobile/tablet for small collections
+    return false; // Always use pagination for better layout stability
   }
 
   function refreshData() {
@@ -457,7 +469,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   function renderProducts(page) {
-    console.log("🎨 RENDER PROIZVODA:", {
+    console.log("🎨 RENDER PRODUCTS:", {
       page,
       filteredProductsCount: filteredProducts.length,
       sliderMode,
@@ -471,11 +483,11 @@ document.addEventListener("DOMContentLoaded", async function () {
       ? filteredProducts
       : filteredProducts.slice(start, start + itemsPerPage);
 
-    console.log("📦 Lista za renderovanje:", listToRender.length, "proizvoda");
+    console.log("📦 List to render:", listToRender.length, "products");
 
     if (!listToRender.length) {
-      productsGrid.innerHTML = "<p class='empty-state'>Nema proizvoda za izabrani filter.</p>";
-      console.log("❌ Nema proizvoda za renderovanje");
+      productsGrid.innerHTML = "<p class='empty-state'>No products found for the selected filter.</p>";
+      console.log("❌ No products to render");
       return;
     }
 
@@ -487,10 +499,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     listToRender.forEach((product) => {
       const card = createProductCard(product);
       productsGrid.appendChild(card);
-      console.log("✅ Dodat proizvod:", product.id, product.naslov);
+      console.log("✅ Added product:", product.id, product.title);
     });
     
-    console.log("✅ Renderovanje završeno. Dodato kartica:", productsGrid.children.length);
+    console.log("✅ Rendering completed. Added cards:", productsGrid.children.length);
   }
 
   function updatePagination() {
@@ -583,13 +595,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   refreshData();
 
-  // Hero category cards lead to odgovarajucu kategoriju
+  // Hero category cards lead to corresponding category
   const heroCategoryItems = document.querySelectorAll(".hero-category-item");
   const heroMap = {
-    food: "Hrana za životinje",
-    toys: "Igračke za životinje",
-    equipment: "Oprema za kućne ljubimce",
-    accessories: "Kozmetika za životinje",
+    food: "Pet Food",
+    toys: "Pet Toys",
+    equipment: "Pet Supplies",
+    accessories: "Pet Grooming",
   };
   heroCategoryItems.forEach((item) => {
     item.addEventListener("click", () => {

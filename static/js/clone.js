@@ -10,50 +10,50 @@ async function loadProductsData() {
     const products = await response.json();
     return products;
   } catch (error) {
-    console.error('Greška pri učitavanju product.json:', error);
+    console.error('Error loading product.json:', error);
     return [];
   }
 }
 
-// Funkcija za kreiranje strukture kategorija iz JSON podataka
+// Funkcija za kreiranje strukture category iz JSON podataka
 function parseCategories(products) {
   const categoryMap = {};
 
-  // Mapiranje kategorija na ikonice (na osnovu postojećeg koda)
+  // Mapiranje category na ikonice (na osnovu postojećeg koda)
   const categoryIcons = {
-    "Hrana za životinje": "restaurant",
-    "Igračke za životinje": "toys",
-    "Oprema za kućne ljubimce": "pets",
-    "Kozmetika za životinje": "soap"
+    "Pet Food": "restaurant",
+    "Pet Toys": "toys",
+    "Pet Supplies": "pets",
+    "Pet Grooming": "soap"
   };
 
-  // Mapiranje kategorija na data-category atribute
+  // Mapiranje category na data-category atribute
   const categoryDataAttrs = {
-    "Hrana za životinje": "hrana",
-    "Igračke za životinje": "igracke",
-    "Oprema za kućne ljubimce": "oprema",
-    "Kozmetika za životinje": "higijena"
+    "Pet Food": "hrana",
+    "Pet Toys": "igracke",
+    "Pet Supplies": "oprema",
+    "Pet Grooming": "higijena"
   };
 
   products.forEach(product => {
-    const { kategorija, potkategorija, potkategorija2 } = product;
+    const { category, subcategory, type } = product;
 
-    if (!categoryMap[kategorija]) {
-      categoryMap[kategorija] = {
-        icon: categoryIcons[kategorija] || "category",
-        dataAttr: categoryDataAttrs[kategorija] || kategorija.toLowerCase().replace(/\s+/g, ''),
+    if (!categoryMap[category]) {
+      categoryMap[category] = {
+        icon: categoryIcons[category] || "category",
+        dataAttr: categoryDataAttrs[category] || category.toLowerCase().replace(/\s+/g, ''),
         subcategories: {}
       };
     }
 
-    if (!categoryMap[kategorija].subcategories[potkategorija]) {
-      categoryMap[kategorija].subcategories[potkategorija] = {
+    if (subcategory && !categoryMap[category].subcategories[subcategory]) {
+      categoryMap[category].subcategories[subcategory] = {
         subcategories2: new Set()
       };
     }
 
-    if (potkategorija2) {
-      categoryMap[kategorija].subcategories[potkategorija].subcategories2.add(potkategorija2);
+    if (type && subcategory) {
+      categoryMap[category].subcategories[subcategory].subcategories2.add(type);
     }
   });
 
@@ -148,7 +148,7 @@ function generateDynamicDropdownHTML(categoryMap) {
             <span class="material-symbols-outlined">${icon}</span>
             ${categoryName}
           </h3>
-          <a href="/${slugify(categoryName)}" class="view-all-link">Pogledaj sve →</a>
+          <a href="/${slugify(categoryName)}" class="view-all-link">View all →</a>
         </div>
         ${subcategoriesHTML}
       </div>

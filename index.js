@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const compression = require("compression");
+const fs = require("fs");
 const port = process.env.PORT || 3000;
 const app = express();
 
@@ -60,8 +61,104 @@ app.get("/legal", (req, res) => {
     res.sendFile(path.join(__dirname, "/static/legal.html"));
   });
 
+// Load products data
+function loadProductsData() {
+  try {
+    const productsPath = path.join(__dirname, "static/json/product.json");
+    const productsData = fs.readFileSync(productsPath, "utf8");
+    return JSON.parse(productsData);
+  } catch (error) {
+    console.error("Error loading products data:", error);
+    return [];
+  }
+}
+
+// Slugify function to match URL slugs with product titles
+function slugify(value) {
+  if (!value) return "";
+  
+  const cyrToLat = {
+    а: "a", б: "b", в: "v", г: "g", д: "d", ђ: "dj", е: "e", ж: "z",
+    з: "z", и: "i", ј: "j", к: "k", л: "l", љ: "lj", м: "m", н: "n",
+    њ: "nj", о: "o", п: "p", р: "r", с: "s", т: "t", ћ: "c", у: "u",
+    ф: "f", х: "h", ц: "c", ч: "c", џ: "dz", ш: "s",
+    А: "a", Б: "b", В: "v", Г: "g", Д: "d", Ђ: "dj", Е: "e", Ж: "z",
+    З: "z", И: "i", Ј: "j", К: "k", Л: "l", Љ: "lj", М: "m", Н: "n",
+    Њ: "nj", О: "o", П: "p", Р: "r", С: "s", Т: "t", Ћ: "c", У: "u",
+    Ф: "f", Х: "h", Ц: "c", Ч: "c", Џ: "dz", Ш: "s"
+  };
+  
+  let result = value.toString();
+  result = result.replace(/[а-яА-ЯђЂљЉњЊћЋџЏ]/g, ch => cyrToLat[ch] || ch);
+  result = result.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  result = result
+    .replace(/đ/g, "dj").replace(/Đ/g, "dj")
+    .replace(/ž/g, "z").replace(/Ž/g, "z")
+    .replace(/č/g, "c").replace(/Č/g, "c")
+    .replace(/ć/g, "c").replace(/Ć/g, "c")
+    .replace(/š/g, "s").replace(/Š/g, "s");
+  
+  return result
+    .replace(/[^a-zA-Z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .toLowerCase();
+}
+
+app.get("/product/:slug", (req, res) => {
+  const slug = req.params.slug;
+  const products = loadProductsData();
+  
+  if (!slug) {
+    return res.render("product", { product: null, recommendedProducts: [] });
+  }
+  
+  // Find product by matching slugified title with URL slug
+  const product = products.find(p => {
+    const productSlug = slugify(p.title);
+    return productSlug === slug;
+  });
+  
+  if (!product) {
+    return res.render("product", { product: null, recommendedProducts: [] });
+  }
+  
+  // Get recommended products (same category, exclude current product)
+  const recommendedProducts = products
+    .filter(p => p.category === product.category && p.id !== product.id)
+    .slice(0, 8)
+    .map(p => ({
+      ...p,
+      slug: slugify(p.title)
+    }));
+  
+  res.render("product", { product, recommendedProducts, slugify });
+});
+
+// Keep old route for backward compatibility
 app.get("/product", (req, res) => {
-  res.render("product");
+  const productId = req.query.id;
+  const products = loadProductsData();
+  
+  if (!productId) {
+    return res.render("product", { product: null, recommendedProducts: [] });
+  }
+  
+  const product = products.find(p => p.id === productId);
+  
+  if (!product) {
+    return res.render("product", { product: null, recommendedProducts: [] });
+  }
+  
+  const recommendedProducts = products
+    .filter(p => p.category === product.category && p.id !== product.id)
+    .slice(0, 8)
+    .map(p => ({
+      ...p,
+      slug: slugify(p.title)
+    }));
+  
+  res.render("product", { product, recommendedProducts, slugify });
 });
 
 // Custom page routes - serve custom-page.html for category URLs

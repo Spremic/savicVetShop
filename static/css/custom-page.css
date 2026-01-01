@@ -1788,17 +1788,25 @@ body {
 }
 
 .products-grid.slider-active {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(260px, 1fr);
+  display: flex;
+  flex-direction: row;
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scroll-padding: 1rem;
   padding-bottom: 8px;
+  gap: 25px;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
 }
 
 .products-grid.slider-active .product-card {
   scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
 }
 
 .products-grid.slider-active::-webkit-scrollbar {

@@ -448,467 +448,579 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Recommended Products Carousel
-  const recommendedMid = document.querySelector(".recommended-mid");
-  const recommendedArrowL = document.querySelector(".recommended-arrow-l");
-  const recommendedArrowR = document.querySelector(".recommended-arrow-r");
 
-  if (recommendedMid && recommendedArrowL && recommendedArrowR) {
-    const cards = Array.from(recommendedMid.querySelectorAll(".recommended-card"));
-    let isScrolling = false;
-    let currentIndex = 0;
-    
-    // Function to calculate cards per view based on actual card width (minimum 315px)
-    function getCardsPerView() {
-      const width = window.innerWidth;
-      
-      // Ispod 1024px: prikaži sve kartice sa horizontalnim scrollom
-      if (width < 1024) {
-        return -1; // Specijalna vrednost za "prikaži sve"
-      }
-      
-      // Od 1024px do 1280px: fiksno 2 kartice
-      if (width >= 1024 && width <= 1280) {
-        return 2;
-      }
-      
-      // Preko 1280px: kalkuliši na osnovu stvarne širine kartice
-      const containerWidth = recommendedMid.offsetWidth || recommendedMid.clientWidth;
-      const gap = 20;
-      const minCardWidth = 315;
-      
-      // Računaj širinu kartice ako bi bilo 4 kartice
-      const cardWidthWith4 = (containerWidth - (3 * gap)) / 4;
-      
-      // Ako je širina kartice >= 315px sa 4 kartice, koristi 4, inače 3
-      if (cardWidthWith4 >= minCardWidth) {
-        return 4; // 4 kartice - širina kartice je >= 315px
-      } else {
-        return 3; // 3 kartice - širina kartice bi bila < 315px sa 4 kartice
-      }
+
+  // Load and display recommended products
+  async function loadRecommendedProducts() {
+    console.log('Loading recommended products...');
+    try {
+      const response = await fetch('/json/product.json');
+      const products = await response.json();
+      console.log('Products loaded:', products.length);
+
+      // Get current product ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const currentProductId = urlParams.get('id');
+
+      // Filter out current product and get random products
+      const availableProducts = products.filter(product => product.id !== currentProductId);
+      const recommendedProducts = [];
+
+      // Get exactly 5 random products
+      const numProducts = Math.min(5, availableProducts.length);
+      const shuffled = [...availableProducts].sort(() => 0.5 - Math.random());
+      recommendedProducts.push(...shuffled.slice(0, numProducts));
+
+      // Display recommended products
+      displayRecommendedProducts(recommendedProducts);
+
+      // Initialize carousel after products are loaded
+      initializeRecommendedCarousel();
+
+      // Add recommended observer after products are loaded
+      setupRecommendedObserver();
+
+    } catch (error) {
+      console.error('Error loading recommended products:', error);
     }
-    
-    let cardsPerView = getCardsPerView();
+  }
 
-    // Function to update card widths based on cardsPerView
-    function updateCardWidths() {
-      const gap = 20;
-      const minCardWidth = 315;
-      let flexBasis, width, maxWidth, minWidth;
-      
-      if (cardsPerView === -1) {
-        // Ispod 1024px: prikaži sve kartice sa scrollom - postavi fiksne širine
-        const mobileCardWidth = 280;
-        cards.forEach(card => {
-          if (card) {
-            // Postavi fiksne širine za mobile scroll
-            card.style.flexBasis = `${mobileCardWidth}px`;
-            card.style.width = `${mobileCardWidth}px`;
-            card.style.maxWidth = `${mobileCardWidth}px`;
-            card.style.minWidth = `${mobileCardWidth}px`;
-          }
-        });
-        return;
-      } else if (cardsPerView === 4) {
-        // 4 kartice: calc((100% - 60px) / 4)
-        flexBasis = `calc((100% - ${3 * gap}px) / 4)`;
-        width = `calc((100% - ${3 * gap}px) / 4)`;
-        maxWidth = `calc((100% - ${3 * gap}px) / 4)`;
-        minWidth = `${minCardWidth}px`; // Osiguraj minimum 315px
-      } else if (cardsPerView === 3) {
-        // 3 kartice: calc((100% - 40px) / 3)
-        flexBasis = `calc((100% - ${2 * gap}px) / 3)`;
-        width = `calc((100% - ${2 * gap}px) / 3)`;
-        maxWidth = `calc((100% - ${2 * gap}px) / 3)`;
-        minWidth = '0'; // Nema minimum za 3 kartice
-      } else if (cardsPerView === 2) {
-        // 2 kartice (1024px-1280px): calc((100% - 20px) / 2)
-        flexBasis = `calc((100% - ${gap}px) / 2)`;
-        width = `calc((100% - ${gap}px) / 2)`;
-        maxWidth = `calc((100% - ${gap}px) / 2)`;
-        minWidth = '0';
-      }
-      
-      // Postavi širine na sve kartice
-      cards.forEach(card => {
-        if (card) {
-          card.style.flexBasis = flexBasis;
-          card.style.width = width;
-          card.style.maxWidth = maxWidth;
-          if (cardsPerView === 4) {
-            card.style.minWidth = minWidth; // Minimum 315px za 4 kartice
-          } else {
-            card.style.minWidth = minWidth;
-          }
+  // Setup recommended observer for recommended cards
+  function setupRecommendedObserver() {
+    const recommendedObserverOptions = {
+      root: null,
+      rootMargin: "-300px 0px", // Element must be 300px into viewport before animating
+      threshold: 0.5
+    };
+
+    const recommendedObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+          observer.unobserve(entry.target); // Only animate once
         }
       });
-    }
+    }, recommendedObserverOptions);
+
+    // Observe recommended cards
+    const recommendedCards = document.querySelectorAll(".recommended-card.reveal");
+    recommendedCards.forEach(el => {
+      recommendedObserver.observe(el);
+    });
+  }
+
+  // Recommended add to cart functionality with flying animation
+  function setupRecommendedAddToCart() {
+    const recommendedAddToCartBtns = document.querySelectorAll(".recommended-add-to-cart");
+    const cartIcon = document.querySelector("#openCart");
     
-    // Function to update cardsPerView and reset if needed
-    function updateCardsPerView() {
-      const newCardsPerView = getCardsPerView();
-      if (newCardsPerView !== cardsPerView) {
-        cardsPerView = newCardsPerView;
-        // Reset to first page if current index is out of bounds (samo ako nije -1)
-        if (cardsPerView !== -1) {
-          const maxIndex = Math.max(0, cards.length - cardsPerView);
-          if (currentIndex > maxIndex) {
+    recommendedAddToCartBtns.forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        
+        // Get button position
+        const buttonRect = btn.getBoundingClientRect();
+        const buttonX = buttonRect.left + buttonRect.width / 2;
+        const buttonY = buttonRect.top + buttonRect.height / 2;
+
+        // Get cart position (if cart icon exists)
+        if (cartIcon) {
+          const cartRect = cartIcon.getBoundingClientRect();
+          const cartX = cartRect.left + cartRect.width / 2;
+          const cartY = cartRect.top + cartRect.height / 2;
+
+          // Create flying element
+          const flyingElement = document.createElement("div");
+          flyingElement.className = "flying-item";
+          flyingElement.innerHTML =
+            '<span class="material-symbols-outlined cart-icon">add_shopping_cart</span>';
+          document.body.appendChild(flyingElement);
+
+          // Set initial position
+          flyingElement.style.position = "fixed";
+          flyingElement.style.left = buttonX + "px";
+          flyingElement.style.top = buttonY + "px";
+          flyingElement.style.pointerEvents = "none";
+          flyingElement.style.zIndex = "9999";
+
+          // Trigger animation
+          setTimeout(() => {
+            flyingElement.style.transition =
+              "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            flyingElement.style.left = cartX + "px";
+            flyingElement.style.top = cartY + "px";
+            flyingElement.style.opacity = "0";
+            flyingElement.style.transform = "scale(0.3)";
+          }, 10);
+
+          // Add pulse effect to cart
+          cartIcon.style.animation = "cartNotify 0.6s ease";
+          setTimeout(() => {
+            cartIcon.style.animation = "";
+          }, 600);
+
+          // Remove flying element after animation
+          setTimeout(() => {
+            flyingElement.remove();
+          }, 800);
+        }
+
+        // Add button animation
+        this.classList.add("adding");
+        setTimeout(() => {
+          this.classList.remove("adding");
+        }, 600);
+
+        // TODO: Implement actual cart functionality
+        console.log("Added recommended product to cart");
+      });
+    });
+  }
+
+  // Recommended buy now functionality
+  function setupRecommendedBuyNow() {
+    const recommendedBuyNowBtns = document.querySelectorAll(".recommended-buy-now");
+    recommendedBuyNowBtns.forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        // TODO: Implement checkout functionality
+        console.log("Buy now recommended product");
+      });
+    });
+  }
+
+  function displayRecommendedProducts(products) {
+    console.log('Displaying recommended products:', products.length);
+    const container = document.getElementById('recommendedProducts');
+    console.log('Container found:', !!container);
+    if (!container) return;
+
+    container.innerHTML = products.map((product, index) => {
+      const image = product.image || '/img/granula.jpg';
+      const price = product.salePrice && product.salePrice !== '/' ? product.salePrice : product.price;
+      const oldPrice = product.salePrice && product.salePrice !== '/' ? `<span class="old-price">${product.price} RSD</span>` : '';
+
+      const delayClasses = ['delay-100', 'delay-200', 'delay-300', 'delay-400'];
+      const delayIndex = index % 4;
+      const delayClass = delayClasses[delayIndex];
+
+      return `
+        <div class="recommended-card reveal ${delayClass}" data-product-id="${product.id}">
+          <div class="recommended-image-c">
+            <div class="recommended-heart-container">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <path class="recommended-heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2" />
+                <path class="recommended-heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0" />
+              </svg>
+            </div>
+            <img src="${image}" alt="${product.title}" loading="lazy" />
+          </div>
+          <div class="recommended-content-c">
+            <span class="product-brand">${product.brand || 'Brand'}</span>
+            <h4>${product.title}</h4>
+            <div class="recommended-price">${price} RSD${oldPrice ? ' ' + oldPrice : ''}</div>
+            <div class="recommended-btns-flex">
+              <button class="recommended-buy-now" onclick="window.location.href='/product?id=${product.id}'">
+                Buy now
+              </button>
+              <button class="recommended-add-to-cart" data-product-id="${product.id}">
+                <span class="material-symbols-outlined cart-icon">add_shopping_cart</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Setup recommended add to cart and buy now after products are displayed
+    setupRecommendedAddToCart();
+    setupRecommendedBuyNow();
+
+    // Add event listeners for heart buttons - use same approach as old version
+    container.querySelectorAll('.recommended-heart-container').forEach(container => {
+      container.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const heartFilled = this.querySelector('.recommended-heart-filled');
+        const heartOutline = this.querySelector('.recommended-heart-outline');
+        
+        if (heartFilled && heartOutline) {
+          const isActive = heartFilled.style.opacity === "1";
+          heartFilled.style.opacity = isActive ? "0" : "1";
+          heartOutline.style.opacity = isActive ? "1" : "0";
+        }
+      });
+    });
+  }
+
+  // Recommended Products Carousel - using old approach with display/opacity
+  function initializeRecommendedCarousel() {
+    const recommendedMid = document.querySelector(".recommended-mid");
+    const recommendedArrowL = document.querySelector(".recommended-arrow-l");
+    const recommendedArrowR = document.querySelector(".recommended-arrow-r");
+
+    if (recommendedMid && recommendedArrowL && recommendedArrowR) {
+      const cards = Array.from(recommendedMid.querySelectorAll(".recommended-card"));
+      let isScrolling = false;
+      let currentIndex = 0;
+      
+      // Function to calculate cards per view based on actual card width (minimum 315px)
+      function getCardsPerView() {
+        const width = window.innerWidth;
+        
+        // Ispod 1024px: prikaži sve kartice sa horizontalnim scrollom
+        if (width < 1024) {
+          return -1; // Specijalna vrednost za "prikaži sve"
+        }
+        
+        // Od 1024px do 1280px: fiksno 2 kartice
+        if (width >= 1024 && width <= 1280) {
+          return 2;
+        }
+        
+        // Preko 1280px: kalkuliši na osnovu stvarne širine kartice
+        const containerWidth = recommendedMid.offsetWidth || recommendedMid.clientWidth;
+        const gap = 20;
+        const minCardWidth = 315;
+        
+        // Računaj širinu kartice ako bi bilo 4 kartice
+        const cardWidthWith4 = (containerWidth - (3 * gap)) / 4;
+        
+        // Ako je širina kartice >= 315px sa 4 kartice, koristi 4, inače 3
+        if (cardWidthWith4 >= minCardWidth) {
+          return 4; // 4 kartice - širina kartice je >= 315px
+        } else {
+          return 3; // 3 kartice - širina kartice bi bila < 315px sa 4 kartice
+        }
+      }
+      
+      let cardsPerView = getCardsPerView();
+
+      // Function to update card widths based on cardsPerView
+      function updateCardWidths() {
+        const gap = 20;
+        const minCardWidth = 315;
+        let flexBasis, width, maxWidth, minWidth;
+        
+        if (cardsPerView === -1) {
+          // Ispod 1024px: prikaži sve kartice sa scrollom - postavi fiksne širine
+          const mobileCardWidth = 280;
+          cards.forEach(card => {
+            if (card) {
+              // Postavi fiksne širine za mobile scroll
+              card.style.flexBasis = `${mobileCardWidth}px`;
+              card.style.width = `${mobileCardWidth}px`;
+              card.style.maxWidth = `${mobileCardWidth}px`;
+              card.style.minWidth = `${mobileCardWidth}px`;
+            }
+          });
+          return;
+        } else if (cardsPerView === 4) {
+          // 4 kartice: calc((100% - 60px) / 4)
+          flexBasis = `calc((100% - ${3 * gap}px) / 4)`;
+          width = `calc((100% - ${3 * gap}px) / 4)`;
+          maxWidth = `calc((100% - ${3 * gap}px) / 4)`;
+          minWidth = `${minCardWidth}px`; // Osiguraj minimum 315px
+        } else if (cardsPerView === 3) {
+          // 3 kartice: calc((100% - 40px) / 3)
+          flexBasis = `calc((100% - ${2 * gap}px) / 3)`;
+          width = `calc((100% - ${2 * gap}px) / 3)`;
+          maxWidth = `calc((100% - ${2 * gap}px) / 3)`;
+          minWidth = '0'; // Nema minimum za 3 kartice
+        } else if (cardsPerView === 2) {
+          // 2 kartice (1024px-1280px): calc((100% - 20px) / 2)
+          flexBasis = `calc((100% - ${gap}px) / 2)`;
+          width = `calc((100% - ${gap}px) / 2)`;
+          maxWidth = `calc((100% - ${gap}px) / 2)`;
+          minWidth = '0';
+        }
+        
+        // Postavi širine na sve kartice
+        cards.forEach(card => {
+          if (card) {
+            card.style.flexBasis = flexBasis;
+            card.style.width = width;
+            card.style.maxWidth = maxWidth;
+            if (cardsPerView === 4) {
+              card.style.minWidth = minWidth; // Minimum 315px za 4 kartice
+            } else {
+              card.style.minWidth = minWidth;
+            }
+          }
+        });
+      }
+      
+      // Function to update cardsPerView and reset if needed
+      function updateCardsPerView() {
+        const newCardsPerView = getCardsPerView();
+        if (newCardsPerView !== cardsPerView) {
+          cardsPerView = newCardsPerView;
+          // Reset to first page if current index is out of bounds (samo ako nije -1)
+          if (cardsPerView !== -1) {
+            const maxIndex = Math.max(0, cards.length - cardsPerView);
+            if (currentIndex > maxIndex) {
+              currentIndex = 0;
+            }
+          } else {
+            // Ako je -1, resetuj na početak
             currentIndex = 0;
           }
+          updateCardWidths(); // Ažuriraj širine kartica
+          updateVisibleCards();
+          updateArrowVisibility();
         } else {
-          // Ako je -1, resetuj na početak
-          currentIndex = 0;
+          // Ažuriraj širine čak i ako se cardsPerView nije promenio (za slučaj resize-a)
+          updateCardWidths();
         }
-        updateCardWidths(); // Ažuriraj širine kartica
-        updateVisibleCards();
-        updateArrowVisibility();
-      } else {
-        // Ažuriraj širine čak i ako se cardsPerView nije promenio (za slučaj resize-a)
-        updateCardWidths();
       }
-    }
-    
-    function getVisibleCardIndices() {
-      // Calculate which cards should be visible based on currentIndex
-      const visibleIndices = [];
       
-      // Ako je cardsPerView === -1, prikaži sve kartice
-      if (cardsPerView === -1) {
-        for (let i = 0; i < cards.length; i++) {
+      function getVisibleCardIndices() {
+        // Calculate which cards should be visible based on currentIndex
+        const visibleIndices = [];
+        
+        // Ako je cardsPerView === -1, prikaži sve kartice
+        if (cardsPerView === -1) {
+          for (let i = 0; i < cards.length; i++) {
+            visibleIndices.push(i);
+          }
+          return visibleIndices;
+        }
+        
+        for (let i = currentIndex; i < Math.min(currentIndex + cardsPerView, cards.length); i++) {
           visibleIndices.push(i);
         }
         return visibleIndices;
       }
-      
-      for (let i = currentIndex; i < Math.min(currentIndex + cardsPerView, cards.length); i++) {
-        visibleIndices.push(i);
-      }
-      return visibleIndices;
-    }
 
-    function updateVisibleCards() {
-      // Ako je cardsPerView === -1, prikaži sve kartice (ispod 1024px sa scrollom)
-      if (cardsPerView === -1) {
-        cards.forEach((card) => {
-          if (card) {
-            card.classList.remove('scrolling-out', 'scrolling-in');
-            card.style.opacity = '1';
-            card.style.pointerEvents = 'auto';
-            card.style.visibility = 'visible';
-            card.style.display = '';
-          }
-        });
-        return;
-      }
-      
-      // Update visibility of all cards - use opacity instead of visibility to keep layout
-      cards.forEach((card, index) => {
-        const isVisible = index >= currentIndex && index < currentIndex + cardsPerView;
-        if (isVisible) {
-          // Remove any classes that might hide the card
-          card.classList.remove('scrolling-out', 'scrolling-in');
-          card.style.opacity = '1';
-          card.style.pointerEvents = 'auto';
-          card.style.visibility = 'visible';
-          card.style.display = '';
-        } else {
-          // Hide card but keep it in layout using opacity
-          card.style.opacity = '0';
-          card.style.pointerEvents = 'none';
-          card.style.visibility = 'hidden';
-          card.style.display = 'none'; // Use display none for hidden cards
-        }
-      });
-    }
-
-    function scrollCarousel(direction) {
-      if (isScrolling) return;
-      
-      // Ako je cardsPerView === -1, ne radi scroll (koristi se CSS scroll)
-      if (cardsPerView === -1) return;
-      
-      const maxIndex = Math.max(0, cards.length - cardsPerView);
-      
-      let newIndex;
-      if (direction === 'right') {
-        newIndex = Math.min(currentIndex + cardsPerView, maxIndex);
-        if (newIndex === currentIndex) return; // Already at end
-      } else {
-        newIndex = Math.max(currentIndex - cardsPerView, 0);
-        if (newIndex === currentIndex) return; // Already at start
-      }
-
-      isScrolling = true;
-
-      // Get currently visible cards and fade them out smoothly
-      const currentVisibleIndices = getVisibleCardIndices();
-      currentVisibleIndices.forEach(index => {
-        if (cards[index]) {
-          cards[index].classList.add('scrolling-out');
-          cards[index].style.opacity = '0';
-        }
-      });
-
-      // After fade out, switch to new cards
-      setTimeout(() => {
-        // Hide old cards completely
-        currentVisibleIndices.forEach(index => {
-          if (cards[index]) {
-            cards[index].style.display = 'none';
-            cards[index].style.visibility = 'hidden';
-            cards[index].style.pointerEvents = 'none';
-            cards[index].classList.remove('scrolling-out');
-          }
-        });
-
-        // Update current index
-        currentIndex = newIndex;
-        
-        // Calculate which cards should be visible now (based on newIndex)
-        const newVisibleIndices = [];
-        for (let i = newIndex; i < Math.min(newIndex + cardsPerView, cards.length); i++) {
-          newVisibleIndices.push(i);
+      function updateVisibleCards() {
+        // Ako je cardsPerView === -1, prikaži sve kartice (ispod 1024px sa scrollom)
+        if (cardsPerView === -1) {
+          cards.forEach((card) => {
+            if (card) {
+              card.classList.remove('scrolling-out', 'scrolling-in');
+              card.style.opacity = '1';
+              card.style.pointerEvents = 'auto';
+              card.style.visibility = 'visible';
+              card.style.display = '';
+            }
+          });
+          return;
         }
         
-        // Show new cards with fade in
-        newVisibleIndices.forEach((index) => {
-          if (cards[index]) {
-            // First, make sure card is visible and in layout
-            cards[index].style.display = '';
-            cards[index].style.visibility = 'visible';
-            cards[index].style.pointerEvents = 'none';
-            cards[index].style.opacity = '0';
-            cards[index].classList.add('scrolling-in');
-          }
-        });
-        
-        // Force reflow to ensure styles are applied
-        void recommendedMid.offsetHeight;
-        
-        // Trigger fade in for all new cards simultaneously
-        newVisibleIndices.forEach((index) => {
-          if (cards[index]) {
-            // Change opacity to 1 to trigger fade in
-            cards[index].style.opacity = '1';
-            cards[index].style.pointerEvents = 'auto';
-            
-            // Remove class after animation
-            setTimeout(() => {
-              cards[index].classList.remove('scrolling-in');
-            }, 350);
-          }
-        });
-        
-        isScrolling = false;
-        updateArrowVisibility();
-      }, 350); // Wait for fade out to complete
-    }
-
-    recommendedArrowL.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      scrollCarousel('left');
-    });
-
-    recommendedArrowR.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      scrollCarousel('right');
-    });
-
-    // Update arrow visibility based on current index
-    function updateArrowVisibility() {
-      // Ako je cardsPerView === -1, sakrij strelice (koristi se CSS scroll)
-      if (cardsPerView === -1) {
-        recommendedArrowL.style.opacity = "0";
-        recommendedArrowL.style.pointerEvents = "none";
-        recommendedArrowR.style.opacity = "0";
-        recommendedArrowR.style.pointerEvents = "none";
-        return;
-      }
-      
-      const maxIndex = Math.max(0, cards.length - cardsPerView);
-
-      if (currentIndex <= 0) {
-        recommendedArrowL.style.opacity = "0.5";
-        recommendedArrowL.style.pointerEvents = "none";
-      } else {
-        recommendedArrowL.style.opacity = "1";
-        recommendedArrowL.style.pointerEvents = "auto";
-      }
-
-      if (currentIndex >= maxIndex) {
-        recommendedArrowR.style.opacity = "0.5";
-        recommendedArrowR.style.pointerEvents = "none";
-      } else {
-        recommendedArrowR.style.opacity = "1";
-        recommendedArrowR.style.pointerEvents = "auto";
-      }
-    }
-
-    // Initialize - show first cards based on screen size
-    currentIndex = 0;
-    
-    // Set initial state - first cards visible, rest hidden
-    function initializeCards() {
-      // Ako je cardsPerView === -1, prikaži sve kartice
-      if (cardsPerView === -1) {
-        cards.forEach((card) => {
-          if (card) {
-            card.classList.remove('scrolling-out', 'scrolling-in');
-            card.style.opacity = '1';
-            card.style.visibility = 'visible';
-            card.style.pointerEvents = 'auto';
-            card.style.display = '';
-          }
-        });
-        return;
-      }
-      
-      cards.forEach((card, index) => {
-        if (card) {
-          // Remove any classes
-          card.classList.remove('scrolling-out', 'scrolling-in');
-          
-          const isVisible = index < cardsPerView;
+        // Update visibility of all cards - use opacity instead of visibility to keep layout
+        cards.forEach((card, index) => {
+          const isVisible = index >= currentIndex && index < currentIndex + cardsPerView;
           if (isVisible) {
-            // Show first cards immediately
+            // Remove any classes that might hide the card
+            card.classList.remove('scrolling-out', 'scrolling-in');
             card.style.opacity = '1';
-            card.style.visibility = 'visible';
             card.style.pointerEvents = 'auto';
+            card.style.visibility = 'visible';
             card.style.display = '';
           } else {
-            // Hide rest of cards
+            // Hide card but keep it in layout using opacity
             card.style.opacity = '0';
-            card.style.visibility = 'hidden';
             card.style.pointerEvents = 'none';
-            card.style.display = 'none';
+            card.style.visibility = 'hidden';
+            card.style.display = 'none'; // Use display none for hidden cards
           }
+        });
+      }
+
+      function scrollCarousel(direction) {
+        if (isScrolling) return;
+        
+        // Ako je cardsPerView === -1, ne radi scroll (koristi se CSS scroll)
+        if (cardsPerView === -1) return;
+        
+        const maxIndex = Math.max(0, cards.length - cardsPerView);
+        
+        let newIndex;
+        if (direction === 'right') {
+          newIndex = Math.min(currentIndex + cardsPerView, maxIndex);
+          if (newIndex === currentIndex) return; // Already at end
+        } else {
+          newIndex = Math.max(currentIndex - cardsPerView, 0);
+          if (newIndex === currentIndex) return; // Already at start
         }
+
+        isScrolling = true;
+
+        // Get currently visible cards and fade them out smoothly
+        const currentVisibleIndices = getVisibleCardIndices();
+        currentVisibleIndices.forEach(index => {
+          if (cards[index]) {
+            cards[index].classList.add('scrolling-out');
+            cards[index].style.opacity = '0';
+          }
+        });
+
+        // After fade out, switch to new cards
+        setTimeout(() => {
+          // Hide old cards completely
+          currentVisibleIndices.forEach(index => {
+            if (cards[index]) {
+              cards[index].style.display = 'none';
+              cards[index].style.visibility = 'hidden';
+              cards[index].style.pointerEvents = 'none';
+              cards[index].classList.remove('scrolling-out');
+            }
+          });
+
+          // Update current index
+          currentIndex = newIndex;
+          
+          // Calculate which cards should be visible now (based on newIndex)
+          const newVisibleIndices = [];
+          for (let i = newIndex; i < Math.min(newIndex + cardsPerView, cards.length); i++) {
+            newVisibleIndices.push(i);
+          }
+          
+          // Show new cards with fade in
+          newVisibleIndices.forEach((index) => {
+            if (cards[index]) {
+              // First, make sure card is visible and in layout
+              cards[index].style.display = '';
+              cards[index].style.visibility = 'visible';
+              cards[index].style.pointerEvents = 'none';
+              cards[index].style.opacity = '0';
+              cards[index].classList.add('scrolling-in');
+            }
+          });
+          
+          // Force reflow to ensure styles are applied
+          void recommendedMid.offsetHeight;
+          
+          // Trigger fade in for all new cards simultaneously
+          newVisibleIndices.forEach((index) => {
+            if (cards[index]) {
+              // Change opacity to 1 to trigger fade in
+              cards[index].style.opacity = '1';
+              cards[index].style.pointerEvents = 'auto';
+              
+              // Remove class after animation
+              setTimeout(() => {
+                cards[index].classList.remove('scrolling-in');
+              }, 350);
+            }
+          });
+          
+          isScrolling = false;
+          updateArrowVisibility();
+        }, 350); // Wait for fade out to complete
+      }
+
+      recommendedArrowL.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        scrollCarousel('left');
+      });
+
+      recommendedArrowR.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        scrollCarousel('right');
+      });
+
+      // Update arrow visibility based on current index
+      function updateArrowVisibility() {
+        // Ako je cardsPerView === -1, sakrij strelice (koristi se CSS scroll)
+        if (cardsPerView === -1) {
+          recommendedArrowL.style.opacity = "0";
+          recommendedArrowL.style.pointerEvents = "none";
+          recommendedArrowR.style.opacity = "0";
+          recommendedArrowR.style.pointerEvents = "none";
+          return;
+        }
+        
+        const maxIndex = Math.max(0, cards.length - cardsPerView);
+
+        if (currentIndex <= 0) {
+          recommendedArrowL.style.opacity = "0.5";
+          recommendedArrowL.style.pointerEvents = "none";
+        } else {
+          recommendedArrowL.style.opacity = "1";
+          recommendedArrowL.style.pointerEvents = "auto";
+        }
+
+        if (currentIndex >= maxIndex) {
+          recommendedArrowR.style.opacity = "0.5";
+          recommendedArrowR.style.pointerEvents = "none";
+        } else {
+          recommendedArrowR.style.opacity = "1";
+          recommendedArrowR.style.pointerEvents = "auto";
+        }
+      }
+
+      // Initialize - show first cards based on screen size
+      currentIndex = 0;
+      
+      // Set initial state - first cards visible, rest hidden
+      function initializeCards() {
+        // Ako je cardsPerView === -1, prikaži sve kartice
+        if (cardsPerView === -1) {
+          cards.forEach((card) => {
+            if (card) {
+              card.classList.remove('scrolling-out', 'scrolling-in');
+              card.style.opacity = '1';
+              card.style.visibility = 'visible';
+              card.style.pointerEvents = 'auto';
+              card.style.display = '';
+            }
+          });
+          return;
+        }
+        
+        cards.forEach((card, index) => {
+          if (card) {
+            // Remove any classes
+            card.classList.remove('scrolling-out', 'scrolling-in');
+            
+            const isVisible = index < cardsPerView;
+            if (isVisible) {
+              // Show first cards immediately
+              card.style.opacity = '1';
+              card.style.visibility = 'visible';
+              card.style.pointerEvents = 'auto';
+              card.style.display = '';
+            } else {
+              // Hide rest of cards
+              card.style.opacity = '0';
+              card.style.visibility = 'hidden';
+              card.style.pointerEvents = 'none';
+              card.style.display = 'none';
+            }
+          }
+        });
+      }
+      
+      // Postavi početne širine kartica
+      updateCardWidths();
+      
+      initializeCards();
+      
+      // Update arrow visibility
+      updateArrowVisibility();
+      
+      // Listen for window resize to update cards per view
+      let resizeTimeout;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+          updateCardsPerView();
+          initializeCards();
+        }, 250);
       });
     }
-    
-    // Postavi početne širine kartica
-    updateCardWidths();
-    
-    initializeCards();
-    
-    // Update arrow visibility
-    updateArrowVisibility();
-    
-    // Listen for window resize to update cards per view
-    let resizeTimeout;
-    window.addEventListener('resize', function() {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(function() {
-        updateCardsPerView();
-        initializeCards();
-      }, 250);
-    });
   }
 
-  // Recommended card heart functionality
-  const recommendedHeartContainers = document.querySelectorAll(".recommended-heart-container");
-  recommendedHeartContainers.forEach((container) => {
-    container.addEventListener("click", function (e) {
-      e.stopPropagation();
-      const heartFilled = this.querySelector(".recommended-heart-filled");
-      const heartOutline = this.querySelector(".recommended-heart-outline");
-      
-      if (heartFilled && heartOutline) {
-        const isActive = heartFilled.style.opacity === "1";
-        heartFilled.style.opacity = isActive ? "0" : "1";
-        heartOutline.style.opacity = isActive ? "1" : "0";
-      }
-    });
-  });
-
-  // Recommended add to cart functionality with flying animation
-  const recommendedAddToCartBtns = document.querySelectorAll(".recommended-add-to-cart");
-  recommendedAddToCartBtns.forEach((btn) => {
-    btn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      
-      // Get button position
-      const buttonRect = btn.getBoundingClientRect();
-      const buttonX = buttonRect.left + buttonRect.width / 2;
-      const buttonY = buttonRect.top + buttonRect.height / 2;
-
-      // Get cart position (if cart icon exists)
-      if (cartIcon) {
-        const cartRect = cartIcon.getBoundingClientRect();
-        const cartX = cartRect.left + cartRect.width / 2;
-        const cartY = cartRect.top + cartRect.height / 2;
-
-        // Create flying element
-        const flyingElement = document.createElement("div");
-        flyingElement.className = "flying-item";
-        flyingElement.innerHTML =
-          '<span class="material-symbols-outlined cart-icon">add_shopping_cart</span>';
-        document.body.appendChild(flyingElement);
-
-        // Set initial position
-        flyingElement.style.position = "fixed";
-        flyingElement.style.left = buttonX + "px";
-        flyingElement.style.top = buttonY + "px";
-        flyingElement.style.pointerEvents = "none";
-        flyingElement.style.zIndex = "9999";
-
-        // Trigger animation
-        setTimeout(() => {
-          flyingElement.style.transition =
-            "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-          flyingElement.style.left = cartX + "px";
-          flyingElement.style.top = cartY + "px";
-          flyingElement.style.opacity = "0";
-          flyingElement.style.transform = "scale(0.3)";
-        }, 10);
-
-        // Add pulse effect to cart
-        cartIcon.style.animation = "cartNotify 0.6s ease";
-        setTimeout(() => {
-          cartIcon.style.animation = "";
-        }, 600);
-
-        // Remove flying element after animation
-        setTimeout(() => {
-          flyingElement.remove();
-        }, 800);
-      }
-
-      // Add button animation
-      this.classList.add("adding");
-      setTimeout(() => {
-        this.classList.remove("adding");
-      }, 600);
-
-      // TODO: Implement actual cart functionality
-      console.log("Added recommended product to cart");
-    });
-  });
-
-  // Recommended buy now functionality
-  const recommendedBuyNowBtns = document.querySelectorAll(".recommended-buy-now");
-  recommendedBuyNowBtns.forEach((btn) => {
-    btn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      // TODO: Implement checkout functionality
-      console.log("Buy now recommended product");
-    });
-  });
+  // Load recommended products when page loads
+  loadRecommendedProducts();
 
   // Intersection Observer for Scroll Animations
   const observerOptions = {
     root: null,
     rootMargin: "0px",
     threshold: 0.1
-  };
-
-  // Special observer for recommended cards - triggers later (when more of the element is visible)
-  const recommendedObserverOptions = {
-    root: null,
-    rootMargin: "-300px 0px", // Element must be 300px into viewport before animating
-    threshold: 0.5
   };
 
   const observer = new IntersectionObserver((entries, observer) => {
@@ -920,17 +1032,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }, observerOptions);
 
-  const recommendedObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("active");
-        observer.unobserve(entry.target); // Only animate once
-      }
-    });
-  }, recommendedObserverOptions);
-
   // Separate recommended cards from other reveal elements
-  const recommendedCards = document.querySelectorAll(".recommended-card.reveal");
   const otherRevealElements = document.querySelectorAll(".reveal:not(.recommended-card), .reveal-left, .reveal-right, .reveal-scale");
   
   // Function to check if element is visible in viewport (more lenient check)
@@ -961,9 +1063,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Handle recommended cards separately - they should animate later
-  recommendedCards.forEach(el => {
-    // Don't auto-activate recommended cards even if visible - wait for scroll
-    recommendedObserver.observe(el);
-  });
 });

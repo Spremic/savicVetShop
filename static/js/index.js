@@ -56,9 +56,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const imageIndex = index % productImages.length;
       const imageSrc = productImages[imageIndex];
       
-      const displayPrice = product.akcijskaCena && product.akcijskaCena !== '/' 
-        ? product.akcijskaCena 
-        : product.cena;
+      const displayPrice = product.salePrice && product.salePrice !== '/' 
+        ? product.salePrice 
+        : product.price;
       
       const cardHTML = `
         <div class="custom-card" data-product-id="${product.id}">
@@ -75,11 +75,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 <path class="heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0"/>
               </svg>
             </div>
-            <img src="${imageSrc}" alt="${product.naslov}" loading="lazy" />
+            <img src="${imageSrc}" alt="${product.title}" loading="lazy" />
           </div>
           <div class="content-c">
-            <span class="product-brand">${product.brend}</span>
-            <h4>${product.naslov}</h4>
+            <span class="product-brand">${product.brand}</span>
+            <h4>${product.title}</h4>
             <div class="price">${displayPrice} RSD</div>
             <div class="btns-flex">
               <button class="buy-now">Buy now</button>
