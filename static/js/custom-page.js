@@ -88,7 +88,7 @@ function getSelectionFromUrl() {
   const pathname = window.location.pathname;
   const parts = pathname.split("/").filter(Boolean);
   // Skip known routes like 'about', 'gallery', 'legal', etc.
-  const knownRoutes = ['about', 'gallery', 'legal', 'shopping-cart', 'product'];
+  const knownRoutes = ['about', 'gallery', 'legal', 'shopping-cart', 'product', 'all-products'];
   const filteredParts = parts.filter(p => !knownRoutes.includes(p.toLowerCase()));
   
   // Decode URL-encoded characters (e.g. %D0%B0 -> а)
@@ -390,15 +390,17 @@ document.addEventListener("DOMContentLoaded", async function () {
     const pageDescription = document.querySelector(".page-description");
     if (!pageTitle) return;
 
-    // Display only the last category in the hierarchy
-    let title = "Product Catalog";
-    if (selectionNames.subcat2) {
-      title = selectionNames.subcat2;
-    } else if (selectionNames.subcat) {
-      title = selectionNames.subcat;
-    } else if (selectionNames.cat) {
-      title = selectionNames.cat;
-    }
+  // Display only the last category in the hierarchy
+  let title = "Product Catalog";
+  if (window.location.pathname === '/all-products') {
+    title = "All Products";
+  } else if (selectionNames.subcat2) {
+    title = selectionNames.subcat2;
+  } else if (selectionNames.subcat) {
+    title = selectionNames.subcat;
+  } else if (selectionNames.cat) {
+    title = selectionNames.cat;
+  }
 
     pageTitle.textContent = title;
 

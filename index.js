@@ -170,6 +170,53 @@ app.get("/custom-page/*", (req, res) => {
   res.sendFile(path.join(__dirname, "/static/custom-page.html"));
 });
 
+app.get("/shopping-cart", (req, res) => {
+  res.sendFile(path.join(__dirname, "/static/shopping-cart.html"));
+});
+
+// Special route for all-products (must be before product slug route)
+app.get("/all-products", (req, res) => {
+  res.sendFile(path.join(__dirname, "/static/custom-page.html"));
+});
+
+// Product route by slug (must be before catch-all route)
+app.get("/:slug", (req, res, next) => {
+  const slug = req.params.slug;
+  const products = loadProductsData();
+  
+  // Skip if it's a reserved route
+  const reservedRoutes = ['about', 'gallery', 'legal', 'custom-page', 'shopping-cart', 'product', 'all-products', 'css', 'js', 'img', 'json'];
+  if (reservedRoutes.includes(slug)) {
+    return next();
+  }
+  
+  if (!slug) {
+    return next();
+  }
+  
+  // Find product by matching slugified title with URL slug
+  const product = products.find(p => {
+    const productSlug = slugify(p.title);
+    return productSlug === slug;
+  });
+  
+  if (!product) {
+    // Not a product, let it pass to catch-all route for categories
+    return next();
+  }
+  
+  // Get recommended products (same category, exclude current product)
+  const recommendedProducts = products
+    .filter(p => p.category === product.category && p.id !== product.id)
+    .slice(0, 20)
+    .map(p => ({
+      ...p,
+      slug: slugify(p.title)
+    }));
+  
+  res.render("product", { product, recommendedProducts, slugify });
+});
+
 // Catch all route for category URLs - serve custom-page.html
 // This must be LAST in the routing order
 app.get("*", (req, res) => {
@@ -184,12 +231,25 @@ app.get("*", (req, res) => {
     return res.sendFile(path.join(__dirname, "/static/index.html"));
   }
 
-  // For any other path, serve custom-page.html
-  res.sendFile(path.join(__dirname, "/static/custom-page.html"));
-});
+  // Try to find category/subcategory match first
+  const products = loadProductsData();
+  const pathString = req.path.toLowerCase().replace(/^\//, '').replace(/\/$/, '');
 
-app.get("/shopping-cart", (req, res) => {
-  res.sendFile(path.join(__dirname, "/static/shopping-cart.html"));
+  // Check if it's a category, subcategory, or subcategory2
+  const isCategory = products.some(p => {
+    if (p.category && slugify(p.category).toLowerCase() === pathString) return true;
+    if (p.subcategory && slugify(p.subcategory).toLowerCase() === pathString) return true;
+    if (p.subcategory2 && slugify(p.subcategory2).toLowerCase() === pathString) return true;
+    return false;
+  });
+
+  // If it's a category, serve custom-page.html
+  if (isCategory) {
+    return res.sendFile(path.join(__dirname, "/static/custom-page.html"));
+  }
+
+  // If not a category and not a product (already checked in :slug route), serve 404
+  res.status(404).sendFile(path.join(__dirname, "/static/404.html"));
 });
 
 app.use(bodyParser.json());

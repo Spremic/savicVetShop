@@ -1,5 +1,37 @@
 // product.js - Product page functionality
 
+// Slugify function (same as server-side)
+function slugify(value) {
+  if (!value) return "";
+  
+  const cyrToLat = {
+    а: "a", б: "b", в: "v", г: "g", д: "d", ђ: "dj", е: "e", ж: "z",
+    з: "z", и: "i", ј: "j", к: "k", л: "l", љ: "lj", м: "m", н: "n",
+    њ: "nj", о: "o", п: "p", р: "r", с: "s", т: "t", ћ: "c", у: "u",
+    ф: "f", х: "h", ц: "c", ч: "c", џ: "dz", ш: "s",
+    А: "a", Б: "b", В: "v", Г: "g", Д: "d", Ђ: "dj", Е: "e", Ж: "z",
+    З: "z", И: "i", Ј: "j", К: "k", Л: "l", Љ: "lj", М: "m", Н: "n",
+    Њ: "nj", О: "o", П: "p", Р: "r", С: "s", Т: "t", Ћ: "c", У: "u",
+    Ф: "f", Х: "h", Ц: "c", Ч: "c", Џ: "dz", Ш: "s"
+  };
+  
+  let result = value.toString();
+  result = result.replace(/[а-яА-ЯђЂљЉњЊћЋџЏ]/g, ch => cyrToLat[ch] || ch);
+  result = result.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  result = result
+    .replace(/đ/g, "dj").replace(/Đ/g, "dj")
+    .replace(/ž/g, "z").replace(/Ž/g, "z")
+    .replace(/č/g, "c").replace(/Č/g, "c")
+    .replace(/ć/g, "c").replace(/Ć/g, "c")
+    .replace(/š/g, "s").replace(/Š/g, "s");
+  
+  return result
+    .replace(/[^a-zA-Z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .toLowerCase();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   // Header scroll effect
   window.addEventListener("scroll", function () {
@@ -466,8 +498,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const availableProducts = products.filter(product => product.id !== currentProductId);
       const recommendedProducts = [];
 
-      // Get exactly 5 random products
-      const numProducts = Math.min(5, availableProducts.length);
+      // Get 20 random products for 5 slajders (4 products per slajd)
+      const numProducts = Math.min(20, availableProducts.length);
       const shuffled = [...availableProducts].sort(() => 0.5 - Math.random());
       recommendedProducts.push(...shuffled.slice(0, numProducts));
 
@@ -620,7 +652,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <h4>${product.title}</h4>
             <div class="recommended-price">${price} RSD${oldPrice ? ' ' + oldPrice : ''}</div>
             <div class="recommended-btns-flex">
-              <button class="recommended-buy-now" onclick="window.location.href='/product?id=${product.id}'">
+              <button class="recommended-buy-now" onclick="window.location.href='/${slugify(product.title)}'">
                 Buy now
               </button>
               <button class="recommended-add-to-cart" data-product-id="${product.id}">

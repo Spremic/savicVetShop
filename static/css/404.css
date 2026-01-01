@@ -1,0 +1,238 @@
+/* 404 Page Styles */
+
+.not-found-page {
+  min-height: 100vh;
+  background-color: #131111;
+  padding-top: 120px;
+  padding-bottom: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.not-found-container {
+  max-width: 800px;
+  width: 100%;
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.not-found-content {
+  text-align: center;
+  width: 100%;
+  position: relative;
+}
+
+.error-number {
+  font-size: 12rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #009900, #007700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 20px;
+  font-family: "Baloo 2", sans-serif;
+  /* text-shadow: 0 0 40px rgba(0, 153, 0, 0.3); */
+  /* animation: glow 2s ease-in-out infinite alternate; */
+}
+
+@keyframes glow {
+  from {
+    filter: drop-shadow(0 0 20px rgba(0, 153, 0, 0.3));
+  }
+  to {
+    filter: drop-shadow(0 0 30px rgba(0, 153, 0, 0.5));
+  }
+}
+
+
+.error-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #f0f0f0;
+  margin-bottom: 20px;
+  font-family: "Baloo 2", sans-serif;
+  line-height: 1.2;
+}
+
+.error-message {
+  font-size: 1.1rem;
+  color: #e0e0e0c4;
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto 40px;
+  font-weight: 400;
+}
+
+.error-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.btn-home,
+.btn-back {
+  padding: 16px 40px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-home {
+  color: #fff;
+  background: linear-gradient(135deg, #007700, #009900);
+  border: 2px solid transparent;
+}
+
+.btn-home::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn-home:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-home:hover {
+  transform: translateY(-2px);
+  /* box-shadow: 0 10px 30px rgba(0, 153, 0, 0.4); */
+}
+
+.btn-home:active {
+  transform: translateY(0);
+}
+
+.btn-home span,
+.btn-back span {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.btn-home:hover span {
+  transform: scale(1.1);
+}
+
+.btn-back {
+  color: #f0f0f0;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-back::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-back:hover::before {
+  left: 100%;
+}
+
+.btn-back:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.btn-back:active {
+  transform: translateY(0);
+}
+
+.btn-back:hover span {
+  transform: translateX(-5px);
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 768px) {
+  .not-found-page {
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
+
+  .error-number {
+    font-size: 8rem;
+  }
+
+  .paw-icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 25px;
+  }
+
+  .error-title {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  .error-message {
+    font-size: 1rem;
+    margin-bottom: 30px;
+    padding: 0 10px;
+  }
+
+  .error-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+    padding: 0 20px;
+  }
+
+  .btn-home,
+  .btn-back {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 30px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .error-number {
+    font-size: 6rem;
+  }
+
+  .paw-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .error-title {
+    font-size: 1.75rem;
+  }
+
+  .error-message {
+    font-size: 0.95rem;
+  }
+}
+
