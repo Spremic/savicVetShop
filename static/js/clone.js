@@ -1212,12 +1212,67 @@ document.addEventListener("DOMContentLoaded", async function () {
   const moveAllBtn = document.querySelector(".move-all-btn");
   if (moveAllBtn) {
     moveAllBtn.addEventListener("click", function() {
+      const savedCards = document.querySelectorAll('.saved-item-card');
       const savedItems = getSavedItems();
-      savedItems.forEach(id => {
-        addToCart(id, 1);
+      
+      if (savedItems.length === 0) return;
+
+      // Disable button during animation
+      moveAllBtn.style.pointerEvents = 'none';
+      moveAllBtn.style.opacity = '0.7';
+      moveAllBtn.textContent = 'Moving...';
+
+      // Staggered animation
+      savedCards.forEach((card, index) => {
+        setTimeout(() => {
+          card.classList.add('bulk-removing');
+        }, index * 70); // 70ms delay between each item
       });
-      renderCartDrawer();
-      renderSavedDrawer();
+
+      // Calculate total time needed
+      // (N-1) * stagger + animation_duration (300ms) + buffer
+      const totalAnimationTime = (savedCards.length > 0 ? (savedCards.length - 1) * 70 : 0) + 300;
+
+      setTimeout(() => {
+        // Move items to cart logic
+        savedItems.forEach(id => {
+          addToCart(id, 1);
+        });
+
+        // Clear saved items
+        localStorage.setItem('savedItems', JSON.stringify([]));
+        
+        // Update all heart icons
+        savedItems.forEach(id => updateHeartIconsForProduct(id));
+
+        // Close Saved Drawer
+        if (savedDrawer.classList.contains("active")) {
+            savedDrawer.classList.remove("active");
+            cartOverlay.classList.remove("active");
+            document.body.classList.remove("no-scroll");
+        }
+
+        // Wait a brief moment for drawer closing animation, then open cart
+        setTimeout(() => {
+            // Re-render UI
+            renderSavedDrawer();
+            renderCartDrawer();
+            
+            // Open Cart Drawer
+            cartDrawer.classList.add("active");
+            cartOverlay.classList.add("active");
+            document.body.classList.add("no-scroll");
+            
+            // Show notification
+            showCartNotification("All saved items");
+
+            // Reset button state
+            moveAllBtn.style.pointerEvents = '';
+            moveAllBtn.style.opacity = '';
+            moveAllBtn.textContent = 'Move All to Cart';
+        }, 400); // Wait for saved drawer close animation
+
+      }, totalAnimationTime);
     });
   }
 });
