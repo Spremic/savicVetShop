@@ -696,7 +696,7 @@ document.addEventListener("DOMContentLoaded", function () {
         this.classList.add("adding");
         setTimeout(() => {
           this.classList.remove("adding");
-        }, 600);
+        }, 250);
 
         // TODO: Implement actual cart functionality
         console.log("Added recommended product to cart");

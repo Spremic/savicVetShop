@@ -435,7 +435,7 @@ document.addEventListener("DOMContentLoaded", function () {
     addToCartButton.classList.add("adding");
     setTimeout(() => {
       addToCartButton.classList.remove("adding");
-    }, 600);
+    }, 300);
 
     // Add pulse effect to cart
     cartIcon.style.animation = "cartNotify 0.6s ease";
