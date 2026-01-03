@@ -1327,8 +1327,16 @@ body.no-scroll {
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   position: relative;
   border-radius: 12px;
-  transition: all 0.3s ease;
   cursor: pointer;
+  /* Smooth transitions for repositioning including vertical movement */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              margin 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              background 0.2s ease,
+              border-color 0.2s ease;
+  /* Enable smooth repositioning */
+  will-change: transform;
 }
 
 .cart-item:hover {
@@ -1735,7 +1743,6 @@ body.no-scroll {
   border-radius: 15px;
   overflow: hidden;
   position: relative;
-  transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
@@ -1743,6 +1750,16 @@ body.no-scroll {
   cursor: pointer;
   width: calc(50% - 10px);
   flex-basis: calc(50% - 10px);
+  /* Smooth transitions for all movements including vertical */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              flex-basis 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              margin 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.2s ease,
+              background 0.2s ease;
+  /* Enable smooth repositioning for grid layout changes */
+  will-change: transform;
 }
 
 .saved-item-card:hover {
@@ -1947,5 +1964,91 @@ body.no-scroll {
   .empty-cta-btn .material-symbols-outlined {
     font-size: 16px;
   }
+}
+
+/* ========== ANIMATIONS FOR REMOVING ITEMS ========== */
+
+/* Cart item removal animation */
+@keyframes cartItemRemove {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    max-height: 200px;
+    margin-bottom: 25px;
+  }
+  40% {
+    opacity: 0.5;
+    transform: translateX(30px) scale(0.9);
+  }
+  60% {
+    opacity: 0;
+    transform: translateX(50px) scale(0.7);
+    max-height: 200px;
+    margin-bottom: 25px;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(50px) scale(0.7);
+    max-height: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.cart-item.removing {
+  animation: cartItemRemove 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+/* Saved item removal animation (grid - fade out and shrink) */
+@keyframes savedItemRemove {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    max-width: calc(50% - 10px);
+    flex-basis: calc(50% - 10px);
+  }
+  40% {
+    opacity: 0.5;
+    transform: scale(0.95) rotateY(5deg);
+  }
+  60% {
+    opacity: 0;
+    transform: scale(0.8) rotateY(10deg);
+    max-width: calc(50% - 10px);
+    flex-basis: calc(50% - 10px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5) rotateY(15deg);
+    max-width: 0;
+    flex-basis: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+}
+
+.saved-item-card.removing {
+  animation: savedItemRemove 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+/* Animation for items entering (fade in slide up) */
+@keyframes itemEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.cart-item.entering,
+.saved-item-card.entering {
+  animation: itemEnter 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 

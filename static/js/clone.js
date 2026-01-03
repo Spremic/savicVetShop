@@ -221,12 +221,25 @@ async function renderCartDrawer() {
   if (cartCount) cartCount.textContent = `(${totalItems})`;
   if (totalPriceEl) totalPriceEl.textContent = `$${total.toFixed(2)}`;
   
-  // Attach remove handlers
+  // Attach remove handlers with animation
   cartItemsContainer.querySelectorAll('.remove-item').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
       const productId = this.getAttribute('data-product-id');
-      removeFromCart(productId);
-      renderCartDrawer();
+      const cartItem = this.closest('.cart-item');
+      
+      // Add removing class to trigger animation
+      cartItem.classList.add('removing');
+      
+      // Wait for animation to complete before actually removing
+      setTimeout(() => {
+        performFlipDelete(
+            cartItemsContainer,
+            cartItem,
+            () => removeFromCart(productId), // Update Data
+            () => updateCartTotalsOnly()     // Update UI
+        );
+      }, 300); // Match animation duration
     });
   });
   
@@ -276,6 +289,102 @@ function showCartNotification(productName) {
     delay: 3000
   });
   toast.show();
+}
+
+// Helper function for FLIP animation (First, Last, Invert, Play)
+// This enables smooth reordering of items when one is removed
+function performFlipDelete(container, itemToRemove, updateDataCallback, updateUiCallback) {
+  // 1. Snapshot positions of all remaining items (First)
+  const siblings = Array.from(container.children).filter(el => 
+      el !== itemToRemove && 
+      el.style.display !== 'none' && 
+      !el.classList.contains('removing')
+  );
+  
+  const positions = siblings.map(el => {
+      const rect = el.getBoundingClientRect();
+      return { el, left: rect.left, top: rect.top };
+  });
+
+  // 2. Remove item from DOM
+  itemToRemove.remove();
+
+  // 3. Update data (localStorage)
+  if (updateDataCallback) updateDataCallback();
+
+  // 4. Update UI totals (counters, prices)
+  if (updateUiCallback) updateUiCallback();
+
+  // 5. FLIP animation
+  requestAnimationFrame(() => {
+      positions.forEach(pos => {
+          // Measure new position (Last)
+          const newRect = pos.el.getBoundingClientRect();
+          const deltaX = pos.left - newRect.left;
+          const deltaY = pos.top - newRect.top;
+
+          // Only animate if position changed
+          if (deltaX !== 0 || deltaY !== 0) {
+              // Invert: Apply transform to put element back to old visual position
+              pos.el.style.transition = 'none';
+              pos.el.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+              
+              // Play: Remove transform and let CSS transition animate to new position
+              requestAnimationFrame(() => {
+                  pos.el.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                  pos.el.style.transform = '';
+              });
+          }
+      });
+  });
+}
+
+// Update cart totals without full re-render
+async function updateCartTotalsOnly() {
+  const cartItems = getCartItems();
+  
+  // If empty, full re-render to show empty state
+  if (cartItems.length === 0) {
+      renderCartDrawer();
+      return;
+  }
+
+  const allProducts = await loadProductsData();
+  const productMap = {};
+  allProducts.forEach(p => { productMap[p.id] = p; });
+
+  let total = 0;
+  let totalItems = 0;
+
+  cartItems.forEach(cartItem => {
+      const product = productMap[cartItem.id];
+      if (product) {
+          const quantity = cartItem.quantity || 1;
+          const price = parseFloat(formatPrice(product));
+          total += price * quantity;
+          totalItems += quantity;
+      }
+  });
+
+  const cartCount = document.querySelector('.cart-count');
+  const totalPriceEl = document.querySelector('.total-price');
+  
+  if (cartCount) cartCount.textContent = `(${totalItems})`;
+  if (totalPriceEl) totalPriceEl.textContent = `$${total.toFixed(2)}`;
+}
+
+// Update saved count without full re-render
+function updateSavedCountOnly() {
+  const savedItems = getSavedItems();
+  
+  // If empty, full re-render to show empty state
+  if (savedItems.length === 0) {
+      renderSavedDrawer();
+      return;
+  }
+
+  const savedCount = document.querySelector('.saved-count');
+  if (savedCount) savedCount.textContent = savedItems.length;
 }
 
 // Render saved items drawer
@@ -345,19 +454,35 @@ async function renderSavedDrawer() {
   savedItemsContainer.innerHTML = html;
   if (savedCount) savedCount.textContent = savedProducts.length;
   
-  // Attach remove handlers
+  // Attach remove handlers with animation
   savedItemsContainer.querySelectorAll('.remove-saved-item').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
       const productId = this.getAttribute('data-product-id');
-      removeFromSavedItems(productId);
-      renderSavedDrawer();
+      const savedCard = this.closest('.saved-item-card');
+      
+      // Add removing class to trigger fade-out animation
+      savedCard.classList.add('removing');
+      
+      // Wait for fade-out animation to complete before re-layout
+      setTimeout(() => {
+        performFlipDelete(
+            savedItemsContainer, 
+            savedCard, 
+            () => removeFromSavedItems(productId), // Update Data
+            () => updateSavedCountOnly()           // Update UI
+        );
+      }, 300); // Match animation duration
     });
   });
   
-  // Attach move to cart handlers
+  // Attach move to cart handlers with animation
   savedItemsContainer.querySelectorAll('.move-to-cart-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
       const productId = this.getAttribute('data-product-id');
+      const savedCard = this.closest('.saved-item-card');
+      
       // Find the product to get its name for the notification
       const product = allProducts.find(p => p.id === productId);
       const productName = product ? product.title : 'Product';
@@ -366,12 +491,22 @@ async function renderSavedDrawer() {
       addToCart(productId);
       renderCartDrawer();
       
-      // Remove from saved items (wishlist)
-      removeFromSavedItems(productId);
-      renderSavedDrawer();
+      // Add removing animation
+      savedCard.classList.add('removing');
       
-      // Show Bootstrap toast notification
-      showCartNotification(productName);
+      // Wait for animation before removing from saved items
+      setTimeout(() => {
+        performFlipDelete(
+            savedItemsContainer, 
+            savedCard, 
+            () => removeFromSavedItems(productId), // Update Data
+            () => {
+                updateSavedCountOnly();
+                // Show Bootstrap toast notification after removal
+                showCartNotification(productName);
+            }
+        );
+      }, 300); // Match animation duration
     });
   });
 }
