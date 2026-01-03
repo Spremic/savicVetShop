@@ -678,17 +678,67 @@ body {
 .product-badge {
   position: absolute;
   top: 18px;
-  right: 18px;
-  background: linear-gradient(135deg, #009900 0%, #00cc00 100%);
+  left: 18px;
+  background: #009900;
   color: white;
-  padding: 6px 14px;
-  border-radius: 12px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
   z-index: 10;
+  letter-spacing: 0.5px;
+}
+
+.product-old-price-on-image {
+  position: absolute;
+  top: 58px;
+  left: 18px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: line-through;
+  letter-spacing: 0.3px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 8px;
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
+}
+
+.heart-container {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  cursor: pointer;
   transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.heart-container:hover {
+  background: rgba(0, 153, 0, 0.2);
+}
+
+.heart-container svg {
+  display: block;
+}
+
+.heart-container .heart-filled {
+  transition: opacity 0.3s ease;
+}
+
+.heart-container:hover .heart-filled {
+  opacity: 1 !important;
+}
+
+.heart-container:hover .heart-outline {
+  opacity: 0;
 }
 
 .product-card:hover .product-badge {
@@ -890,6 +940,24 @@ body {
 
 .cart-icon-btn:active {
   transform: translateY(-1px) scale(0.98);
+}
+
+.cart-icon-btn.adding {
+  animation: cartPulse 0.6s ease;
+}
+
+@keyframes cartPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
 }
 
 .import-btn::before {
@@ -1737,6 +1805,18 @@ body {
 
   .product-card:hover .product-badge {
     transform: none !important;
+  }
+
+  .heart-container:hover {
+    background: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .heart-container:hover .heart-filled {
+    opacity: 0 !important;
+  }
+
+  .heart-container:hover .heart-outline {
+    opacity: 1 !important;
   }
 
   .product-card:hover .product-brand {

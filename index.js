@@ -233,13 +233,29 @@ app.get("*", (req, res) => {
 
   // Try to find category/subcategory match first
   const products = loadProductsData();
-  const pathString = req.path.toLowerCase().replace(/^\//, '').replace(/\/$/, '');
-
-  // Check if it's a category, subcategory, or subcategory2
+  
+  // Parse path segments (e.g., /pet-food/fish-food -> ['pet-food', 'fish-food'])
+  const pathSegments = pathParts.map(p => p.toLowerCase());
+  
+  // Check if it matches category/subcategory/type hierarchy
   const isCategory = products.some(p => {
-    if (p.category && slugify(p.category).toLowerCase() === pathString) return true;
-    if (p.subcategory && slugify(p.subcategory).toLowerCase() === pathString) return true;
-    if (p.subcategory2 && slugify(p.subcategory2).toLowerCase() === pathString) return true;
+    const pCat = p.category ? slugify(p.category).toLowerCase() : '';
+    const pSub = p.subcategory ? slugify(p.subcategory).toLowerCase() : '';
+    const pType = p.type ? slugify(p.type).toLowerCase() : '';
+    
+    // Match patterns:
+    // 1 segment: category only
+    if (pathSegments.length === 1) {
+      return pCat === pathSegments[0];
+    }
+    // 2 segments: category/subcategory
+    if (pathSegments.length === 2) {
+      return pCat === pathSegments[0] && pSub === pathSegments[1];
+    }
+    // 3 segments: category/subcategory/type
+    if (pathSegments.length === 3) {
+      return pCat === pathSegments[0] && pSub === pathSegments[1] && pType === pathSegments[2];
+    }
     return false;
   });
 

@@ -9,6 +9,38 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Slugify function to create product URLs
+  function slugify(value) {
+    if (!value) return "";
+    
+    const cyrToLat = {
+      а: "a", б: "b", в: "v", г: "g", д: "d", ђ: "dj", е: "e", ж: "z",
+      з: "z", и: "i", ј: "j", к: "k", л: "l", љ: "lj", м: "m", н: "n",
+      њ: "nj", о: "o", п: "p", р: "r", с: "s", т: "t", ћ: "c", у: "u",
+      ф: "f", х: "h", ц: "c", ч: "c", џ: "dz", ш: "s",
+      А: "a", Б: "b", В: "v", Г: "g", Д: "d", Ђ: "dj", Е: "e", Ж: "z",
+      З: "z", И: "i", Ј: "j", К: "k", Л: "l", Љ: "lj", М: "m", Н: "n",
+      Њ: "nj", О: "o", П: "p", Р: "r", С: "s", Т: "t", Ћ: "c", У: "u",
+      Ф: "f", Х: "h", Ц: "c", Ч: "c", Џ: "dz", Ш: "s"
+    };
+    
+    let result = value.toString();
+    result = result.replace(/[а-яА-ЯђЂљЉњЊћЋџЏ]/g, ch => cyrToLat[ch] || ch);
+    result = result.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    result = result
+      .replace(/đ/g, "dj").replace(/Đ/g, "dj")
+      .replace(/ž/g, "z").replace(/Ž/g, "z")
+      .replace(/č/g, "c").replace(/Č/g, "c")
+      .replace(/ć/g, "c").replace(/Ć/g, "c")
+      .replace(/š/g, "s").replace(/Š/g, "s");
+    
+    return result
+      .replace(/[^a-zA-Z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .toLowerCase();
+  }
+
   // Featured Products Slider
   let featuredProducts = [];
   let currentSlideIndex = 0;
@@ -56,13 +88,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const imageIndex = index % productImages.length;
       const imageSrc = productImages[imageIndex];
       
-      const displayPrice = product.salePrice && product.salePrice !== '/' 
-        ? product.salePrice 
-        : product.price;
+      const price = product.salePrice && product.salePrice !== '/' ? product.salePrice : product.price;
+      const hasDiscount = product.salePrice && product.salePrice !== '/' && product.percentage && product.percentage !== '/' && product.percentage !== '0%';
+      const discountPercentage = hasDiscount ? product.percentage : '';
+      const oldPriceValue = hasDiscount ? product.price : null;
       
       const cardHTML = `
         <div class="custom-card" data-product-id="${product.id}">
           <div class="image-c">
+            ${hasDiscount ? `<div class="discount-badge">-${discountPercentage}</div>` : ''}
             <div class="arrow-image-left">
               <span class="material-symbols-outlined">arrow_back_ios_new</span>
             </div>
@@ -80,7 +114,10 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="content-c">
             <span class="product-brand">${product.brand}</span>
             <h4>${product.title}</h4>
-            <div class="price">${displayPrice} RSD</div>
+            <div class="price-container">
+              ${oldPriceValue ? `<div class="price-old">${oldPriceValue} $</div>` : ''}
+              <div class="price">${price} $</div>
+            </div>
             <div class="btns-flex">
               <button class="buy-now">Buy now</button>
               <button class="add-to-cart">
@@ -92,6 +129,37 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
       
       container.innerHTML += cardHTML;
+    });
+
+    // Add click handlers to product cards after rendering
+    const allCards = container.querySelectorAll('.custom-card');
+    allCards.forEach((card, index) => {
+      const product = featuredProducts[index];
+      if (!product) return;
+      
+      const productSlug = slugify(product.title);
+      const productUrl = `/${productSlug}`;
+      
+      // Add click handler to card (except when clicking buttons)
+      card.addEventListener("click", function(e) {
+        // Don't navigate if clicking on buttons
+        if (e.target.closest(".buy-now") || e.target.closest(".add-to-cart") || e.target.closest(".heart-container")) {
+          return;
+        }
+        window.location.href = productUrl;
+      });
+      
+      // Add click handler to Buy Now button
+      const buyNowBtn = card.querySelector(".buy-now");
+      if (buyNowBtn) {
+        buyNowBtn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          window.location.href = productUrl;
+        });
+      }
+      
+      // Note: Heart container click is handled by global event listener below
+      // which handles both toggle state and animation
     });
 
     // Setup slider after rendering and store showSlide function
@@ -257,11 +325,19 @@ document.addEventListener("DOMContentLoaded", function () {
   document.head.appendChild(style);
 
   // Add to cart animation - using event delegation for dynamically added products
-  const cartIcon = document.querySelector("#openCart");
-  
   document.addEventListener("click", function (e) {
     const addToCartButton = e.target.closest(".add-to-cart");
-    if (!addToCartButton || !cartIcon) return;
+    if (!addToCartButton) return;
+    
+    // Prevent event bubbling
+    e.stopPropagation();
+    
+    // Find cart icon each time (in case header loads after this script)
+    const cartIcon = document.querySelector("#openCart");
+    if (!cartIcon) {
+      console.warn("Cart icon (#openCart) not found. Header may not be loaded yet.");
+      return;
+    }
 
     // Get button position
     const buttonRect = addToCartButton.getBoundingClientRect();
@@ -307,6 +383,93 @@ document.addEventListener("DOMContentLoaded", function () {
     cartIcon.style.animation = "cartNotify 0.6s ease";
     setTimeout(() => {
       cartIcon.style.animation = "";
+    }, 600);
+
+    // Remove flying element after animation
+    setTimeout(() => {
+      flyingElement.remove();
+    }, 800);
+  });
+
+  // Add to saved items animation - using event delegation for dynamically added products
+  document.addEventListener("click", function (e) {
+    const heartContainer = e.target.closest(".heart-container");
+    if (!heartContainer) return;
+    
+    // Prevent event bubbling
+    e.stopPropagation();
+    
+    // Toggle heart state (fill/unfill)
+    const heartFilled = heartContainer.querySelector('.heart-filled');
+    const heartOutline = heartContainer.querySelector('.heart-outline');
+    
+    if (!heartFilled || !heartOutline) return;
+    
+    // Check if heart is currently active (filled) before toggling
+    const isActive = heartFilled.style.opacity === "1";
+    
+    // Toggle heart state
+    heartFilled.style.opacity = isActive ? "0" : "1";
+    heartOutline.style.opacity = isActive ? "1" : "0";
+    
+    // Only animate if we're filling the heart (not unfilling)
+    if (isActive) {
+      // Heart is being unfilled - just return, no animation
+      return;
+    }
+    
+    // Heart is being filled - run animation
+    // Find saved icon each time (in case header loads after this script)
+    const savedIcon = document.querySelector("#savedProduct");
+    if (!savedIcon) {
+      console.warn("Saved icon (#savedProduct) not found. Header may not be loaded yet.");
+      return;
+    }
+
+    // Get heart container position
+    const heartRect = heartContainer.getBoundingClientRect();
+    const heartX = heartRect.left + heartRect.width / 2;
+    const heartY = heartRect.top + heartRect.height / 2;
+
+    // Get saved icon position
+    const savedRect = savedIcon.getBoundingClientRect();
+    const savedX = savedRect.left + savedRect.width / 2;
+    const savedY = savedRect.top + savedRect.height / 2;
+
+    // Create flying element
+    const flyingElement = document.createElement("div");
+    flyingElement.className = "flying-item";
+    flyingElement.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" style="width: 24px; height: 24px;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900"/></svg>';
+    document.body.appendChild(flyingElement);
+
+    // Set initial position
+    flyingElement.style.position = "fixed";
+    flyingElement.style.left = heartX + "px";
+    flyingElement.style.top = heartY + "px";
+    flyingElement.style.pointerEvents = "none";
+    flyingElement.style.zIndex = "9999";
+
+    // Trigger animation
+    setTimeout(() => {
+      flyingElement.style.transition =
+        "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+      flyingElement.style.left = savedX + "px";
+      flyingElement.style.top = savedY + "px";
+      flyingElement.style.opacity = "0";
+      flyingElement.style.transform = "scale(0.3)";
+    }, 10);
+
+    // Add heart container animation
+    heartContainer.classList.add("adding");
+    setTimeout(() => {
+      heartContainer.classList.remove("adding");
+    }, 600);
+
+    // Add pulse effect to saved icon
+    savedIcon.style.animation = "cartNotify 0.6s ease";
+    setTimeout(() => {
+      savedIcon.style.animation = "";
     }, 600);
 
     // Remove flying element after animation

@@ -351,12 +351,61 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Favorite button toggle
   const favoriteBtn = document.querySelector(".btn-favorite");
+
+  function animateToSaved(sourceEl) {
+    // Find saved icon each time (in case header loads after this script)
+    const savedIcon = document.querySelector("#savedProduct");
+    if (!savedIcon || !sourceEl) return;
+
+    const sourceRect = sourceEl.getBoundingClientRect();
+    const sourceX = sourceRect.left + sourceRect.width / 2;
+    const sourceY = sourceRect.top + sourceRect.height / 2;
+
+    const savedRect = savedIcon.getBoundingClientRect();
+    const savedX = savedRect.left + savedRect.width / 2;
+    const savedY = savedRect.top + savedRect.height / 2;
+
+    const flyingElement = document.createElement("div");
+    flyingElement.className = "flying-item";
+    flyingElement.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" style="width: 24px; height: 24px;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900"/></svg>';
+    document.body.appendChild(flyingElement);
+
+    flyingElement.style.position = "fixed";
+    flyingElement.style.left = sourceX + "px";
+    flyingElement.style.top = sourceY + "px";
+    flyingElement.style.pointerEvents = "none";
+    flyingElement.style.zIndex = "9999";
+
+    setTimeout(() => {
+      flyingElement.style.transition =
+        "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+      flyingElement.style.left = savedX + "px";
+      flyingElement.style.top = savedY + "px";
+      flyingElement.style.opacity = "0";
+      flyingElement.style.transform = "scale(0.3)";
+    }, 10);
+
+    savedIcon.style.animation = "cartNotify 0.6s ease";
+    setTimeout(() => {
+      savedIcon.style.animation = "";
+    }, 600);
+
+    setTimeout(() => {
+      flyingElement.remove();
+    }, 800);
+  }
   if (favoriteBtn) {
     favoriteBtn.addEventListener("click", function () {
       this.classList.toggle("active");
       const icon = this.querySelector("span");
       if (this.classList.contains("active")) {
         icon.textContent = "favorite";
+        this.classList.add("adding");
+        setTimeout(() => {
+          this.classList.remove("adding");
+        }, 600);
+        animateToSaved(this);
       } else {
         icon.textContent = "favorite_border";
       }
@@ -365,7 +414,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Add to cart functionality with flying animation
   const addToCartBtn = document.querySelector(".btn-add-cart");
-  const cartIcon = document.querySelector("#openCart");
   
   if (addToCartBtn) {
     addToCartBtn.addEventListener("click", function () {
@@ -374,47 +422,51 @@ document.addEventListener("DOMContentLoaded", function () {
       const buttonX = buttonRect.left + buttonRect.width / 2;
       const buttonY = buttonRect.top + buttonRect.height / 2;
 
-      // Get cart position (if cart icon exists)
-      if (cartIcon) {
-        const cartRect = cartIcon.getBoundingClientRect();
-        const cartX = cartRect.left + cartRect.width / 2;
-        const cartY = cartRect.top + cartRect.height / 2;
-
-        // Create flying element
-        const flyingElement = document.createElement("div");
-        flyingElement.className = "flying-item";
-        flyingElement.innerHTML =
-          '<span class="material-symbols-outlined cart-icon">add_shopping_cart</span>';
-        document.body.appendChild(flyingElement);
-
-        // Set initial position
-        flyingElement.style.position = "fixed";
-        flyingElement.style.left = buttonX + "px";
-        flyingElement.style.top = buttonY + "px";
-        flyingElement.style.pointerEvents = "none";
-        flyingElement.style.zIndex = "9999";
-
-        // Trigger animation
-        setTimeout(() => {
-          flyingElement.style.transition =
-            "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-          flyingElement.style.left = cartX + "px";
-          flyingElement.style.top = cartY + "px";
-          flyingElement.style.opacity = "0";
-          flyingElement.style.transform = "scale(0.3)";
-        }, 10);
-
-        // Add pulse effect to cart
-        cartIcon.style.animation = "cartNotify 0.6s ease";
-        setTimeout(() => {
-          cartIcon.style.animation = "";
-        }, 600);
-
-        // Remove flying element after animation
-        setTimeout(() => {
-          flyingElement.remove();
-        }, 800);
+      // Find cart icon each time (in case header loads after this script)
+      const cartIcon = document.querySelector("#openCart");
+      if (!cartIcon) {
+        console.warn("Cart icon (#openCart) not found. Header may not be loaded yet.");
+        return;
       }
+      
+      const cartRect = cartIcon.getBoundingClientRect();
+      const cartX = cartRect.left + cartRect.width / 2;
+      const cartY = cartRect.top + cartRect.height / 2;
+
+      // Create flying element
+      const flyingElement = document.createElement("div");
+      flyingElement.className = "flying-item";
+      flyingElement.innerHTML =
+        '<span class="material-symbols-outlined cart-icon">add_shopping_cart</span>';
+      document.body.appendChild(flyingElement);
+
+      // Set initial position
+      flyingElement.style.position = "fixed";
+      flyingElement.style.left = buttonX + "px";
+      flyingElement.style.top = buttonY + "px";
+      flyingElement.style.pointerEvents = "none";
+      flyingElement.style.zIndex = "9999";
+
+      // Trigger animation
+      setTimeout(() => {
+        flyingElement.style.transition =
+          "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+        flyingElement.style.left = cartX + "px";
+        flyingElement.style.top = cartY + "px";
+        flyingElement.style.opacity = "0";
+        flyingElement.style.transform = "scale(0.3)";
+      }, 10);
+
+      // Add pulse effect to cart
+      cartIcon.style.animation = "cartNotify 0.6s ease";
+      setTimeout(() => {
+        cartIcon.style.animation = "";
+      }, 600);
+
+      // Remove flying element after animation
+      setTimeout(() => {
+        flyingElement.remove();
+      }, 800);
 
       // Add button animation
       this.classList.add("adding");
@@ -509,42 +561,14 @@ document.addEventListener("DOMContentLoaded", function () {
       // Initialize carousel after products are loaded
       initializeRecommendedCarousel();
 
-      // Add recommended observer after products are loaded
-      setupRecommendedObserver();
-
     } catch (error) {
       console.error('Error loading recommended products:', error);
     }
   }
 
-  // Setup recommended observer for recommended cards
-  function setupRecommendedObserver() {
-    const recommendedObserverOptions = {
-      root: null,
-      rootMargin: "-300px 0px", // Element must be 300px into viewport before animating
-      threshold: 0.5
-    };
-
-    const recommendedObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("active");
-          observer.unobserve(entry.target); // Only animate once
-        }
-      });
-    }, recommendedObserverOptions);
-
-    // Observe recommended cards
-    const recommendedCards = document.querySelectorAll(".recommended-card.reveal");
-    recommendedCards.forEach(el => {
-      recommendedObserver.observe(el);
-    });
-  }
-
   // Recommended add to cart functionality with flying animation
   function setupRecommendedAddToCart() {
     const recommendedAddToCartBtns = document.querySelectorAll(".recommended-add-to-cart");
-    const cartIcon = document.querySelector("#openCart");
     
     recommendedAddToCartBtns.forEach((btn) => {
       btn.addEventListener("click", function (e) {
@@ -555,47 +579,51 @@ document.addEventListener("DOMContentLoaded", function () {
         const buttonX = buttonRect.left + buttonRect.width / 2;
         const buttonY = buttonRect.top + buttonRect.height / 2;
 
-        // Get cart position (if cart icon exists)
-        if (cartIcon) {
-          const cartRect = cartIcon.getBoundingClientRect();
-          const cartX = cartRect.left + cartRect.width / 2;
-          const cartY = cartRect.top + cartRect.height / 2;
-
-          // Create flying element
-          const flyingElement = document.createElement("div");
-          flyingElement.className = "flying-item";
-          flyingElement.innerHTML =
-            '<span class="material-symbols-outlined cart-icon">add_shopping_cart</span>';
-          document.body.appendChild(flyingElement);
-
-          // Set initial position
-          flyingElement.style.position = "fixed";
-          flyingElement.style.left = buttonX + "px";
-          flyingElement.style.top = buttonY + "px";
-          flyingElement.style.pointerEvents = "none";
-          flyingElement.style.zIndex = "9999";
-
-          // Trigger animation
-          setTimeout(() => {
-            flyingElement.style.transition =
-              "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-            flyingElement.style.left = cartX + "px";
-            flyingElement.style.top = cartY + "px";
-            flyingElement.style.opacity = "0";
-            flyingElement.style.transform = "scale(0.3)";
-          }, 10);
-
-          // Add pulse effect to cart
-          cartIcon.style.animation = "cartNotify 0.6s ease";
-          setTimeout(() => {
-            cartIcon.style.animation = "";
-          }, 600);
-
-          // Remove flying element after animation
-          setTimeout(() => {
-            flyingElement.remove();
-          }, 800);
+        // Find cart icon each time (in case header loads after this script)
+        const cartIcon = document.querySelector("#openCart");
+        if (!cartIcon) {
+          console.warn("Cart icon (#openCart) not found. Header may not be loaded yet.");
+          return;
         }
+        
+        const cartRect = cartIcon.getBoundingClientRect();
+        const cartX = cartRect.left + cartRect.width / 2;
+        const cartY = cartRect.top + cartRect.height / 2;
+
+        // Create flying element
+        const flyingElement = document.createElement("div");
+        flyingElement.className = "flying-item";
+        flyingElement.innerHTML =
+          '<span class="material-symbols-outlined cart-icon">add_shopping_cart</span>';
+        document.body.appendChild(flyingElement);
+
+        // Set initial position
+        flyingElement.style.position = "fixed";
+        flyingElement.style.left = buttonX + "px";
+        flyingElement.style.top = buttonY + "px";
+        flyingElement.style.pointerEvents = "none";
+        flyingElement.style.zIndex = "9999";
+
+        // Trigger animation
+        setTimeout(() => {
+          flyingElement.style.transition =
+            "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+          flyingElement.style.left = cartX + "px";
+          flyingElement.style.top = cartY + "px";
+          flyingElement.style.opacity = "0";
+          flyingElement.style.transform = "scale(0.3)";
+        }, 10);
+
+        // Add pulse effect to cart
+        cartIcon.style.animation = "cartNotify 0.6s ease";
+        setTimeout(() => {
+          cartIcon.style.animation = "";
+        }, 600);
+
+        // Remove flying element after animation
+        setTimeout(() => {
+          flyingElement.remove();
+        }, 800);
 
         // Add button animation
         this.classList.add("adding");
@@ -615,8 +643,10 @@ document.addEventListener("DOMContentLoaded", function () {
     recommendedBuyNowBtns.forEach((btn) => {
       btn.addEventListener("click", function (e) {
         e.stopPropagation();
-        // TODO: Implement checkout functionality
-        console.log("Buy now recommended product");
+        const productUrl = btn.getAttribute("data-product-url");
+        if (productUrl) {
+          window.location.href = productUrl;
+        }
       });
     });
   }
@@ -630,15 +660,14 @@ document.addEventListener("DOMContentLoaded", function () {
     container.innerHTML = products.map((product, index) => {
       const image = product.image || '/img/granula.jpg';
       const price = product.salePrice && product.salePrice !== '/' ? product.salePrice : product.price;
-      const oldPrice = product.salePrice && product.salePrice !== '/' ? `<span class="old-price">${product.price} RSD</span>` : '';
-
-      const delayClasses = ['delay-100', 'delay-200', 'delay-300', 'delay-400'];
-      const delayIndex = index % 4;
-      const delayClass = delayClasses[delayIndex];
+      const hasDiscount = product.salePrice && product.salePrice !== '/' && product.percentage && product.percentage !== '/' && product.percentage !== '0%';
+      const discountPercentage = hasDiscount ? product.percentage : '';
+      const oldPriceValue = hasDiscount ? product.price : null;
 
       return `
-        <div class="recommended-card reveal ${delayClass}" data-product-id="${product.id}">
+        <div class="recommended-card" data-product-id="${product.id}">
           <div class="recommended-image-c">
+            ${hasDiscount ? `<div class="recommended-discount-badge">-${discountPercentage}</div>` : ''}
             <div class="recommended-heart-container">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <path class="recommended-heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2" />
@@ -650,9 +679,12 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="recommended-content-c">
             <span class="product-brand">${product.brand || 'Brand'}</span>
             <h4>${product.title}</h4>
-            <div class="recommended-price">${price} RSD${oldPrice ? ' ' + oldPrice : ''}</div>
+            <div class="recommended-price-container">
+              ${oldPriceValue ? `<div class="recommended-old-price">${oldPriceValue} $</div>` : ''}
+              <div class="recommended-price">${price} $</div>
+            </div>
             <div class="recommended-btns-flex">
-              <button class="recommended-buy-now" onclick="window.location.href='/${slugify(product.title)}'">
+              <button class="recommended-buy-now" data-product-url="/${slugify(product.title)}">
                 Buy now
               </button>
               <button class="recommended-add-to-cart" data-product-id="${product.id}">
@@ -668,6 +700,26 @@ document.addEventListener("DOMContentLoaded", function () {
     setupRecommendedAddToCart();
     setupRecommendedBuyNow();
 
+    // Add click handlers to recommended product cards
+    const recommendedCards = container.querySelectorAll('.recommended-card');
+    recommendedCards.forEach((card) => {
+      // Get product URL from the Buy Now button's data attribute
+      const buyNowBtn = card.querySelector(".recommended-buy-now");
+      if (!buyNowBtn) return;
+      
+      const productUrl = buyNowBtn.getAttribute("data-product-url");
+      if (!productUrl) return;
+      
+      // Add click handler to card (except when clicking buttons)
+      card.addEventListener("click", function(e) {
+        // Don't navigate if clicking on buttons or heart
+        if (e.target.closest(".recommended-buy-now") || e.target.closest(".recommended-add-to-cart") || e.target.closest(".recommended-heart-container")) {
+          return;
+        }
+        window.location.href = productUrl;
+      });
+    });
+
     // Add event listeners for heart buttons - use same approach as old version
     container.querySelectorAll('.recommended-heart-container').forEach(container => {
       container.addEventListener('click', function(e) {
@@ -675,11 +727,27 @@ document.addEventListener("DOMContentLoaded", function () {
         const heartFilled = this.querySelector('.recommended-heart-filled');
         const heartOutline = this.querySelector('.recommended-heart-outline');
         
-        if (heartFilled && heartOutline) {
-          const isActive = heartFilled.style.opacity === "1";
-          heartFilled.style.opacity = isActive ? "0" : "1";
-          heartOutline.style.opacity = isActive ? "1" : "0";
+        if (!heartFilled || !heartOutline) return;
+        
+        // Check if heart is currently active (filled) before toggling
+        const isActive = heartFilled.style.opacity === "1";
+        
+        // Toggle heart state
+        heartFilled.style.opacity = isActive ? "0" : "1";
+        heartOutline.style.opacity = isActive ? "1" : "0";
+        
+        // Only animate if we're filling the heart (not unfilling)
+        if (isActive) {
+          // Heart is being unfilled - just return, no animation
+          return;
         }
+        
+        // Heart is being filled - run animation
+        this.classList.add("adding");
+        setTimeout(() => {
+          this.classList.remove("adding");
+        }, 600);
+        animateToSaved(this);
       });
     });
   }
@@ -1046,7 +1114,23 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Load recommended products when page loads
-  loadRecommendedProducts();
+  // Wait a bit to ensure DOM is fully ready, especially for EJS templates
+  setTimeout(() => {
+    const container = document.getElementById('recommendedProducts');
+    if (container) {
+      loadRecommendedProducts();
+    } else {
+      console.warn('Recommended products container not found. Retrying...');
+      // Retry after a short delay
+      setTimeout(() => {
+        if (document.getElementById('recommendedProducts')) {
+          loadRecommendedProducts();
+        } else {
+          console.error('Recommended products container still not found after retry.');
+        }
+      }, 500);
+    }
+  }, 100);
 
   // Intersection Observer for Scroll Animations
   const observerOptions = {

@@ -137,23 +137,36 @@
         <!-- Right Column: Product Details -->
         <div class="product-details reveal-right">
           <% if (product) { %>
-            <% if (product.percentage && product.percentage !== '/') { %>
-              <div class="product-badge reveal delay-100">-<%= product.percentage %></div>
-            <% } else { %>
-              <div class="product-badge reveal delay-100">NEW ARRIVAL</div>
-            <% } %>
-            
-            <h1 class="product-title reveal delay-100"><%= product.title %></h1>
-            
-            <div class="product-price reveal delay-200">
-              <% if (product.salePrice && product.salePrice !== '/') { %>
-                <span class="currency">RSD</span>
-                <span class="amount"><%= product.salePrice %></span>
-                <span class="old-price"><%= product.price %> RSD</span>
-              <% } else { %>
-                <span class="currency">RSD</span>
-                <span class="amount"><%= product.price %></span>
+            <div class="product-header">
+              <% if (product.percentage && product.percentage !== '/' && product.salePrice && product.salePrice !== '/') { %>
+                <div class="discount-label reveal delay-100">-<%= product.percentage %></div>
               <% } %>
+              
+              <h1 class="product-title reveal delay-100"><%= product.title %></h1>
+              
+              <div class="product-price-wrapper reveal delay-200">
+                <% if (product.salePrice && product.salePrice !== '/') { %>
+                  <div class="price-container">
+                    <% if (product.price && product.price !== '/') { %>
+                      <div class="original-price">
+                        <span class="original-amount"><%= product.price %></span>
+                        <span class="original-currency">$</span>
+                      </div>
+                    <% } %>
+                    <div class="current-price">
+                      <span class="price-amount"><%= product.salePrice %></span>
+                      <span class="price-currency">$</span>
+                    </div>
+                  </div>
+                <% } else { %>
+                  <div class="price-container">
+                    <div class="current-price">
+                      <span class="price-amount"><%= product.price %></span>
+                      <span class="price-currency">$</span>
+                    </div>
+                  </div>
+                <% } %>
+              </div>
             </div>
 
             <!-- Description -->
@@ -164,11 +177,16 @@
               </p>
             </div>
           <% } else { %>
-            <div class="product-badge reveal delay-100">NEW ARRIVAL</div>
-            <h1 class="product-title reveal delay-100">Product Not Found</h1>
-            <div class="product-price reveal delay-200">
-              <span class="currency">RSD</span>
-              <span class="amount">0</span>
+            <div class="product-header">
+              <h1 class="product-title reveal delay-100">Product Not Found</h1>
+              <div class="product-price-wrapper reveal delay-200">
+                <div class="price-container">
+                  <div class="current-price">
+                    <span class="price-amount">0</span>
+                    <span class="price-currency">$</span>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="product-description reveal delay-300">
               <h3 class="description-title">Description:</h3>

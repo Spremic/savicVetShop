@@ -165,13 +165,8 @@ function pickImage(product) {
 }
 
 function formatPrice(product) {
-  const onSale = product.salePrice && product.salePrice !== "/";
-  const base = (product.price || "").trim();
-  const promo = onSale ? (product.salePrice || "").trim() : "";
-  if (promo) {
-    return `<span class="price-range akcijska">${promo} RSD</span> <span class="price-old">${base} RSD</span>`;
-  }
-  return `<span class="price-range">${base} RSD</span>`;
+  const price = product.salePrice && product.salePrice !== '/' ? product.salePrice : product.price;
+  return `<div class="price-range">${price} $</div>`;
 }
 
 function createProductCard(product) {
@@ -181,16 +176,25 @@ function createProductCard(product) {
   card.setAttribute("data-subcategory", product.subcategory);
   card.setAttribute("data-subcategory2", product.type || "");
 
-  const badge = product.percentage && product.percentage !== "/" ? `<div class="product-badge">-${product.percentage}</div>` : "";
+  const hasDiscount = product.salePrice && product.salePrice !== '/' && product.percentage && product.percentage !== '/' && product.percentage !== '0%';
+  const badge = hasDiscount ? `<div class="product-badge">-${product.percentage}</div>` : "";
+  const oldPriceOnImage = hasDiscount ? `<div class="product-old-price-on-image">${product.price} $</div>` : "";
   
   // Create slug from product title for URL
   const productSlug = slugify(product.title);
-  const productUrl = `/product/${productSlug}`;
+  const productUrl = `/${productSlug}`;
 
   card.innerHTML = `
     <div class="product-image">
       <img src="${pickImage(product)}" alt="${product.title}" loading="lazy" />
       ${badge}
+      ${oldPriceOnImage}
+      <div class="heart-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+          <path class="heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2"/>
+          <path class="heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0"/>
+        </svg>
+      </div>
     </div>
     <div class="product-info">
       <div class="product-brand">${product.brand || ""}</div>
@@ -213,8 +217,8 @@ function createProductCard(product) {
   
   // Add click handler to navigate to product page
   card.addEventListener("click", function(e) {
-    // Don't navigate if clicking on buttons
-    if (e.target.closest(".import-btn") || e.target.closest(".cart-icon-btn")) {
+    // Don't navigate if clicking on buttons or heart
+    if (e.target.closest(".import-btn") || e.target.closest(".cart-icon-btn") || e.target.closest(".heart-container")) {
       return;
     }
     window.location.href = productUrl;
@@ -228,6 +232,9 @@ function createProductCard(product) {
       window.location.href = productUrl;
     });
   }
+
+  // Note: Heart container click is handled by global event listener below
+  // which handles both toggle state and animation
   
   return card;
 }
@@ -611,5 +618,188 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (!catName) return;
       window.location.href = `/${slugify(catName)}`;
     });
+  });
+
+  // Add styles for flying item
+  const style = document.createElement("style");
+  style.textContent = `
+    .flying-item {
+      display: grid;
+      place-content: center;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), rgba(0, 153, 0, 0.1));
+      border: 2px solid #009900;
+      border-radius: 50%;
+    }
+
+    .flying-item .cart-icon {
+      filter: drop-shadow(0 0 8px rgba(0, 153, 0, 0.6));
+      font-size: 24px;
+    }
+
+    @keyframes cartNotify {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.15);
+      }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Add to cart animation - using event delegation for dynamically added products
+  document.addEventListener("click", function (e) {
+    const addToCartButton = e.target.closest(".cart-icon-btn");
+    if (!addToCartButton) return;
+    
+    // Prevent event bubbling
+    e.stopPropagation();
+    
+    // Find cart icon each time (in case header loads after this script)
+    const cartIcon = document.querySelector("#openCart");
+    if (!cartIcon) {
+      console.warn("Cart icon (#openCart) not found. Header may not be loaded yet.");
+      return;
+    }
+
+    // Get button position
+    const buttonRect = addToCartButton.getBoundingClientRect();
+    const buttonX = buttonRect.left + buttonRect.width / 2;
+    const buttonY = buttonRect.top + buttonRect.height / 2;
+
+    // Get cart position
+    const cartRect = cartIcon.getBoundingClientRect();
+    const cartX = cartRect.left + cartRect.width / 2;
+    const cartY = cartRect.top + cartRect.height / 2;
+
+    // Create flying element
+    const flyingElement = document.createElement("div");
+    flyingElement.className = "flying-item";
+    flyingElement.innerHTML =
+      '<span class="material-symbols-outlined cart-icon">add_shopping_cart</span>';
+    document.body.appendChild(flyingElement);
+
+    // Set initial position
+    flyingElement.style.position = "fixed";
+    flyingElement.style.left = buttonX + "px";
+    flyingElement.style.top = buttonY + "px";
+    flyingElement.style.pointerEvents = "none";
+    flyingElement.style.zIndex = "9999";
+
+    // Trigger animation
+    setTimeout(() => {
+      flyingElement.style.transition =
+        "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+      flyingElement.style.left = cartX + "px";
+      flyingElement.style.top = cartY + "px";
+      flyingElement.style.opacity = "0";
+      flyingElement.style.transform = "scale(0.3)";
+    }, 10);
+
+    // Add cart button animation
+    addToCartButton.classList.add("adding");
+    setTimeout(() => {
+      addToCartButton.classList.remove("adding");
+    }, 600);
+
+    // Add pulse effect to cart
+    cartIcon.style.animation = "cartNotify 0.6s ease";
+    setTimeout(() => {
+      cartIcon.style.animation = "";
+    }, 600);
+
+    // Remove flying element after animation
+    setTimeout(() => {
+      flyingElement.remove();
+    }, 800);
+  });
+
+  // Add to saved items animation - using event delegation for dynamically added products
+  document.addEventListener("click", function (e) {
+    const heartContainer = e.target.closest(".heart-container");
+    if (!heartContainer) return;
+    
+    // Prevent event bubbling
+    e.stopPropagation();
+    
+    // Toggle heart state (fill/unfill)
+    const heartFilled = heartContainer.querySelector('.heart-filled');
+    const heartOutline = heartContainer.querySelector('.heart-outline');
+    
+    if (!heartFilled || !heartOutline) return;
+    
+    // Check if heart is currently active (filled) before toggling
+    const isActive = heartFilled.style.opacity === "1";
+    
+    // Toggle heart state
+    heartFilled.style.opacity = isActive ? "0" : "1";
+    heartOutline.style.opacity = isActive ? "1" : "0";
+    
+    // Only animate if we're filling the heart (not unfilling)
+    if (isActive) {
+      // Heart is being unfilled - just return, no animation
+      return;
+    }
+    
+    // Heart is being filled - run animation
+    // Find saved icon each time (in case header loads after this script)
+    const savedIcon = document.querySelector("#savedProduct");
+    if (!savedIcon) {
+      console.warn("Saved icon (#savedProduct) not found. Header may not be loaded yet.");
+      return;
+    }
+
+    // Get heart container position
+    const heartRect = heartContainer.getBoundingClientRect();
+    const heartX = heartRect.left + heartRect.width / 2;
+    const heartY = heartRect.top + heartRect.height / 2;
+
+    // Get saved icon position
+    const savedRect = savedIcon.getBoundingClientRect();
+    const savedX = savedRect.left + savedRect.width / 2;
+    const savedY = savedRect.top + savedRect.height / 2;
+
+    // Create flying element
+    const flyingElement = document.createElement("div");
+    flyingElement.className = "flying-item";
+    flyingElement.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" style="width: 24px; height: 24px;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900"/></svg>';
+    document.body.appendChild(flyingElement);
+
+    // Set initial position
+    flyingElement.style.position = "fixed";
+    flyingElement.style.left = heartX + "px";
+    flyingElement.style.top = heartY + "px";
+    flyingElement.style.pointerEvents = "none";
+    flyingElement.style.zIndex = "9999";
+
+    // Trigger animation
+    setTimeout(() => {
+      flyingElement.style.transition =
+        "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+      flyingElement.style.left = savedX + "px";
+      flyingElement.style.top = savedY + "px";
+      flyingElement.style.opacity = "0";
+      flyingElement.style.transform = "scale(0.3)";
+    }, 10);
+
+    // Add heart container animation
+    heartContainer.classList.add("adding");
+    setTimeout(() => {
+      heartContainer.classList.remove("adding");
+    }, 600);
+
+    // Add pulse effect to saved icon
+    savedIcon.style.animation = "cartNotify 0.6s ease";
+    setTimeout(() => {
+      savedIcon.style.animation = "";
+    }, 600);
+
+    // Remove flying element after animation
+    setTimeout(() => {
+      flyingElement.remove();
+    }, 800);
   });
 });
