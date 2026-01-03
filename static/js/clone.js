@@ -79,6 +79,8 @@ function addToSavedItems(productId) {
   if (!saved.includes(productId)) {
     saved.push(productId);
     localStorage.setItem('savedItems', JSON.stringify(saved));
+    // Update all heart icons for this product across the page
+    updateHeartIconsForProduct(productId);
     return true;
   }
   return false;
@@ -90,6 +92,8 @@ function removeFromSavedItems(productId) {
   if (index > -1) {
     saved.splice(index, 1);
     localStorage.setItem('savedItems', JSON.stringify(saved));
+    // Update all heart icons for this product across the page
+    updateHeartIconsForProduct(productId);
     return true;
   }
   return false;
@@ -98,6 +102,47 @@ function removeFromSavedItems(productId) {
 function isProductSaved(productId) {
   const saved = getSavedItems();
   return saved.includes(productId);
+}
+
+// Update all heart icons for a specific product across the page
+function updateHeartIconsForProduct(productId) {
+  const isSaved = isProductSaved(productId);
+  
+  // Update all heart-container elements (used in product cards)
+  document.querySelectorAll(`.heart-container[data-product-id="${productId}"]`).forEach(heartContainer => {
+    const heartFilled = heartContainer.querySelector('.heart-filled');
+    const heartOutline = heartContainer.querySelector('.heart-outline');
+    if (heartFilled && heartOutline) {
+      heartFilled.style.opacity = isSaved ? "1" : "0";
+      heartOutline.style.opacity = isSaved ? "0" : "1";
+    }
+  });
+  
+  // Update all recommended-heart-container elements
+  document.querySelectorAll(`.recommended-heart-container[data-product-id="${productId}"]`).forEach(heartContainer => {
+    const heartFilled = heartContainer.querySelector('.recommended-heart-filled');
+    const heartOutline = heartContainer.querySelector('.recommended-heart-outline');
+    if (heartFilled && heartOutline) {
+      heartFilled.style.opacity = isSaved ? "1" : "0";
+      heartOutline.style.opacity = isSaved ? "0" : "1";
+    }
+  });
+  
+  // Update btn-favorite elements (used on product detail page)
+  document.querySelectorAll(`.btn-favorite[data-product-id="${productId}"]`).forEach(favoriteBtn => {
+    const icon = favoriteBtn.querySelector("span");
+    if (isSaved) {
+      favoriteBtn.classList.add("active");
+      if (icon) {
+        icon.textContent = "favorite";
+      }
+    } else {
+      favoriteBtn.classList.remove("active");
+      if (icon) {
+        icon.textContent = "favorite_border";
+      }
+    }
+  });
 }
 
 // Helper functions for rendering

@@ -201,6 +201,20 @@ function createProductCard(product) {
   // Note: Heart container click is handled by global event listener below
   // which handles both toggle state and animation
   
+  // Set initial heart state if product is saved
+  const heartContainer = card.querySelector('.heart-container');
+  if (heartContainer) {
+    const productId = heartContainer.getAttribute("data-product-id");
+    if (productId && typeof isProductSaved !== 'undefined' && isProductSaved(productId)) {
+      const heartFilled = heartContainer.querySelector('.heart-filled');
+      const heartOutline = heartContainer.querySelector('.heart-outline');
+      if (heartFilled && heartOutline) {
+        heartFilled.style.opacity = "1";
+        heartOutline.style.opacity = "0";
+      }
+    }
+  }
+  
   return card;
 }
 
@@ -1031,11 +1045,13 @@ document.addEventListener("DOMContentLoaded", async function () {
       } else {
         addToSavedItems(productId);
       }
+      // updateHeartIconsForProduct is called inside addToSavedItems/removeFromSavedItems
+      // so all hearts for this product will be updated automatically
+    } else {
+      // Fallback: manually toggle this heart if functions not available
+      heartFilled.style.opacity = isActive ? "0" : "1";
+      heartOutline.style.opacity = isActive ? "1" : "0";
     }
-    
-    // Toggle heart state
-    heartFilled.style.opacity = isActive ? "0" : "1";
-    heartOutline.style.opacity = isActive ? "1" : "0";
     
     // Only animate if we're filling the heart (not unfilling)
     if (isActive) {

@@ -352,6 +352,18 @@ document.addEventListener("DOMContentLoaded", function () {
   // Favorite button toggle
   const favoriteBtn = document.querySelector(".btn-favorite");
 
+  // Set initial favorite button state if product is saved
+  if (favoriteBtn) {
+    const productId = favoriteBtn.getAttribute("data-product-id");
+    if (productId && typeof isProductSaved !== 'undefined' && isProductSaved(productId)) {
+      favoriteBtn.classList.add("active");
+      const icon = favoriteBtn.querySelector("span");
+      if (icon) {
+        icon.textContent = "favorite";
+      }
+    }
+  }
+
   function animateToSaved(sourceEl) {
     // Find saved icon each time (in case header loads after this script)
     const savedIcon = document.querySelector("#savedProduct");
@@ -411,6 +423,8 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           removeFromSavedItems(productId);
         }
+        // updateHeartIconsForProduct is called inside addToSavedItems/removeFromSavedItems
+        // so all hearts for this product will be updated automatically
       }
       
       if (isActive) {
@@ -772,11 +786,13 @@ document.addEventListener("DOMContentLoaded", function () {
           } else {
             addToSavedItems(productId);
           }
+          // updateHeartIconsForProduct is called inside addToSavedItems/removeFromSavedItems
+          // so all hearts for this product will be updated automatically
+        } else {
+          // Fallback: manually toggle this heart if functions not available
+          heartFilled.style.opacity = isActive ? "0" : "1";
+          heartOutline.style.opacity = isActive ? "1" : "0";
         }
-        
-        // Toggle heart state
-        heartFilled.style.opacity = isActive ? "0" : "1";
-        heartOutline.style.opacity = isActive ? "1" : "0";
         
         // Only animate if we're filling the heart (not unfilling)
         if (isActive) {

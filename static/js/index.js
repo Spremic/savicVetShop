@@ -142,13 +142,22 @@ document.addEventListener("DOMContentLoaded", function () {
       
       // Set heart state if product is saved
       const heartContainer = card.querySelector('.heart-container');
-      if (heartContainer && typeof isProductSaved !== 'undefined' && isProductSaved(product.id)) {
-        const heartFilled = heartContainer.querySelector('.heart-filled');
-        const heartOutline = heartContainer.querySelector('.heart-outline');
-        if (heartFilled && heartOutline) {
-          heartFilled.style.opacity = "1";
-          heartOutline.style.opacity = "0";
-        }
+      if (heartContainer) {
+        // Wait for isProductSaved function to be available
+        const checkHeartState = () => {
+          if (typeof isProductSaved !== 'undefined' && isProductSaved(product.id)) {
+            const heartFilled = heartContainer.querySelector('.heart-filled');
+            const heartOutline = heartContainer.querySelector('.heart-outline');
+            if (heartFilled && heartOutline) {
+              heartFilled.style.opacity = "1";
+              heartOutline.style.opacity = "0";
+            }
+          } else if (typeof isProductSaved === 'undefined') {
+            // If function not yet available, try again after a short delay
+            setTimeout(checkHeartState, 50);
+          }
+        };
+        checkHeartState();
       }
       
       // Add click handler to card (except when clicking buttons)
@@ -306,6 +315,35 @@ document.addEventListener("DOMContentLoaded", function () {
   // Load products on page load
   loadFeaturedProducts();
 
+  // Additional check to set heart states after everything is loaded
+  // This ensures hearts are set even if clone.js loads after index.js
+  function updateAllHeartStates() {
+    if (typeof isProductSaved === 'undefined') {
+      // If function not yet available, try again after a short delay
+      setTimeout(updateAllHeartStates, 100);
+      return;
+    }
+
+    const allHeartContainers = document.querySelectorAll('.heart-container');
+    allHeartContainers.forEach(heartContainer => {
+      const productId = heartContainer.getAttribute("data-product-id");
+      if (productId && isProductSaved(productId)) {
+        const heartFilled = heartContainer.querySelector('.heart-filled');
+        const heartOutline = heartContainer.querySelector('.heart-outline');
+        if (heartFilled && heartOutline) {
+          heartFilled.style.opacity = "1";
+          heartOutline.style.opacity = "0";
+        }
+      }
+    });
+  }
+
+  // Run initial check after a short delay to ensure clone.js is loaded
+  setTimeout(updateAllHeartStates, 200);
+  
+  // Also run when window is fully loaded
+  window.addEventListener('load', updateAllHeartStates);
+
   // Add styles for flying item
   const style = document.createElement("style");
   style.textContent = `
@@ -439,11 +477,13 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         addToSavedItems(productId);
       }
+      // updateHeartIconsForProduct is called inside addToSavedItems/removeFromSavedItems
+      // so all hearts for this product will be updated automatically
+    } else {
+      // Fallback: manually toggle this heart if functions not available
+      heartFilled.style.opacity = isActive ? "0" : "1";
+      heartOutline.style.opacity = isActive ? "1" : "0";
     }
-    
-    // Toggle heart state
-    heartFilled.style.opacity = isActive ? "0" : "1";
-    heartOutline.style.opacity = isActive ? "1" : "0";
     
     // Only animate if we're filling the heart (not unfilling)
     if (isActive) {
