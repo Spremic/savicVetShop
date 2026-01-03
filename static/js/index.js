@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="arrow-image-right">
               <span class="material-symbols-outlined">arrow_forward_ios</span>
             </div>
-            <div class="heart-container">
+            <div class="heart-container" data-product-id="${product.id}">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <path class="heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2"/>
                 <path class="heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0"/>
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
             <div class="btns-flex">
               <button class="buy-now">Buy now</button>
-              <button class="add-to-cart">
+              <button class="add-to-cart" data-product-id="${product.id}">
                 <span class="material-symbols-outlined cart-icon">add_shopping_cart</span>
               </button>
             </div>
@@ -139,6 +139,17 @@ document.addEventListener("DOMContentLoaded", function () {
       
       const productSlug = slugify(product.title);
       const productUrl = `/${productSlug}`;
+      
+      // Set heart state if product is saved
+      const heartContainer = card.querySelector('.heart-container');
+      if (heartContainer && typeof isProductSaved !== 'undefined' && isProductSaved(product.id)) {
+        const heartFilled = heartContainer.querySelector('.heart-filled');
+        const heartOutline = heartContainer.querySelector('.heart-outline');
+        if (heartFilled && heartOutline) {
+          heartFilled.style.opacity = "1";
+          heartOutline.style.opacity = "0";
+        }
+      }
       
       // Add click handler to card (except when clicking buttons)
       card.addEventListener("click", function(e) {
@@ -332,6 +343,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Prevent event bubbling
     e.stopPropagation();
     
+    // Get product ID
+    const productId = addToCartButton.getAttribute("data-product-id");
+    if (!productId) return;
+    
+    // Add to cart using localStorage
+    if (typeof addToCart !== 'undefined') {
+      addToCart(productId);
+    }
+    
     // Find cart icon each time (in case header loads after this script)
     const cartIcon = document.querySelector("#openCart");
     if (!cartIcon) {
@@ -399,6 +419,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Prevent event bubbling
     e.stopPropagation();
     
+    // Get product ID
+    const productId = heartContainer.getAttribute("data-product-id");
+    if (!productId) return;
+    
     // Toggle heart state (fill/unfill)
     const heartFilled = heartContainer.querySelector('.heart-filled');
     const heartOutline = heartContainer.querySelector('.heart-outline');
@@ -407,6 +431,15 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Check if heart is currently active (filled) before toggling
     const isActive = heartFilled.style.opacity === "1";
+    
+    // Update localStorage
+    if (typeof addToSavedItems !== 'undefined' && typeof removeFromSavedItems !== 'undefined') {
+      if (isActive) {
+        removeFromSavedItems(productId);
+      } else {
+        addToSavedItems(productId);
+      }
+    }
     
     // Toggle heart state
     heartFilled.style.opacity = isActive ? "0" : "1";

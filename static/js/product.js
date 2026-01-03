@@ -397,9 +397,23 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   if (favoriteBtn) {
     favoriteBtn.addEventListener("click", function () {
+      // Get product ID from button data attribute
+      const productId = favoriteBtn.getAttribute("data-product-id");
+      
       this.classList.toggle("active");
       const icon = this.querySelector("span");
-      if (this.classList.contains("active")) {
+      const isActive = this.classList.contains("active");
+      
+      // Update localStorage
+      if (productId && typeof addToSavedItems !== 'undefined' && typeof removeFromSavedItems !== 'undefined') {
+        if (isActive) {
+          addToSavedItems(productId);
+        } else {
+          removeFromSavedItems(productId);
+        }
+      }
+      
+      if (isActive) {
         icon.textContent = "favorite";
         this.classList.add("adding");
         setTimeout(() => {
@@ -474,14 +488,19 @@ document.addEventListener("DOMContentLoaded", function () {
         this.classList.remove("adding");
       }, 600);
 
+      // Get product ID from button data attribute
+      const productId = addToCartBtn.getAttribute("data-product-id");
+      if (productId && typeof addToCart !== 'undefined') {
+        addToCart(productId);
+      }
+
       // Get selected options
       const selectedSize = document.querySelector(".size-btn.active")?.getAttribute("data-size");
 
       console.log("Added to cart:", {
+        productId: productId,
         size: selectedSize,
       });
-
-      // TODO: Implement actual cart functionality
     });
   }
 
@@ -573,6 +592,12 @@ document.addEventListener("DOMContentLoaded", function () {
     recommendedAddToCartBtns.forEach((btn) => {
       btn.addEventListener("click", function (e) {
         e.stopPropagation();
+        
+        // Get product ID from data attribute
+        const productId = btn.getAttribute("data-product-id");
+        if (productId && typeof addToCart !== 'undefined') {
+          addToCart(productId);
+        }
         
         // Get button position
         const buttonRect = btn.getBoundingClientRect();
@@ -668,7 +693,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="recommended-card" data-product-id="${product.id}">
           <div class="recommended-image-c">
             ${hasDiscount ? `<div class="recommended-discount-badge">-${discountPercentage}</div>` : ''}
-            <div class="recommended-heart-container">
+            <div class="recommended-heart-container" data-product-id="${product.id}">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <path class="recommended-heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2" />
                 <path class="recommended-heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0" />
@@ -720,17 +745,34 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-    // Add event listeners for heart buttons - use same approach as old version
-    container.querySelectorAll('.recommended-heart-container').forEach(container => {
-      container.addEventListener('click', function(e) {
+    // Set initial heart states and add event listeners for heart buttons
+    container.querySelectorAll('.recommended-heart-container').forEach(heartContainer => {
+      const productId = heartContainer.getAttribute("data-product-id");
+      const heartFilled = heartContainer.querySelector('.recommended-heart-filled');
+      const heartOutline = heartContainer.querySelector('.recommended-heart-outline');
+      
+      // Set initial state if product is saved
+      if (productId && heartFilled && heartOutline && typeof isProductSaved !== 'undefined' && isProductSaved(productId)) {
+        heartFilled.style.opacity = "1";
+        heartOutline.style.opacity = "0";
+      }
+      
+      heartContainer.addEventListener('click', function(e) {
         e.stopPropagation();
-        const heartFilled = this.querySelector('.recommended-heart-filled');
-        const heartOutline = this.querySelector('.recommended-heart-outline');
         
         if (!heartFilled || !heartOutline) return;
         
         // Check if heart is currently active (filled) before toggling
         const isActive = heartFilled.style.opacity === "1";
+        
+        // Update localStorage
+        if (productId && typeof addToSavedItems !== 'undefined' && typeof removeFromSavedItems !== 'undefined') {
+          if (isActive) {
+            removeFromSavedItems(productId);
+          } else {
+            addToSavedItems(productId);
+          }
+        }
         
         // Toggle heart state
         heartFilled.style.opacity = isActive ? "0" : "1";

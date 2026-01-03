@@ -1,5 +1,381 @@
 // clone.js - Dinamicko ucitavanje header-a i footer-a
 
+// ========== LOCALSTORAGE UTILITY FUNCTIONS ==========
+// Cart functions
+function getCartItems() {
+  try {
+    const cart = localStorage.getItem('cart');
+    if (!cart) return [];
+    const parsed = JSON.parse(cart);
+    // Migrate old format (array of IDs) to new format (array of objects)
+    if (Array.isArray(parsed) && parsed.length > 0 && typeof parsed[0] === 'string') {
+      const newCart = parsed.map(id => ({ id: id, quantity: 1 }));
+      localStorage.setItem('cart', JSON.stringify(newCart));
+      return newCart;
+    }
+    return parsed;
+  } catch (e) {
+    console.error('Error reading cart from localStorage:', e);
+    return [];
+  }
+}
+
+function addToCart(productId, quantity = 1) {
+  const cart = getCartItems();
+  const existingItem = cart.find(item => item.id === productId);
+  if (existingItem) {
+    existingItem.quantity += quantity;
+  } else {
+    cart.push({ id: productId, quantity: quantity });
+  }
+  localStorage.setItem('cart', JSON.stringify(cart));
+  return true;
+}
+
+function removeFromCart(productId) {
+  const cart = getCartItems();
+  const index = cart.findIndex(item => item.id === productId);
+  if (index > -1) {
+    cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    return true;
+  }
+  return false;
+}
+
+function updateCartQuantity(productId, quantity) {
+  const cart = getCartItems();
+  const item = cart.find(item => item.id === productId);
+  if (item) {
+    if (quantity <= 0) {
+      return removeFromCart(productId);
+    }
+    item.quantity = quantity;
+    localStorage.setItem('cart', JSON.stringify(cart));
+    return true;
+  }
+  return false;
+}
+
+function getCartItemQuantity(productId) {
+  const cart = getCartItems();
+  const item = cart.find(item => item.id === productId);
+  return item ? item.quantity : 0;
+}
+
+// Saved items functions
+function getSavedItems() {
+  try {
+    const saved = localStorage.getItem('savedItems');
+    return saved ? JSON.parse(saved) : [];
+  } catch (e) {
+    console.error('Error reading savedItems from localStorage:', e);
+    return [];
+  }
+}
+
+function addToSavedItems(productId) {
+  const saved = getSavedItems();
+  if (!saved.includes(productId)) {
+    saved.push(productId);
+    localStorage.setItem('savedItems', JSON.stringify(saved));
+    return true;
+  }
+  return false;
+}
+
+function removeFromSavedItems(productId) {
+  const saved = getSavedItems();
+  const index = saved.indexOf(productId);
+  if (index > -1) {
+    saved.splice(index, 1);
+    localStorage.setItem('savedItems', JSON.stringify(saved));
+    return true;
+  }
+  return false;
+}
+
+function isProductSaved(productId) {
+  const saved = getSavedItems();
+  return saved.includes(productId);
+}
+
+// Helper functions for rendering
+const fallbackImages = [
+  "/img/granula.jpg",
+  "/img/pas1.jpg",
+  "/img/pas2.jpg",
+  "/img/pas3.jpg",
+  "/img/pansion.jpg",
+  "/img/pansionSlika.jpg",
+  "/img/zec.jpg",
+  "/img/papagaj.png",
+  "/img/pasPozadina.jpg",
+  "/img/pozadinaMacka.jpg",
+  "/img/galerija/lokal1.jpg",
+  "/img/galerija/lokal2.jpg",
+  "/img/galerija/lokal3.jpg",
+  "/img/galerija/lokal4.jpg",
+  "/img/galerija/lokal5.jpg",
+  "/img/galerija/lokal6.jpg"
+];
+
+function pickImage(product) {
+  if (product.image) return product.image;
+  const key = `${product.id || ""}-${product.title || ""}`;
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  }
+  const idx = hash % fallbackImages.length;
+  return fallbackImages[idx] || "/img/customPageBcg.png";
+}
+
+function formatPrice(product) {
+  const price = product.salePrice && product.salePrice !== '/' ? product.salePrice : product.price;
+  return price;
+}
+
+// Render cart drawer
+async function renderCartDrawer() {
+  const cartItems = getCartItems();
+  const allProducts = await loadProductsData();
+  
+  // Create a map for quick product lookup
+  const productMap = {};
+  allProducts.forEach(p => { productMap[p.id] = p; });
+  
+  // Filter cart items to only include products that exist
+  const validCartItems = cartItems.filter(item => productMap[item.id]);
+  
+  const cartItemsContainer = document.querySelector('.cart-items');
+  const cartCount = document.querySelector('.cart-count');
+  const totalPriceEl = document.querySelector('.total-price');
+  
+  if (!cartItemsContainer) return;
+  
+  if (validCartItems.length === 0) {
+    cartItemsContainer.innerHTML = `
+      <div class="empty-state empty-cart">
+        <div class="empty-icon">
+          <span class="material-symbols-outlined">shopping_cart</span>
+        </div>
+        <h3>Your cart is empty</h3>
+        <p>Looks like you haven't added anything to your cart yet.</p>
+        <a href="/all-products" class="empty-cta-btn">
+          <span class="material-symbols-outlined">shopping_bag</span>
+          Shop
+        </a>
+      </div>
+    `;
+    if (cartCount) cartCount.textContent = '(0)';
+    if (totalPriceEl) totalPriceEl.textContent = '$0.00';
+    // Hide cart footer when empty
+    const cartFooter = document.querySelector('.cart-footer');
+    if (cartFooter) cartFooter.style.display = 'none';
+    return;
+  }
+  
+  // Show cart footer when not empty
+  const cartFooterShow = document.querySelector('.cart-footer');
+  if (cartFooterShow) cartFooterShow.style.display = 'block';
+  
+  let total = 0;
+  let totalItems = 0;
+  let html = '';
+  
+  validCartItems.forEach(cartItem => {
+    const product = productMap[cartItem.id];
+    const quantity = cartItem.quantity || 1;
+    const price = parseFloat(formatPrice(product));
+    const itemTotal = price * quantity;
+    total += itemTotal;
+    totalItems += quantity;
+    const imageSrc = pickImage(product);
+    
+    html += `
+      <div class="cart-item" data-product-id="${product.id}">
+        <div class="item-img">
+          <img src="${imageSrc}" alt="${product.title}" loading="lazy">
+        </div>
+        <div class="item-details">
+          <h4>${product.title}</h4>
+          <p class="item-variant">${product.brand || ''}</p>
+          <div class="price-row">
+            <span class="item-price">$${itemTotal.toFixed(2)}</span>
+            <div class="qty-control">
+              <button class="qty-btn minus" data-product-id="${product.id}">-</button>
+              <input type="number" value="${quantity}" min="1" readonly data-product-id="${product.id}">
+              <button class="qty-btn plus" data-product-id="${product.id}">+</button>
+            </div>
+          </div>
+        </div>
+        <button class="remove-item" data-product-id="${product.id}">
+          <span class="material-symbols-outlined">delete</span>
+        </button>
+      </div>
+    `;
+  });
+  
+  cartItemsContainer.innerHTML = html;
+  if (cartCount) cartCount.textContent = `(${totalItems})`;
+  if (totalPriceEl) totalPriceEl.textContent = `$${total.toFixed(2)}`;
+  
+  // Attach remove handlers
+  cartItemsContainer.querySelectorAll('.remove-item').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const productId = this.getAttribute('data-product-id');
+      removeFromCart(productId);
+      renderCartDrawer();
+    });
+  });
+  
+  // Attach quantity handlers
+  cartItemsContainer.querySelectorAll('.qty-btn.plus').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const productId = this.getAttribute('data-product-id');
+      const input = this.parentElement.querySelector('input');
+      const currentQty = parseInt(input.value) || 1;
+      updateCartQuantity(productId, currentQty + 1);
+      renderCartDrawer();
+    });
+  });
+  
+  cartItemsContainer.querySelectorAll('.qty-btn.minus').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const productId = this.getAttribute('data-product-id');
+      const input = this.parentElement.querySelector('input');
+      const currentQty = parseInt(input.value) || 1;
+      if (currentQty > 1) {
+        updateCartQuantity(productId, currentQty - 1);
+        renderCartDrawer();
+      }
+    });
+  });
+}
+
+// Function to show cart notification (defined at top level for accessibility)
+function showCartNotification(productName) {
+  const toastElement = document.getElementById('cartToast');
+  const toastMessage = document.getElementById('toastMessage');
+  
+  if (!toastElement || !toastMessage) return;
+  
+  // Check if Bootstrap is available
+  if (typeof bootstrap === 'undefined') {
+    console.warn('Bootstrap is not loaded. Toast notification will not be shown.');
+    return;
+  }
+  
+  // Update message with product name
+  toastMessage.textContent = `${productName} has been added to your cart!`;
+  
+  // Initialize and show Bootstrap toast
+  const toast = new bootstrap.Toast(toastElement, {
+    autohide: true,
+    delay: 3000
+  });
+  toast.show();
+}
+
+// Render saved items drawer
+async function renderSavedDrawer() {
+  const savedItems = getSavedItems();
+  const allProducts = await loadProductsData();
+  const savedProducts = allProducts.filter(p => savedItems.includes(p.id));
+  
+  const savedItemsContainer = document.querySelector('.saved-items-grid');
+  const savedCount = document.querySelector('.saved-count');
+  
+  if (!savedItemsContainer) return;
+  
+  if (savedProducts.length === 0) {
+    savedItemsContainer.innerHTML = `
+      <div class="empty-state empty-saved">
+        <div class="empty-icon">
+          <span class="material-symbols-outlined">favorite</span>
+        </div>
+        <h3>Your wishlist is empty</h3>
+        <p>Save your favorite products for later by clicking the heart icon.</p>
+        <a href="/all-products" class="empty-cta-btn">
+          <span class="material-symbols-outlined">explore</span>
+          Browse
+        </a>
+      </div>
+    `;
+    if (savedCount) savedCount.textContent = '0';
+    // Hide saved footer when empty
+    const savedFooter = document.querySelector('.saved-footer');
+    if (savedFooter) savedFooter.style.display = 'none';
+    return;
+  }
+  
+  // Show saved footer when not empty
+  const savedFooterShow = document.querySelector('.saved-footer');
+  if (savedFooterShow) savedFooterShow.style.display = 'block';
+  
+  let html = '';
+  
+  savedProducts.forEach(product => {
+    const price = parseFloat(formatPrice(product));
+    const imageSrc = pickImage(product);
+    
+    html += `
+      <div class="saved-item-card" data-product-id="${product.id}">
+        <button class="remove-saved-item" data-product-id="${product.id}">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+        <div class="saved-img">
+          <img src="${imageSrc}" alt="${product.title}" loading="lazy">
+        </div>
+        <div class="saved-details">
+          <h4>${product.title}</h4>
+          <p class="saved-variant">${product.brand || ''}</p>
+          <div class="saved-bottom">
+            <span class="saved-price">$${price.toFixed(2)}</span>
+            <button class="move-to-cart-btn" data-product-id="${product.id}">
+              <span class="material-symbols-outlined">shopping_cart</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  savedItemsContainer.innerHTML = html;
+  if (savedCount) savedCount.textContent = savedProducts.length;
+  
+  // Attach remove handlers
+  savedItemsContainer.querySelectorAll('.remove-saved-item').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const productId = this.getAttribute('data-product-id');
+      removeFromSavedItems(productId);
+      renderSavedDrawer();
+    });
+  });
+  
+  // Attach move to cart handlers
+  savedItemsContainer.querySelectorAll('.move-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const productId = this.getAttribute('data-product-id');
+      // Find the product to get its name for the notification
+      const product = allProducts.find(p => p.id === productId);
+      const productName = product ? product.title : 'Product';
+      
+      // Add to cart
+      addToCart(productId);
+      renderCartDrawer();
+      
+      // Remove from saved items (wishlist)
+      removeFromSavedItems(productId);
+      renderSavedDrawer();
+      
+      // Show Bootstrap toast notification
+      showCartNotification(productName);
+    });
+  });
+}
+
 // Funkcija za učitavanje i parsiranje product.json
 async function loadProductsData() {
   try {
@@ -513,62 +889,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     <div class="cart-overlay-bg"></div>
     <div class="cart-drawer">
       <div class="cart-header">
-        <h3>Your Cart <span class="cart-count">(2)</span></h3>
+        <h3>Your Cart <span class="cart-count">(0)</span></h3>
         <button class="close-cart">
           <span class="material-symbols-outlined">close</span>
         </button>
       </div>
       
       <div class="cart-items">
-        <!-- Static Item 1 -->
-        <div class="cart-item">
-          <div class="item-img">
-            <img src="/img/granula.jpg" alt="Premium Dog Food" loading="lazy">
-          </div>
-          <div class="item-details">
-            <h4>Premium Dog Food</h4>
-            <p class="item-variant">15kg Bag</p>
-            <div class="price-row">
-              <span class="item-price">$45.00</span>
-              <div class="qty-control">
-                <button class="qty-btn minus">-</button>
-                <input type="number" value="1" min="1" readonly>
-                <button class="qty-btn plus">+</button>
-              </div>
-            </div>
-          </div>
-          <button class="remove-item">
-            <span class="material-symbols-outlined">delete</span>
-          </button>
-        </div>
-
-        <!-- Static Item 2 -->
-        <div class="cart-item">
-          <div class="item-img">
-            <img src="/img/pas1.jpg" alt="Dog Toy" loading="lazy">
-          </div>
-          <div class="item-details">
-            <h4>Interactive Dog Toy</h4>
-            <p class="item-variant">Blue / Large</p>
-            <div class="price-row">
-              <span class="item-price">$15.50</span>
-              <div class="qty-control">
-                <button class="qty-btn minus">-</button>
-                <input type="number" value="2" min="1" readonly>
-                <button class="qty-btn plus">+</button>
-              </div>
-            </div>
-          </div>
-          <button class="remove-item">
-            <span class="material-symbols-outlined">delete</span>
-          </button>
-        </div>
+        <!-- Cart items will be dynamically rendered here -->
       </div>
 
       <div class="cart-footer">
         <div class="subtotal-row">
           <span>Subtotal</span>
-          <span class="total-price">$76.00</span>
+          <span class="total-price">$0.00</span>
         </div>
         <p class="shipping-note">Shipping & taxes calculated at checkout</p>
         <button class="checkout-btn">Proceed to Checkout</button>
@@ -582,52 +916,14 @@ document.addEventListener("DOMContentLoaded", async function () {
   const savedDrawerHTML = `
     <div class="saved-drawer">
       <div class="saved-header">
-        <h3><span class="material-symbols-outlined">favorite</span> Wishlist <span class="saved-count">2</span></h3>
+        <h3><span class="material-symbols-outlined">favorite</span> Wishlist <span class="saved-count">0</span></h3>
         <button class="close-saved">
           <span class="material-symbols-outlined">close</span>
         </button>
       </div>
       
       <div class="saved-items-grid">
-        <!-- Static Item 1 -->
-        <div class="saved-item-card">
-          <button class="remove-saved-item">
-            <span class="material-symbols-outlined">close</span>
-          </button>
-          <div class="saved-img">
-            <img src="/img/pas2.jpg" alt="Dog Leash" loading="lazy">
-          </div>
-          <div class="saved-details">
-            <h4>Durable Dog Leash</h4>
-            <p class="saved-variant">Red / 2m</p>
-            <div class="saved-bottom">
-              <span class="saved-price">$22.00</span>
-              <button class="move-to-cart-btn">
-                <span class="material-symbols-outlined">shopping_cart</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Static Item 2 -->
-        <div class="saved-item-card">
-          <button class="remove-saved-item">
-            <span class="material-symbols-outlined">close</span>
-          </button>
-          <div class="saved-img">
-            <img src="/img/pas3.jpg" alt="Cat Bed" loading="lazy">
-          </div>
-          <div class="saved-details">
-            <h4>Cozy Cat Bed</h4>
-            <p class="saved-variant">Grey / Medium</p>
-            <div class="saved-bottom">
-              <span class="saved-price">$35.00</span>
-              <button class="move-to-cart-btn">
-                <span class="material-symbols-outlined">shopping_cart</span>
-              </button>
-            </div>
-          </div>
-        </div>
+        <!-- Saved items will be dynamically rendered here -->
       </div>
 
       <div class="saved-footer">
@@ -637,6 +933,23 @@ document.addEventListener("DOMContentLoaded", async function () {
   `;
 
   document.body.insertAdjacentHTML("beforeend", savedDrawerHTML);
+
+  // ========== TOAST NOTIFICATION CONTAINER ==========
+  const toastContainerHTML = `
+    <div class="toast-container position-fixed" style="bottom: 20px; right: 20px; z-index: 10000;">
+      <div id="cartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #000; color: #fff;">
+        <div class="toast-header" style="background-color: #009900; color: #fff; border-bottom: 1px solid #333;">
+          <span class="material-symbols-outlined me-2" style="color: #fff;">check_circle</span>
+          <span class="me-auto" style="color: #fff;">Success</span>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" style="background-color: #000; color: #fff;">
+          <span id="toastMessage">Product added to cart!</span>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML("beforeend", toastContainerHTML);
 
   const openCartBtn = document.getElementById("openCart");
   const openSavedBtn = document.getElementById("savedProduct");
@@ -665,6 +978,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         cartOverlay.classList.toggle("active");
         document.body.classList.toggle("no-scroll");
     }
+    // Render cart when opened
+    if (cartDrawer.classList.contains("active")) {
+      renderCartDrawer();
+    }
   }
 
   function toggleSaved() {
@@ -676,6 +993,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         savedDrawer.classList.toggle("active");
         cartOverlay.classList.toggle("active");
         document.body.classList.toggle("no-scroll");
+    }
+    // Render saved items when opened
+    if (savedDrawer.classList.contains("active")) {
+      renderSavedDrawer();
     }
   }
 
@@ -705,18 +1026,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     cartOverlay.addEventListener("click", closeAllDrawers);
   }
 
-  // Quantity Logic (Visual Only)
-  const qtyBtns = document.querySelectorAll(".qty-btn");
-  qtyBtns.forEach(btn => {
-    btn.addEventListener("click", function() {
-      const input = this.parentElement.querySelector("input");
-      let value = parseInt(input.value);
-      if (this.classList.contains("plus")) {
-        value++;
-      } else if (this.classList.contains("minus") && value > 1) {
-        value--;
-      }
-      input.value = value;
+  // Quantity logic is now handled in renderCartDrawer() with localStorage integration
+
+  // Move all to cart button
+  const moveAllBtn = document.querySelector(".move-all-btn");
+  if (moveAllBtn) {
+    moveAllBtn.addEventListener("click", function() {
+      const savedItems = getSavedItems();
+      savedItems.forEach(id => {
+        addToCart(id, 1);
+      });
+      renderCartDrawer();
+      renderSavedDrawer();
     });
-  });
+  }
 });

@@ -14,35 +14,7 @@ window.addEventListener('unhandledrejection', function(e) {
   }
 });
 
-const fallbackImages = [
-  "/img/granula.jpg",
-  "/img/pas1.jpg",
-  "/img/pas2.jpg",
-  "/img/pas3.jpg",
-  "/img/pansion.jpg",
-  "/img/pansionSlika.jpg",
-  "/img/zec.jpg",
-  "/img/papagaj.png",
-  "/img/pasPozadina.jpg",
-  "/img/pozadinaMacka.jpg",
-  "/img/galerija/lokal1.jpg",
-  "/img/galerija/lokal2.jpg",
-  "/img/galerija/lokal3.jpg",
-  "/img/galerija/lokal4.jpg",
-  "/img/galerija/lokal5.jpg",
-  "/img/galerija/lokal6.jpg"
-];
-
-async function loadProductsData() {
-  try {
-    const response = await fetch("/json/product.json");
-    if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-    return await response.json();
-  } catch (error) {
-    console.error("Error loading product.json:", error);
-    return [];
-  }
-}
+// fallbackImages, pickImage, and loadProductsData are defined in clone.js which loads before this file
 
 function decodeSlug(value) {
   if (!value) return "";
@@ -152,19 +124,11 @@ function filterBySelection(products, selection) {
   return filtered;
 }
 
-function pickImage(product) {
-  if (product.image) return product.image;
-  // Stable pseudo-random pick based on product id/name to keep image consistent
-  const key = `${product.id || ""}-${product.title || ""}`;
-  let hash = 0;
-  for (let i = 0; i < key.length; i++) {
-    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
-  }
-  const idx = hash % fallbackImages.length;
-  return fallbackImages[idx] || "/img/customPageBcg.png";
-}
+// pickImage is defined in clone.js which loads before this file
 
-function formatPrice(product) {
+// formatPrice is defined in clone.js and returns a number/string for calculations
+// This function is for HTML display only in custom-page
+function formatPriceForDisplay(product) {
   const price = product.salePrice && product.salePrice !== '/' ? product.salePrice : product.price;
   return `<div class="price-range">${price} $</div>`;
 }
@@ -175,6 +139,7 @@ function createProductCard(product) {
   card.setAttribute("data-category", product.category);
   card.setAttribute("data-subcategory", product.subcategory);
   card.setAttribute("data-subcategory2", product.type || "");
+  card.setAttribute("data-product-id", product.id);
 
   const hasDiscount = product.salePrice && product.salePrice !== '/' && product.percentage && product.percentage !== '/' && product.percentage !== '0%';
   const badge = hasDiscount ? `<div class="product-badge">-${product.percentage}</div>` : "";
@@ -189,7 +154,7 @@ function createProductCard(product) {
       <img src="${pickImage(product)}" alt="${product.title}" loading="lazy" />
       ${badge}
       ${oldPriceOnImage}
-      <div class="heart-container">
+      <div class="heart-container" data-product-id="${product.id}">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
           <path class="heart-outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#009900" stroke-width="2"/>
           <path class="heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0"/>
@@ -200,7 +165,7 @@ function createProductCard(product) {
       <div class="product-brand">${product.brand || ""}</div>
       <h3 class="product-title">${product.title}</h3>
       <div class="product-price">
-        ${formatPrice(product)}
+        ${formatPriceForDisplay(product)}
       </div>
       <p class="product-description">${product.description || ""}</p>
       <div class="product-buttons">
@@ -208,7 +173,7 @@ function createProductCard(product) {
           <span class="material-symbols-outlined">shopping_bag</span>
           Buy Now
         </button>
-        <button class="cart-icon-btn">
+        <button class="cart-icon-btn" data-product-id="${product.id}">
           <span class="material-symbols-outlined">add_shopping_cart</span>
         </button>
       </div>
@@ -350,17 +315,27 @@ document.addEventListener("DOMContentLoaded", async function () {
   
   // Hero categories are always displayed
 
+  const selectionNames = {
+    cat: "",
+    subcat: "",
+    subcat2: ""
+  };
+
+  // Load products data first
+  const allProducts = await loadProductsData();
+  
+  if (!productsGrid) return;
+  if (!allProducts.length) {
+    productsGrid.innerHTML = "<p class='empty-state'>Unable to load products.</p>";
+    return;
+  }
+
+  // Define resolveName after allProducts is loaded
   const resolveName = (field, slugValue) => {
     if (!slugValue) return "";
     const normalizedSlug = slugify(slugValue);
     const found = allProducts.find((p) => slugify(p[field] || "") === normalizedSlug);
     return found ? found[field] : decodeSlug(slugValue);
-  };
-
-  const selectionNames = {
-    cat: "",
-    subcat: "",
-    subcat2: ""
   };
 
   const updateBreadcrumbs = () => {
@@ -417,13 +392,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   };
 
-  const allProducts = await loadProductsData();
-  if (!productsGrid) return;
-  if (!allProducts.length) {
-    productsGrid.innerHTML = "<p class='empty-state'>Unable to load products.</p>";
-    return;
-  }
-
   selectionNames.cat = resolveName("category", selection.slugCat);
   selectionNames.subcat = resolveName("subcategory", selection.slugSub);
   selectionNames.subcat2 = resolveName("type", selection.slugSub2);
@@ -435,6 +403,263 @@ document.addEventListener("DOMContentLoaded", async function () {
   let currentPage = 1;
   let itemsPerPage = getItemsPerPage();
   let totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+
+  // Filter state
+  let activeFilters = {
+    subcategory: [],
+    type: [],
+    brand: [],
+    priceRange: []
+  };
+
+  // Extract unique values for filters from products
+  function extractFilterOptions(products) {
+    const options = {
+      subcategory: new Set(),
+      type: new Set(),
+      brand: new Set(),
+      prices: []
+    };
+
+    products.forEach(product => {
+      // Extract subcategory only if we're on a category page (no slugSub)
+      if (!selection.slugSub && product.subcategory) {
+        options.subcategory.add(product.subcategory);
+      }
+      
+      // Extract type only if we're on a subcategory page (no slugSub2)
+      if (!selection.slugSub2 && product.type) {
+        options.type.add(product.type);
+      }
+      
+      // Extract brand (always)
+      if (product.brand) {
+        options.brand.add(product.brand);
+      }
+      
+      // Extract price
+      const price = parseFloat(product.salePrice && product.salePrice !== '/' ? product.salePrice : product.price);
+      if (!isNaN(price)) {
+        options.prices.push(price);
+      }
+    });
+
+    return {
+      subcategory: Array.from(options.subcategory).sort(),
+      type: Array.from(options.type).sort(),
+      brand: Array.from(options.brand).sort(),
+      priceRanges: calculatePriceRanges(options.prices)
+    };
+  }
+
+  function calculatePriceRanges(prices) {
+    if (prices.length === 0) return [];
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
+    const ranges = [];
+    
+    // Always show all relevant ranges based on actual price distribution
+    const hasLow = prices.some(p => p < 25);
+    const hasMid = prices.some(p => p >= 25 && p <= 75);
+    const hasHigh = prices.some(p => p > 75);
+    
+    if (hasLow) ranges.push({ label: 'Under 25 $', min: 0, max: 25 });
+    if (hasMid) ranges.push({ label: '25 - 75 $', min: 25, max: 75 });
+    if (hasHigh) ranges.push({ label: 'Over 75 $', min: 75, max: Infinity });
+    
+    // If no ranges, add default
+    if (ranges.length === 0) {
+      ranges.push({ label: 'All Prices', min: 0, max: Infinity });
+    }
+    
+    return ranges;
+  }
+
+  function generateFilterHTML(filterOptions) {
+    let html = '';
+
+    // Subcategory filter (only if we're on category page)
+    if (filterOptions.subcategory.length > 0) {
+      html += `
+        <div class="filter-section">
+          <h4 class="filter-section-title">
+            <span class="material-symbols-outlined">category</span>
+            Subcategory
+          </h4>
+          <div class="filter-options">
+            <label class="filter-checkbox-label">
+              <input type="checkbox" class="filter-checkbox" name="subcategory" value="all" checked>
+              <span class="checkmark"></span>
+              <span class="filter-text">All Subcategories</span>
+            </label>
+      `;
+      filterOptions.subcategory.forEach(subcat => {
+        const slugValue = slugify(subcat);
+        html += `
+          <label class="filter-checkbox-label">
+            <input type="checkbox" class="filter-checkbox" name="subcategory" value="${slugValue}">
+            <span class="checkmark"></span>
+            <span class="filter-text">${subcat}</span>
+          </label>
+        `;
+      });
+      html += `</div></div>`;
+    }
+
+    // Type filter (only if we're on subcategory page)
+    if (filterOptions.type.length > 0) {
+      html += `
+        <div class="filter-section">
+          <h4 class="filter-section-title">
+            <span class="material-symbols-outlined">apps</span>
+            Type
+          </h4>
+          <div class="filter-options">
+            <label class="filter-checkbox-label">
+              <input type="checkbox" class="filter-checkbox" name="type" value="all" checked>
+              <span class="checkmark"></span>
+              <span class="filter-text">All Types</span>
+            </label>
+      `;
+      filterOptions.type.forEach(type => {
+        const slugValue = slugify(type);
+        html += `
+          <label class="filter-checkbox-label">
+            <input type="checkbox" class="filter-checkbox" name="type" value="${slugValue}">
+            <span class="checkmark"></span>
+            <span class="filter-text">${type}</span>
+          </label>
+        `;
+      });
+      html += `</div></div>`;
+    }
+
+    // Brand filter (always)
+    if (filterOptions.brand.length > 0) {
+      html += `
+        <div class="filter-section">
+          <h4 class="filter-section-title">
+            <span class="material-symbols-outlined">branding_watermark</span>
+            Brand
+          </h4>
+          <div class="filter-options">
+            <label class="filter-checkbox-label">
+              <input type="checkbox" class="filter-checkbox" name="brand" value="all" checked>
+              <span class="checkmark"></span>
+              <span class="filter-text">All Brands</span>
+            </label>
+      `;
+      filterOptions.brand.forEach(brand => {
+        const slugValue = slugify(brand);
+        html += `
+          <label class="filter-checkbox-label">
+            <input type="checkbox" class="filter-checkbox" name="brand" value="${slugValue}">
+            <span class="checkmark"></span>
+            <span class="filter-text">${brand}</span>
+          </label>
+        `;
+      });
+      html += `</div></div>`;
+    }
+
+    // Price range filter (always)
+    if (filterOptions.priceRanges.length > 0) {
+      html += `
+        <div class="filter-section">
+          <h4 class="filter-section-title">
+            <span class="material-symbols-outlined">attach_money</span>
+            Price Range
+          </h4>
+          <div class="filter-options">
+            <label class="filter-checkbox-label">
+              <input type="checkbox" class="filter-checkbox" name="priceRange" value="all" checked>
+              <span class="checkmark"></span>
+              <span class="filter-text">All Prices</span>
+            </label>
+      `;
+      filterOptions.priceRanges.forEach(range => {
+        html += `
+          <label class="filter-checkbox-label">
+            <input type="checkbox" class="filter-checkbox" name="priceRange" value="${range.min}-${range.max}">
+            <span class="checkmark"></span>
+            <span class="filter-text">${range.label}</span>
+          </label>
+        `;
+      });
+      html += `</div></div>`;
+    }
+
+    return html;
+  }
+
+  function renderFilters() {
+    const sidebarContent = document.querySelector('.sidebar-content');
+    if (!sidebarContent) return;
+    
+    const baseProducts = filterBySelection(allProducts, selection);
+    const filterOptions = extractFilterOptions(baseProducts);
+    const filterHTML = generateFilterHTML(filterOptions);
+    
+    // Save Clear Filters button HTML
+    const filterActions = sidebarContent.querySelector('.filter-actions');
+    const filterActionsHTML = filterActions ? filterActions.outerHTML : '';
+    
+    // Clear and repopulate
+    sidebarContent.innerHTML = filterHTML + filterActionsHTML;
+    
+    // Attach event listeners
+    attachFilterListeners();
+  }
+
+  function attachFilterListeners() {
+    const checkboxes = document.querySelectorAll('.filter-checkbox');
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const name = this.name;
+        const value = this.value;
+        
+        if (value === 'all') {
+          // If "all" is checked, uncheck all others in this group
+          if (this.checked) {
+            checkboxes.forEach(cb => {
+              if (cb.name === name && cb.value !== 'all') {
+                cb.checked = false;
+              }
+            });
+          }
+        } else {
+          // If a specific option is checked, uncheck "all"
+          if (this.checked) {
+            const allCheckbox = document.querySelector(`input[name="${name}"][value="all"]`);
+            if (allCheckbox) allCheckbox.checked = false;
+          }
+        }
+        
+        applyFilters();
+      });
+    });
+  }
+
+  function getActiveFilters() {
+    const filters = {
+      subcategory: [],
+      type: [],
+      brand: [],
+      priceRange: []
+    };
+
+    document.querySelectorAll('.filter-checkbox:checked').forEach(checkbox => {
+      if (checkbox.value !== 'all') {
+        filters[checkbox.name].push(checkbox.value);
+      }
+    });
+
+    return filters;
+  }
+
+  function applyFilters() {
+    refreshData();
+  }
 
   function getItemsPerPage() {
     if (window.innerWidth < 500) return 6;
@@ -467,7 +692,44 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   function refreshData() {
-    filteredProducts = applySearch(filterBySelection(allProducts, selection));
+    let products = filterBySelection(allProducts, selection);
+    
+    // Apply active filters
+    const filters = getActiveFilters();
+    
+    if (filters.subcategory.length > 0) {
+      products = products.filter(p => {
+        const pSub = slugify(p.subcategory || '');
+        return filters.subcategory.includes(pSub);
+      });
+    }
+    
+    if (filters.type.length > 0) {
+      products = products.filter(p => {
+        const pType = slugify(p.type || '');
+        return filters.type.includes(pType);
+      });
+    }
+    
+    if (filters.brand.length > 0) {
+      products = products.filter(p => {
+        const pBrand = slugify(p.brand || '');
+        return filters.brand.includes(pBrand);
+      });
+    }
+    
+    if (filters.priceRange.length > 0) {
+      products = products.filter(p => {
+        const price = parseFloat(p.salePrice && p.salePrice !== '/' ? p.salePrice : p.price);
+        if (isNaN(price)) return false;
+        return filters.priceRange.some(range => {
+          const [min, max] = range.split('-').map(v => v === 'Infinity' ? Infinity : parseFloat(v));
+          return price >= min && price <= max;
+        });
+      });
+    }
+    
+    filteredProducts = applySearch(products);
     sliderMode = shouldUseSlider(filteredProducts.length);
     totalPages = sliderMode
       ? 1
@@ -567,6 +829,22 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
 
+  // Clear filters button
+  const clearFiltersBtn = document.getElementById("clearFiltersBtn");
+  clearFiltersBtn?.addEventListener("click", () => {
+    document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+      if (checkbox.value === 'all') {
+        checkbox.checked = true;
+      } else {
+        checkbox.checked = false;
+      }
+    });
+    applyFilters();
+  });
+
+  // Render filters after products are loaded
+  renderFilters();
+
   searchInput?.addEventListener("input", () => {
     currentPage = 1;
     refreshData();
@@ -657,6 +935,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Prevent event bubbling
     e.stopPropagation();
     
+    // Get product ID
+    const productId = addToCartButton.getAttribute("data-product-id");
+    if (!productId) return;
+    
+    // Add to cart using localStorage
+    if (typeof addToCart !== 'undefined') {
+      addToCart(productId);
+    }
+    
     // Find cart icon each time (in case header loads after this script)
     const cartIcon = document.querySelector("#openCart");
     if (!cartIcon) {
@@ -724,6 +1011,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Prevent event bubbling
     e.stopPropagation();
     
+    // Get product ID
+    const productId = heartContainer.getAttribute("data-product-id");
+    if (!productId) return;
+    
     // Toggle heart state (fill/unfill)
     const heartFilled = heartContainer.querySelector('.heart-filled');
     const heartOutline = heartContainer.querySelector('.heart-outline');
@@ -732,6 +1023,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     
     // Check if heart is currently active (filled) before toggling
     const isActive = heartFilled.style.opacity === "1";
+    
+    // Update localStorage
+    if (typeof addToSavedItems !== 'undefined' && typeof removeFromSavedItems !== 'undefined') {
+      if (isActive) {
+        removeFromSavedItems(productId);
+      } else {
+        addToSavedItems(productId);
+      }
+    }
     
     // Toggle heart state
     heartFilled.style.opacity = isActive ? "0" : "1";
