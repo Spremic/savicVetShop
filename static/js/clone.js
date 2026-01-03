@@ -130,16 +130,31 @@ function updateHeartIconsForProduct(productId) {
   
   // Update btn-favorite elements (used on product detail page)
   document.querySelectorAll(`.btn-favorite[data-product-id="${productId}"]`).forEach(favoriteBtn => {
-    const icon = favoriteBtn.querySelector("span");
-    if (isSaved) {
-      favoriteBtn.classList.add("active");
-      if (icon) {
-        icon.textContent = "favorite";
+    const heartFilled = favoriteBtn.querySelector('.heart-filled');
+    const heartOutline = favoriteBtn.querySelector('.heart-outline');
+    if (heartFilled && heartOutline) {
+      if (isSaved) {
+        favoriteBtn.classList.add("active");
+        heartFilled.style.opacity = "1";
+        heartOutline.style.opacity = "0";
+      } else {
+        favoriteBtn.classList.remove("active");
+        heartFilled.style.opacity = "0";
+        heartOutline.style.opacity = "1";
       }
     } else {
-      favoriteBtn.classList.remove("active");
-      if (icon) {
-        icon.textContent = "favorite_border";
+      // Fallback for old structure with material-symbols-outlined span
+      const icon = favoriteBtn.querySelector("span");
+      if (isSaved) {
+        favoriteBtn.classList.add("active");
+        if (icon) {
+          icon.textContent = "favorite";
+        }
+      } else {
+        favoriteBtn.classList.remove("active");
+        if (icon) {
+          icon.textContent = "favorite_border";
+        }
       }
     }
   });
@@ -307,6 +322,26 @@ async function renderCartDrawer() {
       if (currentQty > 1) {
         updateCartQuantity(productId, currentQty - 1);
         renderCartDrawer();
+      }
+    });
+  });
+  
+  // Add click handler to navigate to product page when clicking on cart item
+  cartItemsContainer.querySelectorAll('.cart-item').forEach(item => {
+    item.addEventListener('click', function(e) {
+      // Don't navigate if clicking on buttons or quantity controls
+      if (e.target.closest('.remove-item') || 
+          e.target.closest('.qty-btn') || 
+          e.target.closest('.qty-control') ||
+          e.target.closest('input')) {
+        return;
+      }
+      
+      const productId = this.getAttribute('data-product-id');
+      const product = productMap[productId];
+      if (product && product.title) {
+        const productSlug = slugify(product.title);
+        window.location.href = `/${productSlug}`;
       }
     });
   });
@@ -552,6 +587,24 @@ async function renderSavedDrawer() {
             }
         );
       }, 300); // Match animation duration
+    });
+  });
+  
+  // Add click handler to navigate to product page when clicking on saved item card
+  savedItemsContainer.querySelectorAll('.saved-item-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      // Don't navigate if clicking on buttons
+      if (e.target.closest('.remove-saved-item') || 
+          e.target.closest('.move-to-cart-btn')) {
+        return;
+      }
+      
+      const productId = this.getAttribute('data-product-id');
+      const product = allProducts.find(p => p.id === productId);
+      if (product && product.title) {
+        const productSlug = slugify(product.title);
+        window.location.href = `/${productSlug}`;
+      }
     });
   });
 }

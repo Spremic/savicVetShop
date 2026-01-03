@@ -353,14 +353,35 @@ document.addEventListener("DOMContentLoaded", function () {
   const favoriteBtn = document.querySelector(".btn-favorite");
 
   // Set initial favorite button state if product is saved
+  // Use updateHeartIconsForProduct if available, otherwise set manually
   if (favoriteBtn) {
     const productId = favoriteBtn.getAttribute("data-product-id");
-    if (productId && typeof isProductSaved !== 'undefined' && isProductSaved(productId)) {
-      favoriteBtn.classList.add("active");
-      const icon = favoriteBtn.querySelector("span");
-      if (icon) {
-        icon.textContent = "favorite";
-      }
+    if (productId) {
+      // Wait for clone.js to load, then update state
+      const updateInitialState = () => {
+        if (typeof updateHeartIconsForProduct !== 'undefined') {
+          updateHeartIconsForProduct(productId);
+        } else if (typeof isProductSaved !== 'undefined' && isProductSaved(productId)) {
+          // Fallback if updateHeartIconsForProduct is not available yet
+          favoriteBtn.classList.add("active");
+          const heartFilled = favoriteBtn.querySelector('.heart-filled');
+          const heartOutline = favoriteBtn.querySelector('.heart-outline');
+          if (heartFilled && heartOutline) {
+            heartFilled.style.opacity = "1";
+            heartOutline.style.opacity = "0";
+          } else {
+            // Fallback for old structure with material-symbols-outlined span
+            const icon = favoriteBtn.querySelector("span");
+            if (icon) {
+              icon.textContent = "favorite";
+            }
+          }
+        } else {
+          // Try again after a short delay
+          setTimeout(updateInitialState, 50);
+        }
+      };
+      updateInitialState();
     }
   }
 
@@ -407,35 +428,42 @@ document.addEventListener("DOMContentLoaded", function () {
       flyingElement.remove();
     }, 800);
   }
+  
   if (favoriteBtn) {
     favoriteBtn.addEventListener("click", function () {
       // Get product ID from button data attribute
       const productId = favoriteBtn.getAttribute("data-product-id");
+      if (!productId) return;
       
-      this.classList.toggle("active");
-      const icon = this.querySelector("span");
-      const isActive = this.classList.contains("active");
+      // Check current state before toggling (don't toggle manually)
+      const isCurrentlySaved = typeof isProductSaved !== 'undefined' && isProductSaved(productId);
       
       // Update localStorage
-      if (productId && typeof addToSavedItems !== 'undefined' && typeof removeFromSavedItems !== 'undefined') {
-        if (isActive) {
-          addToSavedItems(productId);
-        } else {
+      if (typeof addToSavedItems !== 'undefined' && typeof removeFromSavedItems !== 'undefined') {
+        if (isCurrentlySaved) {
           removeFromSavedItems(productId);
+        } else {
+          addToSavedItems(productId);
+          // Animate to saved icon only when adding
+          animateToSaved(this);
         }
         // updateHeartIconsForProduct is called inside addToSavedItems/removeFromSavedItems
-        // so all hearts for this product will be updated automatically
-      }
-      
-      if (isActive) {
-        icon.textContent = "favorite";
-        this.classList.add("adding");
-        setTimeout(() => {
-          this.classList.remove("adding");
-        }, 600);
-        animateToSaved(this);
+        // so the button state will be updated automatically
       } else {
-        icon.textContent = "favorite_border";
+        // Fallback if functions are not available
+        this.classList.toggle("active");
+        const icon = this.querySelector("span");
+        const isActive = this.classList.contains("active");
+        if (isActive) {
+          if (icon) icon.textContent = "favorite";
+          this.classList.add("adding");
+          setTimeout(() => {
+            this.classList.remove("adding");
+          }, 600);
+          animateToSaved(this);
+        } else {
+          if (icon) icon.textContent = "favorite_border";
+        }
       }
     });
   }

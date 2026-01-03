@@ -489,6 +489,48 @@ document.addEventListener("DOMContentLoaded", async function () {
     return ranges;
   }
 
+  // Helper function to generate filter options with "View all" link if needed
+  function generateFilterOptionsHTML(items, filterName, allLabel, limit = 7) {
+    let html = '';
+    const hasMore = items.length > limit;
+    const itemsToShow = hasMore ? items.slice(0, limit) : items;
+    const hiddenItems = hasMore ? items.slice(limit) : [];
+
+    itemsToShow.forEach(item => {
+      const slugValue = slugify(item);
+      html += `
+        <label class="filter-checkbox-label">
+          <input type="checkbox" class="filter-checkbox" name="${filterName}" value="${slugValue}">
+          <span class="checkmark"></span>
+          <span class="filter-text">${item}</span>
+        </label>
+      `;
+    });
+
+    // Add hidden items that can be shown when "View all" is clicked
+    if (hasMore) {
+      html += `<div class="filter-hidden-items" data-filter-name="${filterName}" style="display: none;">`;
+      hiddenItems.forEach(item => {
+        const slugValue = slugify(item);
+        html += `
+          <label class="filter-checkbox-label">
+            <input type="checkbox" class="filter-checkbox" name="${filterName}" value="${slugValue}">
+            <span class="checkmark"></span>
+            <span class="filter-text">${item}</span>
+          </label>
+        `;
+      });
+      html += `</div>`;
+      html += `
+        <a href="#" class="filter-view-all" data-filter-name="${filterName}" data-expanded="false">
+          View all (${items.length})
+        </a>
+      `;
+    }
+
+    return html;
+  }
+
   function generateFilterHTML(filterOptions) {
     let html = '';
 
@@ -506,18 +548,10 @@ document.addEventListener("DOMContentLoaded", async function () {
               <span class="checkmark"></span>
               <span class="filter-text">All Subcategories</span>
             </label>
+            ${generateFilterOptionsHTML(filterOptions.subcategory, 'subcategory', 'All Subcategories')}
+          </div>
+        </div>
       `;
-      filterOptions.subcategory.forEach(subcat => {
-        const slugValue = slugify(subcat);
-        html += `
-          <label class="filter-checkbox-label">
-            <input type="checkbox" class="filter-checkbox" name="subcategory" value="${slugValue}">
-            <span class="checkmark"></span>
-            <span class="filter-text">${subcat}</span>
-          </label>
-        `;
-      });
-      html += `</div></div>`;
     }
 
     // Type filter (only if we're on subcategory page)
@@ -534,18 +568,10 @@ document.addEventListener("DOMContentLoaded", async function () {
               <span class="checkmark"></span>
               <span class="filter-text">All Types</span>
             </label>
+            ${generateFilterOptionsHTML(filterOptions.type, 'type', 'All Types')}
+          </div>
+        </div>
       `;
-      filterOptions.type.forEach(type => {
-        const slugValue = slugify(type);
-        html += `
-          <label class="filter-checkbox-label">
-            <input type="checkbox" class="filter-checkbox" name="type" value="${slugValue}">
-            <span class="checkmark"></span>
-            <span class="filter-text">${type}</span>
-          </label>
-        `;
-      });
-      html += `</div></div>`;
     }
 
     // Brand filter (always)
@@ -562,18 +588,10 @@ document.addEventListener("DOMContentLoaded", async function () {
               <span class="checkmark"></span>
               <span class="filter-text">All Brands</span>
             </label>
+            ${generateFilterOptionsHTML(filterOptions.brand, 'brand', 'All Brands')}
+          </div>
+        </div>
       `;
-      filterOptions.brand.forEach(brand => {
-        const slugValue = slugify(brand);
-        html += `
-          <label class="filter-checkbox-label">
-            <input type="checkbox" class="filter-checkbox" name="brand" value="${slugValue}">
-            <span class="checkmark"></span>
-            <span class="filter-text">${brand}</span>
-          </label>
-        `;
-      });
-      html += `</div></div>`;
     }
 
     // Price range filter (always)
@@ -650,6 +668,32 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
         
         applyFilters();
+      });
+    });
+
+    // Add event listeners for "View all" links
+    const viewAllLinks = document.querySelectorAll('.filter-view-all');
+    viewAllLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const filterName = this.getAttribute('data-filter-name');
+        const hiddenItems = document.querySelector(`.filter-hidden-items[data-filter-name="${filterName}"]`);
+        const isExpanded = this.getAttribute('data-expanded') === 'true';
+        
+        if (hiddenItems) {
+          const totalCount = hiddenItems.querySelectorAll('.filter-checkbox-label').length + 7;
+          if (isExpanded) {
+            // Collapse - hide additional items
+            hiddenItems.style.display = 'none';
+            this.textContent = `View all (${totalCount})`;
+            this.setAttribute('data-expanded', 'false');
+          } else {
+            // Expand - show additional items
+            hiddenItems.style.display = 'block';
+            this.textContent = 'Show less';
+            this.setAttribute('data-expanded', 'true');
+          }
+        }
       });
     });
   }
@@ -896,21 +940,106 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   refreshData();
 
-  // Hero category cards lead to corresponding category
-  const heroCategoryItems = document.querySelectorAll(".hero-category-item");
-  const heroMap = {
-    food: "Pet Food",
-    toys: "Pet Toys",
-    equipment: "Pet Supplies",
-    accessories: "Pet Grooming",
-  };
-  heroCategoryItems.forEach((item) => {
-    item.addEventListener("click", () => {
-      const catName = heroMap[item.dataset.category];
-      if (!catName) return;
-      window.location.href = `/${slugify(catName)}`;
+  // Get unique main categories from products and populate hero categories
+  async function populateHeroCategories() {
+    const allProducts = await loadProductsData();
+    const uniqueCategories = [...new Set(allProducts.map(p => p.category).filter(Boolean))];
+    const topCategories = uniqueCategories.slice(0, 4);
+    
+    const heroCategoryItems = document.querySelectorAll(".hero-category-item");
+    
+    // Map of icons for different category types
+    const categoryIcons = {
+      "Pet Food": "restaurant",
+      "Pet Toys": "toys",
+      "Pet Supplies": "pets",
+      "Pet Grooming": "checkroom",
+      "Pet Accessories": "checkroom",
+      "Pet Equipment": "pets"
+    };
+    
+    // Default icon if category not found
+    const getCategoryIcon = (category) => {
+      return categoryIcons[category] || "pets";
+    };
+    
+    heroCategoryItems.forEach((item, index) => {
+      if (index < topCategories.length) {
+        const category = topCategories[index];
+        const categorySlug = slugify(category);
+        
+        // Update data-category attribute
+        item.setAttribute("data-category", categorySlug);
+        
+        // Update image
+        let imageSrc;
+        if (index === 0) {
+          // First category uses specific Pexels image
+          imageSrc = "https://images.pexels.com/photos/8434641/pexels-photo-8434641.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
+        } else if (index === 1) {
+          // Second category uses specific Pixabay image
+          imageSrc = "https://cdn.pixabay.com/photo/2020/05/16/01/18/dog-toys-5175628_960_720.jpg";
+        } else if (index === 2) {
+          // Third category uses specific Pixabay image
+          imageSrc = "https://cdn.pixabay.com/photo/2021/12/17/19/15/grooming-6877262_960_720.jpg";
+        } else if (index === 3) {
+          // Fourth category uses specific Pixabay image
+          imageSrc = "https://cdn.pixabay.com/photo/2022/11/06/09/57/dog-7573633_960_720.jpg";
+        } else {
+          // Other categories use pickImage with first product from this category
+          const categoryProduct = allProducts.find(p => p.category === category);
+          imageSrc = categoryProduct ? pickImage(categoryProduct) : "/img/customPageBcg.png";
+        }
+        const img = item.querySelector(".hero-category-image img");
+        if (img) {
+          img.src = imageSrc;
+          img.alt = category;
+        }
+        
+        // Update icon
+        const icon = item.querySelector(".hero-category-content span.material-symbols-outlined");
+        if (icon) {
+          icon.textContent = getCategoryIcon(category);
+        }
+        
+        // Update title
+        const title = item.querySelector(".hero-category-content h3");
+        if (title) {
+          title.textContent = category;
+        }
+        
+        // Update description (optional - can be customized)
+        const description = item.querySelector(".hero-category-content p");
+        if (description) {
+          // You can customize descriptions based on category
+          const descriptions = {
+            "Pet Food": "Premium nutrition for your pets",
+            "Pet Toys": "Fun and interactive toys",
+            "Pet Supplies": "Essential pet accessories",
+            "Pet Grooming": "Stylish pet accessories",
+            "Pet Accessories": "Essential pet accessories",
+            "Pet Equipment": "Essential pet accessories"
+          };
+          description.textContent = descriptions[category] || "Explore our selection";
+        }
+      } else {
+        // Hide extra items if there are less than 4 categories
+        item.style.display = "none";
+      }
     });
-  });
+    
+    // Add click handlers
+    heroCategoryItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        const categorySlug = item.getAttribute("data-category");
+        if (!categorySlug) return;
+        window.location.href = `/${categorySlug}`;
+      });
+    });
+  }
+  
+  // Populate hero categories
+  populateHeroCategories();
 
   // Add styles for flying item
   const style = document.createElement("style");

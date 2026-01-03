@@ -984,31 +984,31 @@
   font-size: 24px;
 }
 
+.btn-favorite svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.btn-favorite .heart-filled {
+  transition: opacity 0.3s ease;
+}
+
+.btn-favorite .heart-outline {
+  transition: opacity 0.3s ease;
+}
+
 .btn-favorite.active {
   color: #009900;
   background: rgba(0, 153, 0, 0.1);
   border-color: #009900;
 }
 
-.btn-favorite.adding {
-  animation: heartPulse 0.6s ease;
+.btn-favorite:active {
+  transform: translateY(-2px);
 }
 
 /* Recommended heart container animation removed - div should stay visible like in custom-page */
-
-@keyframes heartPulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0;
-  }
-}
 
 /* Specifications Section */
 .specifications-section {
