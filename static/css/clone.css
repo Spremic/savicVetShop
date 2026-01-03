@@ -859,7 +859,8 @@ footer {
   visibility: visible;
 }
 
-body.no-scroll {
+body.no-scroll,
+html.no-scroll {
   overflow: hidden;
 }
 

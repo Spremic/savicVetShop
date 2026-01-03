@@ -1146,6 +1146,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     savedDrawer.classList.remove("active");
     cartOverlay.classList.remove("active");
     document.body.classList.remove("no-scroll");
+    document.documentElement.classList.remove("no-scroll");
   }
 
   function toggleCart() {
@@ -1153,10 +1154,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (savedDrawer.classList.contains("active")) {
         savedDrawer.classList.remove("active");
         cartDrawer.classList.add("active");
+        cartOverlay.classList.add("active");
+        document.body.classList.add("no-scroll");
+        document.documentElement.classList.add("no-scroll");
     } else {
         cartDrawer.classList.toggle("active");
         cartOverlay.classList.toggle("active");
         document.body.classList.toggle("no-scroll");
+        document.documentElement.classList.toggle("no-scroll");
     }
     // Render cart when opened
     if (cartDrawer.classList.contains("active")) {
@@ -1169,10 +1174,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (cartDrawer.classList.contains("active")) {
         cartDrawer.classList.remove("active");
         savedDrawer.classList.add("active");
+        cartOverlay.classList.add("active");
+        document.body.classList.add("no-scroll");
+        document.documentElement.classList.add("no-scroll");
     } else {
         savedDrawer.classList.toggle("active");
         cartOverlay.classList.toggle("active");
         document.body.classList.toggle("no-scroll");
+        document.documentElement.classList.toggle("no-scroll");
     }
     // Render saved items when opened
     if (savedDrawer.classList.contains("active")) {
@@ -1250,6 +1259,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             savedDrawer.classList.remove("active");
             cartOverlay.classList.remove("active");
             document.body.classList.remove("no-scroll");
+            document.documentElement.classList.remove("no-scroll");
         }
 
         // Wait a brief moment for drawer closing animation, then open cart
@@ -1262,6 +1272,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             cartDrawer.classList.add("active");
             cartOverlay.classList.add("active");
             document.body.classList.add("no-scroll");
+            document.documentElement.classList.add("no-scroll");
             
             // Show notification
             showCartNotification("All saved items");
