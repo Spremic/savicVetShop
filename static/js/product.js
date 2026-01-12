@@ -550,13 +550,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const buyNowBtn = document.querySelector(".btn-buy-now");
   if (buyNowBtn) {
     buyNowBtn.addEventListener("click", function () {
-      const selectedSize = document.querySelector(".size-btn.active")?.getAttribute("data-size");
-
-      console.log("Buy now:", {
-        size: selectedSize,
-      });
-
-      // TODO: Implement checkout functionality
+      // Get product ID from product container
+      const productContainer = document.querySelector(".product-container");
+      const productId = productContainer?.getAttribute("data-product-id");
+      
+      if (productId && typeof addToCart !== 'undefined') {
+        addToCart(productId);
+      }
+      
+      // Redirect to shopping cart
+      window.location.href = '/shopping-cart';
     });
   }
 
@@ -710,10 +713,17 @@ document.addEventListener("DOMContentLoaded", function () {
     recommendedBuyNowBtns.forEach((btn) => {
       btn.addEventListener("click", function (e) {
         e.stopPropagation();
-        const productUrl = btn.getAttribute("data-product-url");
-        if (productUrl) {
-          window.location.href = productUrl;
+        // Get product ID from the card
+        const card = btn.closest(".recommended-card");
+        const productId = card?.getAttribute("data-product-id");
+        
+        // Add product to cart
+        if (productId && typeof addToCart !== 'undefined') {
+          addToCart(productId);
         }
+        
+        // Redirect to shopping cart
+        window.location.href = '/shopping-cart';
       });
     });
   }

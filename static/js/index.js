@@ -174,7 +174,12 @@ document.addEventListener("DOMContentLoaded", function () {
       if (buyNowBtn) {
         buyNowBtn.addEventListener("click", function(e) {
           e.stopPropagation();
-          window.location.href = productUrl;
+          // Add product to cart
+          if (typeof addToCart !== 'undefined') {
+            addToCart(product.id);
+          }
+          // Redirect to shopping cart
+          window.location.href = '/shopping-cart';
         });
       }
       

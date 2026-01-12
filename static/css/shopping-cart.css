@@ -618,6 +618,39 @@ textarea ~ .floating-label {
   border-color: #009900;
 }
 
+/* Animation for removing order items (same as cart drawer) */
+@keyframes cartItemRemove {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    max-height: 200px;
+    margin-bottom: 15px;
+  }
+  40% {
+    opacity: 0.5;
+    transform: translateX(30px) scale(0.9);
+  }
+  60% {
+    opacity: 0;
+    transform: translateX(50px) scale(0.7);
+    max-height: 200px;
+    margin-bottom: 15px;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(50px) scale(0.7);
+    max-height: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.order-item.removing {
+  animation: cartItemRemove 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
 
 .remove-item {
   position: absolute;
