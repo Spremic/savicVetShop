@@ -419,6 +419,12 @@ header ul li.dropdown:hover .mega-dropdown {
   background: rgba(0, 153, 0, 0.1);
 }
 
+/* Ensure view-all-link stays normal even when category panel is active */
+.category-panel.active .view-all-link {
+  background: rgba(0, 153, 0, 0.1) !important;
+  color: #009900 !important;
+}
+
 .view-all-link:hover {
   background: rgba(0, 153, 0, 0.2);
   color: #00b300;

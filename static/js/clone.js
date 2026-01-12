@@ -1104,6 +1104,19 @@ document.addEventListener("DOMContentLoaded", async function () {
     btn.addEventListener('click', () => {
       const category = btn.getAttribute('data-category');
       
+      // Check if the button is already active
+      if (btn.classList.contains('active')) {
+        // If already active, navigate to the category page (like "View all →" link)
+        const targetPanel = document.querySelector(`.category-panel[data-category="${category}"]`);
+        if (targetPanel) {
+          const viewAllLink = targetPanel.querySelector('.view-all-link');
+          if (viewAllLink && viewAllLink.href) {
+            window.location.href = viewAllLink.href;
+            return;
+          }
+        }
+      }
+      
       // Remove active class from all buttons and panels
       categoryBtns.forEach(b => b.classList.remove('active'));
       categoryPanels.forEach(p => p.classList.remove('active'));
@@ -1116,6 +1129,62 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
     });
   });
+
+  // ========== SET ACTIVE CATEGORY BASED ON CURRENT URL ==========
+  function setActiveCategoryFromURL() {
+    const currentPath = window.location.pathname || '/';
+    const normalize = (p) => {
+      if (!p) return '/';
+      if (p.endsWith('/index.html')) return '/';
+      return p.replace(/\.html$/, '').replace(/\/$/, '');
+    };
+    const normalizedPath = normalize(currentPath);
+    
+    // Find all view-all-links and check if any matches current path
+    const viewAllLinks = document.querySelectorAll('.view-all-link');
+    let foundMatch = false;
+    let matchedCategory = null;
+    
+    viewAllLinks.forEach(link => {
+      try {
+        const linkPath = normalize(new URL(link.href, window.location.origin).pathname);
+        if (linkPath === normalizedPath) {
+          // Found matching category
+          foundMatch = true;
+          const panel = link.closest('.category-panel');
+          if (panel) {
+            matchedCategory = panel.getAttribute('data-category');
+          }
+        }
+      } catch (e) {
+        // ignore invalid URLs
+      }
+    });
+    
+    // Remove active from all categories
+    categoryBtns.forEach(b => b.classList.remove('active'));
+    categoryPanels.forEach(p => p.classList.remove('active'));
+    
+    if (foundMatch && matchedCategory) {
+      // Activate matching button and panel
+      const matchingBtn = document.querySelector(`.category-btn[data-category="${matchedCategory}"]`);
+      const matchingPanel = document.querySelector(`.category-panel[data-category="${matchedCategory}"]`);
+      if (matchingBtn) {
+        matchingBtn.classList.add('active');
+      }
+      if (matchingPanel) {
+        matchingPanel.classList.add('active');
+      }
+    } else {
+      // If no match found, activate first category (default)
+      if (categoryBtns.length > 0 && categoryPanels.length > 0) {
+        categoryBtns[0].classList.add('active');
+        categoryPanels[0].classList.add('active');
+      }
+    }
+  }
+
+  setActiveCategoryFromURL();
 
   // ========== CART DRAWER LOGIC ==========
   const cartDrawerHTML = `
