@@ -1,13 +1,41 @@
+// Load environment variables from .env file
+require('dotenv').config();
+
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const compression = require("compression");
 const fs = require("fs");
+const cloudinary = require("cloudinary").v2;
 const port = process.env.PORT || 3000;
 const app = express();
 
+// Cloudinary configuration with validation
+const cloudName = process.env.cloud_name;
+const apiKey = process.env.cloudinary_api_key;
+const apiSecret = process.env.cloudinary_api_secret;
+
+if (cloudName && apiKey && apiSecret) {
+  cloudinary.config({
+    cloud_name: cloudName,
+    api_key: apiKey,
+    api_secret: apiSecret
+  });
+  console.log("Cloudinary configured successfully");
+} else {
+  console.warn("Warning: Cloudinary credentials not found. Image loading from Cloudinary will not work.");
+  console.warn("Please set the following environment variables:");
+  console.warn("  - cloud_name");
+  console.warn("  - cloudinary_api_key");
+  console.warn("  - cloudinary_api_secret");
+}
+
 // Enable compression
 app.use(compression());
+
+// Body parser middleware for JSON (must be before API routes)
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // EJS konfiguracija
 app.set("view engine", "ejs");
@@ -60,6 +88,104 @@ app.get("/gallery", (req, res) => {
 app.get("/legal", (req, res) => {
     res.sendFile(path.join(__dirname, "/static/legal.html"));
   });
+
+// Optimized JSON endpoint with proper headers for fast loading
+app.get("/json/product.json", (req, res) => {
+  const jsonPath = path.join(__dirname, "static/json/product.json");
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.sendFile(jsonPath);
+});
+
+// API endpoint to get product images from Cloudinary (single product)
+app.get("/api/product-images/:productId", async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    
+    if (!productId) {
+      return res.status(400).json({ error: "Product ID is required" });
+    }
+
+    // Check if Cloudinary is configured
+    if (!cloudName || !apiKey || !apiSecret) {
+      return res.json({ images: [] });
+    }
+
+    // Search for resources in the folder named by product ID
+    const result = await cloudinary.search
+      .expression(`folder:${productId}`)
+      .sort_by('created_at')
+      .max_results(10)
+      .execute();
+
+    // Extract image URLs from the results
+    const images = result.resources.map(resource => ({
+      url: resource.secure_url,
+      public_id: resource.public_id,
+      width: resource.width,
+      height: resource.height
+    }));
+
+    res.json({ images: images });
+  } catch (error) {
+    console.error("Error fetching images from Cloudinary:", error);
+    res.json({ images: [] });
+  }
+});
+
+// Batch API endpoint to get images for multiple products at once (optimized)
+app.post("/api/product-images/batch", async (req, res) => {
+  try {
+    const productIds = req.body.productIds;
+    
+    if (!Array.isArray(productIds) || productIds.length === 0) {
+      return res.status(400).json({ error: "Product IDs array is required" });
+    }
+
+    // Check if Cloudinary is configured
+    if (!cloudName || !apiKey || !apiSecret) {
+      return res.json({ results: {} });
+    }
+
+    // Fetch all images in parallel
+    const imagePromises = productIds.map(async (productId) => {
+      try {
+        const result = await cloudinary.search
+          .expression(`folder:${productId}`)
+          .sort_by('created_at')
+          .max_results(10)
+          .execute();
+
+        const images = result.resources.map(resource => ({
+          url: resource.secure_url,
+          public_id: resource.public_id,
+          width: resource.width,
+          height: resource.height
+        }));
+
+        return { productId, images };
+      } catch (error) {
+        console.error(`Error fetching images for product ${productId}:`, error);
+        return { productId, images: [] };
+      }
+    });
+
+    const results = await Promise.all(imagePromises);
+    
+    // Convert to object for easier lookup
+    const resultsObj = {};
+    results.forEach(({ productId, images }) => {
+      resultsObj[productId] = images;
+    });
+
+    res.json({ results: resultsObj });
+  } catch (error) {
+    console.error("Error fetching batch images from Cloudinary:", error);
+    res.json({ results: {} });
+  }
+});
 
 // Load products data
 function loadProductsData() {
@@ -185,7 +311,7 @@ app.get("/:slug", (req, res, next) => {
   const products = loadProductsData();
   
   // Skip if it's a reserved route
-  const reservedRoutes = ['about', 'gallery', 'legal', 'custom-page', 'shopping-cart', 'product', 'all-products', 'css', 'js', 'img', 'json'];
+  const reservedRoutes = ['about', 'gallery', 'legal', 'custom-page', 'shopping-cart', 'product', 'all-products', 'css', 'js', 'img', 'json', 'api'];
   if (reservedRoutes.includes(slug)) {
     return next();
   }
@@ -268,7 +394,6 @@ app.get("*", (req, res) => {
   res.status(404).sendFile(path.join(__dirname, "/static/404.html"));
 });
 
-app.use(bodyParser.json());
 app.listen(port, () => {
   console.log(`App is listening on port ${port}`);
 });

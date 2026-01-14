@@ -47,8 +47,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const productsPerSlide = 3;
   let showSlideFunction = null; // Will store the showSlide function
   
-  // Available product images from img folder
-  const productImages = [
+  // Fallback images if Cloudinary fails
+  const fallbackImages = [
     '/img/granula.jpg',
     '/img/pas1.jpg',
     '/img/pas2.jpg',
@@ -60,47 +60,92 @@ document.addEventListener("DOMContentLoaded", function () {
     '/img/galerija/lokal3.jpg'
   ];
 
-  // Load and display featured products
+  // Fetch product images in batch (optimized - no cache)
+  async function fetchProductImagesBatch(productIds) {
+    try {
+      const response = await fetch('/api/product-images/batch', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productIds })
+      });
+      
+      const data = await response.json();
+      return data.results || {};
+    } catch (error) {
+      console.error('Error fetching batch images:', error);
+      return {};
+    }
+  }
+
+  // Load and display featured products (optimized)
   async function loadFeaturedProducts() {
     try {
-      const response = await fetch('/json/product.json');
-      const allProducts = await response.json();
+      // Use preloaded JSON if available, otherwise fetch
+      let allProducts;
+      if (window.productJsonPromise) {
+        allProducts = await window.productJsonPromise;
+      } else {
+        const response = await fetch('/json/product.json', {
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache' }
+        });
+        allProducts = await response.json();
+      }
       
       // Shuffle array and get random products
       const shuffled = allProducts.sort(() => 0.5 - Math.random());
       featuredProducts = shuffled.slice(0, 9); // Get 9 products (3 slides of 3)
       
-      renderProducts(); // setupSlider() is called inside renderProducts()
+      // Render products immediately with skeleton loaders
+      renderProductsWithSkeletons();
+      
+      // Fetch images in batch (optimized)
+      const productIds = featuredProducts.map(p => p.id);
+      const imagesData = await fetchProductImagesBatch(productIds);
+      
+      // Update images when loaded
+      updateProductImages(imagesData);
     } catch (error) {
       console.error('Error loading products:', error);
     }
   }
 
-  // Render products
-  function renderProducts() {
+  // Render products with skeleton loaders (optimized - immediate render)
+  function renderProductsWithSkeletons() {
     const container = document.getElementById('featuredProductsContainer');
     if (!container) return;
 
+    // Hide initial skeleton loaders immediately
+    const skeletonCards = container.querySelectorAll('.skeleton-card');
+    skeletonCards.forEach(card => {
+      card.style.display = 'none';
+      card.classList.add('hidden');
+    });
+
     container.innerHTML = '';
 
-    // Render all products (we'll show/hide based on viewport)
+    // Render all products immediately with skeleton image loaders
     featuredProducts.forEach((product, index) => {
-      const imageIndex = index % productImages.length;
-      const imageSrc = productImages[imageIndex];
-      
       const price = product.salePrice && product.salePrice !== '/' ? product.salePrice : product.price;
       const hasDiscount = product.salePrice && product.salePrice !== '/' && product.percentage && product.percentage !== '/' && product.percentage !== '0%';
       const discountPercentage = hasDiscount ? product.percentage : '';
       const oldPriceValue = hasDiscount ? product.price : null;
       
+      // Use fallback initially, will be replaced when images load
+      const fallbackIndex = parseInt(product.id) % fallbackImages.length;
+      const initialImageSrc = fallbackImages[fallbackIndex];
+      
       const cardHTML = `
         <div class="custom-card" data-product-id="${product.id}">
           <div class="image-c">
+            <div class="image-skeleton"></div>
             ${hasDiscount ? `<div class="discount-badge">-${discountPercentage}</div>` : ''}
-            <div class="arrow-image-left">
+            <div class="arrow-image-left" style="display: none;">
               <span class="material-symbols-outlined">arrow_back_ios_new</span>
             </div>
-            <div class="arrow-image-right">
+            <div class="arrow-image-right" style="display: none;">
               <span class="material-symbols-outlined">arrow_forward_ios</span>
             </div>
             <div class="heart-container" data-product-id="${product.id}">
@@ -109,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <path class="heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0"/>
               </svg>
             </div>
-            <img src="${imageSrc}" alt="${product.title}" loading="lazy" />
+            <img src="${initialImageSrc}" alt="${product.title}" loading="lazy" data-product-id="${product.id}" />
           </div>
           <div class="content-c">
             <span class="product-brand">${product.brand}</span>
@@ -185,10 +230,104 @@ document.addEventListener("DOMContentLoaded", function () {
       
       // Note: Heart container click is handled by global event listener below
       // which handles both toggle state and animation
+      
+      // Image carousel will be set up in updateProductImages() after images load
     });
 
     // Setup slider after rendering and store showSlide function
     showSlideFunction = setupSlider();
+  }
+
+  // Update product images when loaded from Cloudinary (optimized)
+  function updateProductImages(imagesData) {
+    featuredProducts.forEach((product) => {
+      const card = document.querySelector(`.custom-card[data-product-id="${product.id}"]`);
+      if (!card) return;
+
+      const productImage = card.querySelector('img');
+      const imageContainer = card.querySelector('.image-c');
+      const skeleton = card.querySelector('.image-skeleton');
+      const arrowLeft = card.querySelector('.arrow-image-left');
+      const arrowRight = card.querySelector('.arrow-image-right');
+      
+      if (!productImage || !imageContainer) return;
+
+      const productImages = imagesData[product.id] || [];
+      const imageUrls = productImages.length > 0 
+        ? productImages.map(img => img.url)
+        : [fallbackImages[parseInt(product.id) % fallbackImages.length]];
+
+      // Store images in data attribute for carousel
+      productImage.setAttribute('data-product-images', JSON.stringify(imageUrls));
+      productImage.setAttribute('data-current-image-index', '0');
+
+      // Load first image
+      const firstImage = new Image();
+      firstImage.onload = () => {
+        productImage.src = firstImage.src;
+        productImage.classList.add('loaded');
+        // Hide skeleton with animation
+        if (skeleton) {
+          skeleton.style.opacity = '0';
+          skeleton.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            skeleton.classList.add('hidden');
+            skeleton.style.display = 'none';
+          }, 300);
+        }
+      };
+      firstImage.onerror = () => {
+        // Fallback if image fails to load
+        const fallbackIndex = parseInt(product.id) % fallbackImages.length;
+        productImage.src = fallbackImages[fallbackIndex];
+        productImage.classList.add('loaded');
+        // Hide skeleton with animation
+        if (skeleton) {
+          skeleton.style.opacity = '0';
+          skeleton.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            skeleton.classList.add('hidden');
+            skeleton.style.display = 'none';
+          }, 300);
+        }
+      };
+      firstImage.src = imageUrls[0];
+
+      // Setup carousel if multiple images
+      if (imageUrls.length > 1 && arrowLeft && arrowRight) {
+        arrowLeft.style.display = 'flex';
+        arrowRight.style.display = 'flex';
+        
+        let currentImageIndex = 0;
+        
+        const updateImage = (newIndex) => {
+          if (newIndex >= 0 && newIndex < imageUrls.length) {
+            currentImageIndex = newIndex;
+            const newImage = new Image();
+            newImage.onload = () => {
+              productImage.src = newImage.src;
+              productImage.setAttribute('data-current-image-index', currentImageIndex);
+            };
+            newImage.src = imageUrls[currentImageIndex];
+          }
+        };
+        
+        arrowLeft.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const newIndex = (currentImageIndex - 1 + imageUrls.length) % imageUrls.length;
+          updateImage(newIndex);
+        });
+        
+        arrowRight.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const newIndex = (currentImageIndex + 1) % imageUrls.length;
+          updateImage(newIndex);
+        });
+      } else if (arrowLeft && arrowRight) {
+        arrowLeft.style.display = 'none';
+        arrowRight.style.display = 'none';
+      }
+    });
   }
 
   // Setup slider functionality
@@ -313,7 +452,8 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      renderProducts(); // setupSlider() is called inside renderProducts()
+      // Only re-setup slider, don't re-render products
+      showSlideFunction = setupSlider();
     }, 250);
   });
 
@@ -665,4 +805,5 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
 

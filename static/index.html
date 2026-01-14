@@ -12,9 +12,11 @@
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
     <link rel="dns-prefetch" href="https://code.jquery.com" />
     
-    <!-- Critical CSS -->
+    <!-- Preload critical resources for maximum performance -->
+    <link rel="preload" href="/json/product.json" as="fetch" crossorigin="anonymous" />
     <link rel="preload" href="/css/clone.css" as="style" />
     <link rel="preload" href="/css/index.css" as="style" />
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
     <link rel="stylesheet" href="/css/clone.css" />
     <link rel="stylesheet" href="/css/index.css" />
     <link rel="stylesheet" href="/css/loader.css" />
@@ -120,7 +122,34 @@
         </div>
 
         <div class="mid" id="featuredProductsContainer">
-          <!-- Products will be dynamically loaded here -->
+          <!-- Skeleton loaders - shown initially, match exact card structure -->
+          <div class="skeleton-card">
+            <div class="skeleton-image"></div>
+            <div class="skeleton-content">
+              <div class="skeleton-line skeleton-line-small"></div>
+              <div class="skeleton-line skeleton-line-medium"></div>
+              <div class="skeleton-line skeleton-line-price"></div>
+              <div class="skeleton-line skeleton-line-button"></div>
+            </div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-image"></div>
+            <div class="skeleton-content">
+              <div class="skeleton-line skeleton-line-small"></div>
+              <div class="skeleton-line skeleton-line-medium"></div>
+              <div class="skeleton-line skeleton-line-price"></div>
+              <div class="skeleton-line skeleton-line-button"></div>
+            </div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-image"></div>
+            <div class="skeleton-content">
+              <div class="skeleton-line skeleton-line-small"></div>
+              <div class="skeleton-line skeleton-line-medium"></div>
+              <div class="skeleton-line skeleton-line-price"></div>
+              <div class="skeleton-line skeleton-line-button"></div>
+            </div>
+          </div>
         </div>
 
         <div class="arrow-r reveal-right">
@@ -510,6 +539,17 @@
       </div>
     </div>
 
+    <!-- Inline script to start loading JSON immediately (before other scripts) -->
+    <script>
+      // Start loading JSON immediately for maximum performance
+      window.productJsonPromise = fetch('/json/product.json', {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' }
+      }).then(response => response.json()).catch(err => {
+        console.error('Error preloading products JSON:', err);
+        return [];
+      });
+    </script>
     <script src="/js/clone.js" defer></script>
     <script src="/js/index.js" defer></script>
     <script src="/js/loader.js" defer></script>

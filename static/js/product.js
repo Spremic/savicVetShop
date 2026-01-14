@@ -32,7 +32,789 @@ function slugify(value) {
     .toLowerCase();
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+  // Load all product images from Cloudinary (optimized - no cache)
+  const productContainer = document.querySelector('.product-container');
+  const productId = productContainer?.getAttribute('data-product-id');
+  const mainImage = document.getElementById('mainProductImage');
+  const mainImageSkeleton = document.querySelector('.main-image-skeleton');
+  const thumbnailContainer = document.querySelector('.thumbnail-container');
+  
+  if (productId && mainImage && thumbnailContainer) {
+    // Show skeleton loaders IMMEDIATELY before API call
+    // Start with a reasonable number (will be adjusted when API responds)
+    const initialSkeletonCount = 5;
+    for (let i = 0; i < initialSkeletonCount; i++) {
+      const skeletonPlaceholder = document.createElement('div');
+      skeletonPlaceholder.className = 'thumbnail thumbnail-skeleton-placeholder';
+      skeletonPlaceholder.innerHTML = '<div class="thumbnail-skeleton"></div>';
+      thumbnailContainer.appendChild(skeletonPlaceholder);
+    }
+    
+    try {
+      // Fetch images from API
+      const response = await fetch(`/api/product-images/${productId}`, {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' }
+      });
+      const data = await response.json();
+      const productImages = data.images || [];
+      
+      if (productImages.length > 0) {
+        // Adjust skeleton count to match actual number of images
+        const currentSkeletons = thumbnailContainer.querySelectorAll('.thumbnail-skeleton-placeholder');
+        const currentCount = currentSkeletons.length;
+        const targetCount = productImages.length;
+        
+        // Remove excess skeletons if we have more than needed
+        if (currentCount > targetCount) {
+          for (let i = targetCount; i < currentCount; i++) {
+            const skeleton = currentSkeletons[i];
+            skeleton.style.opacity = '0';
+            skeleton.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+              skeleton.remove();
+            }, 300);
+          }
+        }
+        // Add more skeletons if we need more
+        else if (currentCount < targetCount) {
+          for (let i = currentCount; i < targetCount; i++) {
+            const skeletonPlaceholder = document.createElement('div');
+            skeletonPlaceholder.className = 'thumbnail thumbnail-skeleton-placeholder';
+            skeletonPlaceholder.innerHTML = '<div class="thumbnail-skeleton"></div>';
+            thumbnailContainer.appendChild(skeletonPlaceholder);
+          }
+        }
+        
+        // Now replace skeleton placeholders with actual thumbnails
+        // Wait a tiny bit to ensure skeletons are visible
+        setTimeout(() => {
+          try {
+            const skeletonPlaceholders = thumbnailContainer.querySelectorAll('.thumbnail-skeleton-placeholder');
+            skeletonPlaceholders.forEach((placeholder, index) => {
+              try {
+                if (index < productImages.length && productImages[index] && productImages[index].url) {
+                  // Replace skeleton with actual thumbnail
+                  const newThumbnail = document.createElement('div');
+                  newThumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+                  newThumbnail.setAttribute('data-image', productImages[index].url);
+                  
+                  // Create skeleton loader
+                  const skeleton = document.createElement('div');
+                  skeleton.className = 'thumbnail-skeleton';
+                  
+                  // Create image element
+                  const thumbImg = document.createElement('img');
+                  thumbImg.alt = `Thumbnail ${index + 1}`;
+                  thumbImg.loading = 'lazy';
+                  
+                  // Function to hide skeleton - ALWAYS hide, no matter what
+                  const hideSkeleton = () => {
+                    try {
+                      // Force hide skeleton immediately
+                      if (skeleton) {
+                        skeleton.style.opacity = '0';
+                        skeleton.style.transition = 'opacity 0.3s ease';
+                        skeleton.classList.add('hidden');
+                        setTimeout(() => {
+                          try {
+                            if (skeleton && skeleton.parentNode) {
+                              skeleton.style.display = 'none';
+                            }
+                          } catch (e) {
+                            console.warn('Error hiding skeleton:', e);
+                          }
+                        }, 300);
+                      }
+                      
+                      // Show image immediately with higher z-index
+                      if (thumbImg && thumbImg.parentNode) {
+                        thumbImg.classList.add('loaded');
+                        thumbImg.style.opacity = '1';
+                        thumbImg.style.zIndex = '3';
+                        thumbImg.style.position = 'relative';
+                      }
+                    } catch (e) {
+                      console.warn('Error in hideSkeleton:', e);
+                      // Force hide even on error
+                      try {
+                        if (skeleton) {
+                          skeleton.style.display = 'none';
+                          skeleton.classList.add('hidden');
+                        }
+                        if (thumbImg && thumbImg.parentNode) {
+                          thumbImg.style.opacity = '1';
+                          thumbImg.classList.add('loaded');
+                        }
+                      } catch (forceError) {
+                        console.warn('Error forcing hide:', forceError);
+                      }
+                    }
+                  };
+                  
+                  // Retry function with timeout
+                  const maxRetries = 2; // Reduced to 2 retries for faster fallback
+                  const loadTimeout = 8000; // 8 seconds timeout
+                  
+                  // Keep reference to current img element
+                  let currentImg = thumbImg;
+                  let timeoutId = null;
+                  let isLoaded = false;
+                  let safetyTimeoutId = null;
+                  
+                  const loadImage = (url, attempt = 1) => {
+                    try {
+                      // Clear any existing timeout
+                      if (timeoutId) {
+                        clearTimeout(timeoutId);
+                        timeoutId = null;
+                      }
+                      
+                      // Validate URL
+                      if (!url || typeof url !== 'string') {
+                        console.warn(`Thumbnail ${index + 1} invalid URL, hiding skeleton`);
+                        isLoaded = true;
+                        hideSkeleton();
+                        return;
+                      }
+                      
+                      // Set timeout to hide skeleton if image takes too long
+                      timeoutId = setTimeout(() => {
+                        try {
+                          if (!isLoaded && currentImg && currentImg.parentNode) {
+                            console.warn(`Thumbnail ${index + 1} load timeout, attempt ${attempt}`);
+                            if (attempt < maxRetries) {
+                              // Retry with cache busting
+                              const baseUrl = url.split('?')[0];
+                              const retryUrl = baseUrl + `?_retry=${attempt}&_t=${Date.now()}`;
+                              loadImage(retryUrl, attempt + 1);
+                            } else {
+                              // Max retries reached, hide skeleton anyway
+                              console.warn(`Thumbnail ${index + 1} failed after ${maxRetries} attempts, hiding skeleton`);
+                              isLoaded = true;
+                              hideSkeleton();
+                            }
+                          }
+                        } catch (e) {
+                          console.warn('Error in timeout handler:', e);
+                          isLoaded = true;
+                          hideSkeleton();
+                        }
+                      }, loadTimeout);
+                      
+                      // Success handler
+                      currentImg.onload = () => {
+                        try {
+                          if (!isLoaded && currentImg && currentImg.parentNode) {
+                            if (timeoutId) {
+                              clearTimeout(timeoutId);
+                              timeoutId = null;
+                            }
+                            if (safetyTimeoutId) {
+                              clearTimeout(safetyTimeoutId);
+                              safetyTimeoutId = null;
+                            }
+                            isLoaded = true;
+                            console.log(`Thumbnail ${index + 1} loaded successfully`);
+                            hideSkeleton();
+                          }
+                        } catch (e) {
+                          console.warn('Error in onload handler:', e);
+                          isLoaded = true;
+                          hideSkeleton();
+                        }
+                      };
+                      
+                      // Check if image is already loaded (cached)
+                      if (currentImg.complete && currentImg.naturalHeight !== 0) {
+                        console.log(`Thumbnail ${index + 1} already loaded (cached)`);
+                        isLoaded = true;
+                        hideSkeleton();
+                      }
+                      
+                      // Error handler with retry
+                      currentImg.onerror = () => {
+                        try {
+                          if (!isLoaded && currentImg && currentImg.parentNode) {
+                            if (timeoutId) {
+                              clearTimeout(timeoutId);
+                              timeoutId = null;
+                            }
+                            console.warn(`Thumbnail ${index + 1} load failed, attempt ${attempt}`);
+                            if (attempt < maxRetries) {
+                              // Retry with cache busting - create new img element
+                              try {
+                                const newImg = document.createElement('img');
+                                newImg.alt = currentImg.alt || `Thumbnail ${index + 1}`;
+                                newImg.loading = currentImg.loading || 'lazy';
+                                
+                                // Replace old img with new one
+                                if (currentImg.parentNode) {
+                                  currentImg.parentNode.replaceChild(newImg, currentImg);
+                                  currentImg = newImg;
+                                }
+                                
+                                const baseUrl = url.split('?')[0];
+                                const retryUrl = baseUrl + `?_retry=${attempt}&_t=${Date.now()}`;
+                                loadImage(retryUrl, attempt + 1);
+                              } catch (e) {
+                                console.warn('Error creating retry image:', e);
+                                isLoaded = true;
+                                hideSkeleton();
+                              }
+                            } else {
+                              // Max retries reached, hide skeleton anyway
+                              console.warn(`Thumbnail ${index + 1} failed after ${maxRetries} attempts, hiding skeleton`);
+                              isLoaded = true;
+                              hideSkeleton();
+                            }
+                          }
+                        } catch (e) {
+                          console.warn('Error in onerror handler:', e);
+                          isLoaded = true;
+                          hideSkeleton();
+                        }
+                      };
+                      
+                      // Set src AFTER event handlers are attached
+                      if (currentImg && currentImg.parentNode) {
+                        currentImg.src = url;
+                      } else {
+                        isLoaded = true;
+                        hideSkeleton();
+                      }
+                    } catch (e) {
+                      console.warn('Error in loadImage:', e);
+                      isLoaded = true;
+                      hideSkeleton();
+                    }
+                  };
+                  
+                  // Start loading
+                  if (productImages[index].url) {
+                    loadImage(productImages[index].url);
+                  } else {
+                    isLoaded = true;
+                    hideSkeleton();
+                  }
+                  
+                  // Safety fallback - hide skeleton after 12 seconds no matter what
+                  safetyTimeoutId = setTimeout(() => {
+                    try {
+                      if (!isLoaded) {
+                        console.warn(`Thumbnail ${index + 1} safety timeout reached, forcing hide`);
+                        isLoaded = true;
+                        hideSkeleton();
+                      }
+                    } catch (e) {
+                      console.warn('Error in safety timeout:', e);
+                    }
+                  }, 12000);
+                  
+                  newThumbnail.appendChild(skeleton);
+                  newThumbnail.appendChild(thumbImg);
+                  
+                  // Replace placeholder with new thumbnail
+                  if (placeholder && placeholder.parentNode) {
+                    placeholder.replaceWith(newThumbnail);
+                  }
+                } else {
+                  // No image for this index, remove placeholder
+                  if (placeholder && placeholder.parentNode) {
+                    placeholder.remove();
+                  }
+                }
+              } catch (e) {
+                console.warn(`Error processing thumbnail ${index}:`, e);
+                // Try to remove placeholder on error
+                try {
+                  if (placeholder && placeholder.parentNode) {
+                    placeholder.remove();
+                  }
+                } catch (removeError) {
+                  console.warn('Error removing placeholder:', removeError);
+                }
+              }
+            });
+          } catch (e) {
+            console.error('Error in thumbnail loading:', e);
+            // Hide all skeleton placeholders on error
+            try {
+              const skeletonPlaceholders = thumbnailContainer.querySelectorAll('.thumbnail-skeleton-placeholder');
+              skeletonPlaceholders.forEach(placeholder => {
+                try {
+                  if (placeholder && placeholder.parentNode) {
+                    placeholder.remove();
+                  }
+                } catch (removeError) {
+                  console.warn('Error removing placeholder:', removeError);
+                }
+              });
+            } catch (cleanupError) {
+              console.warn('Error cleaning up placeholders:', cleanupError);
+            }
+          }
+        }, 50);
+        
+        // Set first image as main image with retry logic
+        const loadMainImage = (url, attempt = 1) => {
+          try {
+            if (!url || typeof url !== 'string') {
+              console.warn('Invalid main image URL, hiding skeleton');
+              if (mainImage && mainImage.parentNode) {
+                mainImage.classList.add('loaded');
+              }
+              if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                mainImageSkeleton.style.opacity = '0';
+                mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => {
+                  try {
+                    if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                      mainImageSkeleton.classList.add('hidden');
+                      mainImageSkeleton.style.display = 'none';
+                    }
+                  } catch (e) {
+                    console.warn('Error hiding main skeleton:', e);
+                  }
+                }, 300);
+              }
+              return;
+            }
+            
+            const maxRetries = 2; // Reduced to 2 retries
+            const loadTimeout = 8000; // 8 seconds timeout
+            let timeoutId = null;
+            let isLoaded = false;
+            
+            const firstImage = new Image();
+            
+            timeoutId = setTimeout(() => {
+              try {
+                if (!isLoaded && mainImage && mainImage.parentNode && !mainImage.classList.contains('loaded')) {
+                  console.warn(`Main image load timeout, attempt ${attempt}`);
+                  if (attempt < maxRetries) {
+                    // Retry with cache busting
+                    const baseUrl = url.split('?')[0];
+                    const retryUrl = baseUrl + `?_retry=${attempt}&_t=${Date.now()}`;
+                    loadMainImage(retryUrl, attempt + 1);
+                  } else {
+                    // Max retries reached, hide skeleton anyway
+                    console.warn(`Main image failed after ${maxRetries} attempts, hiding skeleton`);
+                    isLoaded = true;
+                    if (mainImage && mainImage.parentNode) {
+                      mainImage.classList.add('loaded');
+                    }
+                    if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                      mainImageSkeleton.style.opacity = '0';
+                      mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+                      setTimeout(() => {
+                        try {
+                          if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                            mainImageSkeleton.classList.add('hidden');
+                            mainImageSkeleton.style.display = 'none';
+                          }
+                        } catch (e) {
+                          console.warn('Error hiding main skeleton:', e);
+                        }
+                      }, 300);
+                    }
+                  }
+                }
+              } catch (e) {
+                console.warn('Error in main image timeout:', e);
+                isLoaded = true;
+                if (mainImage && mainImage.parentNode) {
+                  mainImage.classList.add('loaded');
+                }
+                if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                  mainImageSkeleton.style.opacity = '0';
+                  mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+                  setTimeout(() => {
+                    try {
+                      if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                        mainImageSkeleton.classList.add('hidden');
+                        mainImageSkeleton.style.display = 'none';
+                      }
+                    } catch (hideError) {
+                      console.warn('Error hiding main skeleton:', hideError);
+                    }
+                  }, 300);
+                }
+              }
+            }, loadTimeout);
+            
+            firstImage.onload = () => {
+              try {
+                if (!isLoaded && mainImage && mainImage.parentNode) {
+                  if (timeoutId) {
+                    clearTimeout(timeoutId);
+                    timeoutId = null;
+                  }
+                  mainImage.src = firstImage.src;
+                  mainImage.classList.add('loaded');
+                  // Hide skeleton with animation
+                  if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                    mainImageSkeleton.style.opacity = '0';
+                    mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+                    setTimeout(() => {
+                      try {
+                        if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                          mainImageSkeleton.classList.add('hidden');
+                          mainImageSkeleton.style.display = 'none';
+                        }
+                      } catch (e) {
+                        console.warn('Error hiding main skeleton:', e);
+                      }
+                    }, 300);
+                  }
+                  // Update lens if it exists
+                  if (typeof updateLensImage === 'function') {
+                    try {
+                      updateLensImage();
+                    } catch (e) {
+                      console.warn('Error updating lens:', e);
+                    }
+                  }
+                  isLoaded = true;
+                }
+              } catch (e) {
+                console.warn('Error in main image onload:', e);
+                isLoaded = true;
+                if (mainImage && mainImage.parentNode) {
+                  mainImage.classList.add('loaded');
+                }
+                if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                  mainImageSkeleton.style.opacity = '0';
+                  mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+                  setTimeout(() => {
+                    try {
+                      if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                        mainImageSkeleton.classList.add('hidden');
+                        mainImageSkeleton.style.display = 'none';
+                      }
+                    } catch (hideError) {
+                      console.warn('Error hiding main skeleton:', hideError);
+                    }
+                  }, 300);
+                }
+              }
+            };
+            
+            firstImage.onerror = () => {
+              try {
+                if (!isLoaded && mainImage && mainImage.parentNode) {
+                  if (timeoutId) {
+                    clearTimeout(timeoutId);
+                    timeoutId = null;
+                  }
+                  console.warn(`Main image load failed, attempt ${attempt}`);
+                  if (attempt < maxRetries) {
+                    // Retry with cache busting
+                    const baseUrl = url.split('?')[0];
+                    const retryUrl = baseUrl + `?_retry=${attempt}&_t=${Date.now()}`;
+                    loadMainImage(retryUrl, attempt + 1);
+                  } else {
+                    // Max retries reached, hide skeleton anyway
+                    console.warn(`Main image failed after ${maxRetries} attempts, hiding skeleton`);
+                    isLoaded = true;
+                    if (mainImage && mainImage.parentNode) {
+                      mainImage.classList.add('loaded');
+                    }
+                    if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                      mainImageSkeleton.style.opacity = '0';
+                      mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+                      setTimeout(() => {
+                        try {
+                          if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                            mainImageSkeleton.classList.add('hidden');
+                            mainImageSkeleton.style.display = 'none';
+                          }
+                        } catch (e) {
+                          console.warn('Error hiding main skeleton:', e);
+                        }
+                      }, 300);
+                    }
+                  }
+                }
+              } catch (e) {
+                console.warn('Error in main image onerror:', e);
+                isLoaded = true;
+                if (mainImage && mainImage.parentNode) {
+                  mainImage.classList.add('loaded');
+                }
+                if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                  mainImageSkeleton.style.opacity = '0';
+                  mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+                  setTimeout(() => {
+                    try {
+                      if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                        mainImageSkeleton.classList.add('hidden');
+                        mainImageSkeleton.style.display = 'none';
+                      }
+                    } catch (hideError) {
+                      console.warn('Error hiding main skeleton:', hideError);
+                    }
+                  }, 300);
+                }
+              }
+            };
+            
+            // Safety fallback - hide skeleton after 12 seconds no matter what
+            setTimeout(() => {
+              try {
+                if (!isLoaded && mainImage && mainImage.parentNode) {
+                  console.warn('Main image safety timeout reached, forcing hide');
+                  isLoaded = true;
+                  if (mainImage && mainImage.parentNode) {
+                    mainImage.classList.add('loaded');
+                  }
+                  if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                    mainImageSkeleton.style.opacity = '0';
+                    mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+                    setTimeout(() => {
+                      try {
+                        if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                          mainImageSkeleton.classList.add('hidden');
+                          mainImageSkeleton.style.display = 'none';
+                        }
+                      } catch (e) {
+                        console.warn('Error hiding main skeleton:', e);
+                      }
+                    }, 300);
+                  }
+                }
+              } catch (e) {
+                console.warn('Error in main image safety timeout:', e);
+              }
+            }, 12000);
+            
+            firstImage.src = url;
+          } catch (e) {
+            console.error('Error in loadMainImage:', e);
+            // Fallback - hide skeleton anyway
+            if (mainImage && mainImage.parentNode) {
+              mainImage.classList.add('loaded');
+            }
+            if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+              mainImageSkeleton.style.opacity = '0';
+              mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+              setTimeout(() => {
+                try {
+                  if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                    mainImageSkeleton.classList.add('hidden');
+                    mainImageSkeleton.style.display = 'none';
+                  }
+                } catch (hideError) {
+                  console.warn('Error hiding main skeleton:', hideError);
+                }
+              }, 300);
+            }
+          }
+        };
+        
+        try {
+          if (productImages && productImages.length > 0 && productImages[0] && productImages[0].url) {
+            loadMainImage(productImages[0].url);
+          } else {
+            console.warn('No main image URL available, hiding skeleton');
+            if (mainImage && mainImage.parentNode) {
+              mainImage.classList.add('loaded');
+            }
+            if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+              mainImageSkeleton.style.opacity = '0';
+              mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+              setTimeout(() => {
+                try {
+                  if (mainImageSkeleton && mainImageSkeleton.parentNode) {
+                    mainImageSkeleton.classList.add('hidden');
+                    mainImageSkeleton.style.display = 'none';
+                  }
+                } catch (e) {
+                  console.warn('Error hiding main skeleton:', e);
+                }
+              }, 300);
+            }
+          }
+        } catch (e) {
+          console.error('Error starting main image load:', e);
+        }
+        
+        // Hide arrows if only one image
+        const arrowLeft = document.querySelector(".image-arrow-left");
+        const arrowRight = document.querySelector(".image-arrow-right");
+        if (productImages.length <= 1) {
+          if (arrowLeft) arrowLeft.style.display = 'none';
+          if (arrowRight) arrowRight.style.display = 'none';
+        } else {
+          if (arrowLeft) arrowLeft.style.display = '';
+          if (arrowRight) arrowRight.style.display = '';
+        }
+        
+        // Update thumbnail click handlers after images are loaded
+        setTimeout(() => {
+          setupThumbnailHandlers();
+        }, 200);
+      } else {
+        // No images from Cloudinary, show current image
+        // Hide skeleton placeholders
+        const skeletonPlaceholders = thumbnailContainer.querySelectorAll('.thumbnail-skeleton-placeholder');
+        skeletonPlaceholders.forEach(placeholder => {
+          placeholder.style.opacity = '0';
+          placeholder.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            placeholder.remove();
+          }, 300);
+        });
+        
+        mainImage.classList.add('loaded');
+        if (mainImageSkeleton) {
+          mainImageSkeleton.style.opacity = '0';
+          mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            mainImageSkeleton.classList.add('hidden');
+            mainImageSkeleton.style.display = 'none';
+          }, 300);
+        }
+        // Hide arrows if no images
+        const arrowLeft = document.querySelector(".image-arrow-left");
+        const arrowRight = document.querySelector(".image-arrow-right");
+        if (arrowLeft) arrowLeft.style.display = 'none';
+        if (arrowRight) arrowRight.style.display = 'none';
+      }
+    } catch (error) {
+      console.error('Error loading product images:', error);
+      // Hide skeleton placeholders on error
+      const skeletonPlaceholders = thumbnailContainer.querySelectorAll('.thumbnail-skeleton-placeholder');
+      skeletonPlaceholders.forEach(placeholder => {
+        placeholder.style.opacity = '0';
+        placeholder.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          placeholder.remove();
+        }, 300);
+      });
+      
+      // Fallback - show current image
+      mainImage.classList.add('loaded');
+      if (mainImageSkeleton) {
+        mainImageSkeleton.style.opacity = '0';
+        mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          mainImageSkeleton.classList.add('hidden');
+          mainImageSkeleton.style.display = 'none';
+        }, 300);
+      }
+      // Hide arrows on error
+      const arrowLeft = document.querySelector(".image-arrow-left");
+      const arrowRight = document.querySelector(".image-arrow-right");
+      if (arrowLeft) arrowLeft.style.display = 'none';
+      if (arrowRight) arrowRight.style.display = 'none';
+    }
+  } else if (mainImage) {
+    // No product ID, show current image and setup existing thumbnails
+    mainImage.classList.add('loaded');
+    if (mainImageSkeleton) {
+      mainImageSkeleton.style.opacity = '0';
+      mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+      setTimeout(() => {
+        mainImageSkeleton.classList.add('hidden');
+        mainImageSkeleton.style.display = 'none';
+      }, 300);
+    }
+    // Setup thumbnail handlers for existing thumbnails
+    setTimeout(() => {
+      setupThumbnailHandlers();
+    }, 200);
+  }
+  
+  // Function to setup thumbnail handlers (will be called after images are loaded)
+  function setupThumbnailHandlers() {
+    const thumbnails = document.querySelectorAll(".thumbnail");
+    const thumbnailContainer = document.querySelector(".thumbnail-container");
+    
+    thumbnails.forEach((thumbnail, index) => {
+      // Remove existing listeners by cloning
+      const newThumbnail = thumbnail.cloneNode(true);
+      thumbnail.parentNode.replaceChild(newThumbnail, thumbnail);
+      
+      // Add click handler
+      newThumbnail.addEventListener("click", function () {
+        // Remove active class from all thumbnails
+        document.querySelectorAll(".thumbnail").forEach((t) => t.classList.remove("active"));
+        
+        // Add active class to clicked thumbnail
+        this.classList.add("active");
+        
+        // Update main image
+        const imageSrc = this.getAttribute("data-image");
+        if (imageSrc && mainImage) {
+          mainImage.style.opacity = "0";
+          const newImg = new Image();
+          newImg.onload = () => {
+            mainImage.src = newImg.src;
+            setTimeout(() => {
+              mainImage.style.opacity = "1";
+            }, 150);
+            updateLensImage();
+          };
+          newImg.src = imageSrc;
+        }
+        
+        // Scroll behavior based on screen size
+        if (thumbnailContainer) {
+          const isMobile = window.innerWidth < 1024;
+          
+          if (isMobile) {
+            // Horizontal scroll for mobile/tablet
+            const isLastThumbnail = index === thumbnails.length - 1;
+            
+            if (isLastThumbnail) {
+              const thumbnailWidth = 100;
+              const gap = 10;
+              const scrollAmount = thumbnailWidth + gap;
+              const currentScrollLeft = thumbnailContainer.scrollLeft;
+              const maxScrollLeft = thumbnailContainer.scrollWidth - thumbnailContainer.clientWidth;
+              
+              if (currentScrollLeft < maxScrollLeft) {
+                const newScrollLeft = Math.min(currentScrollLeft + scrollAmount, maxScrollLeft);
+                thumbnailContainer.scrollTo({
+                  left: newScrollLeft,
+                  behavior: 'smooth'
+                });
+              }
+            } else {
+              const thumbnailWidth = 100;
+              const gap = 10;
+              const thumbnailLeft = index * (thumbnailWidth + gap);
+              const containerWidth = thumbnailContainer.clientWidth;
+              const scrollPosition = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
+              
+              thumbnailContainer.scrollTo({
+                left: Math.max(0, scrollPosition),
+                behavior: 'smooth'
+              });
+            }
+          } else {
+            // Vertical scroll for desktop
+            const thumbnailHeight = 100;
+            const gap = 12;
+            const containerHeight = 486;
+            const itemHeight = thumbnailHeight + gap;
+            const targetPosition = containerHeight - thumbnailHeight - 50;
+            const thumbnailPosition = index * itemHeight;
+            const scrollPosition = thumbnailPosition - targetPosition;
+            const finalScrollPosition = Math.max(0, scrollPosition);
+            
+            thumbnailContainer.scrollTo({
+              top: finalScrollPosition,
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    });
+  }
+
   // Header scroll effect
   window.addEventListener("scroll", function () {
     const header = document.querySelector("header");
@@ -71,12 +853,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   `;
   document.head.appendChild(style);
-  // Thumbnail image switching
-  const thumbnails = document.querySelectorAll(".thumbnail");
-  const mainImage = document.getElementById("mainProductImage");
+  // mainImage and thumbnailContainer are already declared above
   const mainImageContainer = document.querySelector(".main-image-container");
-
-  const thumbnailContainer = document.querySelector(".thumbnail-container");
 
   // --- Hover magnifier setup for main image ---
   const zoomLevel = 2.4;
@@ -184,14 +962,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function getCurrentImageIndex() {
     if (!mainImage) return 0;
     const currentSrc = mainImage.src;
+    const thumbnails = document.querySelectorAll(".thumbnail:not([style*='display: none'])");
     let currentIndex = 0;
     thumbnails.forEach((thumb, index) => {
       const thumbSrc = thumb.getAttribute("data-image");
       if (thumbSrc) {
-        // Get just the filename from both paths
-        const currentFileName = currentSrc.split('/').pop();
-        const thumbFileName = thumbSrc.split('/').pop();
-        if (currentFileName === thumbFileName) {
+        // Compare full URLs or just the image filename
+        if (currentSrc === thumbSrc || currentSrc.includes(thumbSrc.split('/').pop())) {
           currentIndex = index;
         }
       }
@@ -201,6 +978,9 @@ document.addEventListener("DOMContentLoaded", function () {
   
   // Function to switch image
   function switchImage(direction) {
+    const thumbnails = document.querySelectorAll(".thumbnail:not([style*='display: none'])");
+    if (thumbnails.length === 0) return;
+    
     const currentIndex = getCurrentImageIndex();
     let newIndex;
     
@@ -215,88 +995,6 @@ document.addEventListener("DOMContentLoaded", function () {
       thumbnails[newIndex].click();
     }
   }
-  
-  thumbnails.forEach((thumbnail, index) => {
-    thumbnail.addEventListener("click", function () {
-      // Remove active class from all thumbnails
-      thumbnails.forEach((t) => t.classList.remove("active"));
-      
-      // Add active class to clicked thumbnail
-      this.classList.add("active");
-      
-      // Update main image
-      const imageSrc = this.getAttribute("data-image");
-      if (imageSrc && mainImage) {
-        mainImage.src = imageSrc;
-        mainImage.style.opacity = "0";
-        setTimeout(() => {
-          mainImage.style.opacity = "1";
-        }, 150);
-        updateLensImage();
-      }
-      
-      // Scroll behavior based on screen size
-      if (thumbnailContainer) {
-        const isMobile = window.innerWidth < 1024;
-        
-        if (isMobile) {
-          // Horizontal scroll for mobile/tablet
-          const isLastThumbnail = index === thumbnails.length - 1;
-          
-          if (isLastThumbnail) {
-            // If clicking the last thumbnail, scroll one thumbnail width to the right
-            const thumbnailWidth = 100; // Fixed width from CSS
-            const gap = 10; // Gap from CSS for mobile
-            const scrollAmount = thumbnailWidth + gap;
-            const currentScrollLeft = thumbnailContainer.scrollLeft;
-            const maxScrollLeft = thumbnailContainer.scrollWidth - thumbnailContainer.clientWidth;
-            
-            // Only scroll if there's more content to show
-            if (currentScrollLeft < maxScrollLeft) {
-              const newScrollLeft = Math.min(currentScrollLeft + scrollAmount, maxScrollLeft);
-              thumbnailContainer.scrollTo({
-                left: newScrollLeft,
-                behavior: 'smooth'
-              });
-            }
-          } else {
-            // For other thumbnails, center the clicked one if possible
-            const thumbnailWidth = 100;
-            const gap = 10;
-            const thumbnailLeft = index * (thumbnailWidth + gap);
-            const containerWidth = thumbnailContainer.clientWidth;
-            const scrollPosition = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
-            
-            thumbnailContainer.scrollTo({
-              left: Math.max(0, scrollPosition),
-              behavior: 'smooth'
-            });
-          }
-        } else {
-          // Vertical scroll for desktop
-          const thumbnailHeight = 100;
-          const gap = 12;
-          const containerHeight = 486; // 4 thumbnails + 50px partial = 400 + 36 + 50
-          const itemHeight = thumbnailHeight + gap;
-          
-          // Calculate scroll position to place clicked thumbnail at the bottom of visible area
-          // We want the clicked thumbnail to be the 4th visible (last fully visible)
-          // So it should be at position: containerHeight - thumbnailHeight - 50px (for partial next)
-          const targetPosition = containerHeight - thumbnailHeight - 50;
-          const thumbnailPosition = index * itemHeight;
-          const scrollPosition = thumbnailPosition - targetPosition;
-          
-          // Ensure scroll position is not negative (for first few thumbnails)
-          const finalScrollPosition = Math.max(0, scrollPosition);
-          
-          thumbnailContainer.scrollTo({
-            top: finalScrollPosition,
-            behavior: 'smooth'
-          });
-        }
-      }
-    });
-  });
   
   // Arrow navigation
   const arrowLeft = document.querySelector(".image-arrow-left");
@@ -598,17 +1296,83 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-  // Load and display recommended products
+  // Fallback images for product page
+  const fallbackImages = [
+    '/img/granula.jpg',
+    '/img/pas1.jpg',
+    '/img/pas2.jpg',
+    '/img/pas3.jpg',
+    '/img/pansion.jpg',
+    '/img/zec.jpg',
+    '/img/galerija/lokal1.jpg',
+    '/img/galerija/lokal2.jpg',
+    '/img/galerija/lokal3.jpg'
+  ];
+
+  // Fetch product images in batch (optimized - no cache)
+  async function fetchProductImagesBatch(productIds) {
+    try {
+      const response = await fetch('/api/product-images/batch', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productIds }),
+        cache: 'no-store'
+      });
+      
+      const data = await response.json();
+      return data.results || {};
+    } catch (error) {
+      console.error('Error fetching batch images:', error);
+      return {};
+    }
+  }
+
+  // Load and display recommended products (optimized)
   async function loadRecommendedProducts() {
     console.log('Loading recommended products...');
+    const container = document.getElementById('recommendedProducts');
+    if (!container) return;
+    
+    // Show skeleton loaders IMMEDIATELY before API call
+    // Start with a reasonable number (will be adjusted when products load)
+    const initialSkeletonCount = 4;
+    container.innerHTML = '';
+    for (let i = 0; i < initialSkeletonCount; i++) {
+      const skeletonCard = document.createElement('div');
+      skeletonCard.className = 'recommended-card recommended-skeleton-card';
+      skeletonCard.innerHTML = `
+        <div class="recommended-image-c">
+          <div class="recommended-image-skeleton"></div>
+        </div>
+        <div class="recommended-content-c">
+          <div class="recommended-skeleton-text"></div>
+          <div class="recommended-skeleton-text short"></div>
+          <div class="recommended-skeleton-price"></div>
+        </div>
+      `;
+      container.appendChild(skeletonCard);
+    }
+    
     try {
-      const response = await fetch('/json/product.json');
-      const products = await response.json();
+      // Use preloaded JSON if available, otherwise fetch
+      let products;
+      if (window.productJsonPromise) {
+        products = await window.productJsonPromise;
+      } else {
+        const response = await fetch('/json/product.json', {
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache' }
+        });
+        products = await response.json();
+      }
       console.log('Products loaded:', products.length);
 
-      // Get current product ID from URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const currentProductId = urlParams.get('id');
+      // Get current product ID from URL or data attribute
+      const productContainer = document.querySelector('.product-container');
+      const currentProductId = productContainer?.getAttribute('data-product-id') || 
+                               new URLSearchParams(window.location.search).get('id');
 
       // Filter out current product and get random products
       const availableProducts = products.filter(product => product.id !== currentProductId);
@@ -619,14 +1383,31 @@ document.addEventListener("DOMContentLoaded", function () {
       const shuffled = [...availableProducts].sort(() => 0.5 - Math.random());
       recommendedProducts.push(...shuffled.slice(0, numProducts));
 
-      // Display recommended products
+      // Remove skeleton cards and display recommended products immediately with skeleton loaders
+      container.innerHTML = '';
       displayRecommendedProducts(recommendedProducts);
+
+      // Fetch images in batch (optimized)
+      const productIds = recommendedProducts.map(p => p.id);
+      const imagesData = await fetchProductImagesBatch(productIds);
+      
+      // Update images when loaded
+      updateRecommendedProductImages(imagesData, recommendedProducts);
 
       // Initialize carousel after products are loaded
       initializeRecommendedCarousel();
 
     } catch (error) {
       console.error('Error loading recommended products:', error);
+      // Hide skeleton cards on error
+      const skeletonCards = container.querySelectorAll('.recommended-skeleton-card');
+      skeletonCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          card.remove();
+        }, 300);
+      });
     }
   }
 
@@ -735,7 +1516,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!container) return;
 
     container.innerHTML = products.map((product, index) => {
-      const image = product.image || '/img/granula.jpg';
+      // Use fallback initially, will be replaced when images load
+      const fallbackIndex = parseInt(product.id) % fallbackImages.length;
+      const initialImage = fallbackImages[fallbackIndex];
+      
       const price = product.salePrice && product.salePrice !== '/' ? product.salePrice : product.price;
       const hasDiscount = product.salePrice && product.salePrice !== '/' && product.percentage && product.percentage !== '/' && product.percentage !== '0%';
       const discountPercentage = hasDiscount ? product.percentage : '';
@@ -744,6 +1528,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return `
         <div class="recommended-card" data-product-id="${product.id}">
           <div class="recommended-image-c">
+            <div class="recommended-image-skeleton"></div>
             ${hasDiscount ? `<div class="recommended-discount-badge">-${discountPercentage}</div>` : ''}
             <div class="recommended-heart-container" data-product-id="${product.id}">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -751,7 +1536,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <path class="recommended-heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0" />
               </svg>
             </div>
-            <img src="${image}" alt="${product.title}" loading="lazy" />
+            <img src="${initialImage}" alt="${product.title}" loading="lazy" data-product-id="${product.id}" />
           </div>
           <div class="recommended-content-c">
             <span class="product-brand">${product.brand || 'Brand'}</span>
@@ -845,6 +1630,56 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 600);
         animateToSaved(this);
       });
+    });
+  }
+
+  // Update recommended product images when loaded from Cloudinary
+  function updateRecommendedProductImages(imagesData, products) {
+    products.forEach((product) => {
+      const card = document.querySelector(`.recommended-card[data-product-id="${product.id}"]`);
+      if (!card) return;
+
+      const productImage = card.querySelector('.recommended-image-c img');
+      const skeleton = card.querySelector('.recommended-image-skeleton');
+      
+      if (!productImage) return;
+
+      const productImages = imagesData[product.id] || [];
+      const fallbackIndex = parseInt(product.id) % fallbackImages.length;
+      const imageUrls = productImages.length > 0 
+        ? productImages.map(img => img.url)
+        : [fallbackImages[fallbackIndex]];
+
+      // Load first image
+      const firstImage = new Image();
+      firstImage.onload = () => {
+        productImage.src = firstImage.src;
+        productImage.classList.add('loaded');
+        // Hide skeleton with animation
+        if (skeleton) {
+          skeleton.style.opacity = '0';
+          skeleton.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            skeleton.classList.add('hidden');
+            skeleton.style.display = 'none';
+          }, 300);
+        }
+      };
+      firstImage.onerror = () => {
+        // Fallback if image fails to load
+        productImage.src = fallbackImages[fallbackIndex];
+        productImage.classList.add('loaded');
+        // Hide skeleton with animation
+        if (skeleton) {
+          skeleton.style.opacity = '0';
+          skeleton.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            skeleton.classList.add('hidden');
+            skeleton.style.display = 'none';
+          }, 300);
+        }
+      };
+      firstImage.src = imageUrls[0];
     });
   }
 

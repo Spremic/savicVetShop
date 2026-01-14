@@ -72,6 +72,26 @@
   box-sizing: border-box;
 }
 
+.main-image-skeleton {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(90deg, #0a0a0a 25%, #1a1a1a 50%, #0a0a0a 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  z-index: 1;
+  background-color: #0a0a0a;
+  border-radius: 20px;
+}
+
+.main-image-skeleton.hidden {
+  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .main-image {
   width: 100%;
   height: 100%;
@@ -81,8 +101,15 @@
   min-height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, opacity 0.3s ease;
   display: block;
+  opacity: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.main-image.loaded {
+  opacity: 1;
 }
 
 .main-image-container:hover .main-image {
@@ -289,7 +316,7 @@
   cursor: pointer;
   border: 2px solid transparent;
   transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 1);
+  background: transparent;
   flex-shrink: 0;
   box-shadow: none !important;
   box-sizing: border-box;
@@ -309,7 +336,14 @@
 
 .thumbnail img {
   position: relative;
-  z-index: 0;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.thumbnail img.loaded {
+  opacity: 1 !important;
+  z-index: 3;
 }
 
 .thumbnail:hover {
@@ -331,18 +365,50 @@
   min-height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
   box-shadow: none !important;
-  background-color: rgba(255, 255, 255, 1);
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgba(0, 0, 0, 1);
+  background-color: transparent;
+  border: none;
   display: block;
+  position: relative;
+  z-index: 3;
 }
 
 .thumbnail:hover img {
   transform: scale(1.05);
   max-width: 100%;
+}
+
+.thumbnail-skeleton {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(90deg, #0a0a0a 25%, #1a1a1a 50%, #0a0a0a 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  z-index: 2;
+  background-color: #0a0a0a;
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.thumbnail-skeleton.hidden {
+  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.thumbnail-skeleton-placeholder {
+  pointer-events: none;
+  cursor: default;
+}
+
+.thumbnail-skeleton-placeholder .thumbnail-skeleton {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 /* Seller Card */
@@ -1312,6 +1378,73 @@
   position: relative;
   overflow: hidden;
   background-color: #0a0a0a;
+  min-height: 300px;
+}
+
+.recommended-image-skeleton {
+  width: 100%;
+  height: 300px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(90deg, #0a0a0a 25%, #1a1a1a 50%, #0a0a0a 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  z-index: 1;
+  background-color: #0a0a0a;
+}
+
+.recommended-image-skeleton.hidden {
+  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Skeleton card for recommended products (shown immediately before API call) */
+.recommended-skeleton-card {
+  display: flex;
+  flex-direction: column;
+  background: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.recommended-skeleton-card .recommended-image-c {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  background: #1a1a1a;
+}
+
+.recommended-skeleton-card .recommended-content-c {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recommended-skeleton-text {
+  height: 16px;
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+  width: 80%;
+}
+
+.recommended-skeleton-text.short {
+  width: 60%;
+}
+
+.recommended-skeleton-price {
+  height: 24px;
+  width: 100px;
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+  margin-top: 5px;
 }
 
 .recommended-discount-badge {
@@ -1335,8 +1468,15 @@
   min-height: 300px;
   max-height: 300px;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, opacity 0.3s ease;
   display: block;
+  opacity: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.recommended-card img.loaded {
+  opacity: 1;
 }
 
 .recommended-card:hover img {
@@ -2798,4 +2938,13 @@ html:has(.product-page) {
 .image-arrow-right {
   right: 15px !important;
   left: auto !important;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }

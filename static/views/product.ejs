@@ -67,36 +67,20 @@
         <div class="product-images reveal-left">
           <div class="images-wrapper">
             <div class="thumbnail-container">
+              <!-- Skeleton loaders will be created dynamically based on number of images from Cloudinary -->
+            </div>
+            
+            <div class="main-image-container">
+              <div class="main-image-skeleton"></div>
               <% 
                 const fallbackImages = [
                   "/img/granula.jpg",
                   "/img/pas1.jpg",
                   "/img/pas2.jpg",
-                  "/img/pas3.jpg",
-                  "/img/pansion.jpg",
-                  "/img/pansionSlika.jpg",
-                  "/img/zec.jpg",
-                  "/img/papagaj.png",
-                  "/img/pasPozadina.jpg",
-                  "/img/pozadinaMacka.jpg",
-                  "/img/galerija/lokal1.jpg",
-                  "/img/galerija/lokal2.jpg",
-                  "/img/galerija/lokal3.jpg",
-                  "/img/galerija/lokal4.jpg",
-                  "/img/galerija/lokal5.jpg",
-                  "/img/galerija/lokal6.jpg"
+                  "/img/pas3.jpg"
                 ];
                 const productImage = product && product.image ? product.image : fallbackImages[0];
-                const imagesToShow = product && product.image ? [product.image, ...fallbackImages.slice(0, 8)] : fallbackImages.slice(0, 9);
               %>
-              <% imagesToShow.forEach((imgSrc, index) => { %>
-                <div class="thumbnail <%= index === 0 ? 'active' : '' %>" data-image="<%= imgSrc %>">
-                  <img src="<%= imgSrc %>" alt="Thumbnail <%= index + 1 %>" loading="lazy" />
-                </div>
-              <% }); %>
-            </div>
-            
-            <div class="main-image-container">
               <img id="mainProductImage" src="<%= productImage %>" alt="<%= product ? product.title : 'Product Image' %>" class="main-image" loading="eager" fetchpriority="high" />
               <button class="image-zoom-btn" aria-label="Zoom image">
                 <span class="material-symbols-outlined">zoom_in</span>

@@ -16,6 +16,26 @@ window.addEventListener('unhandledrejection', function(e) {
 
 // fallbackImages, pickImage, and loadProductsData are defined in clone.js which loads before this file
 
+// Fallback images for custom-page (same as in clone.js)
+const customPageFallbackImages = [
+  "/img/granula.jpg",
+  "/img/pas1.jpg",
+  "/img/pas2.jpg",
+  "/img/pas3.jpg",
+  "/img/pansion.jpg",
+  "/img/pansionSlika.jpg",
+  "/img/zec.jpg",
+  "/img/papagaj.png",
+  "/img/pasPozadina.jpg",
+  "/img/pozadinaMacka.jpg",
+  "/img/galerija/lokal1.jpg",
+  "/img/galerija/lokal2.jpg",
+  "/img/galerija/lokal3.jpg",
+  "/img/galerija/lokal4.jpg",
+  "/img/galerija/lokal5.jpg",
+  "/img/galerija/lokal6.jpg"
+];
+
 function decodeSlug(value) {
   if (!value) return "";
   return decodeURIComponent(value.replace(/-/g, " "));
@@ -133,7 +153,7 @@ function formatPriceForDisplay(product) {
   return `<div class="price-range">${price} $</div>`;
 }
 
-function createProductCard(product) {
+function createProductCard(product, initialImageSrc = null) {
   const card = document.createElement("div");
   card.className = "product-card";
   card.setAttribute("data-category", product.category);
@@ -149,9 +169,13 @@ function createProductCard(product) {
   const productSlug = slugify(product.title);
   const productUrl = `/${productSlug}`;
 
+  // Use initial image or fallback
+  const imageSrc = initialImageSrc || pickImage(product);
+
   card.innerHTML = `
     <div class="product-image">
-      <img src="${pickImage(product)}" alt="${product.title}" loading="lazy" />
+      <div class="product-image-skeleton"></div>
+      <img src="${imageSrc}" alt="${product.title}" loading="lazy" data-product-id="${product.id}" />
       ${badge}
       ${oldPriceOnImage}
       <div class="heart-container" data-product-id="${product.id}">
@@ -802,7 +826,79 @@ document.addEventListener("DOMContentLoaded", async function () {
     updatePagination();
   }
 
-  function renderProducts(page) {
+  // Fetch product images in batch (optimized - no cache)
+  async function fetchProductImagesBatch(productIds) {
+    try {
+      const response = await fetch('/api/product-images/batch', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productIds }),
+        cache: 'no-store'
+      });
+      
+      const data = await response.json();
+      return data.results || {};
+    } catch (error) {
+      console.error('Error fetching batch images:', error);
+      return {};
+    }
+  }
+
+  // Update product images when loaded from Cloudinary
+  function updateProductImages(imagesData) {
+    const allCards = document.querySelectorAll('.product-card');
+    allCards.forEach((card) => {
+      const productId = card.getAttribute('data-product-id');
+      if (!productId) return;
+
+      const productImage = card.querySelector('.product-image img');
+      const skeleton = card.querySelector('.product-image-skeleton');
+      
+      if (!productImage) return;
+
+      const productImages = imagesData[productId] || [];
+      const fallbackIndex = parseInt(productId) % customPageFallbackImages.length;
+      const imageUrls = productImages.length > 0 
+        ? productImages.map(img => img.url)
+        : [customPageFallbackImages[fallbackIndex]];
+
+      // Load first image
+      const firstImage = new Image();
+      firstImage.onload = () => {
+        productImage.src = firstImage.src;
+        productImage.classList.add('loaded');
+        // Hide skeleton with animation
+        if (skeleton) {
+          skeleton.style.opacity = '0';
+          skeleton.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            skeleton.classList.add('hidden');
+            skeleton.style.display = 'none';
+          }, 300);
+        }
+      };
+      firstImage.onerror = () => {
+        // Fallback if image fails to load
+        const fallbackIndex = parseInt(productId) % customPageFallbackImages.length;
+        productImage.src = customPageFallbackImages[fallbackIndex];
+        productImage.classList.add('loaded');
+        // Hide skeleton with animation
+        if (skeleton) {
+          skeleton.style.opacity = '0';
+          skeleton.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            skeleton.classList.add('hidden');
+            skeleton.style.display = 'none';
+          }, 300);
+        }
+      };
+      firstImage.src = imageUrls[0];
+    });
+  }
+
+  async function renderProducts(page) {
     console.log("🎨 RENDER PRODUCTS:", {
       page,
       filteredProductsCount: filteredProducts.length,
@@ -811,13 +907,16 @@ document.addEventListener("DOMContentLoaded", async function () {
       totalPages
     });
     
-    productsGrid.innerHTML = "";
     const start = (page - 1) * itemsPerPage;
     const listToRender = sliderMode
       ? filteredProducts
       : filteredProducts.slice(start, start + itemsPerPage);
 
     console.log("📦 List to render:", listToRender.length, "products");
+
+    // Remove skeleton cards FIRST (they're in HTML, visible immediately)
+    const skeletonCards = productsGrid.querySelectorAll('.product-skeleton-card');
+    skeletonCards.forEach(skeleton => skeleton.remove());
 
     if (!listToRender.length) {
       productsGrid.innerHTML = "<p class='empty-state'>No products found for the selected filter.</p>";
@@ -830,13 +929,24 @@ document.addEventListener("DOMContentLoaded", async function () {
     sliderControls?.classList.toggle("hidden", !sliderMode);
     paginationContainer?.classList.toggle("hidden", sliderMode);
 
+    // Clear grid and render products IMMEDIATELY with skeleton loaders (like index.html)
+    productsGrid.innerHTML = "";
     listToRender.forEach((product) => {
-      const card = createProductCard(product);
+      const fallbackIndex = parseInt(product.id) % customPageFallbackImages.length;
+      const initialImageSrc = customPageFallbackImages[fallbackIndex];
+      const card = createProductCard(product, initialImageSrc);
       productsGrid.appendChild(card);
       console.log("✅ Added product:", product.id, product.title);
     });
     
     console.log("✅ Rendering completed. Added cards:", productsGrid.children.length);
+
+    // Fetch images in batch (optimized)
+    const productIds = listToRender.map(p => p.id);
+    const imagesData = await fetchProductImagesBatch(productIds);
+    
+    // Update images when loaded
+    updateProductImages(imagesData);
   }
 
   function updatePagination() {
