@@ -141,6 +141,10 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="custom-card" data-product-id="${product.id}">
           <div class="image-c">
             <div class="image-skeleton"></div>
+            <div class="image-error" style="display: none;">
+              <span class="material-symbols-outlined">image_not_supported</span>
+              <p>Error loading image</p>
+            </div>
             ${hasDiscount ? `<div class="discount-badge">-${discountPercentage}</div>` : ''}
             <div class="arrow-image-left" style="display: none;">
               <span class="material-symbols-outlined">arrow_back_ios_new</span>
@@ -261,6 +265,16 @@ document.addEventListener("DOMContentLoaded", function () {
       productImage.setAttribute('data-product-images', JSON.stringify(imageUrls));
       productImage.setAttribute('data-current-image-index', '0');
 
+      // Create error fallback element
+      const errorFallback = document.createElement('div');
+      errorFallback.className = 'image-error';
+      errorFallback.style.display = 'none';
+      errorFallback.innerHTML = `
+        <span class="material-symbols-outlined">image_not_supported</span>
+        <p>Error loading image</p>
+      `;
+      imageContainer.appendChild(errorFallback);
+
       // Load first image
       const firstImage = new Image();
       firstImage.onload = () => {
@@ -275,13 +289,11 @@ document.addEventListener("DOMContentLoaded", function () {
             skeleton.style.display = 'none';
           }, 300);
         }
+        // Hide error fallback if it was shown
+        errorFallback.style.display = 'none';
       };
       firstImage.onerror = () => {
-        // Fallback if image fails to load
-        const fallbackIndex = parseInt(product.id) % fallbackImages.length;
-        productImage.src = fallbackImages[fallbackIndex];
-        productImage.classList.add('loaded');
-        // Hide skeleton with animation
+        // Hide skeleton
         if (skeleton) {
           skeleton.style.opacity = '0';
           skeleton.style.transition = 'opacity 0.3s ease';
@@ -290,6 +302,9 @@ document.addEventListener("DOMContentLoaded", function () {
             skeleton.style.display = 'none';
           }, 300);
         }
+        // Hide image and show error fallback
+        productImage.style.display = 'none';
+        errorFallback.style.display = 'flex';
       };
       firstImage.src = imageUrls[0];
 

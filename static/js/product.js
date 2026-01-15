@@ -101,6 +101,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       // Show image with fade in animation
       imgElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
       imgElement.style.opacity = '1';
+      imgElement.style.display = 'block';
       imgElement.classList.add('loaded');
       
       // Hide skeleton with animation
@@ -111,6 +112,17 @@ document.addEventListener("DOMContentLoaded", async function () {
           skeleton.classList.add('hidden');
           skeleton.style.display = 'none';
         }, 300);
+      }
+      
+      // Hide error fallback if it exists
+      if (imgElement.id === 'mainProductImage' || imgElement.classList.contains('main-image')) {
+        const mainImageContainer = imgElement.closest('.main-image-container');
+        if (mainImageContainer) {
+          const errorFallback = mainImageContainer.querySelector('.main-image-error');
+          if (errorFallback) {
+            errorFallback.style.display = 'none';
+          }
+        }
       }
     };
     
@@ -139,6 +151,24 @@ document.addEventListener("DOMContentLoaded", async function () {
             skeleton.remove();
           }
         }, 100);
+      }
+      // Show error fallback for main image
+      if (imgElement.id === 'mainProductImage' || imgElement.classList.contains('main-image')) {
+        const mainImageContainer = imgElement.closest('.main-image-container');
+        if (mainImageContainer) {
+          let errorFallback = mainImageContainer.querySelector('.main-image-error');
+          if (!errorFallback) {
+            errorFallback = document.createElement('div');
+            errorFallback.className = 'main-image-error';
+            errorFallback.innerHTML = `
+              <span class="material-symbols-outlined">image_not_supported</span>
+              <p>Error loading image</p>
+            `;
+            mainImageContainer.appendChild(errorFallback);
+          }
+          errorFallback.style.display = 'flex';
+          imgElement.style.display = 'none';
+        }
       }
     };
     
@@ -1198,6 +1228,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         <div class="recommended-card" data-product-id="${product.id}">
           <div class="recommended-image-c">
             <div class="recommended-image-skeleton"></div>
+            <div class="recommended-image-error" style="display: none;">
+              <span class="material-symbols-outlined">image_not_supported</span>
+              <p>Error loading image</p>
+            </div>
             ${hasDiscount ? `<div class="recommended-discount-badge">-${discountPercentage}</div>` : ''}
             <div class="recommended-heart-container" data-product-id="${product.id}">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -1328,6 +1362,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         skeleton.classList.remove('hidden');
       }
 
+      // Get error fallback element
+      const errorFallback = card.querySelector('.recommended-image-error');
+
       // Load first image
       const firstImage = new Image();
       firstImage.onload = () => {
@@ -1335,6 +1372,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         productImage.classList.add('loaded');
         // Show image with fade in
         productImage.style.opacity = '1';
+        productImage.style.display = 'block';
         productImage.style.transition = 'opacity 0.3s ease';
         // Hide skeleton with animation
         if (skeleton) {
@@ -1345,15 +1383,13 @@ document.addEventListener("DOMContentLoaded", async function () {
             skeleton.style.display = 'none';
           }, 300);
         }
+        // Hide error fallback if it was shown
+        if (errorFallback) {
+          errorFallback.style.display = 'none';
+        }
       };
       firstImage.onerror = () => {
-        // Fallback if image fails to load
-        productImage.src = fallbackImages[fallbackIndex];
-        productImage.classList.add('loaded');
-        // Show image with fade in
-        productImage.style.opacity = '1';
-        productImage.style.transition = 'opacity 0.3s ease';
-        // Hide skeleton with animation
+        // Hide skeleton
         if (skeleton) {
           skeleton.style.opacity = '0';
           skeleton.style.transition = 'opacity 0.3s ease';
@@ -1361,6 +1397,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             skeleton.classList.add('hidden');
             skeleton.style.display = 'none';
           }, 300);
+        }
+        // Hide image and show error fallback
+        productImage.style.display = 'none';
+        if (errorFallback) {
+          errorFallback.style.display = 'flex';
         }
       };
       firstImage.src = imageUrls[0];

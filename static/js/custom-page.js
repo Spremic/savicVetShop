@@ -175,6 +175,10 @@ function createProductCard(product, initialImageSrc = null) {
   card.innerHTML = `
     <div class="product-image">
       <div class="product-image-skeleton"></div>
+      <div class="product-image-error" style="display: none;">
+        <span class="material-symbols-outlined">image_not_supported</span>
+        <p>Error loading image</p>
+      </div>
       <img src="${imageSrc}" alt="${product.title}" loading="lazy" data-product-id="${product.id}" />
       ${badge}
       ${oldPriceOnImage}
@@ -864,6 +868,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         ? productImages.map(img => img.url)
         : [customPageFallbackImages[fallbackIndex]];
 
+      // Get error fallback element
+      const errorFallback = card.querySelector('.product-image-error');
+      const imageContainer = card.querySelector('.product-image');
+
       // Load first image
       const firstImage = new Image();
       firstImage.onload = () => {
@@ -878,13 +886,14 @@ document.addEventListener("DOMContentLoaded", async function () {
             skeleton.style.display = 'none';
           }, 300);
         }
+        // Hide error fallback if it was shown
+        if (errorFallback) {
+          errorFallback.style.display = 'none';
+        }
+        productImage.style.display = 'block';
       };
       firstImage.onerror = () => {
-        // Fallback if image fails to load
-        const fallbackIndex = parseInt(productId) % customPageFallbackImages.length;
-        productImage.src = customPageFallbackImages[fallbackIndex];
-        productImage.classList.add('loaded');
-        // Hide skeleton with animation
+        // Hide skeleton
         if (skeleton) {
           skeleton.style.opacity = '0';
           skeleton.style.transition = 'opacity 0.3s ease';
@@ -892,6 +901,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             skeleton.classList.add('hidden');
             skeleton.style.display = 'none';
           }, 300);
+        }
+        // Hide image and show error fallback
+        productImage.style.display = 'none';
+        if (errorFallback) {
+          errorFallback.style.display = 'flex';
         }
       };
       firstImage.src = imageUrls[0];
@@ -1106,9 +1120,24 @@ document.addEventListener("DOMContentLoaded", async function () {
           imageSrc = categoryProduct ? pickImage(categoryProduct) : "/img/customPageBcg.png";
         }
         const img = item.querySelector(".hero-category-image img");
+        const errorFallback = item.querySelector(".hero-category-image-error");
         if (img) {
-          img.src = imageSrc;
-          img.alt = category;
+          const tempImg = new Image();
+          tempImg.onload = () => {
+            img.src = imageSrc;
+            img.alt = category;
+            img.style.display = 'block';
+            if (errorFallback) {
+              errorFallback.style.display = 'none';
+            }
+          };
+          tempImg.onerror = () => {
+            img.style.display = 'none';
+            if (errorFallback) {
+              errorFallback.style.display = 'flex';
+            }
+          };
+          tempImg.src = imageSrc;
         }
         
         // Update icon
