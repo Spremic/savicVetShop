@@ -99,12 +99,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     imgElement.style.visibility = 'hidden';
     imgElement.style.display = 'block'; // Keep display block so image can load
     
+    // Flag to prevent multiple showImage calls
+    let imageShown = false;
+    
     // Function to show image and hide skeleton
     const showImage = () => {
+      // Prevent multiple calls
+      if (imageShown) return;
+      
       // First ensure image is loaded and ready
       if (!imgElement.complete || imgElement.naturalWidth === 0) {
         return;
       }
+      
+      imageShown = true;
       
       // Show image with fade in animation
       imgElement.style.visibility = 'visible';
@@ -200,10 +208,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
     };
     
-    // CRITICAL: Attach event listeners FIRST before any other operations
-    imgElement.addEventListener('load', handleLoad, { once: true });
-    imgElement.addEventListener('error', handleError, { once: true });
-    
     // Normalize URLs for comparison (remove query params, fragments, etc.)
     const normalizeUrl = (url) => {
       try {
@@ -220,9 +224,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Check if image is already loaded with the target URL (cached)
     if (currentSrc === targetSrc && imgElement.complete && imgElement.naturalWidth > 0) {
       // Image already loaded - show immediately
-      setTimeout(showImage, 0);
+      requestAnimationFrame(() => {
+        showImage();
+      });
       return;
     }
+    
+    // CRITICAL: Attach event listeners FIRST before setting src
+    imgElement.addEventListener('load', handleLoad, { once: true });
+    imgElement.addEventListener('error', handleError, { once: true });
     
     // Set src to trigger loading
     imgElement.src = imageUrl;
@@ -261,6 +271,15 @@ document.addEventListener("DOMContentLoaded", async function () {
           clearInterval(checkInterval);
         } else if (checkCount >= maxChecks) {
           clearInterval(checkInterval);
+          // Final fallback: if image has src and is complete, show it anyway
+          if (imgElement.src && imgElement.complete && imgElement.naturalWidth > 0) {
+            const finalSrc = normalizeUrl(imgElement.src || '');
+            if (finalSrc === targetSrc || finalSrc.includes(targetSrc.split('/').pop())) {
+              requestAnimationFrame(() => {
+                showImage();
+              });
+            }
+          }
         }
       }, 100);
     }, 0);
@@ -420,10 +439,13 @@ document.addEventListener("DOMContentLoaded", async function () {
   
   // Final safety check: ensure all images that are loaded are visible
   // This catches any edge cases where images loaded before JavaScript ran
-  setTimeout(() => {
+  // Run multiple checks to catch all cases
+  const ensureImagesVisible = () => {
     // Check main image - if already loaded, show it with fade-in
     if (mainImage && mainImage.complete && mainImage.naturalWidth > 0 && mainImage.src) {
-      if (!mainImage.classList.contains('loaded')) {
+      const currentOpacity = window.getComputedStyle(mainImage).opacity;
+      if (currentOpacity === '0' || mainImage.style.opacity === '0' || !mainImage.classList.contains('loaded')) {
+        mainImage.style.visibility = 'visible';
         mainImage.style.transition = 'opacity 0.3s ease';
         mainImage.style.opacity = '1';
         mainImage.classList.add('loaded');
@@ -437,21 +459,153 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Check all thumbnail images
     const allThumbnailImages = document.querySelectorAll('.thumbnail img');
     allThumbnailImages.forEach(img => {
-      if (img.complete && img.naturalWidth > 0 && img.src && !img.classList.contains('loaded')) {
-        img.style.transition = 'opacity 0.3s ease';
-        img.style.opacity = '1';
-        img.classList.add('loaded');
-        // Hide skeleton if it exists
-        const thumbnail = img.closest('.thumbnail');
-        if (thumbnail) {
-          const skeleton = thumbnail.querySelector('.thumbnail-skeleton');
-          if (skeleton) {
-            hideSkeleton(skeleton);
+      if (img.complete && img.naturalWidth > 0 && img.src) {
+        const currentOpacity = window.getComputedStyle(img).opacity;
+        if (currentOpacity === '0' || img.style.opacity === '0' || !img.classList.contains('loaded')) {
+          img.style.visibility = 'visible';
+          img.style.transition = 'opacity 0.3s ease';
+          img.style.opacity = '1';
+          img.classList.add('loaded');
+          // Hide skeleton if it exists
+          const thumbnail = img.closest('.thumbnail');
+          if (thumbnail) {
+            const skeleton = thumbnail.querySelector('.thumbnail-skeleton');
+            if (skeleton) {
+              hideSkeleton(skeleton);
+            }
           }
         }
       }
     });
-  }, 50);
+    
+    // Check all recommended product images
+    const allRecommendedImages = document.querySelectorAll('.recommended-card img');
+    allRecommendedImages.forEach(img => {
+      if (img.complete && img.naturalWidth > 0 && img.src) {
+        const currentOpacity = window.getComputedStyle(img).opacity;
+        if (currentOpacity === '0' || img.style.opacity === '0' || !img.classList.contains('loaded')) {
+          img.style.visibility = 'visible';
+          img.style.transition = 'opacity 0.3s ease';
+          img.style.opacity = '1';
+          img.style.display = 'block';
+          img.classList.add('loaded');
+          // Hide skeleton if it exists
+          const card = img.closest('.recommended-card');
+          if (card) {
+            const skeleton = card.querySelector('.recommended-image-skeleton');
+            if (skeleton) {
+              skeleton.style.opacity = '0';
+              skeleton.style.transition = 'opacity 0.3s ease';
+              setTimeout(() => {
+                skeleton.classList.add('hidden');
+                skeleton.style.display = 'none';
+              }, 300);
+            }
+          }
+        }
+      }
+    });
+  };
+  
+  // Run safety check multiple times to catch all edge cases
+  setTimeout(ensureImagesVisible, 50);
+  setTimeout(ensureImagesVisible, 200);
+  setTimeout(ensureImagesVisible, 500);
+  setTimeout(ensureImagesVisible, 1000);
+  
+  // Also run on window load event
+  window.addEventListener('load', ensureImagesVisible);
+  
+  // MutationObserver to watch for images that get loaded but remain hidden
+  // This catches edge cases where images load but opacity stays 0
+  const imageObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'src') {
+        const img = mutation.target;
+        if (img.tagName === 'IMG' && img.complete && img.naturalWidth > 0) {
+          const currentOpacity = window.getComputedStyle(img).opacity;
+          if (currentOpacity === '0' || img.style.opacity === '0') {
+            // Image is loaded but opacity is 0 - fix it
+            img.style.visibility = 'visible';
+            img.style.opacity = '1';
+            img.classList.add('loaded');
+            // Hide skeleton if it exists
+            const thumbnail = img.closest('.thumbnail');
+            if (thumbnail) {
+              const skeleton = thumbnail.querySelector('.thumbnail-skeleton');
+              if (skeleton) {
+                hideSkeleton(skeleton);
+              }
+            }
+            const card = img.closest('.recommended-card');
+            if (card) {
+              const skeleton = card.querySelector('.recommended-image-skeleton');
+              if (skeleton) {
+                skeleton.style.opacity = '0';
+                setTimeout(() => {
+                  skeleton.classList.add('hidden');
+                  skeleton.style.display = 'none';
+                }, 300);
+              }
+            }
+          }
+        }
+      }
+    });
+  });
+  
+  // Observe all images in the product page
+  const allImages = document.querySelectorAll('.product-page img');
+  allImages.forEach(img => {
+    imageObserver.observe(img, { attributes: true, attributeFilter: ['src'] });
+  });
+  
+  // Also observe images added dynamically
+  const containerObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === 1) { // Element node
+          if (node.tagName === 'IMG') {
+            imageObserver.observe(node, { attributes: true, attributeFilter: ['src'] });
+            // Check immediately if already loaded
+            if (node.complete && node.naturalWidth > 0) {
+              const currentOpacity = window.getComputedStyle(node).opacity;
+              if (currentOpacity === '0' || node.style.opacity === '0') {
+                node.style.visibility = 'visible';
+                node.style.opacity = '1';
+                node.classList.add('loaded');
+              }
+            }
+          }
+          // Also check for images inside added nodes
+          const images = node.querySelectorAll && node.querySelectorAll('img');
+          if (images) {
+            images.forEach(img => {
+              imageObserver.observe(img, { attributes: true, attributeFilter: ['src'] });
+              if (img.complete && img.naturalWidth > 0) {
+                const currentOpacity = window.getComputedStyle(img).opacity;
+                if (currentOpacity === '0' || img.style.opacity === '0') {
+                  img.style.visibility = 'visible';
+                  img.style.opacity = '1';
+                  img.classList.add('loaded');
+                }
+              }
+            });
+          }
+        }
+      });
+    });
+  });
+  
+  // Observe product container and recommended products container for dynamically added images
+  const productContainer = document.querySelector('.product-container');
+  const recommendedContainer = document.getElementById('recommendedProducts');
+  if (productContainer) {
+    containerObserver.observe(productContainer, { childList: true, subtree: true });
+  }
+  if (recommendedContainer) {
+    containerObserver.observe(recommendedContainer, { childList: true, subtree: true });
+  }
   
   // Function to setup thumbnail handlers (will be called after images are loaded)
   function setupThumbnailHandlers() {
@@ -1407,10 +1561,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       // Load first image
       const firstImage = new Image();
-      firstImage.onload = () => {
+      let imageShown = false;
+      
+      const showRecommendedImage = () => {
+        if (imageShown) return;
+        imageShown = true;
+        
         productImage.src = firstImage.src;
         productImage.classList.add('loaded');
         // Show image with fade in
+        productImage.style.visibility = 'visible';
         productImage.style.opacity = '1';
         productImage.style.display = 'block';
         productImage.style.transition = 'opacity 0.3s ease';
@@ -1428,6 +1588,24 @@ document.addEventListener("DOMContentLoaded", async function () {
           errorFallback.style.display = 'none';
         }
       };
+      
+      firstImage.onload = () => {
+        // Double check that image is actually loaded
+        if (firstImage.complete && firstImage.naturalWidth > 0) {
+          requestAnimationFrame(() => {
+            showRecommendedImage();
+          });
+        } else {
+          setTimeout(() => {
+            if (firstImage.complete && firstImage.naturalWidth > 0) {
+              requestAnimationFrame(() => {
+                showRecommendedImage();
+              });
+            }
+          }, 50);
+        }
+      };
+      
       firstImage.onerror = () => {
         // Hide skeleton
         if (skeleton) {
@@ -1444,7 +1622,15 @@ document.addEventListener("DOMContentLoaded", async function () {
           errorFallback.style.display = 'flex';
         }
       };
+      
       firstImage.src = imageUrls[0];
+      
+      // Check if image is already cached and loaded
+      if (firstImage.complete && firstImage.naturalWidth > 0) {
+        requestAnimationFrame(() => {
+          showRecommendedImage();
+        });
+      }
 
       // Setup retry button functionality
       if (retryButton && imageUrls.length > 0) {
