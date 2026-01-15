@@ -94,11 +94,20 @@ document.addEventListener("DOMContentLoaded", async function () {
       return;
     }
     
-    // Start with image hidden - skeleton should be visible
+    // Start with image completely hidden (no alt text visible) - skeleton should be visible
+    imgElement.style.opacity = '0';
+    imgElement.style.visibility = 'hidden';
+    imgElement.style.display = 'block'; // Keep display block so image can load
     
     // Function to show image and hide skeleton
     const showImage = () => {
+      // First ensure image is loaded and ready
+      if (!imgElement.complete || imgElement.naturalWidth === 0) {
+        return;
+      }
+      
       // Show image with fade in animation
+      imgElement.style.visibility = 'visible';
       imgElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
       imgElement.style.opacity = '1';
       imgElement.style.display = 'block';
@@ -128,14 +137,19 @@ document.addEventListener("DOMContentLoaded", async function () {
     
     // Handle load event
     const handleLoad = () => {
-      // Double check that image is actually loaded
+      // Double check that image is actually loaded before showing
       if (imgElement.complete && imgElement.naturalWidth > 0) {
-        showImage();
+        // Use requestAnimationFrame to ensure smooth transition
+        requestAnimationFrame(() => {
+          showImage();
+        });
       } else {
         // If not complete yet, wait a bit and check again
         setTimeout(() => {
           if (imgElement.complete && imgElement.naturalWidth > 0) {
-            showImage();
+            requestAnimationFrame(() => {
+              showImage();
+            });
           }
         }, 50);
       }
@@ -143,6 +157,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     
     // Handle error
     const handleError = () => {
+      // For thumbnails, keep skeleton visible (premium design - no error message)
+      const isThumbnail = imgElement.closest('.thumbnail');
+      if (isThumbnail) {
+        // Keep skeleton visible for thumbnails - don't show error
+        if (skeleton) {
+          skeleton.style.opacity = '1';
+          skeleton.style.display = 'block';
+          skeleton.classList.remove('hidden');
+        }
+        imgElement.style.display = 'none';
+        return;
+      }
+      
+      // For main image, hide skeleton and show error
       if (skeleton) {
         skeleton.classList.add('hidden');
         skeleton.style.display = 'none';
@@ -152,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           }
         }, 100);
       }
-      // Show error fallback for main image
+      // Show error fallback for main image only
       if (imgElement.id === 'mainProductImage' || imgElement.classList.contains('main-image')) {
         const mainImageContainer = imgElement.closest('.main-image-container');
         if (mainImageContainer) {
@@ -239,8 +267,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   
   if (productId && mainImage && thumbnailContainer) {
-    // Start with main image hidden and skeleton visible
+    // Start with main image completely hidden (no alt text visible) and skeleton visible
     mainImage.style.opacity = '0';
+    mainImage.style.visibility = 'hidden';
     if (mainImageSkeleton) {
       mainImageSkeleton.style.opacity = '1';
       mainImageSkeleton.style.display = 'block';
@@ -297,14 +326,16 @@ document.addEventListener("DOMContentLoaded", async function () {
           // Create image
           const img = document.createElement('img');
           img.alt = `Thumbnail ${index + 1}`;
-          // Start with image hidden and skeleton visible
+          // Start with image completely hidden (no alt text visible) but display block so it can load
           img.style.opacity = '0';
+          img.style.visibility = 'hidden';
+          img.style.display = 'block';
           // Don't use lazy loading for first few images to ensure they load immediately
           if (index > 2) {
             img.loading = 'lazy';
           }
           
-          // Ensure skeleton is visible initially
+          // Ensure skeleton is visible initially and stays visible until image loads
           skeleton.style.opacity = '1';
           skeleton.style.display = 'block';
           skeleton.classList.remove('hidden');
@@ -1034,25 +1065,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     const container = document.getElementById('recommendedProducts');
     if (!container) return;
     
-    // Show skeleton loaders IMMEDIATELY before API call
-    // Start with a reasonable number (will be adjusted when products load)
-    const initialSkeletonCount = 4;
-    container.innerHTML = '';
-    for (let i = 0; i < initialSkeletonCount; i++) {
-      const skeletonCard = document.createElement('div');
-      skeletonCard.className = 'recommended-card recommended-skeleton-card';
-      skeletonCard.innerHTML = `
-        <div class="recommended-image-c">
-          <div class="recommended-image-skeleton"></div>
-        </div>
-        <div class="recommended-content-c">
-          <div class="recommended-skeleton-text"></div>
-          <div class="recommended-skeleton-text short"></div>
-          <div class="recommended-skeleton-price"></div>
-        </div>
-      `;
-      container.appendChild(skeletonCard);
-    }
+    // Hide initial skeleton loaders that are already in HTML
+    const skeletonCards = container.querySelectorAll('.recommended-skeleton-card');
+    skeletonCards.forEach(card => {
+      card.style.display = 'none';
+      card.classList.add('hidden');
+    });
     
     try {
       // Use preloaded JSON if available, otherwise fetch
@@ -1215,10 +1233,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (!container) return;
 
     container.innerHTML = products.map((product, index) => {
-      // Use fallback initially, will be replaced when images load
-      const fallbackIndex = parseInt(product.id) % fallbackImages.length;
-      const initialImage = fallbackImages[fallbackIndex];
-      
       const price = product.salePrice && product.salePrice !== '/' ? product.salePrice : product.price;
       const hasDiscount = product.salePrice && product.salePrice !== '/' && product.percentage && product.percentage !== '/' && product.percentage !== '0%';
       const discountPercentage = hasDiscount ? product.percentage : '';
@@ -1229,8 +1243,15 @@ document.addEventListener("DOMContentLoaded", async function () {
           <div class="recommended-image-c">
             <div class="recommended-image-skeleton"></div>
             <div class="recommended-image-error" style="display: none;">
-              <span class="material-symbols-outlined">image_not_supported</span>
-              <p>Error loading image</p>
+              <div class="recommended-error-content">
+                <span class="material-symbols-outlined recommended-error-icon">image_not_supported</span>
+                <h4 class="recommended-error-title">Image Failed to Load</h4>
+                <p class="recommended-error-message">We're having trouble loading this image. Please try again later.</p>
+                <button class="recommended-error-retry" onclick="this.closest('.recommended-card').querySelector('img')?.dispatchEvent(new Event('error'))">
+                  <span class="material-symbols-outlined">refresh</span>
+                  Try Again
+                </button>
+              </div>
             </div>
             ${hasDiscount ? `<div class="recommended-discount-badge">-${discountPercentage}</div>` : ''}
             <div class="recommended-heart-container" data-product-id="${product.id}">
@@ -1239,7 +1260,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <path class="recommended-heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0" />
               </svg>
             </div>
-            <img src="${initialImage}" alt="${product.title}" loading="lazy" data-product-id="${product.id}" />
+            <img src="" alt="${product.title}" loading="lazy" data-product-id="${product.id}" style="display: none;" />
           </div>
           <div class="recommended-content-c">
             <span class="product-brand">${product.brand || 'Brand'}</span>
@@ -1349,10 +1370,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (!productImage || !imageContainer) return;
 
       const productImages = imagesData[product.id] || [];
-      const fallbackIndex = parseInt(product.id) % fallbackImages.length;
       const imageUrls = productImages.length > 0 
         ? productImages.map(img => img.url)
-        : [fallbackImages[fallbackIndex]];
+        : [];
 
       // Start with image hidden and skeleton visible
       productImage.style.opacity = '0';
@@ -1364,6 +1384,26 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       // Get error fallback element
       const errorFallback = card.querySelector('.recommended-image-error');
+      const retryButton = errorFallback?.querySelector('.recommended-error-retry');
+
+      // If no images available, show error immediately
+      if (imageUrls.length === 0) {
+        // Hide skeleton
+        if (skeleton) {
+          skeleton.style.opacity = '0';
+          skeleton.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            skeleton.classList.add('hidden');
+            skeleton.style.display = 'none';
+          }, 300);
+        }
+        // Show error fallback
+        if (errorFallback) {
+          errorFallback.style.display = 'flex';
+        }
+        productImage.style.display = 'none';
+        return;
+      }
 
       // Load first image
       const firstImage = new Image();
@@ -1405,6 +1445,49 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
       };
       firstImage.src = imageUrls[0];
+
+      // Setup retry button functionality
+      if (retryButton && imageUrls.length > 0) {
+        retryButton.addEventListener('click', function(e) {
+          e.stopPropagation();
+          // Hide error and show skeleton again
+          if (errorFallback) {
+            errorFallback.style.display = 'none';
+          }
+          if (skeleton) {
+            skeleton.style.opacity = '1';
+            skeleton.style.display = 'block';
+            skeleton.classList.remove('hidden');
+          }
+          // Try loading image again
+          const retryImage = new Image();
+          retryImage.onload = () => {
+            productImage.src = retryImage.src;
+            productImage.style.display = 'block';
+            productImage.style.opacity = '1';
+            if (skeleton) {
+              skeleton.style.opacity = '0';
+              setTimeout(() => {
+                skeleton.classList.add('hidden');
+                skeleton.style.display = 'none';
+              }, 300);
+            }
+          };
+          retryImage.onerror = () => {
+            if (skeleton) {
+              skeleton.style.opacity = '0';
+              setTimeout(() => {
+                skeleton.classList.add('hidden');
+                skeleton.style.display = 'none';
+              }, 300);
+            }
+            if (errorFallback) {
+              errorFallback.style.display = 'flex';
+            }
+          };
+          retryImage.src = imageUrls[0];
+        });
+      }
     });
   }
 

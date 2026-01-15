@@ -153,7 +153,7 @@ function formatPriceForDisplay(product) {
   return `<div class="price-range">${price} $</div>`;
 }
 
-function createProductCard(product, initialImageSrc = null) {
+function createProductCard(product) {
   const card = document.createElement("div");
   card.className = "product-card";
   card.setAttribute("data-category", product.category);
@@ -169,17 +169,21 @@ function createProductCard(product, initialImageSrc = null) {
   const productSlug = slugify(product.title);
   const productUrl = `/${productSlug}`;
 
-  // Use initial image or fallback
-  const imageSrc = initialImageSrc || pickImage(product);
-
   card.innerHTML = `
     <div class="product-image">
       <div class="product-image-skeleton"></div>
       <div class="product-image-error" style="display: none;">
-        <span class="material-symbols-outlined">image_not_supported</span>
-        <p>Error loading image</p>
+        <div class="product-error-content">
+          <span class="material-symbols-outlined product-error-icon">image_not_supported</span>
+          <h4 class="product-error-title">Image Failed to Load</h4>
+          <p class="product-error-message">We're having trouble loading this image. Please try again later.</p>
+          <button class="product-error-retry">
+            <span class="material-symbols-outlined">refresh</span>
+            Try Again
+          </button>
+        </div>
       </div>
-      <img src="${imageSrc}" alt="${product.title}" loading="lazy" data-product-id="${product.id}" />
+      <img src="" alt="${product.title}" loading="lazy" data-product-id="${product.id}" style="display: none;" />
       ${badge}
       ${oldPriceOnImage}
       <div class="heart-container" data-product-id="${product.id}">
@@ -863,20 +867,41 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (!productImage) return;
 
       const productImages = imagesData[productId] || [];
-      const fallbackIndex = parseInt(productId) % customPageFallbackImages.length;
       const imageUrls = productImages.length > 0 
         ? productImages.map(img => img.url)
-        : [customPageFallbackImages[fallbackIndex]];
+        : [];
 
       // Get error fallback element
       const errorFallback = card.querySelector('.product-image-error');
-      const imageContainer = card.querySelector('.product-image');
+      const retryButton = errorFallback?.querySelector('.product-error-retry');
+
+      // If no images available, show error immediately
+      if (imageUrls.length === 0) {
+        // Hide skeleton
+        if (skeleton) {
+          skeleton.style.opacity = '0';
+          skeleton.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            skeleton.classList.add('hidden');
+            skeleton.style.display = 'none';
+          }, 300);
+        }
+        // Show error fallback
+        if (errorFallback) {
+          errorFallback.style.display = 'flex';
+        }
+        productImage.style.display = 'none';
+        return;
+      }
 
       // Load first image
       const firstImage = new Image();
       firstImage.onload = () => {
         productImage.src = firstImage.src;
         productImage.classList.add('loaded');
+        productImage.style.display = 'block';
+        productImage.style.opacity = '1';
+        productImage.style.transition = 'opacity 0.3s ease';
         // Hide skeleton with animation
         if (skeleton) {
           skeleton.style.opacity = '0';
@@ -890,7 +915,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (errorFallback) {
           errorFallback.style.display = 'none';
         }
-        productImage.style.display = 'block';
       };
       firstImage.onerror = () => {
         // Hide skeleton
@@ -909,6 +933,49 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
       };
       firstImage.src = imageUrls[0];
+
+      // Setup retry button functionality
+      if (retryButton && imageUrls.length > 0) {
+        retryButton.addEventListener('click', function(e) {
+          e.stopPropagation();
+          // Hide error and show skeleton again
+          if (errorFallback) {
+            errorFallback.style.display = 'none';
+          }
+          if (skeleton) {
+            skeleton.style.opacity = '1';
+            skeleton.style.display = 'block';
+            skeleton.classList.remove('hidden');
+          }
+          // Try loading image again
+          const retryImage = new Image();
+          retryImage.onload = () => {
+            productImage.src = retryImage.src;
+            productImage.style.display = 'block';
+            productImage.style.opacity = '1';
+            if (skeleton) {
+              skeleton.style.opacity = '0';
+              setTimeout(() => {
+                skeleton.classList.add('hidden');
+                skeleton.style.display = 'none';
+              }, 300);
+            }
+          };
+          retryImage.onerror = () => {
+            if (skeleton) {
+              skeleton.style.opacity = '0';
+              setTimeout(() => {
+                skeleton.classList.add('hidden');
+                skeleton.style.display = 'none';
+              }, 300);
+            }
+            if (errorFallback) {
+              errorFallback.style.display = 'flex';
+            }
+          };
+          retryImage.src = imageUrls[0];
+        });
+      }
     });
   }
 
@@ -946,9 +1013,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Clear grid and render products IMMEDIATELY with skeleton loaders (like index.html)
     productsGrid.innerHTML = "";
     listToRender.forEach((product) => {
-      const fallbackIndex = parseInt(product.id) % customPageFallbackImages.length;
-      const initialImageSrc = customPageFallbackImages[fallbackIndex];
-      const card = createProductCard(product, initialImageSrc);
+      const card = createProductCard(product);
       productsGrid.appendChild(card);
       console.log("✅ Added product:", product.id, product.title);
     });
