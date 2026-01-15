@@ -1337,6 +1337,17 @@ document.addEventListener("DOMContentLoaded", async function () {
     cartOverlay.addEventListener("click", closeAllDrawers);
   }
 
+  // Checkout button - redirect to shopping cart page with payment info
+  const checkoutBtn = document.querySelector(".checkout-btn");
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener("click", function() {
+      // Close cart drawer first
+      closeAllDrawers();
+      // Redirect to shopping cart page
+      window.location.href = "/shopping-cart";
+    });
+  }
+
   // Quantity logic is now handled in renderCartDrawer() with localStorage integration
 
   // Move all to cart button
@@ -1408,4 +1419,63 @@ document.addEventListener("DOMContentLoaded", async function () {
       }, totalAnimationTime);
     });
   }
+
+  // Global Image Error Handler
+  function setupImageErrorHandling() {
+    // Handle images inside .image-container
+    document.querySelectorAll('.image-container img').forEach(img => {
+      if (!img.hasAttribute('data-error-handled')) {
+        img.setAttribute('data-error-handled', 'true');
+        
+        img.addEventListener('error', function() {
+          // Skip if src is empty or just whitespace
+          if (!this.src || !this.src.trim() || this.src === window.location.href || this.src.endsWith('/')) {
+            return;
+          }
+          
+          const container = this.closest('.image-container');
+          if (!container) return;
+          
+          // Hide the broken image
+          this.style.display = 'none';
+          
+          // Check if error message already exists
+          if (container.querySelector('.image-error-message')) return;
+          
+          // Create error message
+          const errorMsg = document.createElement('div');
+          errorMsg.className = 'image-error-message';
+          errorMsg.innerHTML = `
+            <div class="error-icon">
+              <span class="material-symbols-outlined">image_not_supported</span>
+            </div>
+            <div class="error-title">Image Failed to Load</div>
+            <div class="error-text">There was an error loading this image. Please try again later.</div>
+          `;
+          
+          container.appendChild(errorMsg);
+        });
+        
+        // Also handle case where image src is empty initially but might be set later
+        // If src is empty, don't try to load it
+        if (!img.src || img.src.trim() === '' || img.src === window.location.href) {
+          // Don't trigger error for empty src
+          return;
+        }
+      }
+    });
+  }
+
+  // Setup error handling for existing images
+  setupImageErrorHandling();
+
+  // Setup error handling for dynamically added images
+  const observer = new MutationObserver(function(mutations) {
+    setupImageErrorHandling();
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
 });

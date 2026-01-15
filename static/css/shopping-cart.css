@@ -105,6 +105,11 @@
   letter-spacing: 1px;
 }
 
+.empty-cart-message h3 {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
 .order-title {
   display: flex;
   justify-content: space-between;
@@ -503,15 +508,6 @@ textarea ~ .floating-label {
   height: 65px;
 }
 
-.apple-pay-logo {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #f0f0f0;
-  background: linear-gradient(45deg, #000, #333);
-  padding: 4px 12px;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* Payment Forms */
 .payment-form {
@@ -571,18 +567,14 @@ textarea ~ .floating-label {
   }
 }
 
-.paypal-notice,
-.apple-pay-notice,
-.google-pay-notice {
+.paypal-notice {
   color: rgba(255, 255, 255, 0.8);
   font-size: 0.9rem;
   line-height: 1.5;
   text-align: center;
 }
 
-.paypal-notice p,
-.apple-pay-notice p,
-.google-pay-notice p {
+.paypal-notice p {
   margin-bottom: 10px;
 }
 
@@ -936,9 +928,7 @@ textarea ~ .floating-label {
     font-size: 1.1rem;
   }
 
-  .paypal-notice,
-  .apple-pay-notice,
-  .google-pay-notice {
+  .paypal-notice {
     font-size: 0.9rem;
   }
 

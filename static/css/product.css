@@ -1,5 +1,13 @@
 /* Product Page Styles */
 
+/* CRITICAL: All product images must always have opacity 1 - never 0 */
+.product-page img,
+.product-page .main-image,
+.product-page .thumbnail img,
+.product-page .recommended-card img {
+  opacity: 1 !important;
+}
+
 .product-page {
   padding-top: 120px;
   padding-bottom: 80px;
@@ -81,15 +89,17 @@
   background: linear-gradient(90deg, #0a0a0a 25%, #1a1a1a 50%, #0a0a0a 75%);
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s ease-in-out infinite;
-  z-index: 1;
+  z-index: 3;
   background-color: #0a0a0a;
   border-radius: 20px;
+  pointer-events: none;
 }
 
 .main-image-skeleton.hidden {
   display: none !important;
   opacity: 0;
   pointer-events: none;
+  z-index: 0;
 }
 
 .main-image {
@@ -101,13 +111,16 @@
   min-height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.5s ease, opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.5s ease;
   display: block;
   opacity: 0;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 2;
 }
 
+/* When main image is loaded, show it with fade in */
 .main-image.loaded {
   opacity: 1;
 }
@@ -335,15 +348,29 @@
 }
 
 .thumbnail img {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: center;
   z-index: 3;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  box-shadow: none !important;
+  background-color: transparent;
+  border: none;
+  display: block;
 }
 
+/* When image is loaded, show it with fade in */
 .thumbnail img.loaded {
-  opacity: 1 !important;
-  z-index: 3;
+  opacity: 1;
 }
 
 .thumbnail:hover {
@@ -354,24 +381,6 @@
 .thumbnail.active {
   border-color: #009900;
   box-shadow: none !important;
-}
-
-.thumbnail img {
-  width: 100%;
-  max-width: 100%;
-  height: 100%;
-  max-height: 100%;
-  min-width: 100%;
-  min-height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  box-shadow: none !important;
-  background-color: transparent;
-  border: none;
-  display: block;
-  position: relative;
-  z-index: 3;
 }
 
 .thumbnail:hover img {
@@ -394,10 +403,16 @@
   pointer-events: none;
 }
 
-.thumbnail-skeleton.hidden {
+.thumbnail-skeleton.hidden,
+.thumbnail .thumbnail-skeleton.hidden,
+.thumbnail-container .thumbnail-skeleton.hidden {
   display: none !important;
-  opacity: 0;
-  pointer-events: none;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  animation: none !important;
+  background: transparent !important;
 }
 
 .thumbnail-skeleton-placeholder {
@@ -1468,7 +1483,7 @@
   min-height: 300px;
   max-height: 300px;
   object-fit: cover;
-  transition: transform 0.5s ease, opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.5s ease;
   display: block;
   opacity: 0;
   position: relative;
@@ -2947,4 +2962,72 @@ html:has(.product-page) {
   100% {
     background-position: -200% 0;
   }
+}
+
+/* Image Error Handling Styles */
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  background: linear-gradient(135deg, rgba(0, 153, 0, 0.05) 0%, rgba(0, 153, 0, 0.02) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.image-error-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 20px;
+  color: #888;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  z-index: 10;
+  width: 80%;
+  max-width: 300px;
+}
+
+.image-error-message .error-icon {
+  font-size: 2.5rem;
+  color: #009900;
+  margin-bottom: 12px;
+  opacity: 0.7;
+}
+
+.image-error-message .error-text {
+  color: #aaa;
+  font-weight: 400;
+}
+
+.image-error-message .error-title {
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.seller-logo .image-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  min-height: auto;
+}
+
+.seller-logo .image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }

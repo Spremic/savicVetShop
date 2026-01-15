@@ -108,7 +108,7 @@ async function renderCartItems() {
       </div>
     `;
     if (productCount) productCount.textContent = '0';
-    if (orderTotal) orderTotal.textContent = 'Ukupno: $0.00';
+    if (orderTotal) orderTotal.textContent = 'Total: $0.00';
     return;
   }
   
@@ -159,7 +159,7 @@ async function renderCartItems() {
   
   // Update totals - show number of different products, not total quantity
   if (productCount) productCount.textContent = uniqueProducts;
-  if (orderTotal) orderTotal.textContent = `Ukupno: $${total.toFixed(2)}`;
+  if (orderTotal) orderTotal.textContent = `Total: $${total.toFixed(2)}`;
   
   // Attach event handlers
   attachCartEventHandlers();

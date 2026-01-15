@@ -33,22 +33,200 @@ function slugify(value) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-  // Load all product images from Cloudinary (optimized - no cache)
   const productContainer = document.querySelector('.product-container');
   const productId = productContainer?.getAttribute('data-product-id');
   const mainImage = document.getElementById('mainProductImage');
   const mainImageSkeleton = document.querySelector('.main-image-skeleton');
   const thumbnailContainer = document.querySelector('.thumbnail-container');
   
+  // Simple skeleton hide function - aggressive hiding
+  function hideSkeleton(skeleton) {
+    if (!skeleton) {
+      console.log('[SKELETON] hideSkeleton called but skeleton is null/undefined');
+      return;
+    }
+    
+    console.log('[SKELETON] Hiding skeleton:', {
+      element: skeleton,
+      className: skeleton.className,
+      parentNode: skeleton.parentNode,
+      currentDisplay: window.getComputedStyle(skeleton).display,
+      currentOpacity: window.getComputedStyle(skeleton).opacity,
+      currentZIndex: window.getComputedStyle(skeleton).zIndex
+    });
+    
+    // Add hidden class
+    skeleton.classList.add('hidden');
+    
+    // Force hide with inline styles
+    skeleton.style.display = 'none';
+    skeleton.style.opacity = '0';
+    skeleton.style.visibility = 'hidden';
+    skeleton.style.pointerEvents = 'none';
+    skeleton.style.zIndex = '0';
+    skeleton.style.animation = 'none';
+    skeleton.style.background = 'transparent';
+    
+    console.log('[SKELETON] After hiding - styles:', {
+      display: skeleton.style.display,
+      opacity: skeleton.style.opacity,
+      visibility: skeleton.style.visibility,
+      zIndex: skeleton.style.zIndex,
+      hasHiddenClass: skeleton.classList.contains('hidden'),
+      computedDisplay: window.getComputedStyle(skeleton).display,
+      computedOpacity: window.getComputedStyle(skeleton).opacity
+    });
+    
+    // Remove from DOM after a short delay to ensure it's hidden
+    setTimeout(() => {
+      if (skeleton && skeleton.parentNode) {
+        console.log('[SKELETON] Removing skeleton from DOM');
+        skeleton.remove();
+      } else {
+        console.log('[SKELETON] Skeleton already removed or has no parent');
+      }
+    }, 100);
+  }
+  
+  // Simplified and stable image loading function
+  function loadImage(imgElement, imageUrl, skeleton, imageType = 'unknown') {
+    if (!imgElement || !imageUrl) {
+      return;
+    }
+    
+    // Start with image hidden - skeleton should be visible
+    
+    // Function to show image and hide skeleton
+    const showImage = () => {
+      // Show image with fade in animation
+      imgElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      imgElement.style.opacity = '1';
+      imgElement.classList.add('loaded');
+      
+      // Hide skeleton with animation
+      if (skeleton) {
+        skeleton.style.opacity = '0';
+        skeleton.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          skeleton.classList.add('hidden');
+          skeleton.style.display = 'none';
+        }, 300);
+      }
+    };
+    
+    // Handle load event
+    const handleLoad = () => {
+      // Double check that image is actually loaded
+      if (imgElement.complete && imgElement.naturalWidth > 0) {
+        showImage();
+      } else {
+        // If not complete yet, wait a bit and check again
+        setTimeout(() => {
+          if (imgElement.complete && imgElement.naturalWidth > 0) {
+            showImage();
+          }
+        }, 50);
+      }
+    };
+    
+    // Handle error
+    const handleError = () => {
+      if (skeleton) {
+        skeleton.classList.add('hidden');
+        skeleton.style.display = 'none';
+        setTimeout(() => {
+          if (skeleton && skeleton.parentNode) {
+            skeleton.remove();
+          }
+        }, 100);
+      }
+    };
+    
+    // CRITICAL: Attach event listeners FIRST before any other operations
+    imgElement.addEventListener('load', handleLoad, { once: true });
+    imgElement.addEventListener('error', handleError, { once: true });
+    
+    // Normalize URLs for comparison (remove query params, fragments, etc.)
+    const normalizeUrl = (url) => {
+      try {
+        const urlObj = new URL(url, window.location.href);
+        return urlObj.href.split('?')[0].split('#')[0];
+      } catch {
+        return url;
+      }
+    };
+    
+    const currentSrc = normalizeUrl(imgElement.src || '');
+    const targetSrc = normalizeUrl(imageUrl);
+    
+    // Check if image is already loaded with the target URL (cached)
+    if (currentSrc === targetSrc && imgElement.complete && imgElement.naturalWidth > 0) {
+      // Image already loaded - show immediately
+      setTimeout(showImage, 0);
+      return;
+    }
+    
+    // Set src to trigger loading
+    imgElement.src = imageUrl;
+    
+    // Check immediately after setting src (for synchronous cache loads)
+    // Use multiple checks to catch all cases
+    const checkLoaded = () => {
+      if (imgElement.complete && imgElement.naturalWidth > 0) {
+        // Verify it's the right image
+        const newSrc = normalizeUrl(imgElement.src || '');
+        if (newSrc === targetSrc) {
+          handleLoad();
+          return true;
+        }
+      }
+      return false;
+    };
+    
+    // Check immediately
+    if (checkLoaded()) {
+      return;
+    }
+    
+    // Check after a microtask (for very fast cache loads)
+    setTimeout(() => {
+      if (checkLoaded()) {
+        return;
+      }
+      
+      // If still not loaded, set up periodic check as fallback
+      let checkCount = 0;
+      const maxChecks = 50;
+      const checkInterval = setInterval(() => {
+        checkCount++;
+        if (checkLoaded()) {
+          clearInterval(checkInterval);
+        } else if (checkCount >= maxChecks) {
+          clearInterval(checkInterval);
+        }
+      }, 100);
+    }, 0);
+  }
+  
   if (productId && mainImage && thumbnailContainer) {
-    // Show skeleton loaders IMMEDIATELY before API call
-    // Start with a reasonable number (will be adjusted when API responds)
-    const initialSkeletonCount = 5;
-    for (let i = 0; i < initialSkeletonCount; i++) {
-      const skeletonPlaceholder = document.createElement('div');
-      skeletonPlaceholder.className = 'thumbnail thumbnail-skeleton-placeholder';
-      skeletonPlaceholder.innerHTML = '<div class="thumbnail-skeleton"></div>';
-      thumbnailContainer.appendChild(skeletonPlaceholder);
+    // Start with main image hidden and skeleton visible
+    mainImage.style.opacity = '0';
+    if (mainImageSkeleton) {
+      mainImageSkeleton.style.opacity = '1';
+      mainImageSkeleton.style.display = 'block';
+      mainImageSkeleton.classList.remove('hidden');
+    }
+    
+    // Show temporary skeleton loaders for thumbnails immediately
+    const tempSkeletonCount = 4; // Show 4 skeleton loaders initially
+    thumbnailContainer.innerHTML = '';
+    for (let i = 0; i < tempSkeletonCount; i++) {
+      const tempThumbnail = document.createElement('div');
+      tempThumbnail.className = 'thumbnail';
+      const tempSkeleton = document.createElement('div');
+      tempSkeleton.className = 'thumbnail-skeleton';
+      tempThumbnail.appendChild(tempSkeleton);
+      thumbnailContainer.appendChild(tempThumbnail);
     }
     
     try {
@@ -61,586 +239,82 @@ document.addEventListener("DOMContentLoaded", async function () {
       const productImages = data.images || [];
       
       if (productImages.length > 0) {
-        // Adjust skeleton count to match actual number of images
-        const currentSkeletons = thumbnailContainer.querySelectorAll('.thumbnail-skeleton-placeholder');
-        const currentCount = currentSkeletons.length;
-        const targetCount = productImages.length;
+        // Clear container
+        thumbnailContainer.innerHTML = '';
         
-        // Remove excess skeletons if we have more than needed
-        if (currentCount > targetCount) {
-          for (let i = targetCount; i < currentCount; i++) {
-            const skeleton = currentSkeletons[i];
-            skeleton.style.opacity = '0';
-            skeleton.style.transition = 'opacity 0.3s ease';
-            setTimeout(() => {
-              skeleton.remove();
-            }, 300);
-          }
-        }
-        // Add more skeletons if we need more
-        else if (currentCount < targetCount) {
-          for (let i = currentCount; i < targetCount; i++) {
-            const skeletonPlaceholder = document.createElement('div');
-            skeletonPlaceholder.className = 'thumbnail thumbnail-skeleton-placeholder';
-            skeletonPlaceholder.innerHTML = '<div class="thumbnail-skeleton"></div>';
-            thumbnailContainer.appendChild(skeletonPlaceholder);
-          }
+        // Load main image first
+        const firstImage = productImages[0];
+        if (firstImage && firstImage.url) {
+          loadImage(mainImage, firstImage.url, mainImageSkeleton, 'main');
+        } else {
+          // No images available - hide skeleton
+          hideSkeleton(mainImageSkeleton);
         }
         
-        // Now replace skeleton placeholders with actual thumbnails
-        // Wait a tiny bit to ensure skeletons are visible
-        setTimeout(() => {
-          try {
-            const skeletonPlaceholders = thumbnailContainer.querySelectorAll('.thumbnail-skeleton-placeholder');
-            skeletonPlaceholders.forEach((placeholder, index) => {
-              try {
-                if (index < productImages.length && productImages[index] && productImages[index].url) {
-                  // Replace skeleton with actual thumbnail
-                  const newThumbnail = document.createElement('div');
-                  newThumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
-                  newThumbnail.setAttribute('data-image', productImages[index].url);
-                  
-                  // Create skeleton loader
-                  const skeleton = document.createElement('div');
-                  skeleton.className = 'thumbnail-skeleton';
-                  
-                  // Create image element
-                  const thumbImg = document.createElement('img');
-                  thumbImg.alt = `Thumbnail ${index + 1}`;
-                  thumbImg.loading = 'lazy';
-                  
-                  // Function to hide skeleton - ALWAYS hide, no matter what
-                  const hideSkeleton = () => {
-                    try {
-                      // Force hide skeleton immediately
-                      if (skeleton) {
-                        skeleton.style.opacity = '0';
-                        skeleton.style.transition = 'opacity 0.3s ease';
-                        skeleton.classList.add('hidden');
-                        setTimeout(() => {
-                          try {
-                            if (skeleton && skeleton.parentNode) {
-                              skeleton.style.display = 'none';
-                            }
-                          } catch (e) {
-                            console.warn('Error hiding skeleton:', e);
-                          }
-                        }, 300);
-                      }
-                      
-                      // Show image immediately with higher z-index
-                      if (thumbImg && thumbImg.parentNode) {
-                        thumbImg.classList.add('loaded');
-                        thumbImg.style.opacity = '1';
-                        thumbImg.style.zIndex = '3';
-                        thumbImg.style.position = 'relative';
-                      }
-                    } catch (e) {
-                      console.warn('Error in hideSkeleton:', e);
-                      // Force hide even on error
-                      try {
-                        if (skeleton) {
-                          skeleton.style.display = 'none';
-                          skeleton.classList.add('hidden');
-                        }
-                        if (thumbImg && thumbImg.parentNode) {
-                          thumbImg.style.opacity = '1';
-                          thumbImg.classList.add('loaded');
-                        }
-                      } catch (forceError) {
-                        console.warn('Error forcing hide:', forceError);
-                      }
-                    }
-                  };
-                  
-                  // Retry function with timeout
-                  const maxRetries = 2; // Reduced to 2 retries for faster fallback
-                  const loadTimeout = 8000; // 8 seconds timeout
-                  
-                  // Keep reference to current img element
-                  let currentImg = thumbImg;
-                  let timeoutId = null;
-                  let isLoaded = false;
-                  let safetyTimeoutId = null;
-                  
-                  const loadImage = (url, attempt = 1) => {
-                    try {
-                      // Clear any existing timeout
-                      if (timeoutId) {
-                        clearTimeout(timeoutId);
-                        timeoutId = null;
-                      }
-                      
-                      // Validate URL
-                      if (!url || typeof url !== 'string') {
-                        console.warn(`Thumbnail ${index + 1} invalid URL, hiding skeleton`);
-                        isLoaded = true;
-                        hideSkeleton();
-                        return;
-                      }
-                      
-                      // Set timeout to hide skeleton if image takes too long
-                      timeoutId = setTimeout(() => {
-                        try {
-                          if (!isLoaded && currentImg && currentImg.parentNode) {
-                            console.warn(`Thumbnail ${index + 1} load timeout, attempt ${attempt}`);
-                            if (attempt < maxRetries) {
-                              // Retry with cache busting
-                              const baseUrl = url.split('?')[0];
-                              const retryUrl = baseUrl + `?_retry=${attempt}&_t=${Date.now()}`;
-                              loadImage(retryUrl, attempt + 1);
-                            } else {
-                              // Max retries reached, hide skeleton anyway
-                              console.warn(`Thumbnail ${index + 1} failed after ${maxRetries} attempts, hiding skeleton`);
-                              isLoaded = true;
-                              hideSkeleton();
-                            }
-                          }
-                        } catch (e) {
-                          console.warn('Error in timeout handler:', e);
-                          isLoaded = true;
-                          hideSkeleton();
-                        }
-                      }, loadTimeout);
-                      
-                      // Success handler
-                      currentImg.onload = () => {
-                        try {
-                          if (!isLoaded && currentImg && currentImg.parentNode) {
-                            if (timeoutId) {
-                              clearTimeout(timeoutId);
-                              timeoutId = null;
-                            }
-                            if (safetyTimeoutId) {
-                              clearTimeout(safetyTimeoutId);
-                              safetyTimeoutId = null;
-                            }
-                            isLoaded = true;
-                            console.log(`Thumbnail ${index + 1} loaded successfully`);
-                            hideSkeleton();
-                          }
-                        } catch (e) {
-                          console.warn('Error in onload handler:', e);
-                          isLoaded = true;
-                          hideSkeleton();
-                        }
-                      };
-                      
-                      // Check if image is already loaded (cached)
-                      if (currentImg.complete && currentImg.naturalHeight !== 0) {
-                        console.log(`Thumbnail ${index + 1} already loaded (cached)`);
-                        isLoaded = true;
-                        hideSkeleton();
-                      }
-                      
-                      // Error handler with retry
-                      currentImg.onerror = () => {
-                        try {
-                          if (!isLoaded && currentImg && currentImg.parentNode) {
-                            if (timeoutId) {
-                              clearTimeout(timeoutId);
-                              timeoutId = null;
-                            }
-                            console.warn(`Thumbnail ${index + 1} load failed, attempt ${attempt}`);
-                            if (attempt < maxRetries) {
-                              // Retry with cache busting - create new img element
-                              try {
-                                const newImg = document.createElement('img');
-                                newImg.alt = currentImg.alt || `Thumbnail ${index + 1}`;
-                                newImg.loading = currentImg.loading || 'lazy';
-                                
-                                // Replace old img with new one
-                                if (currentImg.parentNode) {
-                                  currentImg.parentNode.replaceChild(newImg, currentImg);
-                                  currentImg = newImg;
-                                }
-                                
-                                const baseUrl = url.split('?')[0];
-                                const retryUrl = baseUrl + `?_retry=${attempt}&_t=${Date.now()}`;
-                                loadImage(retryUrl, attempt + 1);
-                              } catch (e) {
-                                console.warn('Error creating retry image:', e);
-                                isLoaded = true;
-                                hideSkeleton();
-                              }
-                            } else {
-                              // Max retries reached, hide skeleton anyway
-                              console.warn(`Thumbnail ${index + 1} failed after ${maxRetries} attempts, hiding skeleton`);
-                              isLoaded = true;
-                              hideSkeleton();
-                            }
-                          }
-                        } catch (e) {
-                          console.warn('Error in onerror handler:', e);
-                          isLoaded = true;
-                          hideSkeleton();
-                        }
-                      };
-                      
-                      // Set src AFTER event handlers are attached
-                      if (currentImg && currentImg.parentNode) {
-                        currentImg.src = url;
-                      } else {
-                        isLoaded = true;
-                        hideSkeleton();
-                      }
-                    } catch (e) {
-                      console.warn('Error in loadImage:', e);
-                      isLoaded = true;
-                      hideSkeleton();
-                    }
-                  };
-                  
-                  // Start loading
-                  if (productImages[index].url) {
-                    loadImage(productImages[index].url);
-                  } else {
-                    isLoaded = true;
-                    hideSkeleton();
-                  }
-                  
-                  // Safety fallback - hide skeleton after 12 seconds no matter what
-                  safetyTimeoutId = setTimeout(() => {
-                    try {
-                      if (!isLoaded) {
-                        console.warn(`Thumbnail ${index + 1} safety timeout reached, forcing hide`);
-                        isLoaded = true;
-                        hideSkeleton();
-                      }
-                    } catch (e) {
-                      console.warn('Error in safety timeout:', e);
-                    }
-                  }, 12000);
-                  
-                  newThumbnail.appendChild(skeleton);
-                  newThumbnail.appendChild(thumbImg);
-                  
-                  // Replace placeholder with new thumbnail
-                  if (placeholder && placeholder.parentNode) {
-                    placeholder.replaceWith(newThumbnail);
-                  }
-                } else {
-                  // No image for this index, remove placeholder
-                  if (placeholder && placeholder.parentNode) {
-                    placeholder.remove();
-                  }
-                }
-              } catch (e) {
-                console.warn(`Error processing thumbnail ${index}:`, e);
-                // Try to remove placeholder on error
-                try {
-                  if (placeholder && placeholder.parentNode) {
-                    placeholder.remove();
-                  }
-                } catch (removeError) {
-                  console.warn('Error removing placeholder:', removeError);
-                }
-              }
-            });
-          } catch (e) {
-            console.error('Error in thumbnail loading:', e);
-            // Hide all skeleton placeholders on error
-            try {
-              const skeletonPlaceholders = thumbnailContainer.querySelectorAll('.thumbnail-skeleton-placeholder');
-              skeletonPlaceholders.forEach(placeholder => {
-                try {
-                  if (placeholder && placeholder.parentNode) {
-                    placeholder.remove();
-                  }
-                } catch (removeError) {
-                  console.warn('Error removing placeholder:', removeError);
-                }
-              });
-            } catch (cleanupError) {
-              console.warn('Error cleaning up placeholders:', cleanupError);
-            }
+        // Create all thumbnails first (DOM structure)
+        const thumbnailElements = [];
+        productImages.forEach((imageData, index) => {
+          if (!imageData || !imageData.url) return;
+          
+          const thumbnail = document.createElement('div');
+          thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+          thumbnail.setAttribute('data-image', imageData.url);
+          
+          // Create skeleton
+          const skeleton = document.createElement('div');
+          skeleton.className = 'thumbnail-skeleton';
+          
+          // Create image
+          const img = document.createElement('img');
+          img.alt = `Thumbnail ${index + 1}`;
+          // Start with image hidden and skeleton visible
+          img.style.opacity = '0';
+          // Don't use lazy loading for first few images to ensure they load immediately
+          if (index > 2) {
+            img.loading = 'lazy';
           }
-        }, 50);
+          
+          // Ensure skeleton is visible initially
+          skeleton.style.opacity = '1';
+          skeleton.style.display = 'block';
+          skeleton.classList.remove('hidden');
+          
+          thumbnail.appendChild(skeleton);
+          thumbnail.appendChild(img);
+          thumbnailContainer.appendChild(thumbnail);
+          
+          thumbnailElements.push({ img, skeleton, url: imageData.url, index });
+        });
         
-        // Set first image as main image with retry logic
-        const loadMainImage = (url, attempt = 1) => {
-          try {
-            if (!url || typeof url !== 'string') {
-              console.warn('Invalid main image URL, hiding skeleton');
-              if (mainImage && mainImage.parentNode) {
-                mainImage.classList.add('loaded');
-              }
-              if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                mainImageSkeleton.style.opacity = '0';
-                mainImageSkeleton.style.transition = 'opacity 0.3s ease';
-                setTimeout(() => {
-                  try {
-                    if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                      mainImageSkeleton.classList.add('hidden');
-                      mainImageSkeleton.style.display = 'none';
-                    }
-                  } catch (e) {
-                    console.warn('Error hiding main skeleton:', e);
-                  }
-                }, 300);
-              }
-              return;
-            }
-            
-            const maxRetries = 2; // Reduced to 2 retries
-            const loadTimeout = 8000; // 8 seconds timeout
-            let timeoutId = null;
-            let isLoaded = false;
-            
-            const firstImage = new Image();
-            
-            timeoutId = setTimeout(() => {
-              try {
-                if (!isLoaded && mainImage && mainImage.parentNode && !mainImage.classList.contains('loaded')) {
-                  console.warn(`Main image load timeout, attempt ${attempt}`);
-                  if (attempt < maxRetries) {
-                    // Retry with cache busting
-                    const baseUrl = url.split('?')[0];
-                    const retryUrl = baseUrl + `?_retry=${attempt}&_t=${Date.now()}`;
-                    loadMainImage(retryUrl, attempt + 1);
-                  } else {
-                    // Max retries reached, hide skeleton anyway
-                    console.warn(`Main image failed after ${maxRetries} attempts, hiding skeleton`);
-                    isLoaded = true;
-                    if (mainImage && mainImage.parentNode) {
-                      mainImage.classList.add('loaded');
-                    }
-                    if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                      mainImageSkeleton.style.opacity = '0';
-                      mainImageSkeleton.style.transition = 'opacity 0.3s ease';
-                      setTimeout(() => {
-                        try {
-                          if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                            mainImageSkeleton.classList.add('hidden');
-                            mainImageSkeleton.style.display = 'none';
-                          }
-                        } catch (e) {
-                          console.warn('Error hiding main skeleton:', e);
-                        }
-                      }, 300);
-                    }
-                  }
-                }
-              } catch (e) {
-                console.warn('Error in main image timeout:', e);
-                isLoaded = true;
-                if (mainImage && mainImage.parentNode) {
-                  mainImage.classList.add('loaded');
-                }
-                if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                  mainImageSkeleton.style.opacity = '0';
-                  mainImageSkeleton.style.transition = 'opacity 0.3s ease';
-                  setTimeout(() => {
-                    try {
-                      if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                        mainImageSkeleton.classList.add('hidden');
-                        mainImageSkeleton.style.display = 'none';
-                      }
-                    } catch (hideError) {
-                      console.warn('Error hiding main skeleton:', hideError);
-                    }
-                  }, 300);
-                }
-              }
-            }, loadTimeout);
-            
-            firstImage.onload = () => {
-              try {
-                if (!isLoaded && mainImage && mainImage.parentNode) {
-                  if (timeoutId) {
-                    clearTimeout(timeoutId);
-                    timeoutId = null;
-                  }
-                  mainImage.src = firstImage.src;
-                  mainImage.classList.add('loaded');
-                  // Hide skeleton with animation
-                  if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                    mainImageSkeleton.style.opacity = '0';
-                    mainImageSkeleton.style.transition = 'opacity 0.3s ease';
-                    setTimeout(() => {
-                      try {
-                        if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                          mainImageSkeleton.classList.add('hidden');
-                          mainImageSkeleton.style.display = 'none';
-                        }
-                      } catch (e) {
-                        console.warn('Error hiding main skeleton:', e);
-                      }
-                    }, 300);
-                  }
-                  // Update lens if it exists
-                  if (typeof updateLensImage === 'function') {
-                    try {
-                      updateLensImage();
-                    } catch (e) {
-                      console.warn('Error updating lens:', e);
-                    }
-                  }
-                  isLoaded = true;
-                }
-              } catch (e) {
-                console.warn('Error in main image onload:', e);
-                isLoaded = true;
-                if (mainImage && mainImage.parentNode) {
-                  mainImage.classList.add('loaded');
-                }
-                if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                  mainImageSkeleton.style.opacity = '0';
-                  mainImageSkeleton.style.transition = 'opacity 0.3s ease';
-                  setTimeout(() => {
-                    try {
-                      if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                        mainImageSkeleton.classList.add('hidden');
-                        mainImageSkeleton.style.display = 'none';
-                      }
-                    } catch (hideError) {
-                      console.warn('Error hiding main skeleton:', hideError);
-                    }
-                  }, 300);
-                }
-              }
-            };
-            
-            firstImage.onerror = () => {
-              try {
-                if (!isLoaded && mainImage && mainImage.parentNode) {
-                  if (timeoutId) {
-                    clearTimeout(timeoutId);
-                    timeoutId = null;
-                  }
-                  console.warn(`Main image load failed, attempt ${attempt}`);
-                  if (attempt < maxRetries) {
-                    // Retry with cache busting
-                    const baseUrl = url.split('?')[0];
-                    const retryUrl = baseUrl + `?_retry=${attempt}&_t=${Date.now()}`;
-                    loadMainImage(retryUrl, attempt + 1);
-                  } else {
-                    // Max retries reached, hide skeleton anyway
-                    console.warn(`Main image failed after ${maxRetries} attempts, hiding skeleton`);
-                    isLoaded = true;
-                    if (mainImage && mainImage.parentNode) {
-                      mainImage.classList.add('loaded');
-                    }
-                    if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                      mainImageSkeleton.style.opacity = '0';
-                      mainImageSkeleton.style.transition = 'opacity 0.3s ease';
-                      setTimeout(() => {
-                        try {
-                          if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                            mainImageSkeleton.classList.add('hidden');
-                            mainImageSkeleton.style.display = 'none';
-                          }
-                        } catch (e) {
-                          console.warn('Error hiding main skeleton:', e);
-                        }
-                      }, 300);
-                    }
-                  }
-                }
-              } catch (e) {
-                console.warn('Error in main image onerror:', e);
-                isLoaded = true;
-                if (mainImage && mainImage.parentNode) {
-                  mainImage.classList.add('loaded');
-                }
-                if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                  mainImageSkeleton.style.opacity = '0';
-                  mainImageSkeleton.style.transition = 'opacity 0.3s ease';
-                  setTimeout(() => {
-                    try {
-                      if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                        mainImageSkeleton.classList.add('hidden');
-                        mainImageSkeleton.style.display = 'none';
-                      }
-                    } catch (hideError) {
-                      console.warn('Error hiding main skeleton:', hideError);
-                    }
-                  }, 300);
-                }
-              }
-            };
-            
-            // Safety fallback - hide skeleton after 12 seconds no matter what
-            setTimeout(() => {
-              try {
-                if (!isLoaded && mainImage && mainImage.parentNode) {
-                  console.warn('Main image safety timeout reached, forcing hide');
-                  isLoaded = true;
-                  if (mainImage && mainImage.parentNode) {
-                    mainImage.classList.add('loaded');
-                  }
-                  if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                    mainImageSkeleton.style.opacity = '0';
-                    mainImageSkeleton.style.transition = 'opacity 0.3s ease';
-                    setTimeout(() => {
-                      try {
-                        if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                          mainImageSkeleton.classList.add('hidden');
-                          mainImageSkeleton.style.display = 'none';
-                        }
-                      } catch (e) {
-                        console.warn('Error hiding main skeleton:', e);
-                      }
-                    }, 300);
-                  }
-                }
-              } catch (e) {
-                console.warn('Error in main image safety timeout:', e);
-              }
-            }, 12000);
-            
-            firstImage.src = url;
-          } catch (e) {
-            console.error('Error in loadMainImage:', e);
-            // Fallback - hide skeleton anyway
-            if (mainImage && mainImage.parentNode) {
-              mainImage.classList.add('loaded');
-            }
-            if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-              mainImageSkeleton.style.opacity = '0';
-              mainImageSkeleton.style.transition = 'opacity 0.3s ease';
-              setTimeout(() => {
-                try {
-                  if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                    mainImageSkeleton.classList.add('hidden');
-                    mainImageSkeleton.style.display = 'none';
-                  }
-                } catch (hideError) {
-                  console.warn('Error hiding main skeleton:', hideError);
-                }
-              }, 300);
-            }
-          }
-        };
-        
-        try {
-          if (productImages && productImages.length > 0 && productImages[0] && productImages[0].url) {
-            loadMainImage(productImages[0].url);
+        // Now load all images - first one immediately, others with small delay
+        console.log('[PRODUCT IMAGES] Loading', thumbnailElements.length, 'thumbnails');
+        thumbnailElements.forEach(({ img, skeleton, url, index }) => {
+          console.log(`[PRODUCT IMAGES] Processing thumbnail ${index}:`, { url, hasSkeleton: !!skeleton, skeletonClass: skeleton?.className });
+          if (index === 0) {
+            // First thumbnail loads immediately
+            console.log(`[PRODUCT IMAGES] Loading thumbnail ${index} immediately`);
+            loadImage(img, url, skeleton, `thumbnail-${index}`);
           } else {
-            console.warn('No main image URL available, hiding skeleton');
-            if (mainImage && mainImage.parentNode) {
-              mainImage.classList.add('loaded');
-            }
-            if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-              mainImageSkeleton.style.opacity = '0';
-              mainImageSkeleton.style.transition = 'opacity 0.3s ease';
+            // Use requestAnimationFrame to ensure DOM is ready before loading
+            console.log(`[PRODUCT IMAGES] Scheduling thumbnail ${index} load with delay:`, index * 20);
+            requestAnimationFrame(() => {
+              // Small delay between each image to prevent race conditions
               setTimeout(() => {
-                try {
-                  if (mainImageSkeleton && mainImageSkeleton.parentNode) {
-                    mainImageSkeleton.classList.add('hidden');
-                    mainImageSkeleton.style.display = 'none';
-                  }
-                } catch (e) {
-                  console.warn('Error hiding main skeleton:', e);
-                }
-              }, 300);
-            }
+                console.log(`[PRODUCT IMAGES] Loading thumbnail ${index} after delay`);
+                loadImage(img, url, skeleton, `thumbnail-${index}`);
+              }, index * 20);
+            });
           }
-        } catch (e) {
-          console.error('Error starting main image load:', e);
+        });
+        
+        // Update lens if it exists
+        if (typeof updateLensImage === 'function') {
+          setTimeout(() => {
+            updateLensImage();
+          }, 100);
         }
         
-        // Hide arrows if only one image
+        // Show/hide arrows
         const arrowLeft = document.querySelector(".image-arrow-left");
         const arrowRight = document.querySelector(".image-arrow-right");
         if (productImages.length <= 1) {
@@ -651,32 +325,15 @@ document.addEventListener("DOMContentLoaded", async function () {
           if (arrowRight) arrowRight.style.display = '';
         }
         
-        // Update thumbnail click handlers after images are loaded
+        // Setup thumbnail handlers after images have time to initialize
+        // Use longer delay to ensure all images are properly set up
         setTimeout(() => {
           setupThumbnailHandlers();
-        }, 200);
+        }, 300);
       } else {
-        // No images from Cloudinary, show current image
-        // Hide skeleton placeholders
-        const skeletonPlaceholders = thumbnailContainer.querySelectorAll('.thumbnail-skeleton-placeholder');
-        skeletonPlaceholders.forEach(placeholder => {
-          placeholder.style.opacity = '0';
-          placeholder.style.transition = 'opacity 0.3s ease';
-          setTimeout(() => {
-            placeholder.remove();
-          }, 300);
-        });
+        // No images - hide skeleton
+        hideSkeleton(mainImageSkeleton);
         
-        mainImage.classList.add('loaded');
-        if (mainImageSkeleton) {
-          mainImageSkeleton.style.opacity = '0';
-          mainImageSkeleton.style.transition = 'opacity 0.3s ease';
-          setTimeout(() => {
-            mainImageSkeleton.classList.add('hidden');
-            mainImageSkeleton.style.display = 'none';
-          }, 300);
-        }
-        // Hide arrows if no images
         const arrowLeft = document.querySelector(".image-arrow-left");
         const arrowRight = document.querySelector(".image-arrow-right");
         if (arrowLeft) arrowLeft.style.display = 'none';
@@ -684,48 +341,56 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
     } catch (error) {
       console.error('Error loading product images:', error);
-      // Hide skeleton placeholders on error
-      const skeletonPlaceholders = thumbnailContainer.querySelectorAll('.thumbnail-skeleton-placeholder');
-      skeletonPlaceholders.forEach(placeholder => {
-        placeholder.style.opacity = '0';
-        placeholder.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => {
-          placeholder.remove();
-        }, 300);
-      });
-      
-      // Fallback - show current image
+      hideSkeleton(mainImageSkeleton);
       mainImage.classList.add('loaded');
-      if (mainImageSkeleton) {
-        mainImageSkeleton.style.opacity = '0';
-        mainImageSkeleton.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => {
-          mainImageSkeleton.classList.add('hidden');
-          mainImageSkeleton.style.display = 'none';
-        }, 300);
-      }
-      // Hide arrows on error
+      
       const arrowLeft = document.querySelector(".image-arrow-left");
       const arrowRight = document.querySelector(".image-arrow-right");
       if (arrowLeft) arrowLeft.style.display = 'none';
       if (arrowRight) arrowRight.style.display = 'none';
     }
   } else if (mainImage) {
-    // No product ID, show current image and setup existing thumbnails
-    mainImage.classList.add('loaded');
-    if (mainImageSkeleton) {
-      mainImageSkeleton.style.opacity = '0';
-      mainImageSkeleton.style.transition = 'opacity 0.3s ease';
-      setTimeout(() => {
-        mainImageSkeleton.classList.add('hidden');
-        mainImageSkeleton.style.display = 'none';
-      }, 300);
-    }
-    // Setup thumbnail handlers for existing thumbnails
+    // No product ID - hide skeleton
+    hideSkeleton(mainImageSkeleton);
     setTimeout(() => {
       setupThumbnailHandlers();
-    }, 200);
+    }, 100);
   }
+  
+  // Final safety check: ensure all images that are loaded are visible
+  // This catches any edge cases where images loaded before JavaScript ran
+  setTimeout(() => {
+    // Check main image - if already loaded, show it with fade-in
+    if (mainImage && mainImage.complete && mainImage.naturalWidth > 0 && mainImage.src) {
+      if (!mainImage.classList.contains('loaded')) {
+        mainImage.style.transition = 'opacity 0.3s ease';
+        mainImage.style.opacity = '1';
+        mainImage.classList.add('loaded');
+        // Hide skeleton if it exists
+        if (mainImageSkeleton) {
+          hideSkeleton(mainImageSkeleton);
+        }
+      }
+    }
+    
+    // Check all thumbnail images
+    const allThumbnailImages = document.querySelectorAll('.thumbnail img');
+    allThumbnailImages.forEach(img => {
+      if (img.complete && img.naturalWidth > 0 && img.src && !img.classList.contains('loaded')) {
+        img.style.transition = 'opacity 0.3s ease';
+        img.style.opacity = '1';
+        img.classList.add('loaded');
+        // Hide skeleton if it exists
+        const thumbnail = img.closest('.thumbnail');
+        if (thumbnail) {
+          const skeleton = thumbnail.querySelector('.thumbnail-skeleton');
+          if (skeleton) {
+            hideSkeleton(skeleton);
+          }
+        }
+      }
+    });
+  }, 50);
   
   // Function to setup thumbnail handlers (will be called after images are loaded)
   function setupThumbnailHandlers() {
@@ -748,13 +413,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Update main image
         const imageSrc = this.getAttribute("data-image");
         if (imageSrc && mainImage) {
-          mainImage.style.opacity = "0";
+          // Load new image directly without changing opacity
+          // Fade out current image
+          mainImage.style.opacity = '0';
+          
           const newImg = new Image();
           newImg.onload = () => {
             mainImage.src = newImg.src;
-            setTimeout(() => {
-              mainImage.style.opacity = "1";
-            }, 150);
+            // Fade in new image
+            mainImage.style.transition = 'opacity 0.3s ease';
+            mainImage.style.opacity = '1';
+            mainImage.classList.add('loaded');
             updateLensImage();
           };
           newImg.src = imageSrc;
@@ -1640,9 +1309,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (!card) return;
 
       const productImage = card.querySelector('.recommended-image-c img');
+      const imageContainer = card.querySelector('.recommended-image-c');
       const skeleton = card.querySelector('.recommended-image-skeleton');
       
-      if (!productImage) return;
+      if (!productImage || !imageContainer) return;
 
       const productImages = imagesData[product.id] || [];
       const fallbackIndex = parseInt(product.id) % fallbackImages.length;
@@ -1650,11 +1320,22 @@ document.addEventListener("DOMContentLoaded", async function () {
         ? productImages.map(img => img.url)
         : [fallbackImages[fallbackIndex]];
 
+      // Start with image hidden and skeleton visible
+      productImage.style.opacity = '0';
+      if (skeleton) {
+        skeleton.style.opacity = '1';
+        skeleton.style.display = 'block';
+        skeleton.classList.remove('hidden');
+      }
+
       // Load first image
       const firstImage = new Image();
       firstImage.onload = () => {
         productImage.src = firstImage.src;
         productImage.classList.add('loaded');
+        // Show image with fade in
+        productImage.style.opacity = '1';
+        productImage.style.transition = 'opacity 0.3s ease';
         // Hide skeleton with animation
         if (skeleton) {
           skeleton.style.opacity = '0';
@@ -1669,6 +1350,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Fallback if image fails to load
         productImage.src = fallbackImages[fallbackIndex];
         productImage.classList.add('loaded');
+        // Show image with fade in
+        productImage.style.opacity = '1';
+        productImage.style.transition = 'opacity 0.3s ease';
         // Hide skeleton with animation
         if (skeleton) {
           skeleton.style.opacity = '0';
