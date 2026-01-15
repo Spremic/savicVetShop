@@ -1363,13 +1363,48 @@ html.no-scroll {
   background: #0a0a0a;
   border: 1px solid rgba(255, 255, 255, 0.05);
   flex-shrink: 0;
+  position: relative;
 }
 
 .item-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  position: relative;
+  z-index: 0;
+}
+
+.item-img-skeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #1a1a1a 0%,
+    #2a2a2a 50%,
+    #1a1a1a 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  z-index: 1;
+}
+
+.item-img-skeleton.hidden {
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 .cart-item:hover .item-img img {
@@ -1813,7 +1848,32 @@ html.no-scroll {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, opacity 0.3s ease;
+  position: relative;
+  z-index: 0;
+}
+
+.saved-img-skeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #1a1a1a 0%,
+    #2a2a2a 50%,
+    #1a1a1a 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  z-index: 1;
+}
+
+.saved-img-skeleton.hidden {
+  opacity: 0;
+  pointer-events: none;
+  display: none;
 }
 
 .saved-item-card:hover .saved-img img {

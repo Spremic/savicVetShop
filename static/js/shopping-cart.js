@@ -129,15 +129,14 @@ async function renderCartItems() {
     const itemTotal = price * quantity;
     total += itemTotal;
     totalItems += quantity;
-    // Use pickImage from clone.js if available, otherwise use product.image or fallback
-    const imageSrc = (typeof pickImage !== 'undefined' && pickImage) ? pickImage(product) : (product.image || "/img/granula.jpg");
     const productSlug = slugify(product.title);
     
     html += `
       <div class="order-item" data-product-id="${product.id}">
         <button class="remove-item" aria-label="Remove item" data-product-id="${product.id}">×</button>
         <div class="item-image">
-          <img src="${imageSrc}" alt="${product.title}" loading="lazy">
+          <div class="item-image-skeleton"></div>
+          <img src="" alt="${product.title}" loading="lazy" style="opacity: 0; display: block;">
         </div>
         <div class="item-info">
           <h4 class="item-title">${product.title}</h4>
@@ -160,6 +159,11 @@ async function renderCartItems() {
   // Update totals - show number of different products, not total quantity
   if (productCount) productCount.textContent = uniqueProducts;
   if (orderTotal) orderTotal.textContent = `Total: $${total.toFixed(2)}`;
+  
+  // Fetch images from Cloudinary and update
+  if (validCartItems.length > 0) {
+    loadShoppingCartImagesFromCloudinary(validCartItems, productMap);
+  }
   
   // Attach event handlers
   attachCartEventHandlers();
@@ -255,6 +259,86 @@ function initializeShoppingCart() {
     // DOM already loaded
     renderCartItems();
   }
+}
+
+// Fetch product images in batch from Cloudinary
+async function fetchProductImagesBatch(productIds) {
+  try {
+    const response = await fetch('/api/product-images/batch', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ productIds }),
+      cache: 'no-store'
+    });
+    
+    const data = await response.json();
+    return data.results || {};
+  } catch (error) {
+    console.error('Error fetching batch images:', error);
+    return {};
+  }
+}
+
+// Load shopping cart images from Cloudinary
+async function loadShoppingCartImagesFromCloudinary(cartItems, productMap) {
+  const productIds = cartItems.map(item => item.id);
+  const imagesData = await fetchProductImagesBatch(productIds);
+  
+  cartItems.forEach(cartItem => {
+    const product = productMap[cartItem.id];
+    if (!product) return;
+    
+    const orderItem = document.querySelector(`.order-item[data-product-id="${product.id}"]`);
+    if (!orderItem) return;
+    
+    const imgElement = orderItem.querySelector('.item-image img');
+    const skeleton = orderItem.querySelector('.item-image-skeleton');
+    
+    if (!imgElement) return;
+    
+    const productImages = imagesData[product.id] || [];
+    const imageUrl = productImages.length > 0 
+      ? productImages[0].url 
+      : (typeof pickImage !== 'undefined' && pickImage) ? pickImage(product) : (product.image || "/img/granula.jpg");
+    
+    // Load image
+    const imageLoader = new Image();
+    imageLoader.onload = () => {
+      imgElement.src = imageLoader.src;
+      imgElement.style.opacity = '1';
+      imgElement.style.transition = 'opacity 0.3s ease';
+      
+      // Hide skeleton
+      if (skeleton) {
+        skeleton.style.opacity = '0';
+        skeleton.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          skeleton.classList.add('hidden');
+          skeleton.style.display = 'none';
+        }, 300);
+      }
+    };
+    imageLoader.onerror = () => {
+      // Fallback to pickImage if Cloudinary fails
+      const fallbackSrc = (typeof pickImage !== 'undefined' && pickImage) ? pickImage(product) : (product.image || "/img/granula.jpg");
+      imgElement.src = fallbackSrc;
+      imgElement.style.opacity = '1';
+      imgElement.style.transition = 'opacity 0.3s ease';
+      
+      // Hide skeleton
+      if (skeleton) {
+        skeleton.style.opacity = '0';
+        skeleton.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          skeleton.classList.add('hidden');
+          skeleton.style.display = 'none';
+        }, 300);
+      }
+    };
+    imageLoader.src = imageUrl;
+  });
 }
 
 // Start initialization

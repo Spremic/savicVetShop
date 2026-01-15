@@ -251,12 +251,12 @@ async function renderCartDrawer() {
     const itemTotal = price * quantity;
     total += itemTotal;
     totalItems += quantity;
-    const imageSrc = pickImage(product);
     
     html += `
       <div class="cart-item" data-product-id="${product.id}">
         <div class="item-img">
-          <img src="${imageSrc}" alt="${product.title}" loading="lazy">
+          <div class="item-img-skeleton"></div>
+          <img src="" alt="${product.title}" loading="lazy" style="opacity: 0; display: block;">
         </div>
         <div class="item-details">
           <h4>${product.title}</h4>
@@ -280,6 +280,11 @@ async function renderCartDrawer() {
   cartItemsContainer.innerHTML = html;
   if (cartCount) cartCount.textContent = `(${totalItems})`;
   if (totalPriceEl) totalPriceEl.textContent = `$${total.toFixed(2)}`;
+  
+  // Fetch images from Cloudinary and update
+  if (validCartItems.length > 0) {
+    loadCartImagesFromCloudinary(validCartItems, productMap);
+  }
   
   // Attach remove handlers with animation
   cartItemsContainer.querySelectorAll('.remove-item').forEach(btn => {
@@ -507,7 +512,6 @@ async function renderSavedDrawer() {
   
   savedProducts.forEach(product => {
     const price = parseFloat(formatPrice(product));
-    const imageSrc = pickImage(product);
     
     html += `
       <div class="saved-item-card" data-product-id="${product.id}">
@@ -515,7 +519,8 @@ async function renderSavedDrawer() {
           <span class="material-symbols-outlined">close</span>
         </button>
         <div class="saved-img">
-          <img src="${imageSrc}" alt="${product.title}" loading="lazy">
+          <div class="saved-img-skeleton"></div>
+          <img src="" alt="${product.title}" loading="lazy" style="opacity: 0; display: block;">
         </div>
         <div class="saved-details">
           <h4>${product.title}</h4>
@@ -533,6 +538,11 @@ async function renderSavedDrawer() {
   
   savedItemsContainer.innerHTML = html;
   if (savedCount) savedCount.textContent = savedProducts.length;
+  
+  // Fetch images from Cloudinary and update
+  if (savedProducts.length > 0) {
+    loadSavedImagesFromCloudinary(savedProducts);
+  }
   
   // Attach remove handlers with animation
   savedItemsContainer.querySelectorAll('.remove-saved-item').forEach(btn => {
@@ -606,6 +616,141 @@ async function renderSavedDrawer() {
         window.location.href = `/${productSlug}`;
       }
     });
+  });
+}
+
+// Fetch product images in batch from Cloudinary
+async function fetchProductImagesBatch(productIds) {
+  try {
+    const response = await fetch('/api/product-images/batch', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ productIds }),
+      cache: 'no-store'
+    });
+    
+    const data = await response.json();
+    return data.results || {};
+  } catch (error) {
+    console.error('Error fetching batch images:', error);
+    return {};
+  }
+}
+
+// Load cart images from Cloudinary
+async function loadCartImagesFromCloudinary(cartItems, productMap) {
+  const productIds = cartItems.map(item => item.id);
+  const imagesData = await fetchProductImagesBatch(productIds);
+  
+  cartItems.forEach(cartItem => {
+    const product = productMap[cartItem.id];
+    if (!product) return;
+    
+    const cartItemElement = document.querySelector(`.cart-item[data-product-id="${product.id}"]`);
+    if (!cartItemElement) return;
+    
+    const imgElement = cartItemElement.querySelector('.item-img img');
+    const skeleton = cartItemElement.querySelector('.item-img-skeleton');
+    
+    if (!imgElement) return;
+    
+    const productImages = imagesData[product.id] || [];
+    const imageUrl = productImages.length > 0 
+      ? productImages[0].url 
+      : pickImage(product);
+    
+    // Load image
+    const imageLoader = new Image();
+    imageLoader.onload = () => {
+      imgElement.src = imageLoader.src;
+      imgElement.style.opacity = '1';
+      imgElement.style.transition = 'opacity 0.3s ease';
+      
+      // Hide skeleton
+      if (skeleton) {
+        skeleton.style.opacity = '0';
+        skeleton.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          skeleton.classList.add('hidden');
+          skeleton.style.display = 'none';
+        }, 300);
+      }
+    };
+    imageLoader.onerror = () => {
+      // Fallback to pickImage if Cloudinary fails
+      imgElement.src = pickImage(product);
+      imgElement.style.opacity = '1';
+      imgElement.style.transition = 'opacity 0.3s ease';
+      
+      // Hide skeleton
+      if (skeleton) {
+        skeleton.style.opacity = '0';
+        skeleton.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          skeleton.classList.add('hidden');
+          skeleton.style.display = 'none';
+        }, 300);
+      }
+    };
+    imageLoader.src = imageUrl;
+  });
+}
+
+// Load saved images from Cloudinary
+async function loadSavedImagesFromCloudinary(savedProducts) {
+  const productIds = savedProducts.map(p => p.id);
+  const imagesData = await fetchProductImagesBatch(productIds);
+  
+  savedProducts.forEach(product => {
+    const savedCard = document.querySelector(`.saved-item-card[data-product-id="${product.id}"]`);
+    if (!savedCard) return;
+    
+    const imgElement = savedCard.querySelector('.saved-img img');
+    const skeleton = savedCard.querySelector('.saved-img-skeleton');
+    
+    if (!imgElement) return;
+    
+    const productImages = imagesData[product.id] || [];
+    const imageUrl = productImages.length > 0 
+      ? productImages[0].url 
+      : pickImage(product);
+    
+    // Load image
+    const imageLoader = new Image();
+    imageLoader.onload = () => {
+      imgElement.src = imageLoader.src;
+      imgElement.style.opacity = '1';
+      imgElement.style.transition = 'opacity 0.3s ease';
+      
+      // Hide skeleton
+      if (skeleton) {
+        skeleton.style.opacity = '0';
+        skeleton.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          skeleton.classList.add('hidden');
+          skeleton.style.display = 'none';
+        }, 300);
+      }
+    };
+    imageLoader.onerror = () => {
+      // Fallback to pickImage if Cloudinary fails
+      imgElement.src = pickImage(product);
+      imgElement.style.opacity = '1';
+      imgElement.style.transition = 'opacity 0.3s ease';
+      
+      // Hide skeleton
+      if (skeleton) {
+        skeleton.style.opacity = '0';
+        skeleton.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          skeleton.classList.add('hidden');
+          skeleton.style.display = 'none';
+        }, 300);
+      }
+    };
+    imageLoader.src = imageUrl;
   });
 }
 
