@@ -2831,27 +2831,92 @@
   left: 0;
   width: 100%;
   height: 100%;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
   z-index: 3;
-  color: #666;
+  padding: 30px 20px;
+  box-sizing: border-box;
+}
+
+/* Use recommended-error-content styles that already exist in product.css */
+#firstSection .custom-card .image-c .image-error .recommended-error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 20px;
+  max-width: 200px;
+  gap: 12px;
 }
 
-#firstSection .custom-card .image-c .image-error span.material-symbols-outlined {
-  font-size: 2.5rem;
-  color: #444;
-  margin-bottom: 10px;
-  opacity: 0.7;
+#firstSection .custom-card .image-c .image-error .recommended-error-icon {
+  font-size: 3.5rem !important;
+  color: rgba(255, 255, 255, 0.3) !important;
+  margin-bottom: 8px !important;
+  opacity: 1 !important;
 }
 
-#firstSection .custom-card .image-c .image-error p {
-  font-size: 0.85rem;
-  color: #666;
+#firstSection .custom-card .image-c .image-error .recommended-error-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #e0e0e0;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.3;
+}
+
+#firstSection .custom-card .image-c .image-error .recommended-error-message {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
   margin: 0;
   font-weight: 400;
+  line-height: 1.4;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Recommended error retry button styles for index page */
+#firstSection .custom-card .image-c .image-error .recommended-error-retry {
+  margin-top: 8px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, rgba(0, 153, 0, 0.2), rgba(0, 153, 0, 0.1));
+  border: 1px solid rgba(0, 153, 0, 0.4);
+  border-radius: 8px;
+  color: #009900;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  font-family: "Roboto", sans-serif;
+}
+
+#firstSection .custom-card .image-c .image-error .recommended-error-retry:hover {
+  background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), rgba(0, 153, 0, 0.2));
+  border-color: rgba(0, 153, 0, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 153, 0, 0.2);
+}
+
+#firstSection .custom-card .image-c .image-error .recommended-error-retry:active {
+  transform: translateY(0);
+}
+
+#firstSection .custom-card .image-c .image-error .recommended-error-retry .material-symbols-outlined {
+  font-size: 0.875rem !important;
+  width: 16px !important;
+  height: 16px !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #009900 !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
 }

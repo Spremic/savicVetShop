@@ -9,9 +9,9 @@
     "brand": "Royal Canin",
     "code": "1001",
     "price": "40.00",
-    "salePrice": "40.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Package weight (kg):",
@@ -435,9 +435,9 @@
     "brand": "Purina",
     "code": "1014",
     "price": "40.00",
-    "salePrice": "40.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Package weight (kg):",
@@ -497,9 +497,9 @@
     "brand": "Petmate",
     "code": "1016",
     "price": "50.00",
-    "salePrice": "50.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Interior dimensions (cm):",
@@ -561,9 +561,9 @@
     "brand": "Beaphar",
     "code": "1018",
     "price": "10.00",
-    "salePrice": "10.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Volume (ml):",
@@ -977,9 +977,9 @@
     "brand": "Tetra",
     "code": "1031",
     "price": "40.00",
-    "salePrice": "40.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Package weight (g):",
@@ -1265,9 +1265,9 @@
     "brand": "Beaphar",
     "code": "1040",
     "price": "20.00",
-    "salePrice": "20.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Volume (ml):",
@@ -1425,9 +1425,9 @@
     "brand": "Hill's",
     "code": "1045",
     "price": "40.00",
-    "salePrice": "40.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Package weight (kg):",
@@ -1647,9 +1647,9 @@
     "brand": "Litter Robot",
     "code": "1052",
     "price": "80.00",
-    "salePrice": "80.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Litter capacity (l):",
@@ -2095,9 +2095,9 @@
     "brand": "Pet Head",
     "code": "1066",
     "price": "8.00",
-    "salePrice": "8.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Volume (g):",
@@ -2159,9 +2159,9 @@
     "brand": "Savic",
     "code": "1068",
     "price": "80.00",
-    "salePrice": "80.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Dimensions (cm):",
@@ -2319,9 +2319,9 @@
     "brand": "Nina Ottosson",
     "code": "1073",
     "price": "20.00",
-    "salePrice": "20.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Dimensions (cm):",
@@ -2735,9 +2735,9 @@
     "brand": "Tetra",
     "code": "1086",
     "price": "20.00",
-    "salePrice": "20.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Number of pieces:",
@@ -2799,9 +2799,9 @@
     "brand": "Mikki",
     "code": "1088",
     "price": "8.00",
-    "salePrice": "8.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Length (cm):",
@@ -2863,9 +2863,9 @@
     "brand": "Exo Terra",
     "code": "1090",
     "price": "80.00",
-    "salePrice": "80.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Volume (l):",
@@ -2991,9 +2991,9 @@
     "brand": "Prevue Pet Products",
     "code": "1094",
     "price": "80.00",
-    "salePrice": "80.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Dimensions (cm):",
@@ -3183,9 +3183,9 @@
     "brand": "Simple Solution",
     "code": "1100",
     "price": "20.00",
-    "salePrice": "20.00",
-    "savings": "0.00",
-    "percentage": "0%",
+    "salePrice": "/",
+    "savings": "/",
+    "percentage": "/",
     "technicalData": {
       "labels": [
         "Volume (ml):",

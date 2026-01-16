@@ -33,11 +33,19 @@ function slugify(value) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
+  console.log('[PRODUCT] DOMContentLoaded - initializing product page');
   const productContainer = document.querySelector('.product-container');
   const productId = productContainer?.getAttribute('data-product-id');
   const mainImage = document.getElementById('mainProductImage');
   const mainImageSkeleton = document.querySelector('.main-image-skeleton');
   const thumbnailContainer = document.querySelector('.thumbnail-container');
+  
+  console.log('[PRODUCT] Initial state:', {
+    productId: productId,
+    hasMainImage: !!mainImage,
+    hasSkeleton: !!mainImageSkeleton,
+    hasThumbnailContainer: !!thumbnailContainer
+  });
   
   // Simple skeleton hide function - aggressive hiding
   function hideSkeleton(skeleton) {
@@ -90,7 +98,58 @@ document.addEventListener("DOMContentLoaded", async function () {
   
   // Simplified and stable image loading function
   function loadImage(imgElement, imageUrl, skeleton, imageType = 'unknown') {
-    if (!imgElement || !imageUrl) {
+    if (!imgElement || !imageUrl || imageUrl.trim() === '') {
+      // If no valid URL, show error immediately
+      if (skeleton) {
+        skeleton.classList.add('hidden');
+        skeleton.style.display = 'none';
+        setTimeout(() => {
+          if (skeleton && skeleton.parentNode) {
+            skeleton.remove();
+          }
+        }, 100);
+      }
+      // Show error for main image
+      if (imgElement.id === 'mainProductImage' || imgElement.classList.contains('main-image')) {
+        const mainImageContainer = imgElement.closest('.main-image-container');
+        if (mainImageContainer) {
+          let errorFallback = mainImageContainer.querySelector('.main-image-error');
+          if (!errorFallback) {
+            errorFallback = document.createElement('div');
+            errorFallback.className = 'main-image-error';
+            errorFallback.innerHTML = `
+              <div class="recommended-error-content">
+                <span class="material-symbols-outlined recommended-error-icon">image_not_supported</span>
+                <h4 class="recommended-error-title">Image Failed to Load</h4>
+                <p class="recommended-error-message">We're having trouble loading this image. Please try again later.</p>
+                <button class="recommended-error-retry">
+                  <span class="material-symbols-outlined">refresh</span>
+                  Try Again
+                </button>
+              </div>
+            `;
+            mainImageContainer.appendChild(errorFallback);
+          }
+          errorFallback.style.display = 'flex';
+        }
+        imgElement.style.display = 'none';
+      }
+      // Show error for thumbnails
+      const isThumbnail = imgElement.closest('.thumbnail');
+      if (isThumbnail) {
+        const thumbnail = imgElement.closest('.thumbnail');
+        let thumbnailError = thumbnail.querySelector('.thumbnail-image-error');
+        if (!thumbnailError) {
+          thumbnailError = document.createElement('div');
+          thumbnailError.className = 'thumbnail-image-error';
+          thumbnailError.innerHTML = `
+            <span class="material-symbols-outlined">image_not_supported</span>
+          `;
+          thumbnail.appendChild(thumbnailError);
+        }
+        thumbnailError.style.display = 'flex';
+        imgElement.style.display = 'none';
+      }
       return;
     }
     
@@ -101,6 +160,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     
     // Flag to prevent multiple showImage calls
     let imageShown = false;
+    let timeoutId = null; // Store timeout ID for cleanup
     
     // Function to show image and hide skeleton
     const showImage = () => {
@@ -145,6 +205,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     
     // Handle load event
     const handleLoad = () => {
+      // Clear timeout if image loaded successfully
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
       // Double check that image is actually loaded before showing
       if (imgElement.complete && imgElement.naturalWidth > 0) {
         // Use requestAnimationFrame to ensure smooth transition
@@ -165,15 +230,36 @@ document.addEventListener("DOMContentLoaded", async function () {
     
     // Handle error
     const handleError = () => {
-      // For thumbnails, keep skeleton visible (premium design - no error message)
+      // Clear timeout if error occurred
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+      // For thumbnails, show error message like Recommended Products
       const isThumbnail = imgElement.closest('.thumbnail');
       if (isThumbnail) {
-        // Keep skeleton visible for thumbnails - don't show error
+        const thumbnail = imgElement.closest('.thumbnail');
+        // Hide skeleton
         if (skeleton) {
-          skeleton.style.opacity = '1';
-          skeleton.style.display = 'block';
-          skeleton.classList.remove('hidden');
+          skeleton.classList.add('hidden');
+          skeleton.style.display = 'none';
+          setTimeout(() => {
+            if (skeleton && skeleton.parentNode) {
+              skeleton.remove();
+            }
+          }, 100);
         }
+        // Show error fallback for thumbnails - simple icon only
+        let thumbnailError = thumbnail.querySelector('.thumbnail-image-error');
+        if (!thumbnailError) {
+          thumbnailError = document.createElement('div');
+          thumbnailError.className = 'thumbnail-image-error';
+          thumbnailError.innerHTML = `
+            <span class="material-symbols-outlined">image_not_supported</span>
+          `;
+          thumbnail.appendChild(thumbnailError);
+        }
+        thumbnailError.style.display = 'flex';
         imgElement.style.display = 'none';
         return;
       }
@@ -188,19 +274,131 @@ document.addEventListener("DOMContentLoaded", async function () {
           }
         }, 100);
       }
-      // Show error fallback for main image only
+      // Show error fallback for main image
       if (imgElement.id === 'mainProductImage' || imgElement.classList.contains('main-image')) {
         const mainImageContainer = imgElement.closest('.main-image-container');
         if (mainImageContainer) {
           let errorFallback = mainImageContainer.querySelector('.main-image-error');
+          const currentImageUrl = imgElement.src || imageUrl || '';
           if (!errorFallback) {
             errorFallback = document.createElement('div');
             errorFallback.className = 'main-image-error';
+            errorFallback.setAttribute('data-image-url', currentImageUrl);
             errorFallback.innerHTML = `
-              <span class="material-symbols-outlined">image_not_supported</span>
-              <p>Error loading image</p>
+              <div class="recommended-error-content">
+                <span class="material-symbols-outlined recommended-error-icon">image_not_supported</span>
+                <h4 class="recommended-error-title">Image Failed to Load</h4>
+                <p class="recommended-error-message">We're having trouble loading this image. Please try again later.</p>
+                <button class="recommended-error-retry" data-image-url="${currentImageUrl}">
+                  <span class="material-symbols-outlined">refresh</span>
+                  Try Again
+                </button>
+              </div>
             `;
             mainImageContainer.appendChild(errorFallback);
+            
+            // Setup retry button for main image
+            const retryBtn = errorFallback.querySelector('.recommended-error-retry');
+            if (retryBtn && currentImageUrl) {
+              retryBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // Hide error and show skeleton again
+                errorFallback.style.display = 'none';
+                const mainImageSkeleton = mainImageContainer.querySelector('.main-image-skeleton');
+                if (mainImageSkeleton) {
+                  mainImageSkeleton.style.opacity = '1';
+                  mainImageSkeleton.style.display = 'block';
+                  mainImageSkeleton.classList.remove('hidden');
+                }
+                
+                // Try loading image again
+                imgElement.style.opacity = '0';
+                imgElement.style.visibility = 'hidden';
+                imgElement.style.display = 'block';
+                
+                const retryImage = new Image();
+                retryImage.onload = () => {
+                  imgElement.src = retryImage.src;
+                  imgElement.style.visibility = 'visible';
+                  imgElement.style.opacity = '1';
+                  imgElement.classList.add('loaded');
+                  if (mainImageSkeleton) {
+                    mainImageSkeleton.style.opacity = '0';
+                    setTimeout(() => {
+                      mainImageSkeleton.classList.add('hidden');
+                      mainImageSkeleton.style.display = 'none';
+                    }, 300);
+                  }
+                };
+                retryImage.onerror = () => {
+                  if (mainImageSkeleton) {
+                    mainImageSkeleton.style.opacity = '0';
+                    setTimeout(() => {
+                      mainImageSkeleton.classList.add('hidden');
+                      mainImageSkeleton.style.display = 'none';
+                    }, 300);
+                  }
+                  errorFallback.style.display = 'flex';
+                };
+                retryImage.src = currentImageUrl;
+              });
+            }
+          } else {
+            // Update existing error fallback with current image URL
+            errorFallback.setAttribute('data-image-url', currentImageUrl);
+            const retryBtn = errorFallback.querySelector('.recommended-error-retry');
+            if (retryBtn) {
+              retryBtn.setAttribute('data-image-url', currentImageUrl);
+              // Remove any existing event listeners by cloning the button
+              const newRetryBtn = retryBtn.cloneNode(true);
+              retryBtn.parentNode.replaceChild(newRetryBtn, retryBtn);
+              
+              // Setup retry button for existing error fallback
+              if (currentImageUrl) {
+                newRetryBtn.addEventListener('click', function(e) {
+                  e.stopPropagation();
+                  // Hide error and show skeleton again
+                  errorFallback.style.display = 'none';
+                  const mainImageSkeleton = mainImageContainer.querySelector('.main-image-skeleton');
+                  if (mainImageSkeleton) {
+                    mainImageSkeleton.style.opacity = '1';
+                    mainImageSkeleton.style.display = 'block';
+                    mainImageSkeleton.classList.remove('hidden');
+                  }
+                  
+                  // Try loading image again
+                  imgElement.style.opacity = '0';
+                  imgElement.style.visibility = 'hidden';
+                  imgElement.style.display = 'block';
+                  
+                  const retryImage = new Image();
+                  retryImage.onload = () => {
+                    imgElement.src = retryImage.src;
+                    imgElement.style.visibility = 'visible';
+                    imgElement.style.opacity = '1';
+                    imgElement.classList.add('loaded');
+                    if (mainImageSkeleton) {
+                      mainImageSkeleton.style.opacity = '0';
+                      setTimeout(() => {
+                        mainImageSkeleton.classList.add('hidden');
+                        mainImageSkeleton.style.display = 'none';
+                      }, 300);
+                    }
+                  };
+                  retryImage.onerror = () => {
+                    if (mainImageSkeleton) {
+                      mainImageSkeleton.style.opacity = '0';
+                      setTimeout(() => {
+                        mainImageSkeleton.classList.add('hidden');
+                        mainImageSkeleton.style.display = 'none';
+                      }, 300);
+                    }
+                    errorFallback.style.display = 'flex';
+                  };
+                  retryImage.src = currentImageUrl;
+                });
+              }
+            }
           }
           errorFallback.style.display = 'flex';
           imgElement.style.display = 'none';
@@ -234,8 +432,21 @@ document.addEventListener("DOMContentLoaded", async function () {
     imgElement.addEventListener('load', handleLoad, { once: true });
     imgElement.addEventListener('error', handleError, { once: true });
     
+    // Set up timeout to show error if image doesn't load within 5 seconds
+    const timeoutDuration = 5000; // 5 seconds
+    const handleTimeout = () => {
+      // Remove event listeners to prevent them from firing after timeout
+      imgElement.removeEventListener('load', handleLoad);
+      imgElement.removeEventListener('error', handleError);
+      // Call handleError to show error message
+      handleError();
+    };
+    
     // Set src to trigger loading
     imgElement.src = imageUrl;
+    
+    // Start timeout
+    timeoutId = setTimeout(handleTimeout, timeoutDuration);
     
     // Check immediately after setting src (for synchronous cache loads)
     // Use multiple checks to catch all cases
@@ -286,6 +497,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   
   if (productId && mainImage && thumbnailContainer) {
+    console.log('[PRODUCT] Starting to load product images for productId:', productId);
     // Start with main image completely hidden (no alt text visible) and skeleton visible
     mainImage.style.opacity = '0';
     mainImage.style.visibility = 'hidden';
@@ -309,12 +521,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     
     try {
       // Fetch images from API
+      console.log('[PRODUCT] Fetching images from API:', `/api/product-images/${productId}`);
       const response = await fetch(`/api/product-images/${productId}`, {
         cache: 'no-store',
         headers: { 'Cache-Control': 'no-cache' }
       });
+      
+      if (!response.ok) {
+        throw new Error(`API response not OK: ${response.status} ${response.statusText}`);
+      }
+      
       const data = await response.json();
+      console.log('[PRODUCT] API response:', data);
       const productImages = data.images || [];
+      console.log('[PRODUCT] Found', productImages.length, 'images');
       
       if (productImages.length > 0) {
         // Clear container
@@ -331,8 +551,24 @@ document.addEventListener("DOMContentLoaded", async function () {
         
         // Create all thumbnails first (DOM structure)
         const thumbnailElements = [];
-        productImages.forEach((imageData, index) => {
-          if (!imageData || !imageData.url) return;
+        const validImages = productImages.filter(img => img && img.url && img.url.trim() !== '');
+        
+        // If no valid images, show 4 error messages for thumbnails
+        if (validImages.length === 0) {
+          thumbnailContainer.innerHTML = '';
+          for (let i = 0; i < 4; i++) {
+            const errorThumbnail = document.createElement('div');
+            errorThumbnail.className = 'thumbnail';
+            errorThumbnail.innerHTML = `
+              <div class="thumbnail-image-error">
+                <span class="material-symbols-outlined">image_not_supported</span>
+              </div>
+            `;
+            thumbnailContainer.appendChild(errorThumbnail);
+          }
+        } else {
+          productImages.forEach((imageData, index) => {
+            if (!imageData || !imageData.url || imageData.url.trim() === '') return;
           
           const thumbnail = document.createElement('div');
           thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
@@ -364,11 +600,13 @@ document.addEventListener("DOMContentLoaded", async function () {
           thumbnailContainer.appendChild(thumbnail);
           
           thumbnailElements.push({ img, skeleton, url: imageData.url, index });
-        });
+          });
+        }
         
         // Now load all images - first one immediately, others with small delay
-        console.log('[PRODUCT IMAGES] Loading', thumbnailElements.length, 'thumbnails');
-        thumbnailElements.forEach(({ img, skeleton, url, index }) => {
+        if (thumbnailElements.length > 0) {
+          console.log('[PRODUCT IMAGES] Loading', thumbnailElements.length, 'thumbnails');
+          thumbnailElements.forEach(({ img, skeleton, url, index }) => {
           console.log(`[PRODUCT IMAGES] Processing thumbnail ${index}:`, { url, hasSkeleton: !!skeleton, skeletonClass: skeleton?.className });
           if (index === 0) {
             // First thumbnail loads immediately
@@ -385,7 +623,47 @@ document.addEventListener("DOMContentLoaded", async function () {
               }, index * 20);
             });
           }
-        });
+          });
+          
+          // Safety check: after 6 seconds, show errors for any thumbnails that still have skeletons
+          setTimeout(() => {
+            thumbnailElements.forEach(({ img, skeleton, url, index }) => {
+              const thumbnail = img.closest('.thumbnail');
+              if (thumbnail) {
+                // Check if skeleton is still visible (meaning image didn't load)
+                const stillHasSkeleton = thumbnail.querySelector('.thumbnail-skeleton:not(.hidden)');
+                const imgNotLoaded = !img.classList.contains('loaded') && (!img.complete || img.naturalWidth === 0);
+                const noErrorShown = !thumbnail.querySelector('.thumbnail-image-error');
+                
+                if (stillHasSkeleton || (imgNotLoaded && noErrorShown)) {
+                  console.log(`[PRODUCT IMAGES] Thumbnail ${index} timeout - showing error`);
+                  // Hide skeleton
+                  if (skeleton) {
+                    skeleton.classList.add('hidden');
+                    skeleton.style.display = 'none';
+                    setTimeout(() => {
+                      if (skeleton && skeleton.parentNode) {
+                        skeleton.remove();
+                      }
+                    }, 100);
+                  }
+                  // Show error
+                  let thumbnailError = thumbnail.querySelector('.thumbnail-image-error');
+                  if (!thumbnailError) {
+                    thumbnailError = document.createElement('div');
+                    thumbnailError.className = 'thumbnail-image-error recommended-image-error';
+                    thumbnailError.innerHTML = `
+                      <span class="material-symbols-outlined">image_not_supported</span>
+                    `;
+                    thumbnail.appendChild(thumbnailError);
+                  }
+                  thumbnailError.style.display = 'flex';
+                  img.style.display = 'none';
+                }
+              }
+            });
+          }, 6000); // 6 seconds safety timeout
+        }
         
         // Update lens if it exists
         if (typeof updateLensImage === 'function') {
@@ -411,8 +689,47 @@ document.addEventListener("DOMContentLoaded", async function () {
           setupThumbnailHandlers();
         }, 300);
       } else {
-        // No images - hide skeleton
-        hideSkeleton(mainImageSkeleton);
+        // No images - show error messages for main and 4 thumbnails
+        console.log('[PRODUCT] No images found, showing error');
+        if (mainImageSkeleton) {
+          hideSkeleton(mainImageSkeleton);
+        }
+        if (mainImage) {
+          mainImage.style.display = 'none';
+          const mainImageContainer = mainImage.closest('.main-image-container');
+          if (mainImageContainer) {
+            let errorFallback = mainImageContainer.querySelector('.main-image-error');
+            if (!errorFallback) {
+              errorFallback = document.createElement('div');
+              errorFallback.className = 'main-image-error';
+              errorFallback.innerHTML = `
+                <div class="recommended-error-content">
+                  <span class="material-symbols-outlined recommended-error-icon">image_not_supported</span>
+                  <h4 class="recommended-error-title">Image Failed to Load</h4>
+                  <p class="recommended-error-message">We're having trouble loading this image. Please try again later.</p>
+                  <button class="recommended-error-retry compact" aria-label="Try again">
+                    <span class="material-symbols-outlined">refresh</span>
+                  </button>
+                </div>
+              `;
+              mainImageContainer.appendChild(errorFallback);
+            }
+            errorFallback.style.display = 'flex';
+          }
+        }
+        
+        // Clear thumbnails and show 4 error messages
+        thumbnailContainer.innerHTML = '';
+        for (let i = 0; i < 4; i++) {
+          const errorThumbnail = document.createElement('div');
+          errorThumbnail.className = 'thumbnail';
+          errorThumbnail.innerHTML = `
+            <div class="thumbnail-image-error">
+              <span class="material-symbols-outlined">image_not_supported</span>
+            </div>
+          `;
+          thumbnailContainer.appendChild(errorThumbnail);
+        }
         
         const arrowLeft = document.querySelector(".image-arrow-left");
         const arrowRight = document.querySelector(".image-arrow-right");
@@ -420,18 +737,87 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (arrowRight) arrowRight.style.display = 'none';
       }
     } catch (error) {
-      console.error('Error loading product images:', error);
-      hideSkeleton(mainImageSkeleton);
-      mainImage.classList.add('loaded');
+      console.error('[PRODUCT] Error loading product images:', error);
+      // Show error message on error instead of fallback image
+      if (mainImageSkeleton) {
+        hideSkeleton(mainImageSkeleton);
+      }
+      if (mainImage) {
+        mainImage.style.display = 'none';
+        const mainImageContainer = mainImage.closest('.main-image-container');
+        if (mainImageContainer) {
+          let errorFallback = mainImageContainer.querySelector('.main-image-error');
+          if (!errorFallback) {
+            errorFallback = document.createElement('div');
+            errorFallback.className = 'main-image-error';
+            errorFallback.innerHTML = `
+              <div class="recommended-error-content">
+                <span class="material-symbols-outlined recommended-error-icon">image_not_supported</span>
+                <h4 class="recommended-error-title">Image Failed to Load</h4>
+                <p class="recommended-error-message">We're having trouble loading this image. Please try again later.</p>
+                <button class="recommended-error-retry">
+                  <span class="material-symbols-outlined">refresh</span>
+                  Try Again
+                </button>
+              </div>
+            `;
+            mainImageContainer.appendChild(errorFallback);
+          }
+          errorFallback.style.display = 'flex';
+        }
+      }
+      
+      // Clear thumbnails and show 4 error messages
+      thumbnailContainer.innerHTML = '';
+      for (let i = 0; i < 4; i++) {
+        const errorThumbnail = document.createElement('div');
+        errorThumbnail.className = 'thumbnail';
+        errorThumbnail.innerHTML = `
+          <div class="thumbnail-image-error">
+            <span class="material-symbols-outlined">image_not_supported</span>
+          </div>
+        `;
+        thumbnailContainer.appendChild(errorThumbnail);
+      }
       
       const arrowLeft = document.querySelector(".image-arrow-left");
       const arrowRight = document.querySelector(".image-arrow-right");
       if (arrowLeft) arrowLeft.style.display = 'none';
       if (arrowRight) arrowRight.style.display = 'none';
     }
-  } else if (mainImage) {
-    // No product ID - hide skeleton
-    hideSkeleton(mainImageSkeleton);
+  } else {
+    // No product ID or missing elements
+    console.warn('[PRODUCT] Missing productId or elements:', {
+      productId: productId,
+      mainImage: !!mainImage,
+      thumbnailContainer: !!thumbnailContainer
+    });
+    if (mainImageSkeleton) {
+      hideSkeleton(mainImageSkeleton);
+    }
+    if (mainImage) {
+      mainImage.style.display = 'none';
+      const mainImageContainer = mainImage.closest('.main-image-container');
+      if (mainImageContainer) {
+        let errorFallback = mainImageContainer.querySelector('.main-image-error');
+        if (!errorFallback) {
+          errorFallback = document.createElement('div');
+          errorFallback.className = 'main-image-error';
+          errorFallback.innerHTML = `
+            <div class="recommended-error-content">
+              <span class="material-symbols-outlined recommended-error-icon">image_not_supported</span>
+              <h4 class="recommended-error-title">Image Failed to Load</h4>
+              <p class="recommended-error-message">We're having trouble loading this image. Please try again later.</p>
+              <button class="recommended-error-retry compact" aria-label="Try again">
+                <span class="material-symbols-outlined">refresh</span>
+              </button>
+            </div>
+          `;
+          mainImageContainer.appendChild(errorFallback);
+        }
+        errorFallback.style.display = 'flex';
+      }
+    }
     setTimeout(() => {
       setupThumbnailHandlers();
     }, 100);
@@ -598,7 +984,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
   
   // Observe product container and recommended products container for dynamically added images
-  const productContainer = document.querySelector('.product-container');
+  // Use the already declared productContainer from line 37
   const recommendedContainer = document.getElementById('recommendedProducts');
   if (productContainer) {
     containerObserver.observe(productContainer, { childList: true, subtree: true });
@@ -1196,6 +1582,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Fetch product images in batch (optimized - no cache)
   async function fetchProductImagesBatch(productIds) {
     try {
+      console.log('[BATCH IMAGES] Fetching images for', productIds.length, 'products');
       const response = await fetch('/api/product-images/batch', {
         method: 'POST',
         headers: {
@@ -1205,19 +1592,27 @@ document.addEventListener("DOMContentLoaded", async function () {
         cache: 'no-store'
       });
       
+      if (!response.ok) {
+        throw new Error(`Batch API response not OK: ${response.status} ${response.statusText}`);
+      }
+      
       const data = await response.json();
+      console.log('[BATCH IMAGES] Received data for', Object.keys(data.results || {}).length, 'products');
       return data.results || {};
     } catch (error) {
-      console.error('Error fetching batch images:', error);
+      console.error('[BATCH IMAGES] Error fetching batch images:', error);
       return {};
     }
   }
 
   // Load and display recommended products (optimized)
   async function loadRecommendedProducts() {
-    console.log('Loading recommended products...');
+    console.log('[RECOMMENDED] Loading recommended products...');
     const container = document.getElementById('recommendedProducts');
-    if (!container) return;
+    if (!container) {
+      console.warn('[RECOMMENDED] Container not found');
+      return;
+    }
     
     // Hide initial skeleton loaders that are already in HTML
     const skeletonCards = container.querySelectorAll('.recommended-skeleton-card');
@@ -1230,15 +1625,22 @@ document.addEventListener("DOMContentLoaded", async function () {
       // Use preloaded JSON if available, otherwise fetch
       let products;
       if (window.productJsonPromise) {
+        console.log('[RECOMMENDED] Using preloaded JSON');
         products = await window.productJsonPromise;
       } else {
+        console.log('[RECOMMENDED] Fetching JSON from server');
         const response = await fetch('/json/product.json', {
           cache: 'no-store',
           headers: { 'Cache-Control': 'no-cache' }
         });
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch products: ${response.status} ${response.statusText}`);
+        }
+        
         products = await response.json();
       }
-      console.log('Products loaded:', products.length);
+      console.log('[RECOMMENDED] Products loaded:', products.length);
 
       // Get current product ID from URL or data attribute
       const productContainer = document.querySelector('.product-container');
@@ -1260,7 +1662,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       // Fetch images in batch (optimized)
       const productIds = recommendedProducts.map(p => p.id);
+      console.log('[RECOMMENDED] Fetching images for', productIds.length, 'products');
       const imagesData = await fetchProductImagesBatch(productIds);
+      console.log('[RECOMMENDED] Images data received:', Object.keys(imagesData).length, 'products have images');
       
       // Update images when loaded
       updateRecommendedProductImages(imagesData, recommendedProducts);
@@ -1269,7 +1673,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       initializeRecommendedCarousel();
 
     } catch (error) {
-      console.error('Error loading recommended products:', error);
+      console.error('[RECOMMENDED] Error loading recommended products:', error);
       // Hide skeleton cards on error
       const skeletonCards = container.querySelectorAll('.recommended-skeleton-card');
       skeletonCards.forEach(card => {
@@ -1279,6 +1683,11 @@ document.addEventListener("DOMContentLoaded", async function () {
           card.remove();
         }, 300);
       });
+      
+      // Show error message to user
+      if (container) {
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;"><p>Unable to load recommended products. Please try refreshing the page.</p></div>';
+      }
     }
   }
 
@@ -1401,7 +1810,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <span class="material-symbols-outlined recommended-error-icon">image_not_supported</span>
                 <h4 class="recommended-error-title">Image Failed to Load</h4>
                 <p class="recommended-error-message">We're having trouble loading this image. Please try again later.</p>
-                <button class="recommended-error-retry" onclick="this.closest('.recommended-card').querySelector('img')?.dispatchEvent(new Event('error'))">
+                <button class="recommended-error-retry">
                   <span class="material-symbols-outlined">refresh</span>
                   Try Again
                 </button>
@@ -2041,17 +2450,21 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Load recommended products when page loads
   // Wait a bit to ensure DOM is fully ready, especially for EJS templates
   setTimeout(() => {
+    console.log('[RECOMMENDED] Attempting to load recommended products');
     const container = document.getElementById('recommendedProducts');
     if (container) {
+      console.log('[RECOMMENDED] Container found, loading products');
       loadRecommendedProducts();
     } else {
-      console.warn('Recommended products container not found. Retrying...');
+      console.warn('[RECOMMENDED] Recommended products container not found. Retrying...');
       // Retry after a short delay
       setTimeout(() => {
-        if (document.getElementById('recommendedProducts')) {
+        const retryContainer = document.getElementById('recommendedProducts');
+        if (retryContainer) {
+          console.log('[RECOMMENDED] Container found on retry, loading products');
           loadRecommendedProducts();
         } else {
-          console.error('Recommended products container still not found after retry.');
+          console.error('[RECOMMENDED] Recommended products container still not found after retry.');
         }
       }, 500);
     }

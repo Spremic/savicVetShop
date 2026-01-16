@@ -188,17 +188,37 @@
 
 .recommended-error-retry {
   margin-top: 8px;
-  padding: 10px 20px;
+  padding: 8px 14px;
   background: linear-gradient(135deg, rgba(0, 153, 0, 0.2), rgba(0, 153, 0, 0.1));
   border: 1px solid rgba(0, 153, 0, 0.4);
   border-radius: 8px;
   color: #009900;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
+  transition: all 0.3s ease;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Thumbnail error retry button - smaller but with text */
+.thumbnail-error-retry {
+  margin-top: 4px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, rgba(0, 153, 0, 0.2), rgba(0, 153, 0, 0.1));
+  border: 1px solid rgba(0, 153, 0, 0.4);
+  border-radius: 6px;
+  color: #009900;
+  font-size: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   transition: all 0.3s ease;
   font-family: "Roboto", sans-serif;
 }
@@ -217,6 +237,73 @@
 .recommended-error-retry .material-symbols-outlined {
   font-size: 1.1rem;
   color: #009900;
+}
+
+/* Retry button icon size */
+.recommended-error-retry .material-symbols-outlined {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #009900 !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+  padding-top: 10px !important;
+}
+
+/* Remove padding-top for Recommended Products retry button icon */
+.recommended-card .recommended-error-retry .material-symbols-outlined {
+  padding-top: 0 !important;
+}
+
+.thumbnail-error-retry .material-symbols-outlined {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #009900 !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+  padding-top: 10px !important;
+}
+
+/* Thumbnail error retry button hover effects */
+.thumbnail-error-retry:hover {
+  background: linear-gradient(135deg, rgba(0, 153, 0, 0.3), rgba(0, 153, 0, 0.2));
+  border-color: rgba(0, 153, 0, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 153, 0, 0.2);
+}
+
+.thumbnail-error-retry:active {
+  transform: translateY(0);
+}
+
+/* Thumbnail error styles - more compact */
+/* Thumbnail image error - simple icon only */
+.thumbnail-image-error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+  z-index: 2;
+}
+
+.thumbnail-image-error .material-symbols-outlined {
+  font-size: 2rem !important;
+  color: rgba(255, 255, 255, 0.3) !important;
+  opacity: 1 !important;
 }
 
 .main-image {

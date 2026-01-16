@@ -901,7 +901,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         productImage.classList.add('loaded');
         productImage.style.display = 'block';
         productImage.style.opacity = '1';
-        productImage.style.transition = 'opacity 0.3s ease';
         // Hide skeleton with animation
         if (skeleton) {
           skeleton.style.opacity = '0';

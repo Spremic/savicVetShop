@@ -256,6 +256,9 @@ async function renderCartDrawer() {
       <div class="cart-item" data-product-id="${product.id}">
         <div class="item-img">
           <div class="item-img-skeleton"></div>
+          <div class="item-img-error" style="display: none;">
+            <span class="material-symbols-outlined">image_not_supported</span>
+          </div>
           <img src="" alt="${product.title}" loading="lazy" style="opacity: 0; display: block;">
         </div>
         <div class="item-details">
@@ -520,6 +523,9 @@ async function renderSavedDrawer() {
         </button>
         <div class="saved-img">
           <div class="saved-img-skeleton"></div>
+          <div class="saved-img-error" style="display: none;">
+            <span class="material-symbols-outlined">image_not_supported</span>
+          </div>
           <img src="" alt="${product.title}" loading="lazy" style="opacity: 0; display: block;">
         </div>
         <div class="saved-details">
@@ -653,13 +659,41 @@ async function loadCartImagesFromCloudinary(cartItems, productMap) {
     
     const imgElement = cartItemElement.querySelector('.item-img img');
     const skeleton = cartItemElement.querySelector('.item-img-skeleton');
+    const itemImgContainer = cartItemElement.querySelector('.item-img');
     
     if (!imgElement) return;
     
     const productImages = imagesData[product.id] || [];
-    const imageUrl = productImages.length > 0 
-      ? productImages[0].url 
-      : pickImage(product);
+    const imageUrls = productImages.length > 0 
+      ? productImages.map(img => img.url)
+      : [];
+    
+    let itemError = itemImgContainer?.querySelector('.item-img-error');
+    
+    // If no images available, show error immediately
+    if (imageUrls.length === 0) {
+      // Hide skeleton
+      if (skeleton) {
+        skeleton.style.opacity = '0';
+        skeleton.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          skeleton.classList.add('hidden');
+          skeleton.style.display = 'none';
+        }, 300);
+      }
+      // Show error
+      if (!itemError) {
+        itemError = document.createElement('div');
+        itemError.className = 'item-img-error';
+        itemError.innerHTML = `
+          <span class="material-symbols-outlined">image_not_supported</span>
+        `;
+        itemImgContainer.appendChild(itemError);
+      }
+      itemError.style.display = 'flex';
+      imgElement.style.display = 'none';
+      return;
+    }
     
     // Load image
     const imageLoader = new Image();
@@ -677,13 +711,12 @@ async function loadCartImagesFromCloudinary(cartItems, productMap) {
           skeleton.style.display = 'none';
         }, 300);
       }
+      // Hide error if it was shown
+      if (itemError) {
+        itemError.style.display = 'none';
+      }
     };
     imageLoader.onerror = () => {
-      // Fallback to pickImage if Cloudinary fails
-      imgElement.src = pickImage(product);
-      imgElement.style.opacity = '1';
-      imgElement.style.transition = 'opacity 0.3s ease';
-      
       // Hide skeleton
       if (skeleton) {
         skeleton.style.opacity = '0';
@@ -693,8 +726,19 @@ async function loadCartImagesFromCloudinary(cartItems, productMap) {
           skeleton.style.display = 'none';
         }, 300);
       }
+      // Show error
+      if (!itemError) {
+        itemError = document.createElement('div');
+        itemError.className = 'item-img-error';
+        itemError.innerHTML = `
+          <span class="material-symbols-outlined">image_not_supported</span>
+        `;
+        itemImgContainer.appendChild(itemError);
+      }
+      itemError.style.display = 'flex';
+      imgElement.style.display = 'none';
     };
-    imageLoader.src = imageUrl;
+    imageLoader.src = imageUrls[0];
   });
 }
 
@@ -709,13 +753,41 @@ async function loadSavedImagesFromCloudinary(savedProducts) {
     
     const imgElement = savedCard.querySelector('.saved-img img');
     const skeleton = savedCard.querySelector('.saved-img-skeleton');
+    const savedImgContainer = savedCard.querySelector('.saved-img');
     
     if (!imgElement) return;
     
     const productImages = imagesData[product.id] || [];
-    const imageUrl = productImages.length > 0 
-      ? productImages[0].url 
-      : pickImage(product);
+    const imageUrls = productImages.length > 0 
+      ? productImages.map(img => img.url)
+      : [];
+    
+    let savedError = savedImgContainer?.querySelector('.saved-img-error');
+    
+    // If no images available, show error immediately
+    if (imageUrls.length === 0) {
+      // Hide skeleton
+      if (skeleton) {
+        skeleton.style.opacity = '0';
+        skeleton.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          skeleton.classList.add('hidden');
+          skeleton.style.display = 'none';
+        }, 300);
+      }
+      // Show error
+      if (!savedError) {
+        savedError = document.createElement('div');
+        savedError.className = 'saved-img-error';
+        savedError.innerHTML = `
+          <span class="material-symbols-outlined">image_not_supported</span>
+        `;
+        savedImgContainer.appendChild(savedError);
+      }
+      savedError.style.display = 'flex';
+      imgElement.style.display = 'none';
+      return;
+    }
     
     // Load image
     const imageLoader = new Image();
@@ -733,13 +805,12 @@ async function loadSavedImagesFromCloudinary(savedProducts) {
           skeleton.style.display = 'none';
         }, 300);
       }
+      // Hide error if it was shown
+      if (savedError) {
+        savedError.style.display = 'none';
+      }
     };
     imageLoader.onerror = () => {
-      // Fallback to pickImage if Cloudinary fails
-      imgElement.src = pickImage(product);
-      imgElement.style.opacity = '1';
-      imgElement.style.transition = 'opacity 0.3s ease';
-      
       // Hide skeleton
       if (skeleton) {
         skeleton.style.opacity = '0';
@@ -749,8 +820,19 @@ async function loadSavedImagesFromCloudinary(savedProducts) {
           skeleton.style.display = 'none';
         }, 300);
       }
+      // Show error
+      if (!savedError) {
+        savedError = document.createElement('div');
+        savedError.className = 'saved-img-error';
+        savedError.innerHTML = `
+          <span class="material-symbols-outlined">image_not_supported</span>
+        `;
+        savedImgContainer.appendChild(savedError);
+      }
+      savedError.style.display = 'flex';
+      imgElement.style.display = 'none';
     };
-    imageLoader.src = imageUrl;
+    imageLoader.src = imageUrls[0];
   });
 }
 

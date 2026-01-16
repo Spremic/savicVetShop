@@ -136,6 +136,9 @@ async function renderCartItems() {
         <button class="remove-item" aria-label="Remove item" data-product-id="${product.id}">×</button>
         <div class="item-image">
           <div class="item-image-skeleton"></div>
+          <div class="item-image-error" style="display: none;">
+            <span class="material-symbols-outlined">image_not_supported</span>
+          </div>
           <img src="" alt="${product.title}" loading="lazy" style="opacity: 0; display: block;">
         </div>
         <div class="item-info">
@@ -295,13 +298,41 @@ async function loadShoppingCartImagesFromCloudinary(cartItems, productMap) {
     
     const imgElement = orderItem.querySelector('.item-image img');
     const skeleton = orderItem.querySelector('.item-image-skeleton');
+    const itemImageContainer = orderItem.querySelector('.item-image');
     
     if (!imgElement) return;
     
     const productImages = imagesData[product.id] || [];
-    const imageUrl = productImages.length > 0 
-      ? productImages[0].url 
-      : (typeof pickImage !== 'undefined' && pickImage) ? pickImage(product) : (product.image || "/img/granula.jpg");
+    const imageUrls = productImages.length > 0 
+      ? productImages.map(img => img.url)
+      : [];
+    
+    let itemError = itemImageContainer?.querySelector('.item-image-error');
+    
+    // If no images available, show error immediately
+    if (imageUrls.length === 0) {
+      // Hide skeleton
+      if (skeleton) {
+        skeleton.style.opacity = '0';
+        skeleton.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          skeleton.classList.add('hidden');
+          skeleton.style.display = 'none';
+        }, 300);
+      }
+      // Show error
+      if (!itemError) {
+        itemError = document.createElement('div');
+        itemError.className = 'item-image-error';
+        itemError.innerHTML = `
+          <span class="material-symbols-outlined">image_not_supported</span>
+        `;
+        itemImageContainer.appendChild(itemError);
+      }
+      itemError.style.display = 'flex';
+      imgElement.style.display = 'none';
+      return;
+    }
     
     // Load image
     const imageLoader = new Image();
@@ -319,14 +350,12 @@ async function loadShoppingCartImagesFromCloudinary(cartItems, productMap) {
           skeleton.style.display = 'none';
         }, 300);
       }
+      // Hide error if it was shown
+      if (itemError) {
+        itemError.style.display = 'none';
+      }
     };
     imageLoader.onerror = () => {
-      // Fallback to pickImage if Cloudinary fails
-      const fallbackSrc = (typeof pickImage !== 'undefined' && pickImage) ? pickImage(product) : (product.image || "/img/granula.jpg");
-      imgElement.src = fallbackSrc;
-      imgElement.style.opacity = '1';
-      imgElement.style.transition = 'opacity 0.3s ease';
-      
       // Hide skeleton
       if (skeleton) {
         skeleton.style.opacity = '0';
@@ -336,8 +365,19 @@ async function loadShoppingCartImagesFromCloudinary(cartItems, productMap) {
           skeleton.style.display = 'none';
         }, 300);
       }
+      // Show error
+      if (!itemError) {
+        itemError = document.createElement('div');
+        itemError.className = 'item-image-error';
+        itemError.innerHTML = `
+          <span class="material-symbols-outlined">image_not_supported</span>
+        `;
+        itemImageContainer.appendChild(itemError);
+      }
+      itemError.style.display = 'flex';
+      imgElement.style.display = 'none';
     };
-    imageLoader.src = imageUrl;
+    imageLoader.src = imageUrls[0];
   });
 }
 

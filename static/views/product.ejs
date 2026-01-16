@@ -73,8 +73,15 @@
             <div class="main-image-container">
               <div class="main-image-skeleton"></div>
               <div class="main-image-error" style="display: none;">
-                <span class="material-symbols-outlined">image_not_supported</span>
-                <p>Error loading image</p>
+                <div class="recommended-error-content">
+                  <span class="material-symbols-outlined recommended-error-icon">image_not_supported</span>
+                  <h4 class="recommended-error-title">Image Failed to Load</h4>
+                  <p class="recommended-error-message">We're having trouble loading this image. Please try again later.</p>
+                  <button class="recommended-error-retry">
+                    <span class="material-symbols-outlined">refresh</span>
+                    Try Again
+                  </button>
+                </div>
               </div>
               <img id="mainProductImage" src="" alt="<%= product ? product.title : 'Product Image' %>" class="main-image" />
               <button class="image-zoom-btn" aria-label="Zoom image">

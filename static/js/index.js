@@ -2,9 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Header scroll effect
   window.addEventListener("scroll", function () {
     const header = document.querySelector("header");
-    if (window.scrollY > 50) {
+    if (header && window.scrollY > 50) {
       header.classList.add("scrolled");
-    } else {
+    } else if (header) {
       header.classList.remove("scrolled");
     }
   });
@@ -133,17 +133,20 @@ document.addEventListener("DOMContentLoaded", function () {
       const discountPercentage = hasDiscount ? product.percentage : '';
       const oldPriceValue = hasDiscount ? product.price : null;
       
-      // Use fallback initially, will be replaced when images load
-      const fallbackIndex = parseInt(product.id) % fallbackImages.length;
-      const initialImageSrc = fallbackImages[fallbackIndex];
-      
       const cardHTML = `
         <div class="custom-card" data-product-id="${product.id}">
           <div class="image-c">
             <div class="image-skeleton"></div>
             <div class="image-error" style="display: none;">
-              <span class="material-symbols-outlined">image_not_supported</span>
-              <p>Error loading image</p>
+              <div class="recommended-error-content">
+                <span class="material-symbols-outlined recommended-error-icon">image_not_supported</span>
+                <h4 class="recommended-error-title">Image Failed to Load</h4>
+                <p class="recommended-error-message">We're having trouble loading this image. Please try again later.</p>
+                <button class="recommended-error-retry">
+                  <span class="material-symbols-outlined">refresh</span>
+                  Try Again
+                </button>
+              </div>
             </div>
             ${hasDiscount ? `<div class="discount-badge">-${discountPercentage}</div>` : ''}
             <div class="arrow-image-left" style="display: none;">
@@ -158,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <path class="heart-filled" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#009900" opacity="0"/>
               </svg>
             </div>
-            <img src="${initialImageSrc}" alt="${product.title}" loading="lazy" data-product-id="${product.id}" />
+            <img src="" alt="${product.title}" loading="lazy" data-product-id="${product.id}" style="display: none;" />
           </div>
           <div class="content-c">
             <span class="product-brand">${product.brand}</span>
@@ -259,21 +262,139 @@ document.addEventListener("DOMContentLoaded", function () {
       const productImages = imagesData[product.id] || [];
       const imageUrls = productImages.length > 0 
         ? productImages.map(img => img.url)
-        : [fallbackImages[parseInt(product.id) % fallbackImages.length]];
+        : [];
+
+      // Get or create error fallback element
+      let errorFallback = imageContainer.querySelector('.image-error');
+      if (!errorFallback) {
+        errorFallback = document.createElement('div');
+        errorFallback.className = 'image-error';
+        errorFallback.style.display = 'none';
+        errorFallback.innerHTML = `
+          <div class="recommended-error-content">
+            <span class="material-symbols-outlined recommended-error-icon">image_not_supported</span>
+            <h4 class="recommended-error-title">Image Failed to Load</h4>
+            <p class="recommended-error-message">We're having trouble loading this image. Please try again later.</p>
+            <button class="recommended-error-retry">
+              <span class="material-symbols-outlined">refresh</span>
+              Try Again
+            </button>
+          </div>
+        `;
+        imageContainer.appendChild(errorFallback);
+        
+        // Setup retry button functionality
+        const retryBtn = errorFallback.querySelector('.recommended-error-retry');
+        if (retryBtn) {
+          retryBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            // Hide error and show skeleton again
+            if (errorFallback) {
+              errorFallback.style.display = 'none';
+            }
+            if (skeleton) {
+              skeleton.style.opacity = '1';
+              skeleton.style.display = 'block';
+              skeleton.classList.remove('hidden');
+            }
+            // Try loading image again - reload from API
+            const currentProductId = card.getAttribute('data-product-id');
+            if (currentProductId) {
+              // Re-fetch images for this product
+              fetchProductImagesBatch([currentProductId]).then(imagesData => {
+                const retryImages = imagesData[currentProductId] || [];
+                const retryImageUrls = retryImages.length > 0 
+                  ? retryImages.map(img => img.url)
+                  : [];
+                
+                if (retryImageUrls.length > 0) {
+                  const retryImage = new Image();
+                  retryImage.onload = () => {
+                    productImage.src = retryImage.src;
+                    productImage.style.display = 'block';
+                    productImage.classList.add('loaded');
+                    productImage.setAttribute('data-product-images', JSON.stringify(retryImageUrls));
+                    productImage.setAttribute('data-current-image-index', '0');
+                    if (skeleton) {
+                      skeleton.style.opacity = '0';
+                      setTimeout(() => {
+                        skeleton.classList.add('hidden');
+                        skeleton.style.display = 'none';
+                      }, 300);
+                    }
+                    if (errorFallback) {
+                      errorFallback.style.display = 'none';
+                    }
+                  };
+                  retryImage.onerror = () => {
+                    if (skeleton) {
+                      skeleton.style.opacity = '0';
+                      setTimeout(() => {
+                        skeleton.classList.add('hidden');
+                        skeleton.style.display = 'none';
+                      }, 300);
+                    }
+                    if (errorFallback) {
+                      errorFallback.style.display = 'flex';
+                    }
+                    productImage.style.display = 'none';
+                  };
+                  retryImage.src = retryImageUrls[0];
+                } else {
+                  // No images available - show error
+                  if (skeleton) {
+                    skeleton.style.opacity = '0';
+                    setTimeout(() => {
+                      skeleton.classList.add('hidden');
+                      skeleton.style.display = 'none';
+                    }, 300);
+                  }
+                  if (errorFallback) {
+                    errorFallback.style.display = 'flex';
+                  }
+                  productImage.style.display = 'none';
+                }
+              }).catch(() => {
+                // API error - show error message
+                if (skeleton) {
+                  skeleton.style.opacity = '0';
+                  setTimeout(() => {
+                    skeleton.classList.add('hidden');
+                    skeleton.style.display = 'none';
+                  }, 300);
+                }
+                if (errorFallback) {
+                  errorFallback.style.display = 'flex';
+                }
+                productImage.style.display = 'none';
+              });
+            }
+          });
+        }
+      }
+
+      // If no images available, show error immediately
+      if (imageUrls.length === 0) {
+        // Hide skeleton
+        if (skeleton) {
+          skeleton.style.opacity = '0';
+          skeleton.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            skeleton.classList.add('hidden');
+            skeleton.style.display = 'none';
+          }, 300);
+        }
+        // Show error fallback
+        if (errorFallback) {
+          errorFallback.style.display = 'flex';
+        }
+        productImage.style.display = 'none';
+        return;
+      }
 
       // Store images in data attribute for carousel
       productImage.setAttribute('data-product-images', JSON.stringify(imageUrls));
       productImage.setAttribute('data-current-image-index', '0');
-
-      // Create error fallback element
-      const errorFallback = document.createElement('div');
-      errorFallback.className = 'image-error';
-      errorFallback.style.display = 'none';
-      errorFallback.innerHTML = `
-        <span class="material-symbols-outlined">image_not_supported</span>
-        <p>Error loading image</p>
-      `;
-      imageContainer.appendChild(errorFallback);
 
       // Load first image
       const firstImage = new Image();
