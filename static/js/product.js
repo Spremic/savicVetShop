@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       
       // Show image with fade in animation
       imgElement.style.visibility = 'visible';
-      imgElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      imgElement.style.transition = 'opacity 0.3s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
       imgElement.style.opacity = '1';
       imgElement.style.display = 'block';
       imgElement.classList.add('loaded');
@@ -1982,7 +1982,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         productImage.style.visibility = 'visible';
         productImage.style.opacity = '1';
         productImage.style.display = 'block';
-        productImage.style.transition = 'opacity 0.3s ease';
+        productImage.style.transition = 'opacity 0.3s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
         // Hide skeleton with animation
         if (skeleton) {
           skeleton.style.opacity = '0';

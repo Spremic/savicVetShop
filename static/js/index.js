@@ -400,6 +400,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const firstImage = new Image();
       firstImage.onload = () => {
         productImage.src = firstImage.src;
+        productImage.style.display = 'block';
         productImage.classList.add('loaded');
         // Hide skeleton with animation
         if (skeleton) {

@@ -700,7 +700,7 @@ async function loadCartImagesFromCloudinary(cartItems, productMap) {
     imageLoader.onload = () => {
       imgElement.src = imageLoader.src;
       imgElement.style.opacity = '1';
-      imgElement.style.transition = 'opacity 0.3s ease';
+      imgElement.style.transition = 'opacity 0.3s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
       
       // Hide skeleton
       if (skeleton) {
@@ -794,7 +794,7 @@ async function loadSavedImagesFromCloudinary(savedProducts) {
     imageLoader.onload = () => {
       imgElement.src = imageLoader.src;
       imgElement.style.opacity = '1';
-      imgElement.style.transition = 'opacity 0.3s ease';
+      imgElement.style.transition = 'opacity 0.3s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
       
       // Hide skeleton
       if (skeleton) {
@@ -852,6 +852,38 @@ async function loadProductsData() {
 }
 
 // Funkcija za kreiranje strukture category iz JSON podataka
+// Helper function for slugifying (used in multiple places)
+function slugify(value) {
+  if (!value) return "";
+
+  const cyrToLat = {
+    а: "a", б: "b", в: "v", г: "g", д: "d", ђ: "dj", е: "e", ж: "z",
+    з: "z", и: "i", ј: "j", к: "k", л: "l", љ: "lj", м: "m", н: "n",
+    њ: "nj", о: "o", п: "p", р: "r", с: "s", т: "t", ћ: "c", у: "u",
+    ф: "f", х: "h", ц: "c", ч: "c", џ: "dz", ш: "s",
+    А: "a", Б: "b", В: "v", Г: "g", Д: "d", Ђ: "dj", Е: "e", Ж: "z",
+    З: "z", И: "i", Ј: "j", К: "k", Л: "l", Љ: "lj", М: "m", Н: "n",
+    Њ: "nj", О: "o", П: "p", Р: "r", С: "s", Т: "t", Ћ: "c", У: "u",
+    Ф: "f", Х: "h", Ц: "c", Ч: "c", Џ: "dz", Ш: "s"
+  };
+
+  let result = value.toString();
+  result = result.replace(/[а-яА-ЯђЂљЉњЊћЋџЏ]/g, ch => cyrToLat[ch] || ch);
+  result = result.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  result = result
+    .replace(/đ/g, "dj").replace(/Đ/g, "dj")
+    .replace(/ž/g, "z").replace(/Ž/g, "z")
+    .replace(/č/g, "c").replace(/Č/g, "c")
+    .replace(/ć/g, "c").replace(/Ć/g, "c")
+    .replace(/š/g, "s").replace(/Š/g, "s");
+
+  return result
+    .replace(/[^a-zA-Z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .toLowerCase();
+}
+
 function parseCategories(products) {
   const categoryMap = {};
 
@@ -900,37 +932,6 @@ function parseCategories(products) {
 function generateDynamicDropdownHTML(categoryMap) {
   let sidebarHTML = '';
   let contentHTML = '';
-
-  const slugify = (value) => {
-    if (!value) return "";
-
-    const cyrToLat = {
-      а: "a", б: "b", в: "v", г: "g", д: "d", ђ: "dj", е: "e", ж: "z",
-      з: "z", и: "i", ј: "j", к: "k", л: "l", љ: "lj", м: "m", н: "n",
-      њ: "nj", о: "o", п: "p", р: "r", с: "s", т: "t", ћ: "c", у: "u",
-      ф: "f", х: "h", ц: "c", ч: "c", џ: "dz", ш: "s",
-      А: "a", Б: "b", В: "v", Г: "g", Д: "d", Ђ: "dj", Е: "e", Ж: "z",
-      З: "z", И: "i", Ј: "j", К: "k", Л: "l", Љ: "lj", М: "m", Н: "n",
-      Њ: "nj", О: "o", П: "p", Р: "r", С: "s", Т: "t", Ћ: "c", У: "u",
-      Ф: "f", Х: "h", Ц: "c", Ч: "c", Џ: "dz", Ш: "s"
-    };
-
-    let result = value.toString();
-    result = result.replace(/[а-яА-ЯђЂљЉњЊћЋџЏ]/g, ch => cyrToLat[ch] || ch);
-    result = result.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    result = result
-      .replace(/đ/g, "dj").replace(/Đ/g, "dj")
-      .replace(/ž/g, "z").replace(/Ž/g, "z")
-      .replace(/č/g, "c").replace(/Č/g, "c")
-      .replace(/ć/g, "c").replace(/Ć/g, "c")
-      .replace(/š/g, "s").replace(/Š/g, "s");
-
-    return result
-      .replace(/[^a-zA-Z0-9\s-]/g, "")
-      .trim()
-      .replace(/\s+/g, "-")
-      .toLowerCase();
-  };
 
   Object.entries(categoryMap).forEach(([categoryName, categoryData], index) => {
     const isActive = index === 0 ? 'active' : '';
@@ -1010,9 +1011,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         </div>
 
         <div class="mid">
-          <nav>
+          <!-- Desktop Navigation (hidden on mobile) -->
+          <nav class="desktop-nav">
             <ul>
-              <a href="/" class="active"><li>Home</li></a>
+              <a href="/"><li>Home</li></a>
               <a href="/about"><li>About</li></a>
               <a href="/gallery"><li>Gallery</li></a>
               <li class="dropdown">
@@ -1033,6 +1035,114 @@ document.addEventListener("DOMContentLoaded", async function () {
               </li>
             </ul>
           </nav>
+          
+          <!-- Mobile Menu Logo and Close -->
+          <div class="mobile-menu-logo">
+            <div class="mobile-menu-logo-content">
+              <img src="/img/happy animal.png" alt="Happy Animals logo" />
+              <div class="mobile-menu-logo-text">Happy Animals</div>
+            </div>
+            <button class="mobile-menu-close" aria-label="Close">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <!-- Main Navigation Menu (Mobile) -->
+          <nav class="mobile-menu-nav">
+            <ul>
+              <a href="/" class="active">
+                <li>
+                  <span class="material-symbols-outlined">home</span>
+                  <span>Home</span>
+                </li>
+              </a>
+              <a href="/about">
+                <li>
+                  <span class="material-symbols-outlined">info</span>
+                  <span>About</span>
+                </li>
+              </a>
+              <a href="/gallery">
+                <li>
+                  <span class="material-symbols-outlined">photo_library</span>
+                  <span>Gallery</span>
+                </li>
+              </a>
+              <li class="dropdown">
+                <a href="/products" class="mobile-menu-products-link">
+                  <span class="material-symbols-outlined">shopping_bag</span>
+                  <span>Products</span>
+                  <span class="material-symbols-outlined dropdown-arrow">chevron_right</span>
+                </a>
+                <div class="mega-dropdown">
+                  <div class="mega-dropdown-wrapper">
+                    <!-- Left Sidebar: Categories List -->
+                    <div class="categories-sidebar">
+                      ${sidebarHTML}
+                    </div>
+
+                    <!-- Right Content Area: Subcategories -->
+                    <div class="categories-content">
+                      ${contentHTML}
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </nav>
+          <!-- Products Categories View (slides in when Products is clicked) -->
+          <div class="mobile-menu-products-view">
+            <div class="mobile-menu-products-view-categories active">
+              <div class="mobile-menu-categories-header">
+                <button class="mobile-menu-categories-back">
+                  <span class="material-symbols-outlined">arrow_back_ios</span>
+                </button>
+                <span class="mobile-menu-categories-back-text">Back to Navigation</span>
+              </div>
+              <ul class="mobile-menu-products-categories">
+                ${Object.entries(categoryMap).map(([categoryName, categoryData]) => {
+                  const { icon, subcategories } = categoryData;
+                  const categorySlug = slugify(categoryName);
+                  const subcategoriesData = JSON.stringify({
+                    categoryName,
+                    categorySlug,
+                    icon,
+                    subcategories: Object.keys(subcategories).map(subcatName => ({
+                      name: subcatName,
+                      slug: slugify(subcatName),
+                      subcategories2: Array.from(subcategories[subcatName].subcategories2 || []).map(subcat2 => ({
+                        name: subcat2,
+                        slug: slugify(subcat2)
+                      }))
+                    }))
+                  }).replace(/"/g, '&quot;');
+                  return `
+                    <li class="mobile-menu-products-category-item" data-category-data="${subcategoriesData}">
+                      <a href="/${categorySlug}" class="mobile-menu-products-category-link">
+                        <span class="mobile-menu-products-category-text">${categoryName}</span>
+                        <span class="material-symbols-outlined mobile-menu-products-arrow">chevron_right</span>
+                      </a>
+                    </li>
+                  `;
+                }).join('')}
+              </ul>
+            </div>
+            <div class="mobile-menu-products-view-subcategories">
+              <div class="mobile-menu-products-subcategories-header">
+                <button class="mobile-menu-products-back">
+                  <span class="material-symbols-outlined">arrow_back_ios</span>
+                </button>
+                <span class="mobile-menu-products-current-category-title"></span>
+                <a href="#" class="mobile-menu-products-view-all-link">View All</a>
+              </div>
+              <div class="mobile-menu-products-subcategories-content"></div>
+            </div>
+          </div>
+          <div class="mobile-menu-footer">
+            <a href="/all-products" class="mobile-menu-view-all-btn">
+              <span class="material-symbols-outlined">shopping_bag</span>
+              <span>View All Products</span>
+            </a>
+          </div>
         </div>
 
         <div class="right">
@@ -1078,6 +1188,59 @@ document.addEventListener("DOMContentLoaded", async function () {
       </nav>
       <div class="mobile-menu-overlay"></div>
     </header>
+    
+    <!-- Products Modal (slides in from right) -->
+    <div id="products-modal" class="products-modal">
+      <div class="products-modal-header">
+        <div class="products-modal-logo">
+          <img src="/img/happy animal.png" alt="Happy Animals logo" />
+          <span class="products-modal-logo-text">Happy Animals</span>
+        </div>
+        <button class="products-modal-close" aria-label="Close">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="products-modal-content">
+        <div class="products-modal-view products-modal-categories-view active">
+          <ul class="products-modal-categories">
+            ${Object.entries(categoryMap).map(([categoryName, categoryData]) => {
+              const { icon, dataAttr, subcategories } = categoryData;
+              const categorySlug = slugify(categoryName);
+              // Store subcategories data as JSON for JavaScript access
+              const subcategoriesData = JSON.stringify({
+                categoryName,
+                categorySlug,
+                icon,
+                subcategories: Object.keys(subcategories).map(subcatName => ({
+                  name: subcatName,
+                  slug: slugify(subcatName),
+                  subcategories2: Array.from(subcategories[subcatName].subcategories2 || []).map(subcat2 => ({
+                    name: subcat2,
+                    slug: slugify(subcat2)
+                  }))
+                }))
+              }).replace(/"/g, '&quot;');
+              return `
+                <li class="products-modal-category-item" data-category-data="${subcategoriesData}">
+                  <a href="/${categorySlug}" class="products-modal-category-link">
+                    <span class="products-modal-category-text">${categoryName}</span>
+                    <span class="material-symbols-outlined products-modal-arrow">chevron_right</span>
+                  </a>
+                </li>
+              `;
+            }).join('')}
+          </ul>
+        </div>
+        <div class="products-modal-view products-modal-subcategories-view">
+          <button class="products-modal-back">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span class="products-modal-back-text">Back</span>
+          </button>
+          <div class="products-modal-subcategories-content"></div>
+        </div>
+      </div>
+    </div>
+    <div class="products-modal-overlay"></div>
   `;
 
   // Footer HTML
@@ -1163,10 +1326,22 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   if (hamburger) {
     hamburger.addEventListener("click", () => {
+      const isMenuOpen = navMenu.classList.contains("active");
+      
       hamburger.classList.toggle("active");
       navMenu.classList.toggle("active");
       overlay.classList.toggle("active");
       body.classList.toggle("no-scroll");
+      
+      // Reset to main menu after menu is closed (wait for transition)
+      if (isMenuOpen) {
+        // Menu is being closed - wait for transition to complete then reset
+        setTimeout(() => {
+          if (!navMenu.classList.contains("active")) {
+            resetMobileMenuToMain();
+          }
+        }, 400); // Wait for CSS transition (0.4s)
+      }
     });
   }
   
@@ -1176,36 +1351,489 @@ document.addEventListener("DOMContentLoaded", async function () {
           navMenu.classList.remove("active");
           overlay.classList.remove("active");
           body.classList.remove("no-scroll");
+          
+          // Reset to main menu after menu is closed (wait for transition)
+          setTimeout(() => {
+            resetMobileMenuToMain();
+          }, 400); // Wait for CSS transition (0.4s)
       });
   }
 
-  // Mobile dropdown toggle
-  const dropdowns = document.querySelectorAll(".dropdown");
-  dropdowns.forEach(dropdown => {
-      const link = dropdown.querySelector("a");
-      // Prevent default link behavior on mobile to allow toggling dropdown
-      link.addEventListener("click", (e) => {
-          if (window.innerWidth <= 1024) { // Mobile/Tablet breakpoint
-              // Check if it's the main products link
-              if (dropdown.classList.contains("dropdown")) {
-                  // If dropdown is not active, prevent navigation and toggle it
-                  if (!dropdown.classList.contains("active")) {
-                      e.preventDefault();
-                      dropdown.classList.add("active");
-                  } 
-                  // If it IS active, let the link work (go to /products) or toggle off?
-                  // Usually clicking again toggles off.
-                  else {
-                      e.preventDefault();
-                      dropdown.classList.remove("active");
-                  }
-              }
-          }
+  // Mobile menu close button
+  const mobileMenuClose = document.querySelector(".mobile-menu-close");
+  if (mobileMenuClose && hamburger && navMenu && overlay) {
+    mobileMenuClose.addEventListener("click", (e) => {
+      // Close menu first
+      hamburger.classList.remove("active");
+      navMenu.classList.remove("active");
+      overlay.classList.remove("active");
+      body.classList.remove("no-scroll");
+      
+      // Reset to main menu after menu is closed (wait for transition)
+      setTimeout(() => {
+        resetMobileMenuToMain();
+      }, 400); // Wait for CSS transition (0.4s)
+    });
+  }
+
+  // Products Modal - Open/Close functionality
+  const productsModal = document.getElementById("products-modal");
+  const productsModalOverlay = document.querySelector(".products-modal-overlay");
+  const productsModalClose = document.querySelector(".products-modal-close");
+  const productsDropdown = document.querySelector("header ul li.dropdown");
+  const productsLink = productsDropdown?.querySelector("a");
+  
+  function openProductsModal() {
+    if (productsModal) {
+      productsModal.classList.add("active");
+      if (productsModalOverlay) {
+        productsModalOverlay.classList.add("active");
+      }
+      document.body.classList.add("no-scroll");
+    }
+  }
+  
+  function closeProductsModal() {
+    if (productsModal) {
+      productsModal.classList.remove("active");
+      if (productsModalOverlay) {
+        productsModalOverlay.classList.remove("active");
+      }
+      document.body.classList.remove("no-scroll");
+    }
+  }
+  
+  // Show categories view in hamburger menu when products link is clicked
+  // Check if hamburger menu is active (mobile menu is open)
+  function handleProductsClick(e) {
+    // Only show categories view on mobile/tablet when hamburger menu is active
+    const isMobile = window.innerWidth <= 1024;
+    const isHamburgerActive = hamburger && hamburger.classList.contains("active");
+    const isNavMenuActive = navMenu && navMenu.classList.contains("active");
+    
+    // Show categories view if we're on mobile and either hamburger or nav menu is active
+    if (isMobile && (isHamburgerActive || isNavMenuActive)) {
+      e.preventDefault();
+      e.stopImmediatePropagation(); // Stop all other event handlers
+      
+      // Show products categories view in hamburger menu with animation
+      const mobileMenuNav = document.querySelector('.mobile-menu-nav');
+      const mobileMenuProductsView = document.querySelector('.mobile-menu-products-view');
+      const categoriesView = document.querySelector('.mobile-menu-products-view-categories');
+      
+      if (mobileMenuNav && mobileMenuProductsView && categoriesView) {
+        // Reset products view position
+        mobileMenuProductsView.style.display = 'flex';
+        mobileMenuProductsView.style.opacity = '0';
+        mobileMenuProductsView.style.transform = 'translateX(100%)';
+        
+        // Reset categories view
+        const subcategoriesView = document.querySelector('.mobile-menu-products-view-subcategories');
+        if (subcategoriesView) {
+          subcategoriesView.classList.remove('active');
+        }
+        categoriesView.classList.remove('active');
+        categoriesView.style.transform = 'translateX(100%)';
+        categoriesView.style.opacity = '0';
+        
+        // Animate: main menu slides left and disappears, categories view slides in from right
+        mobileMenuNav.classList.add('slide-out-left');
+        
+        setTimeout(() => {
+          // Hide main navigation menu after animation
+          mobileMenuNav.style.display = 'none';
+          mobileMenuNav.classList.remove('slide-out-left');
+          
+          // Show categories view and animate in
+          categoriesView.classList.add('active');
+          mobileMenuProductsView.classList.add('slide-in-right');
+          
+          setTimeout(() => {
+            mobileMenuProductsView.style.opacity = '1';
+            mobileMenuProductsView.style.transform = 'translateX(0)';
+            categoriesView.style.transform = 'translateX(0)';
+            categoriesView.style.opacity = '1';
+            setTimeout(() => {
+              mobileMenuProductsView.classList.remove('slide-in-right');
+            }, 400);
+          }, 50);
+        }, 300);
+      }
+      return true;
+    }
+    return false;
+  }
+  
+  // Reset hamburger menu to main menu (used when closing menu)
+  function resetMobileMenuToMain() {
+    const mobileMenuNav = document.querySelector('.mobile-menu-nav');
+    const mobileMenuProductsView = document.querySelector('.mobile-menu-products-view');
+    const categoriesView = document.querySelector('.mobile-menu-products-view-categories');
+    const subcategoriesView = document.querySelector('.mobile-menu-products-view-subcategories');
+    
+    if (mobileMenuNav && mobileMenuProductsView) {
+      // Reset all views to initial state
+      if (subcategoriesView) {
+        subcategoriesView.classList.remove('active');
+      }
+      if (categoriesView) {
+        categoriesView.classList.remove('active');
+        categoriesView.style.transform = '';
+        categoriesView.style.opacity = '';
+      }
+      
+      // Reset products view
+      mobileMenuProductsView.style.display = 'none';
+      mobileMenuProductsView.style.opacity = '';
+      mobileMenuProductsView.style.transform = '';
+      mobileMenuProductsView.classList.remove('slide-in-right');
+      
+      // Show main menu
+      mobileMenuNav.style.display = 'block';
+      mobileMenuNav.style.opacity = '';
+      mobileMenuNav.style.transform = '';
+      mobileMenuNav.classList.remove('slide-out-left');
+    }
+  }
+
+  // Go back from products view to main menu with animation
+  function goBackToMainMenu() {
+    const mobileMenuNav = document.querySelector('.mobile-menu-nav');
+    const mobileMenuProductsView = document.querySelector('.mobile-menu-products-view');
+    const categoriesView = document.querySelector('.mobile-menu-products-view-categories');
+    
+    if (mobileMenuNav && mobileMenuProductsView && categoriesView) {
+      // Reset to categories view first
+      const subcategoriesView = document.querySelector('.mobile-menu-products-view-subcategories');
+      if (subcategoriesView) {
+        subcategoriesView.classList.remove('active');
+      }
+      categoriesView.classList.add('active');
+      
+      // Animate: products view slides right and disappears, main menu slides in from left
+      mobileMenuProductsView.style.opacity = '0';
+      mobileMenuProductsView.style.transform = 'translateX(100%)';
+      
+      setTimeout(() => {
+        // Hide products view after animation
+        mobileMenuProductsView.style.display = 'none';
+        mobileMenuProductsView.classList.remove('slide-in-right');
+        
+        // Show main menu and animate in from left
+        mobileMenuNav.style.display = 'block';
+        mobileMenuNav.style.opacity = '0';
+        mobileMenuNav.style.transform = 'translateX(-100%)';
+        
+        setTimeout(() => {
+          mobileMenuNav.style.opacity = '1';
+          mobileMenuNav.style.transform = 'translateX(0)';
+        }, 50);
+      }, 300);
+    }
+  }
+  
+  // Use event delegation on document to catch all clicks (most reliable)
+  document.addEventListener("click", (e) => {
+    // Check if click is on products dropdown or link
+    const clickedDropdown = e.target.closest('li.dropdown');
+    const clickedLink = e.target.closest('header ul li.dropdown a');
+    const clickedMobileProductsLink = e.target.closest('.mobile-menu-products-link');
+    
+    if (clickedDropdown === productsDropdown || clickedLink === productsLink || clickedMobileProductsLink) {
+      handleProductsClick(e);
+    }
+  }, true); // Use capture phase to catch event before other handlers
+  
+  // Also add listener directly to the dropdown and link as backup
+  if (productsDropdown) {
+    productsDropdown.addEventListener("click", handleProductsClick, true);
+  }
+  
+  if (productsLink) {
+    productsLink.addEventListener("click", handleProductsClick, true);
+  }
+  
+  // Add listener for mobile menu products link
+  const mobileMenuProductsLink = document.querySelector('.mobile-menu-products-link');
+  if (mobileMenuProductsLink) {
+    mobileMenuProductsLink.addEventListener("click", handleProductsClick, true);
+  }
+  
+  // Close modal when close button is clicked
+  if (productsModalClose) {
+    productsModalClose.addEventListener("click", closeProductsModal);
+  }
+  
+  // Close modal when overlay is clicked
+  if (productsModalOverlay) {
+    productsModalOverlay.addEventListener("click", closeProductsModal);
+  }
+  
+  // Close modal on Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && productsModal && productsModal.classList.contains("active")) {
+      closeProductsModal();
+    }
+  });
+  
+  // Handle category clicks - show subcategories with animation (Products Modal)
+  function showSubcategories(categoryItem) {
+    const categoryDataStr = categoryItem.getAttribute('data-category-data');
+    if (!categoryDataStr) return;
+    
+    try {
+      const categoryData = JSON.parse(categoryDataStr.replace(/&quot;/g, '"'));
+      const categoriesView = document.querySelector('.products-modal-categories-view');
+      const subcategoriesView = document.querySelector('.products-modal-subcategories-view');
+      const subcategoriesContent = document.querySelector('.products-modal-subcategories-content');
+      
+      if (!categoriesView || !subcategoriesView || !subcategoriesContent) return;
+      
+      // Generate subcategories HTML
+      let subcategoriesHTML = '<ul class="products-modal-subcategories">';
+      
+      categoryData.subcategories.forEach(subcat => {
+        subcategoriesHTML += `
+          <li class="products-modal-subcategory-item">
+            <a href="/${categoryData.categorySlug}/${subcat.slug}" class="products-modal-subcategory-link">
+              <span class="products-modal-subcategory-text">${subcat.name}</span>
+              ${subcat.subcategories2 && subcat.subcategories2.length > 0 ? 
+                `<span class="material-symbols-outlined products-modal-arrow">chevron_right</span>` : ''}
+            </a>
+            ${subcat.subcategories2 && subcat.subcategories2.length > 0 ? `
+              <ul class="products-modal-subcategories2">
+                ${subcat.subcategories2.map(subcat2 => `
+                  <li class="products-modal-subcategory2-item">
+                    <a href="/${categoryData.categorySlug}/${subcat.slug}/${subcat2.slug}" class="products-modal-subcategory2-link">
+                      ${subcat2.name}
+                    </a>
+                  </li>
+                `).join('')}
+              </ul>
+            ` : ''}
+          </li>
+        `;
       });
+      
+      subcategoriesHTML += '</ul>';
+      subcategoriesContent.innerHTML = subcategoriesHTML;
+      
+      // Animate: categories slide left and disappear, subcategories slide in from right
+      categoriesView.classList.add('slide-out-left');
+      setTimeout(() => {
+        categoriesView.classList.remove('active');
+        categoriesView.classList.remove('slide-out-left');
+        subcategoriesView.classList.add('active');
+        subcategoriesView.classList.add('slide-in-right');
+        setTimeout(() => {
+          subcategoriesView.classList.remove('slide-in-right');
+        }, 400);
+      }, 300);
+    } catch (e) {
+      console.error('Error parsing category data:', e);
+    }
+  }
+  
+  // Handle back button click (Products Modal)
+  function goBackToCategories() {
+    const categoriesView = document.querySelector('.products-modal-categories-view');
+    const subcategoriesView = document.querySelector('.products-modal-subcategories-view');
+    
+    if (!categoriesView || !subcategoriesView) return;
+    
+    // Animate: subcategories slide right and disappear, categories slide in from left
+    subcategoriesView.classList.add('slide-out-right');
+    setTimeout(() => {
+      subcategoriesView.classList.remove('active');
+      subcategoriesView.classList.remove('slide-out-right');
+      categoriesView.classList.add('active');
+      categoriesView.classList.add('slide-in-left');
+      setTimeout(() => {
+        categoriesView.classList.remove('slide-in-left');
+      }, 400);
+    }, 300);
+  }
+  
+  // Handle category clicks in hamburger menu - show subcategories with animation
+  function showMobileMenuSubcategories(categoryItem) {
+    const categoryDataStr = categoryItem.getAttribute('data-category-data');
+    if (!categoryDataStr) return;
+    
+    try {
+      const categoryData = JSON.parse(categoryDataStr.replace(/&quot;/g, '"'));
+      const categoriesView = document.querySelector('.mobile-menu-products-view-categories');
+      const subcategoriesView = document.querySelector('.mobile-menu-products-view-subcategories');
+      const subcategoriesContent = document.querySelector('.mobile-menu-products-subcategories-content');
+      const currentCategoryTitle = document.querySelector('.mobile-menu-products-current-category-title');
+      
+      if (!categoriesView || !subcategoriesView || !subcategoriesContent) return;
+      
+      // Set category title
+      if (currentCategoryTitle) {
+        currentCategoryTitle.textContent = categoryData.categoryName;
+      }
+      
+      // Set View All link
+      const viewAllLink = document.querySelector('.mobile-menu-products-view-all-link');
+      if (viewAllLink) {
+        viewAllLink.href = `/${categoryData.categorySlug}`;
+      }
+      
+      // Generate subcategories HTML
+      let subcategoriesHTML = '<ul class="mobile-menu-products-subcategories">';
+      
+      categoryData.subcategories.forEach(subcat => {
+        subcategoriesHTML += `
+          <li class="mobile-menu-products-subcategory-item">
+            <a href="/${categoryData.categorySlug}/${subcat.slug}" class="mobile-menu-products-subcategory-link">
+              <span class="mobile-menu-products-subcategory-text">${subcat.name}</span>
+            </a>
+            ${subcat.subcategories2 && subcat.subcategories2.length > 0 ? `
+              <ul class="mobile-menu-products-subcategories2">
+                ${subcat.subcategories2.map(subcat2 => `
+                  <li class="mobile-menu-products-subcategory2-item">
+                    <a href="/${categoryData.categorySlug}/${subcat.slug}/${subcat2.slug}" class="mobile-menu-products-subcategory2-link">
+                      ${subcat2.name}
+                    </a>
+                  </li>
+                `).join('')}
+              </ul>
+            ` : ''}
+          </li>
+        `;
+      });
+      
+      subcategoriesHTML += '</ul>';
+      subcategoriesContent.innerHTML = subcategoriesHTML;
+      
+      // Animate: categories slide left and disappear, subcategories slide in from right
+      categoriesView.classList.add('slide-out-left');
+      
+      // Prepare subcategories view for animation (start off-screen)
+      subcategoriesView.style.display = 'block';
+      subcategoriesView.style.position = 'absolute';
+      subcategoriesView.style.opacity = '0';
+      subcategoriesView.style.transform = 'translateX(100%)';
+      subcategoriesView.classList.remove('active');
+      
+      setTimeout(() => {
+        categoriesView.classList.remove('active');
+        categoriesView.classList.remove('slide-out-left');
+        
+        // Animate subcategories in from right
+        setTimeout(() => {
+          subcategoriesView.classList.add('slide-in-right');
+          subcategoriesView.style.opacity = '1';
+          subcategoriesView.style.transform = 'translateX(0)';
+          
+          setTimeout(() => {
+            subcategoriesView.classList.remove('slide-in-right');
+            subcategoriesView.classList.add('active');
+            subcategoriesView.style.position = '';
+            subcategoriesView.style.opacity = '';
+            subcategoriesView.style.transform = '';
+          }, 400);
+        }, 50);
+      }, 300);
+    } catch (e) {
+      console.error('Error parsing category data:', e);
+    }
+  }
+  
+  // Handle back button click in hamburger menu
+  function goBackToMobileMenuCategories() {
+    const categoriesView = document.querySelector('.mobile-menu-products-view-categories');
+    const subcategoriesView = document.querySelector('.mobile-menu-products-view-subcategories');
+    
+    if (!categoriesView || !subcategoriesView) return;
+    
+    // Animate: subcategories slide right and disappear, categories slide in from left
+    subcategoriesView.classList.add('slide-out-right');
+    
+    // Prepare categories view for animation (start off-screen left)
+    categoriesView.style.display = 'block';
+    categoriesView.style.position = 'absolute';
+    categoriesView.style.opacity = '0';
+    categoriesView.style.transform = 'translateX(-100%)';
+    categoriesView.classList.remove('active');
+    
+    setTimeout(() => {
+      subcategoriesView.classList.remove('active');
+      subcategoriesView.classList.remove('slide-out-right');
+      
+      // Animate categories in from left
+      setTimeout(() => {
+        categoriesView.classList.add('slide-in-left');
+        categoriesView.style.opacity = '1';
+        categoriesView.style.transform = 'translateX(0)';
+        
+        setTimeout(() => {
+          categoriesView.classList.remove('slide-in-left');
+          categoriesView.classList.add('active');
+          categoriesView.style.position = '';
+          categoriesView.style.opacity = '';
+          categoriesView.style.transform = '';
+        }, 400);
+      }, 50);
+    }, 300);
+  }
+  
+  // Add event listeners for category clicks (using event delegation)
+  document.addEventListener('click', (e) => {
+    // Products Modal category clicks
+    const categoryLink = e.target.closest('.products-modal-category-link');
+    if (categoryLink && document.querySelector('.products-modal-categories-view.active')) {
+      e.preventDefault();
+      const categoryItem = categoryLink.closest('.products-modal-category-item');
+      if (categoryItem) {
+        showSubcategories(categoryItem);
+      }
+    }
+    
+    // Products Modal back button
+    const backButton = e.target.closest('.products-modal-back');
+    if (backButton) {
+      e.preventDefault();
+      goBackToCategories();
+    }
+    
+    // Hamburger Menu category clicks
+    const mobileCategoryLink = e.target.closest('.mobile-menu-products-category-link');
+    if (mobileCategoryLink && document.querySelector('.mobile-menu-products-view-categories.active')) {
+      e.preventDefault();
+      const categoryItem = mobileCategoryLink.closest('.mobile-menu-products-category-item');
+      if (categoryItem) {
+        showMobileMenuSubcategories(categoryItem);
+      }
+    }
+    
+    // Hamburger Menu back button (from subcategories to categories)
+    const mobileBackButton = e.target.closest('.mobile-menu-products-back');
+    if (mobileBackButton) {
+      e.preventDefault();
+      goBackToMobileMenuCategories();
+    }
+    
+    // Hamburger Menu back button (from categories to main navigation) - whole header is clickable
+    const categoriesBackButton = e.target.closest('.mobile-menu-categories-header');
+    if (categoriesBackButton) {
+      e.preventDefault();
+      goBackToMainMenu();
+    }
+    
+    // Mobile menu close button - reset to main menu if in products view
+    const mobileMenuCloseBtn = e.target.closest('.mobile-menu-close');
+    if (mobileMenuCloseBtn) {
+      const mobileMenuProductsView = document.querySelector('.mobile-menu-products-view');
+      if (mobileMenuProductsView && mobileMenuProductsView.style.display === 'flex') {
+        // Reset to main menu before closing
+        goBackToMainMenu();
+      }
+    }
   });
 
   // Desktop mega dropdown positioning + overflow guard (before hamburger kicks in)
-  const productsDropdown = document.querySelector("header ul li.dropdown");
+  // productsDropdown is already defined above
   const megaDropdown = productsDropdown?.querySelector(".mega-dropdown");
 
   function resetMegaDropdownStyles() {
@@ -1312,12 +1940,21 @@ document.addEventListener("DOMContentLoaded", async function () {
     productsDropdown.addEventListener("mouseenter", adjustMegaDropdownPositionDelayed);
     productsDropdown.addEventListener("focusin", adjustMegaDropdownPositionDelayed);
 
-    // Prevent default click behavior on products link
-    const productsLink = productsDropdown.querySelector('a');
-    if (productsLink) {
-      productsLink.addEventListener('click', function(e) {
-        e.preventDefault();
-      });
+    // Prevent default click behavior on products link ONLY on desktop
+    // On mobile, the handleProductsClick function will handle it
+    // Note: productsLink is already defined above, so we check if it exists and add desktop-only handler
+    if (productsLink && window.innerWidth > 1024) {
+      // Remove any existing click handlers and add desktop-only one
+      const desktopLink = productsDropdown.querySelector('a');
+      if (desktopLink) {
+        desktopLink.addEventListener('click', function(e) {
+          // Only prevent default on desktop when hamburger is not active
+          const isHamburgerActive = hamburger && hamburger.classList.contains("active");
+          if (!isHamburgerActive) {
+            e.preventDefault();
+          }
+        });
+      }
     }
   }
 
