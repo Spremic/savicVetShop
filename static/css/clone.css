@@ -95,6 +95,21 @@ header .mid .desktop-nav {
   .mobile-menu-overlay {
     display: none !important;
   }
+  
+  /* Remove padding-left and margin-left for subcategory-title on PC */
+  .categories-content .subcategory-column a.subcategory-title {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+  
+  .categories-content .subcategory-column a.subcategory-title:hover {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+  
+  .categories-content .subcategory-column a.subcategory-title::after {
+    left: 0 !important;
+  }
 }
 
 /* Hide desktop navigation and show mobile navigation on mobile */
@@ -515,7 +530,7 @@ header ul li.dropdown:hover .mega-dropdown {
   font-size: 1.05rem !important;
   font-weight: 400 !important;
   margin: 50px 0 8px 0 !important;
-  padding: 0 0 10px 0 !important;
+  padding: 0 0 6px 0 !important;
   border: none !important;
   border-bottom: none !important;
   border-color: transparent !important;
@@ -531,8 +546,9 @@ header ul li.dropdown:hover .mega-dropdown {
   background: transparent !important;
   color: #fff !important;
   transform: none !important;
-  padding-left: 0 !important;
+  translate: 0 0 !important;
   padding-right: 0 !important;
+  margin-right: 0 !important;
   font-weight: 400 !important;
   border: none !important;
   border-bottom: none !important;
@@ -551,17 +567,22 @@ header ul li.dropdown:hover .mega-dropdown {
 .categories-content .subcategory-column a.subcategory-title::after {
   content: '';
   position: absolute;
-  bottom: 0;
+  top: 100%;
+  margin-top: 0px;
   left: 0;
-  width: 0;
+  right: 0;
+  width: auto;
   height: 2px;
   background: #009900;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: block !important;
 }
 
 .categories-content .subcategory-column a.subcategory-title:hover::after {
-  width: 100%;
+  transform: scaleX(1);
+  transform-origin: left center;
 }
 
 .categories-content .subcategory-column a::before {

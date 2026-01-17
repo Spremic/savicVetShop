@@ -1597,7 +1597,15 @@
   position: relative;
   overflow: hidden;
   background-color: #0a0a0a;
+  height: 300px;
   min-height: 300px;
+  max-height: 300px;
+  width: 100%;
+  font-size: 0;
+  line-height: 0;
+  padding: 0;
+  margin: 0;
+  vertical-align: top;
 }
 
 .recommended-image-skeleton {
@@ -1648,8 +1656,15 @@
   position: relative;
   overflow: hidden;
   background-color: #0a0a0a;
+  height: 300px;
   min-height: 300px;
+  max-height: 300px;
   width: 100%;
+  font-size: 0;
+  line-height: 0;
+  padding: 0;
+  margin: 0;
+  vertical-align: top;
 }
 
 .recommended-skeleton-card .recommended-image-skeleton {
@@ -1761,18 +1776,27 @@
 }
 
 .recommended-card img {
-  width: 100%;
-  max-width: 100%;
-  height: 300px;
-  min-height: 300px;
-  max-height: 300px;
-  object-fit: cover;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
   transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   display: block;
   opacity: 0;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 2;
   will-change: transform;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+  vertical-align: top;
 }
 
 .recommended-card img.loaded {
@@ -2058,6 +2082,19 @@
   }
 
   .recommended-card img {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+  }
+  
+  .recommended-image-c {
+    height: 280px;
+    min-height: 280px;
+    max-height: 280px;
+  }
+  
+  .recommended-skeleton-card .recommended-image-c {
     height: 280px;
     min-height: 280px;
     max-height: 280px;
@@ -2327,6 +2364,21 @@
   }
 
   .recommended-card img {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+  
+  .recommended-image-c {
+    height: 280px;
+    min-height: 280px;
+    max-height: 280px;
+  }
+  
+  .recommended-skeleton-card .recommended-image-c {
     height: 280px;
     min-height: 280px;
     max-height: 280px;
@@ -2575,6 +2627,19 @@
   }
 
   .recommended-card img {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+  }
+  
+  .recommended-image-c {
+    height: 300px;
+    min-height: 300px;
+    max-height: 300px;
+  }
+  
+  .recommended-skeleton-card .recommended-image-c {
     height: 300px;
     min-height: 300px;
     max-height: 300px;
@@ -2861,6 +2926,19 @@
   }
 
   .recommended-card img {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+  }
+  
+  .recommended-image-c {
+    height: 300px;
+    min-height: 300px;
+    max-height: 300px;
+  }
+  
+  .recommended-skeleton-card .recommended-image-c {
     height: 300px;
     min-height: 300px;
     max-height: 300px;
@@ -3009,6 +3087,19 @@
 
 
   .recommended-card img {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+  }
+  
+  .recommended-image-c {
+    height: 170px;
+    min-height: 170px;
+    max-height: 170px;
+  }
+  
+  .recommended-skeleton-card .recommended-image-c {
     height: 170px;
     min-height: 170px;
     max-height: 170px;
